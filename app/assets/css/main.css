@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/* Always show scrollbar to prevent layout shift when modals open */
+html {
+    overflow-y: scroll;
+}
+
+/* Custom Scrollbar Styles */
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the entire scrollbar */
+    height: 8px;
+    /* Height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    /* Use a background/gray color for the track */
+    background: var(--color-gray-100);
+}
+
+/* Dark mode track color */
+.dark ::-webkit-scrollbar-track {
+    background: var(--color-gray-900);
+}
+
+::-webkit-scrollbar-thumb {
+    /* Use your primary color for the thumb */
+    background-color: var(--color-primary-500);
+    border-radius: 10px;
+    /* Roundness of the scrollbar thumb */
+    border: 2px solid var(--color-gray-100);
+    /* Adds padding/separation from the track */
+}
+
+/* Dark mode thumb color */
+.dark ::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-400);
+    border-color: var(--color-gray-900);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    /* Darken or lighten the thumb on hover */
+    background-color: var(--color-primary-600);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-300);
+}
+
+/* Firefox */
+* {
+    /* Sets the color and track based on the current theme */
+    scrollbar-color: var(--color-primary-500) var(--color-gray-100);
+    scrollbar-width: thin;
+    /* Can be 'auto', 'thin', or 'none' */
+}
+
+/* Firefox Dark Mode - Requires custom logic as 'scrollbar-color' doesn't easily respond to a single .dark class */
+/* For robust Firefox dark mode support, you might need to target a scoped element or use a script to set an explicit CSS variable on the body/html for 'scrollbar-color' */
