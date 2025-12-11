@@ -74,7 +74,7 @@
 
     <!-- Mobile Menu Slideover -->
     <USlideover title="aMule Nuxt" v-model:open="isMenuOpen" side="right">
-      <template #body>
+      <template #body class="flex flex-col justify-end ">
         <!-- Speed Summary in Menu -->
         <div class="flex items-center justify-around text-sm p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -92,6 +92,7 @@
           :links="navLinks" 
           orientation="vertical" 
           @click="isMenuOpen = false" 
+          class="my-8"
         />
 
         <div class="flex items-center justify-between">
@@ -115,8 +116,11 @@ const isDark = computed(() => colorMode.value === 'dark')
 const isMenuOpen = ref(false)
 const status = ref<any>(null)
 
+const runtimeConfig = useRuntimeConfig()
+const isDev = computed(() => process.dev || runtimeConfig.public.isDev)
+
 // Navigation links for desktop and mobile menu
-const navLinks = [
+const baseNavLinks = [
   { label: 'Dashboard', icon: 'i-heroicons-home', to: '/' },
   { label: 'Downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
   { label: 'Search', icon: 'i-heroicons-magnifying-glass', to: '/search' },
@@ -126,6 +130,15 @@ const navLinks = [
   { label: 'Logs', icon: 'i-heroicons-document-text', to: '/logs' },
   { label: 'Settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
 ]
+
+// Add API Test link only in development
+const navLinks = computed(() => {
+  const links = [...baseNavLinks]
+  if (isDev.value) {
+    links.push({ label: 'API Test', icon: 'i-heroicons-code-bracket', to: '/api-test' })
+  }
+  return links
+})
 
 // Simplified navigation for mobile (3 pages + menu)
 const mobileNavLinks = [

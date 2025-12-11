@@ -1,31 +1,17 @@
 /**
- * Shared utility to get AmuleCmdClient instance
- * Uses runtime config for connection settings
+ * Shared utility to get AmuleECClient instance
+ * Replaces the old AmuleCmdClient
  */
 
-import { createAmuleClient } from '../utils/amulecmd/AmuleCmdClient';
-import type { AmuleCmdClient } from '../utils/amulecmd/AmuleCmdClient';
 import { AmuleECClient } from '../utils/amule-ec/AmuleECClient';
 
-let clientInstance: AmuleCmdClient | null = null;
 let ecClientInstance: AmuleECClient | null = null;
 
-export function getAmuleClient(): AmuleCmdClient {
-    const config = useRuntimeConfig();
-
-    if (!clientInstance) {
-        clientInstance = createAmuleClient({
-            host: config.amuleEcHost,
-            port: config.amuleEcPort,
-            password: config.amuleEcPassword,
-            executablePath: config.amuleCmdPath
-        });
-    }
-
-    return clientInstance;
-}
-
-export function getAmuleECClient(): AmuleECClient {
+/**
+ * Get the aMule EC Client instance
+ * @returns AmuleECClient
+ */
+export function getAmuleClient(): AmuleECClient {
     const config = useRuntimeConfig();
 
     if (!ecClientInstance) {
@@ -38,3 +24,8 @@ export function getAmuleECClient(): AmuleECClient {
 
     return ecClientInstance;
 }
+
+/**
+ * Alias for getAmuleClient to maintain compatibility if used elsewhere
+ */
+export const getAmuleECClient = getAmuleClient;

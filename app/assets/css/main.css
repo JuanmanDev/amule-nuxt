@@ -50,13 +50,7 @@ html {
     background-color: var(--color-primary-300);
 }
 
-/* Firefox */
-* {
-    /* Sets the color and track based on the current theme */
-    scrollbar-color: var(--color-primary-500) var(--color-gray-100);
-    scrollbar-width: thin;
-    /* Can be 'auto', 'thin', or 'none' */
-}
+
 
 /* Firefox Dark Mode - Requires custom logic as 'scrollbar-color' doesn't easily respond to a single .dark class */
 /* For robust Firefox dark mode support, you might need to target a scoped element or use a script to set an explicit CSS variable on the body/html for 'scrollbar-color' */

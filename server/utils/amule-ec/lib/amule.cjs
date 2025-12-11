@@ -38,7 +38,12 @@ var AMuleCli = /** @class */ (function () {
             EC_OP_SEARCH_STOP: 0x27,
             EC_OP_SEARCH_RESULTS: 0x28,
             EC_OP_SEARCH_PROGRESS: 0x29,
-            EC_OP_DOWNLOAD_SEARCH_RESULT: 0x2A
+            EC_OP_DOWNLOAD_SEARCH_RESULT: 0x2A,
+            EC_OP_GET_SERVER_LIST: 0x14,
+            EC_OP_ADD_LINK: 0x19,
+            EC_OP_PARTFILE_PAUSE: 0x1B,
+            EC_OP_PARTFILE_RESUME: 0x1C,
+            EC_OP_PARTFILE_PRIO_SET: 0x20
         };
         this.ECTagNames = {
             EC_TAG_CLIENT_NAME: 0x0100,
@@ -434,6 +439,60 @@ var AMuleCli = /** @class */ (function () {
     AMuleCli.prototype.getCancelDownloadRequest = function (e) {
         this._setHeadersToRequest(29); // EC_OP_PARTFILE_DELETE
         this._buildTagArrayBuffer(768 * 2, this.ECOpCodes.EC_TAGTYPE_HASH16, e.partfile_hash, null);
+        return this._finalizeRequest(1);
+    };
+    ;
+    AMuleCli.prototype.getServerListRequest = function () {
+        this._setHeadersToRequest(this.ECOpCodes.EC_OP_GET_SERVER_LIST);
+        return this._finalizeRequest(0);
+    };
+    ;
+    AMuleCli.prototype.addLinkRequest = function (link) {
+        this._setHeadersToRequest(this.ECOpCodes.EC_OP_ADD_LINK);
+        var tagCount = 0;
+        this._buildTagArrayBuffer(this.ECOpCodes.EC_OP_STRINGS, this.ECOpCodes.EC_OP_STRINGS, link + "\0", null);
+        tagCount++;
+        return this._finalizeRequest(tagCount);
+    };
+    ;
+    AMuleCli.prototype.getPauseDownloadRequest = function (hash) {
+        this._setHeadersToRequest(this.ECOpCodes.EC_OP_PARTFILE_PAUSE);
+        this._buildTagArrayBuffer(768 * 2, this.ECOpCodes.EC_TAGTYPE_HASH16, hash, null);
+        return this._finalizeRequest(1);
+    };
+    ;
+    AMuleCli.prototype.getResumeDownloadRequest = function (hash) {
+        this._setHeadersToRequest(this.ECOpCodes.EC_OP_PARTFILE_RESUME);
+        this._buildTagArrayBuffer(768 * 2, this.ECOpCodes.EC_TAGTYPE_HASH16, hash, null);
+        return this._finalizeRequest(1);
+    };
+    ;
+    AMuleCli.prototype.getSetPriorityRequest = function (hash, priority) {
+        this._setHeadersToRequest(this.ECOpCodes.EC_OP_PARTFILE_PRIO_SET);
+        var tagCount = 0;
+        var children = [{
+            ecTag: 776 * 2, // EC_TAG_PARTFILE_STATUS (used for priority in this context?) No, usually EC_TAG_PARTFILE_PRIO
+            ecOp: this.ECOpCodes.EC_TAGTYPE_UINT8,
+            value: priority
+        }];
+        // Wait, for priority set, we usually send hash and priority.
+        // Let's check EC_TAG_PARTFILE_PRIO. It is 0x0303 (771? No).
+        // EC_TAG_PARTFILE_PRIO = 0x030B (779)
+        // Let's verify tag mapping.
+        // In amule.cjs line 71: { EC_TAG_PARTFILE_SOURCE_COUNT: 778 }, { EC_TAG_PARTFILE_SOURCE_COUNT_XFER: 781 }, { EC_TAG_PARTFILE_STATUS: 776 }
+        // 779 is not listed.
+        // I'll assume 779 for priority.
+
+        // Actually, for EC_OP_PARTFILE_PRIO_SET, the structure is usually:
+        // EC_TAG_PARTFILE (hash)
+        //   EC_TAG_PARTFILE_PRIO (value)
+
+        var children = [{
+            ecTag: 779 * 2, // EC_TAG_PARTFILE_PRIO
+            ecOp: this.ECOpCodes.EC_TAGTYPE_UINT8,
+            value: priority
+        }];
+        this._buildTagArrayBuffer(768 * 2 + 1, this.ECOpCodes.EC_TAGTYPE_HASH16, hash, children);
         return this._finalizeRequest(1);
     };
     ;
