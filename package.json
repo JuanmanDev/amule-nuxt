@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "^4.2.1",
+    "@types/ws": "^8.18.1",
     "amule-js": "^1.0.0",
     "blueimp-md5": "^2.19.0",
     "chart.js": "^4.5.1",
@@ -28,7 +29,8 @@
     "nvm": "^0.0.4",
     "vue": "^3.5.24",
     "vue-chartjs": "^5.3.3",
-    "vue-router": "^4.6.3"
+    "vue-router": "^4.6.3",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@iconify-json/heroicons": "^1.2.3",

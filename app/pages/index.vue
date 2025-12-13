@@ -5,6 +5,17 @@
       <p class="text-gray-600 dark:text-gray-400">Overview of your aMule daemon status and activity</p>
     </div>
 
+    <!-- Connection Status Indicator (WebSocket) -->
+    <div v-if="!wsStatus.connected" class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-lg flex items-center justify-between">
+      <div class="flex items-center gap-2">
+         <UIcon name="i-heroicons-wifi" class="w-5 h-5 animate-pulse" />
+         <span>Connecting to real-time updates...</span>
+      </div>
+      <div v-if="wsStatus.error" class="text-sm">
+         {{ wsStatus.error }}
+      </div>
+    </div>
+
     <!-- Connection Management -->
     <UCard>
       <template #header>
@@ -14,7 +25,7 @@
             <UButton
               @click="handleConnect"
               :loading="connecting"
-              :disabled="status?.connected"
+              :disabled="effectiveStatus?.connected"
               color="green"
               icon="i-heroicons-link"
             >
@@ -23,7 +34,7 @@
             <UButton
               @click="handleDisconnect"
               :loading="disconnecting"
-              :disabled="!status?.connected"
+              :disabled="!effectiveStatus?.connected"
               color="red"
               variant="outline"
               icon="i-heroicons-link-slash"
@@ -38,20 +49,20 @@
         <div class="  ">
           <div class="text-sm text-gray-600 dark:text-gray-400">eD2k</div>
           <div class="text-lg font-semibold mt-1">
-            <UBadge :color="status?.ed2kConnected ? 'green' : 'gray'">
-              {{ status?.ed2kConnected ? 'Connected' : 'Disconnected' }}
+            <UBadge :color="effectiveStatus?.ed2kConnected ? 'green' : 'gray'">
+              {{ effectiveStatus?.ed2kConnected ? 'Connected' : 'Disconnected' }}
             </UBadge>
           </div>
-          <div v-if="status?.serverName" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            {{ status.serverName }}
+          <div v-if="effectiveStatus?.serverName" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            {{ effectiveStatus.serverName }}
           </div>
         </div>
 
         <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-between md:block">
           <div class="text-sm text-gray-600 dark:text-gray-400">Kad</div>
           <div class="text-lg font-semibold mt-1">
-            <UBadge :color="status?.kadConnected ? 'green' : 'gray'">
-              {{ status?.kadConnected ? 'Connected' : 'Disconnected' }}
+            <UBadge :color="effectiveStatus?.kadConnected ? 'green' : 'gray'">
+              {{ effectiveStatus?.kadConnected ? 'Connected' : 'Disconnected' }}
             </UBadge>
           </div>
         </div>
@@ -59,7 +70,7 @@
         <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-between md:block">
           <div class="text-sm text-gray-600 dark:text-gray-400">Client ID</div>
           <div class="text-lg font-semibold mt-1 font-mono">
-            {{ status?.id || 'N/A' }}
+            {{ effectiveStatus?.id || 'N/A' }}
           </div>
         </div>
       </div>
@@ -78,7 +89,7 @@
             Upload Speed
           </div>
           <div class="text-2xl font-bold mt-2 text-green-600">
-            {{ formatSpeed(status?.uploadSpeed || 0) }}
+            {{ formatSpeed(effectiveStatus?.uploadSpeed || 0) }}
           </div>
         </div>
 
@@ -88,7 +99,7 @@
             Download Speed
           </div>
           <div class="text-2xl font-bold mt-2 text-blue-600">
-            {{ formatSpeed(status?.downloadSpeed || 0) }}
+            {{ formatSpeed(effectiveStatus?.downloadSpeed || 0) }}
           </div>
         </div>
 
@@ -98,7 +109,7 @@
             Queued Clients
           </div>
           <div class="text-2xl font-bold mt-2">
-            {{ status?.queuedClients || 0 }}
+            {{ effectiveStatus?.queuedClients || 0 }}
           </div>
         </div>
 
@@ -108,7 +119,7 @@
             Total Sources
           </div>
           <div class="text-2xl font-bold mt-2">
-            {{ status?.totalSourceCount || 0 }}
+            {{ effectiveStatus?.totalSourceCount || 0 }}
           </div>
         </div>
       </div>
@@ -153,9 +164,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useAmuleSocket } from '~/composables/useAmuleSocket';
+
 const api = useAmuleApi();
 const toast = useToast();
-const { status } = useAmuleStatus();
+const { status } = useAmuleStatus(); // Keep fallback to polling if WS fails initially?
+const { wsStatus, realtimeStatus } = useAmuleSocket();
+
+// Prioritize real-time status if available
+const effectiveStatus = computed(() => {
+  if (wsStatus.value.connected && realtimeStatus.value) {
+    return realtimeStatus.value;
+  }
+  return status.value;
+});
 
 const connecting = ref(false);
 const disconnecting = ref(false);

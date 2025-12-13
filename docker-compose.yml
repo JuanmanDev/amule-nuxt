@@ -6,6 +6,7 @@ services:
     container_name: amule-nuxt
     ports:
       - "3000:3000"     # Nuxt web interface
+      - "3001:3001"     # WebSocket updates
       - "4712:4712"     # aMule External Connection
       - "4662:4662"     # aMule eD2k TCP
       - "4665:4665/udp" # aMule eD2k UDP

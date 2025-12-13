@@ -5,13 +5,26 @@
         <h1 class="text-3xl font-bold mb-2">Downloads</h1>
         <p class="text-gray-600 dark:text-gray-400">Manage your download queue</p>
       </div>
-      <UButton @click="refresh" :loading="refreshing" icon="i-heroicons-arrow-path">
-        Refresh
-      </UButton>
+      <div class="flex gap-2">
+        <UButton
+          v-if="wsStatus.connected"
+          variant="outline"
+          color="green"
+          size="sm"
+          disabled
+        >
+          <template #leading>
+            <UIcon name="i-heroicons-bolt" class="w-4 h-4 animate-pulse" />
+          </template>
+          Live
+        </UButton>
+        <UButton @click="refresh" :loading="refreshing" icon="i-heroicons-arrow-path">
+          Refresh
+        </UButton>
+      </div>
     </div>
 
     <!-- Add Download -->
-
     <UForm :state="form" @submit="handleAdd">
       <UFormField label="Add New Download (eD2k or Magnet Link)" name="link">
         <div class="flex gap-2">
@@ -28,8 +41,6 @@
     </UForm>
 
     <!-- Downloads Table -->
-
-
       <div v-if="loading" class="text-center py-8">
         <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin mx-auto" />
         <p class="mt-2 text-gray-600 dark:text-gray-400">Loading downloads...</p>
@@ -40,21 +51,21 @@
         <p class="mt-2 text-red-600">{{ error }}</p>
       </div>
 
-      <div v-else-if="!downloads || downloads.length === 0" class="text-center py-8">
+      <div v-else-if="!effectiveDownloads || effectiveDownloads.length === 0" class="text-center py-8">
         <UIcon name="i-heroicons-inbox" class="w-8 h-8 mx-auto text-gray-400" />
         <p class="mt-2 text-gray-600 dark:text-gray-400">No downloads found</p>
       </div>
 
       <div v-else class="space-y-4">
         <div
-          v-for="download in downloads"
+          v-for="download in effectiveDownloads"
           :key="download.hash"
           class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
         >
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1 min-w-0">
               <h3 class="font-semibold truncate">{{ download.name }}</h3>
-              
+
               <div class="mt-2 space-y-2">
                 <!-- Progress Bar -->
                 <div>
@@ -124,7 +135,7 @@
                   </div>
                   <!-- Actions - Mobile Only (Dropdown) -->
                   <div class="lg:hidden flex justify-end">
-                    <UDropdownMenu :items="getActions(download)" :modal="false"">
+                    <UDropdownMenu :items="getActions(download)" :modal="false">
                       <UButton icon="i-heroicons-ellipsis-vertical" variant="ghost" size="xs" />
                     </UDropdownMenu>
                   </div>
@@ -139,10 +150,12 @@
 
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui';
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
+import { useAmuleSocket } from '~/composables/useAmuleSocket';
 
 const api = useAmuleApi();
 const toast = useToast();
+const { wsStatus, realtimeDownloads } = useAmuleSocket();
 
 useHead({ title: 'Downloads' });
 
@@ -156,9 +169,17 @@ const form = reactive({
   link: ''
 });
 
+// Computed property to use real-time data if available, otherwise fallback
+const effectiveDownloads = computed(() => {
+    if (wsStatus.value.connected && realtimeDownloads.value.length > 0) {
+        return realtimeDownloads.value;
+    }
+    return downloads.value;
+});
+
 async function fetchDownloads(silent = false) {
   // Only show loading spinner if not a silent background refresh and no data exists
-  if (!silent && downloads.value.length === 0) {
+  if (!silent && downloads.value.length === 0 && effectiveDownloads.value.length === 0) {
     loading.value = true;
   }
   error.value = null;
@@ -178,7 +199,7 @@ async function fetchDownloads(silent = false) {
 
 async function refresh() {
   refreshing.value = true;
-  await fetchDownloads(false); // Manual refresh, show loading
+  await fetchDownloads(false); // Manual refresh
   refreshing.value = false;
 }
 
@@ -261,9 +282,9 @@ async function handleSetPriority(download: any, priority: string) {
   }
 }
 
-function getActions(download: any): DropdownMenuItem[] {
+function getActions(download: any): DropdownMenuItem[][] {
   const isPaused = download.status === 'Paused';
-  
+
   return [
     [
       {
@@ -301,16 +322,6 @@ function getActions(download: any): DropdownMenuItem[] {
   ];
 }
 
-function getStatusColor(status: string) {
-  switch (status) {
-    case 'Downloading': return 'blue';
-    case 'Paused': return 'orange';
-    case 'Complete': return 'green';
-    case 'Error': return 'red';
-    default: return 'gray';
-  }
-}
-
 function formatBytes(bytes: number): string {
   if (bytes >= 1024 * 1024 * 1024) {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
@@ -335,9 +346,13 @@ function formatSpeed(kbps: number): string {
 let interval: ReturnType<typeof setInterval>;
 onMounted(() => {
   fetchDownloads(); // Initial load
-  
-  // Auto-refresh every 5 seconds (silent mode - no loading spinner)
-  interval = setInterval(() => fetchDownloads(true), 5000);
+
+  // Auto-refresh every 5 seconds (silent mode) - as backup or when WS is disconnected
+  interval = setInterval(() => {
+      if (!wsStatus.value.connected) {
+          fetchDownloads(true);
+      }
+  }, 5000);
 });
 
 onUnmounted(() => {
