@@ -1,5 +1,7 @@
 # aMule Nuxt
 
+![aMule Nuxt dashboard](images/home2.png)
+
 A modern web interface **and MCP server** for an [aMule](https://amule.org) daemon, built with **Nuxt 4**, **Nuxt UI 4** and **TypeScript**.
 
 It speaks aMule's native **External Connection (EC) protocol** directly — a TypeScript implementation living in this repository, no `amulecmd` binary required — so it runs anywhere Node runs and can drive a daemon on another machine.
@@ -271,3 +273,35 @@ Issues and pull requests welcome. Please keep the existing shape: types in `shar
 ## License
 
 MIT
+
+---
+
+## Screenshots
+
+### Desktop
+
+**Dashboard** — queue summary, live speeds, add form and connection state:
+
+![Dashboard](images/home.png)
+
+![Dashboard with active transfers](images/home2.png)
+
+**Downloads** — progress, ETA, sources, health badges and per-file controls:
+
+![Downloads queue](images/downloads.png)
+
+**Search** — Kad / eD2k / local search with results arriving live:
+
+![Search](images/search.png)
+
+**MCP server** — live documentation of the endpoint and its 16 tools:
+
+![MCP server page](images/mcp.png)
+
+![MCP tool list](images/mcp_menu.png)
+
+### Mobile
+
+| Dashboard | Downloads | Download details | Navigation |
+|---|---|---|---|
+| ![Dashboard on a phone](images/home_mobile.png) | ![Downloads on a phone](images/downloads_mobile.png) | ![Download details on a phone](images/download_detail_mobile.png) | ![Navigation menu on a phone](images/menu_mobile.png) |
