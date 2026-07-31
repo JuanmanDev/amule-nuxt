@@ -3,7 +3,10 @@
  * Get bandwidth limits
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { BandwidthLimits } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<BandwidthLimits>> => {
     try {
         const client = getAmuleClient();
         const limits = await client.getBandwidthLimits();

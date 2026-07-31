@@ -4,7 +4,9 @@
  * Body: { type: 'Global' | 'Kad' | 'Local', keyword: string }
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../../shared/types/api';
+
+export default defineEventHandler(async (event): Promise<ApiResponse> => {
     try {
         const body = await readBody(event);
 

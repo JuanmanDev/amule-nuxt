@@ -1,0 +1,26 @@
+{
+  "name": "aMule Nuxt",
+  "short_name": "aMule",
+  "description": "Web interface for an aMule daemon: downloads, uploads, shared files, servers, search and Kad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#00dc82",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "protocol_handlers": [
+    { "protocol": "ed2k", "url": "/handle-link?link=%s&scheme=ed2k" },
+    { "protocol": "magnet", "url": "/handle-link?link=%s&scheme=magnet" }
+  ],
+  "shortcuts": [
+    { "name": "Downloads", "url": "/downloads" },
+    { "name": "Uploads", "url": "/uploads" },
+    { "name": "Search", "url": "/search" }
+  ]
+}

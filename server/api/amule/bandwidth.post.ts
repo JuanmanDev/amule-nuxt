@@ -4,7 +4,10 @@
  * Body: { uploadLimit: number, downloadLimit: number } (in KB/s, 0 = unlimited)
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { BandwidthLimits } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<BandwidthLimits>> => {
     try {
         const body = await readBody(event);
 

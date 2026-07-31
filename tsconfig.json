@@ -1,5 +1,7 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
+  // Solution-style config: every file is type checked through one of the
+  // generated project references below, so no `include` here.
   "files": [],
   "references": [
     {

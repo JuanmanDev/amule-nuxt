@@ -2,9 +2,12 @@
   "name": "amule-nuxt",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --port 3003",
+    "dev": "nuxt dev --port 3003 --host 0.0.0.0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -15,27 +18,32 @@
     "install:amule:wsl2": "bash scripts/install-amule-wsl2.sh",
     "install:amule:linux": "bash scripts/install-amule-linux.sh",
     "configure:amule": "bash scripts/configure-amule.sh",
-    "test": "vitest",
-    "test:unit": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "amule:test": "bash ./scripts/test-ec-connection.sh",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:offline": "playwright test test/e2e/offline.spec.ts",
+    "typecheck": "nuxt typecheck",
+    "lint:deps": "npm outdated || true"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.2.1",
+    "@nuxt/ui": "^4.10.0",
     "@types/ws": "^8.18.1",
-    "amule-js": "^1.0.0",
-    "blueimp-md5": "^2.19.0",
-    "chart.js": "^4.5.1",
     "nuxt": "^4.2.1",
-    "nvm": "^0.0.4",
     "vue": "^3.5.24",
-    "vue-chartjs": "^5.3.3",
-    "vue-router": "^4.6.3",
+    "vue-router": "^5.2.0",
     "ws": "^8.18.3"
   },
   "devDependencies": {
     "@iconify-json/heroicons": "^1.2.3",
-    "@types/node": "^24.10.1",
-    "typescript": "^5.9.3",
-    "vue-tsc": "^3.1.5"
+    "@nuxtjs/mcp-toolkit": "^0.18.0",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.1.2",
+    "secure-exec": "^0.3.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10",
+    "vue-tsc": "^3.3.9",
+    "wait-on": "^9.1.0",
+    "zod": "^4.4.3"
   }
 }

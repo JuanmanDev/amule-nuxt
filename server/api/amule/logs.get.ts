@@ -3,7 +3,9 @@
  * Get log entries
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<string[]>> => {
     try {
         const client = getAmuleClient();
         const logs = await client.showLog();

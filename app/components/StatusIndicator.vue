@@ -15,27 +15,29 @@
       
       <!-- Quick Stats -->
       <div v-if="status" class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-        <span class="flex items-center gap-1">
+        <NuxtLink to="/uploads" class="flex items-center gap-1 hover:underline" title="Show uploads">
           <UIcon name="i-heroicons-arrow-up" class="w-4 h-4 text-green-600" />
           {{ formatSpeed(status.uploadSpeed) }}
-        </span>
-        <span class="flex items-center gap-1">
+        </NuxtLink>
+        <NuxtLink to="/downloads" class="flex items-center gap-1 hover:underline" title="Show downloads">
           <UIcon name="i-heroicons-arrow-down" class="w-4 h-4 text-blue-600" />
           {{ formatSpeed(status.downloadSpeed) }}
-        </span>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { formatSpeed } from '#shared/utils/format'
+
 const { status, loading, error } = useAmuleStatus();
 
 const statusColor = computed(() => {
-  if (loading.value) return 'gray';
-  if (error.value) return 'red';
-  if (status.value?.connected) return 'green';
-  return 'orange';
+  if (loading.value) return 'neutral';
+  if (error.value) return 'error';
+  if (status.value?.connected) return 'success';
+  return 'warning';
 });
 
 const statusLabel = computed(() => {
@@ -52,10 +54,4 @@ const statusIcon = computed(() => {
   return 'i-heroicons-exclamation-circle';
 });
 
-function formatSpeed(kbps: number): string {
-  if (kbps >= 1024) {
-    return `${(kbps / 1024).toFixed(2)} MB/s`;
-  }
-  return `${kbps.toFixed(2)} KB/s`;
-}
 </script>

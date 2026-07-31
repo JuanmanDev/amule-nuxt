@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Types, unit tests and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npx nuxt typecheck
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Production build
+        run: npm run build
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: nitro-output
+          path: .output
+          retention-days: 3
+
+  e2e-offline:
+    name: End-to-end without a daemon
+    runs-on: ubuntu-latest
+    needs: checks
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: playwright-${{ runner.os }}-
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Reuse the build produced by the checks job
+        uses: actions/download-artifact@v4
+        with:
+          name: nitro-output
+          path: .output
+
+      - name: Start the server without a reachable daemon
+        # Port 4799 has nothing listening, so every EC call fails: the app must
+        # still render and report the failure instead of crashing.
+        env:
+          AMULE_EC_HOST: 127.0.0.1
+          AMULE_EC_PORT: '4799'
+          AMULE_EC_PASSWORD: ci
+          PORT: '3010'
+          LOG_LEVEL: warn
+        run: |
+          node .output/server/index.mjs &
+          echo $! > server.pid
+          npx wait-on http://127.0.0.1:3010 --timeout 60000
+
+      - name: Offline end-to-end tests
+        env:
+          E2E_BASE_URL: http://127.0.0.1:3010
+        run: npx playwright test test/e2e/offline.spec.ts
+
+      - name: Stop the server
+        if: always()
+        run: kill "$(cat server.pid)" || true
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

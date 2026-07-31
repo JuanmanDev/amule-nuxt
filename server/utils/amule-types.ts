@@ -1,6 +1,5 @@
 /**
- * TypeScript Type Definitions for aMule Command Client
- * Defines interfaces and types for all amulecmd operations
+ * TypeScript type definitions for the aMule External Connection client.
  */
 
 // ========== Base Types ==========
@@ -21,9 +20,15 @@ export interface CommandResult {
 // ========== Connection & Status ==========
 
 export interface StatusResult {
+    /** True when the External Connection to the daemon is up. */
     connected: boolean;
     ed2kConnected: boolean;
+    /** True while the ed2k connection is still being established. */
+    ed2kConnecting?: boolean;
     kadConnected: boolean;
+    /** Kad is running but may not have contacts yet. */
+    kadRunning?: boolean;
+    kadFirewalled?: boolean;
     serverName?: string;
     serverIP?: string;
     id?: string;
@@ -52,12 +57,24 @@ export interface Download {
     sizeDone: number;
     status: DownloadStatus;
     priority: DownloadPriority;
+    /** True when aMule manages the priority automatically. */
+    autoPriority: boolean;
     speed: number;
     sources: number;
     sourcesNotCurrent: number;
     sourcesA4AF: number;
     sourcesXfer: number;
     percentComplete: number;
+    /** Link aMule reports for this file, useful to verify a hand pasted hash. */
+    ed2kLink: string;
+    /** Parts currently available across all sources. */
+    availableParts: number;
+    /** True when the download was stopped rather than paused. */
+    stopped: boolean;
+    /** Unix seconds of the last received data, 0 when nothing was ever received. */
+    lastReceived: number;
+    /** Unix seconds when the file was last seen complete on a source. */
+    lastSeenComplete: number;
 }
 
 // ========== Upload Management ==========
@@ -66,7 +83,77 @@ export interface Upload {
     fileName: string;
     user: string;
     speed: number;
+    /** Bytes sent to this client in the current session. */
     transferred: number;
+    /** Bytes sent to this client over all sessions. */
+    transferredTotal: number;
+    /** Bytes received from this client over all sessions. */
+    receivedTotal: number;
+    userIp: string;
+    userPort: number;
+    clientSoftware: string;
+    /** Position in the upload queue, 0 when actively uploading. */
+    waitingPosition: number;
+    score: number;
+    /** Name the remote client requested, when it differs from the shared name. */
+    remoteFileName: string;
+    fileHash: string;
+}
+
+export interface SharedFile {
+    fileName: string;
+    fullPath: string;
+    hash: string;
+    size: number;
+    /** Bytes sent for this file in the current session / over all sessions. */
+    transferred: number;
+    transferredAll: number;
+    requests: number;
+    requestsAll: number;
+    accepts: number;
+    acceptsAll: number;
+    /** Clients currently queued for this file. */
+    onQueue: number;
+    completeSources: number;
+    priority: string;
+    autoPriority: boolean;
+    ed2kLink: string;
+    comment: string;
+    /** Bytes sent divided by file size. */
+    shareRatio: number;
+}
+
+export interface AmulePreferences {
+    nickname: string;
+    userHash: string;
+    connection: {
+        maxUpload: number;
+        maxDownload: number;
+        uploadCapacity: number;
+        downloadCapacity: number;
+        maxConnections: number;
+        maxSourcesPerFile: number;
+        tcpPort: number;
+        udpPort: number;
+        autoConnect: boolean;
+        reconnect: boolean;
+    };
+    servers: {
+        removeDead: boolean;
+        deadServerRetries: number;
+        autoUpdate: boolean;
+        addFromServer: boolean;
+        addFromClient: boolean;
+        safeConnect: boolean;
+        autoConnectStaticOnly: boolean;
+        updateUrl: string;
+    };
+    directories: {
+        incoming: string;
+        temp: string;
+        shareHidden: boolean;
+        autoRescan: boolean;
+    };
 }
 
 // ========== Search Operations ==========
@@ -119,9 +206,18 @@ export interface Statistics {
     sessionDownloaded: number;
     uploadRate: number;
     downloadRate: number;
-    connectedClients: number;
-    totalClients: number;
+    uploadLimit: number;
+    downloadLimit: number;
+    /** Clients waiting in the upload queue */
+    queuedClients: number;
+    /** Sources found across the download queue */
+    totalSourceCount: number;
+    bannedClients: number;
     sharedFiles: number;
+    ed2kUsers: number;
+    ed2kFiles: number;
+    kadUsers: number;
+    kadFiles: number;
 }
 
 // ========== Configuration ==========

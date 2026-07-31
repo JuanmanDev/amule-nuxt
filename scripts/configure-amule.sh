@@ -24,10 +24,14 @@ echo "Enter a password for External Connection (EC):"
 read -s EC_PASSWORD
 echo ""
 
+# Compute MD5 hash for aMule config (aMule expects an MD5 hash in amule.conf)
+EC_PASSWORD_HASH=$(echo -n "$EC_PASSWORD" | md5sum | awk '{print $1}')
+
 # Create basic configuration if it doesn't exist
 if [ ! -f "$AMULE_CONF" ]; then
     echo "Creating new aMule configuration..."
     
+[ -n "$EC_PASSWORD_HASH" ] || EC_PASSWORD_HASH="$EC_PASSWORD"
     cat > "$AMULE_CONF" <<EOF
 [eMule]
 AppVersion=2.3.3
@@ -47,7 +51,7 @@ ConnectToED2K=1
 AcceptExternalConnections=1
 ECAddress=
 ECPort=4712
-ECPassword=$EC_PASSWORD
+ECPassword=$EC_PASSWORD_HASH
 UPnPECEnabled=0
 
 [WebServer]
@@ -61,7 +65,7 @@ else
     # Update EC settings in existing config
     sed -i "s/^AcceptExternalConnections=.*/AcceptExternalConnections=1/" "$AMULE_CONF"
     sed -i "s/^ECPort=.*/ECPort=4712/" "$AMULE_CONF"
-    sed -i "s/^ECPassword=.*/ECPassword=$EC_PASSWORD/" "$AMULE_CONF"
+    sed -i "s/^ECPassword=.*/ECPassword=$EC_PASSWORD_HASH/" "$AMULE_CONF"
     
     echo "Configuration updated at $AMULE_CONF"
 fi

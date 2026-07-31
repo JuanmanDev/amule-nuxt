@@ -1,351 +1,273 @@
-# aMule-Nuxt Web Manager
+# aMule Nuxt
 
-A modern, full-featured web-based management interface for aMule daemon built with **Nuxt 4**, **Nuxt UI**, and **TypeScript**. This project provides a beautiful, responsive frontend and a robust TypeScript API wrapper around `amulecmd`, following SOLID principles and 12-factor app methodology.
+A modern web interface **and MCP server** for an [aMule](https://amule.org) daemon, built with **Nuxt 4**, **Nuxt UI 4** and **TypeScript**.
 
-## ✨ Features
-
-- 🚀 **Modern Stack**: Built with Nuxt 4, Nuxt UI, and TypeScript
-- 🎨 **Beautiful UI**: Premium design with dark mode support
-- 📊 **Real-time Updates**: Live status monitoring and auto-refreshing download progress
-- 🔌 **Complete aMule Control**: Full support for all amulecmd operations
-- 🐳 **Docker Ready**: Production-ready Docker deployment
-- 🏗️ **SOLID Architecture**: Clean, maintainable, and extensible codebase
-- 🔒 **12-Factor App**: Environment-based configuration, stateless design
-- 📱 **Responsive**: Works on desktop, tablet, and mobile
-
-### Supported Operations
-
-- **Connection Management**: Connect/disconnect eD2k and Kad networks
-- **Downloads**: Add, pause, resume, cancel, and prioritize downloads
-- **Search**: Search across Global (eD2k), Kad, and Local networks
-- **Uploads**: Monitor current uploads
-- **Servers**: View and manage server list
-- **Statistics**: View comprehensive session and lifetime statistics
-- **Bandwidth Control**: Set upload/download bandwidth limits
-- **Logs**: Access aMule daemon logs
-
-## 🚀 Quick Start (Docker - Recommended)
-
-The easiest way to get started is using Docker:
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd amule-nuxt
-
-# Create environment file
-cp .env.example .env
-
-# Edit .env and set your EC password
-# AMULE_EC_PASSWORD=your_secure_password
-
-# Build and start with Docker Compose
-npm run docker:build
-npm run docker:up
-
-# Access the application
-# Web UI: http://localhost:3000
-# aMule EC: localhost:4712
-```
-
-## 📋 Prerequisites
-
-### For Docker Deployment
-- Docker
-- Docker Compose
-
-### For Local Development
-- Node.js 20+
-- npm or yarn
-- aMule daemon installed on your system (Linux/WSL2)
-
-## 🔧 Installation
-
-### Option 1: Docker (All Platforms)
-
-```bash
-# Build Docker image
-docker-compose build
-
-# Start services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
-
-### Option 2: Local Development (Linux/WSL2)
-
-#### 1. Install aMule Daemon
-
-**For WSL2 (Windows):**
-```bash
-# Run automatic installation script
-npm run install:amule:wsl2
-
-# Or manual installation
-sudo apt update
-sudo apt install -y amule-daemon amule-utils
-```
-
-**For Linux (Ubuntu/Debian):**
-```bash
-# Run automatic installation script
-npm run install:amule:linux
-
-# Or manual installation
-sudo apt update
-sudo apt install -y amule-daemon amule-utils
-```
-
-**For macOS:**
-```bash
-# Install via Homebrew
-brew install amule
-
-# Note: You may need to compile from source for daemon-only mode
-```
-
-#### 2. Configure aMule External Connection
-
-```bash
-# Run automatic configuration script
-npm run configure:amule
-
-# Or manual configuration:
-# 1. Create ~/.aMule directory
-# 2. Edit ~/.aMule/amule.conf
-# 3. Set AcceptExternalConnections=1
-# 4. Set ECPort=4712
-# 5. Set ECPassword=your_password
-```
-
-#### 3. Start aMule Daemon
-
-```bash
-# Start aMule daemon
-amuled -c ~/.aMule -o
-
-# Verify it's running
-amulecmd -h localhost -p 4712 -P your_password -c status
-```
-
-#### 4. Install and Run Nuxt Application
-
-```bash
-# Install dependencies
-npm install
-
-# Copy environment file
-cp .env.example .env
-
-# Edit .env and set your credentials
-# AMULE_EC_PASSWORD=your_password
-# AMULE_EC_HOST=localhost
-# AMULE_EC_PORT=4712
-
-# Start development server
-npm run dev
-
-# Open http://localhost:3000
-```
-
-## 🌐 Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-# aMule External Connection Settings
-AMULE_EC_PASSWORD=your_secure_password_here
-AMULE_EC_HOST=localhost
-AMULE_EC_PORT=4712
-
-# Application Settings
-NODE_ENV=development
-NUXT_PORT=3000
-```
-
-## 🏗️ Project Structure
+It speaks aMule's native **External Connection (EC) protocol** directly — a TypeScript implementation living in this repository, no `amulecmd` binary required — so it runs anywhere Node runs and can drive a daemon on another machine.
 
 ```
-amule-nuxt/
-├── server/
-│   ├── api/
-│   │   └── amule/              # API routes
-│   │       ├── status.get.ts
-│   │       ├── connect.post.ts
-│   │       ├── downloads/
-│   │       ├── search/
-│   │       └── ...
-│   └── utils/
-│       ├── amulecmd/
-│       │   ├── AmuleCmdClient.ts  # Core API wrapper
-│       │   ├── types.ts            # TypeScript definitions
-│       │   └── parser.ts           # Output parsers
-│       └── getAmuleClient.ts
-├── pages/
-│   ├── index.vue              # Dashboard
-│   ├── downloads.vue          # Download management
-│   ├── search.vue             # Search interface
-│   ├── uploads.vue            # Upload monitoring
-│   ├── servers.vue            # Server list
-│   ├── statistics.vue         # Statistics
-│   └── settings.vue           # Settings
-├── components/
-│   └── StatusIndicator.vue    # Connection status
-├── composables/
-│   ├── useAmuleApi.ts         # API client composable
-│   └── useAmuleStatus.ts      # Status polling composable
-├── scripts/
-│   ├── install-amule-wsl2.sh
-│   ├── install-amule-linux.sh
-│   └── configure-amule.sh
-├── Dockerfile
-├── docker-compose.yml
-├── docker-entrypoint.sh
-└── nuxt.config.ts
+┌──────────────┐   HTTP/JSON   ┌────────────────────┐   EC protocol   ┌──────────────┐
+│  Vue pages   │ ────────────► │  Nitro API + MCP   │ ──────────────► │ amuled       │
+│  (Nuxt UI)   │ ◄──────────── │  server            │ ◄────────────── │ (TCP 4712)   │
+└──────────────┘   WebSocket   └────────────────────┘                 └──────────────┘
 ```
 
-## 🔌 API Endpoints
+## Highlights
 
-All API endpoints follow RESTful conventions:
+- **Complete daemon control** — downloads, uploads, shared files, search, servers, Kad, preferences
+- **MCP server built in** — 16 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
+- **Real EC protocol client** — opcodes and tags mirrored from aMule's own headers, UTF-8 safe, verified against a live daemon
+- **Honest UI states** — every page starts in a loading state, explains *why* something is not progressing, and never claims success the daemon did not confirm
+- **Handles `ed2k:` and `magnet:` links** from the operating system, with a confirmation step
+- **Live updates** over WebSocket, with polling as a fallback, and a background that reacts to real traffic
+- **Motion that means something** — rows animate in and out as the queue changes, live figures crossfade instead of snapping, translucent blurred surfaces let the activity background through, and everything is switched off under `prefers-reduced-motion`
+- **Well tested** — unit tests for the protocol and helpers, Playwright end-to-end tests driving a real daemon, CI on every push
 
-- `GET /api/amule/status` - Get connection status
-- `POST /api/amule/connect` - Connect to networks
-- `POST /api/amule/disconnect` - Disconnect from networks
-- `GET /api/amule/downloads` - List downloads
-- `POST /api/amule/downloads/add` - Add download
-- `POST /api/amule/downloads/[id]/pause` - Pause download
-- `POST /api/amule/downloads/[id]/resume` - Resume download
-- `POST /api/amule/downloads/[id]/cancel` - Cancel download
-- `POST /api/amule/downloads/[id]/priority` - Set priority
-- `POST /api/amule/search` - Perform search
-- `GET /api/amule/search/results` - Get search results
-- `GET /api/amule/uploads` - List uploads
-- `GET /api/amule/servers` - List servers
-- `GET /api/amule/statistics` - Get statistics
-- `GET /api/amule/logs` - Get logs
-- `GET /api/amule/bandwidth` - Get bandwidth limits
-- `POST /api/amule/bandwidth` - Set bandwidth limits
+## Pages
 
-## 🎨 UI Pages
+| Page | What it does |
+|------|--------------|
+| `/` | Dashboard: queue summary, live speeds (clickable), add form, connection state |
+| `/downloads` | Queue with progress, ETA, sources, health badges, details modal, pause/resume/priority/remove |
+| `/uploads` | Who is downloading from you: file, address, client software, speed, session and all-time bytes, queue position |
+| `/shared` | Every shared file with requests, accepted requests, bytes sent, share ratio, queued clients, details modal |
+| `/search` | Kad / eD2k / local search with live incoming results and one-click download |
+| `/servers` | Server list with connect, add, remove, plus server-list preferences and "update from URL" |
+| `/connection` | eD2k and Kad state, connect/disconnect, Kad start/stop/bootstrap/nodes.dat, server message of the day |
+| `/statistics` | Animated rate chart with server-side history, session **and** all-time totals, and aMule's full statistics tree |
+| `/stats` | Compact statistics summary |
+| `/preferences` | Nickname, bandwidth and connection limits, ports, directories |
+| `/logs` | Daemon log with filter, newest-first toggle, highlighted warnings |
+| `/settings` | Bandwidth limits, link-handler registration, runtime diagnostics |
+| `/mcp-server` | Live documentation of the MCP endpoint and its tools |
 
-- **Dashboard** (`/`) - Overview, connection management, quick stats
-- **Downloads** (`/downloads`) - Manage download queue with progress bars
-- **Search** (`/search`) - Search files and download from results
-- **Uploads** (`/uploads`) - Monitor active uploads
-- **Servers** (`/servers`) - Server list and management
-- **Statistics** (`/statistics`) - Detailed statistics and charts
-- **Settings** (`/settings`) - Configure bandwidth limits and preferences
-
-## 🛠️ Development
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run tests
-npm run test
-```
-
-## 🐳 Docker Commands
-
-```bash
-# Build image
-npm run docker:build
-
-# Start containers
-npm run docker:up
-
-# Stop containers
-npm run docker:down
-
-# View logs
-npm run docker:logs
-```
-
-## 🏛️ Architecture
-
-### SOLID Principles
-
-- **Single Responsibility**: Each module has one reason to change
-- **Open/Closed**: Extensible without modifying existing code
-- **Liskov Substitution**: Proper interface inheritance
-- **Interface Segregation**: Focused, minimal interfaces
-- **Dependency Inversion**: Depends on abstractions
-
-### 12-Factor App
-
-1. **Codebase**: One repo, tracked in Git
-2. **Dependencies**: Explicitly declared in package.json
-3. **Config**: Environment variables (.env)
-4. **Backing Services**: aMule daemon as attached resource
-5. **Build, Release, Run**: Docker stages
-6. **Processes**: Stateless Nuxt application
-7. **Port Binding**: Self-contained services
-8. **Concurrency**: Process model via Docker
-9. **Disposability**: Fast startup/shutdown
-10. **Dev/Prod Parity**: Docker ensures consistency
-11. **Logs**: Stdout/stderr (Docker logs)
-12. **Admin Processes**: NPM scripts
-
-## 🔒 Security
-
-- Store EC password in environment variables
-- Never commit `.env` file to version control
-- Use strong passwords for External Connection
-- Consider reverse proxy with HTTPS for production
-- Implement authentication/authorization as needed
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
-## 📝 License
-
-[Your chosen license]
-
-## 🙏 Acknowledgments
-
-- [aMule Project](http://www.amule.org/)
-- [Nuxt](https://nuxt.com/)
-- [Nuxt UI](https://ui.nuxt.com/)
-- [docker-amule by ngosang](https://github.com/ngosang/docker-amule)
-
-## 📞 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Check the documentation
-- Review existing issues
-
-## 🗺️ Roadmap
-
-- [ ] WebSocket support for real-time updates
-- [ ] Advanced statistics charts
-- [ ] Multi-language support
-- [ ] Mobile native app (React Native/Flutter)
-- [ ] Plugin system for extensions
-- [ ] Automated testing suite
+Every list page shares the same controls: a filter that grows to fill the row, a compact sort menu that collapses to an icon on small screens, and an ascending/descending toggle for every sort field. Lists animate their additions and removals, and figures that change while a page is open (speeds, counts, badges) crossfade with a brief highlight. On a phone the download rows drop the ETA column so the stats stay on one line.
 
 ---
 
-Built with ❤️ using Nuxt, Nuxt UI, and TypeScript
+## Connecting to aMule
+
+The app never touches aMule's files; it only needs the External Connection interface, which every `amuled` and `amule` build supports.
+
+### A. You already run an aMule daemon
+
+1. Enable external connections in `~/.aMule/amule.conf` (create the keys if missing):
+
+   ```ini
+   [eMule]
+   AcceptExternalConnections=1
+   ECPort=4712
+   # MD5 of your chosen password
+   ECPassword=5f4dcc3b5aa765d61d8327deb882cf99
+   ```
+
+   Compute the hash with `printf '%s' 'your_password' | md5sum` (Linux) or `md5 -q -s 'your_password'` (macOS).
+
+2. Restart the daemon so it picks the settings up: `amuled --restart` or restart your service.
+
+3. Point this app at it:
+
+   ```bash
+   cp .env.example .env
+   # AMULE_EC_HOST=192.168.1.50     # host running amuled
+   # AMULE_EC_PORT=4712
+   # AMULE_EC_PASSWORD=your_password   (plain or the MD5 hash - both work)
+   npm install && npm run dev
+   ```
+
+4. Check the wiring: `npm run amule:test`, or open `/settings` which shows the host, port, server mode and log level.
+
+If the daemon listens only on loopback, either run this app on the same host, or set `ECAddr=0.0.0.0` in `amule.conf` and firewall port 4712 to your network.
+
+### B. You want a fresh daemon
+
+**Docker, everything in one go** — the compose file starts `amuled` and this app together:
+
+```bash
+cp .env.example .env      # set AMULE_EC_PASSWORD
+docker compose up -d
+# UI on http://localhost:3000, daemon EC on 4712
+```
+
+**On the host:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install -y amule-daemon amule-utils
+# Arch
+sudo pacman -S amule
+# macOS
+brew install amule
+
+npm run configure:amule    # writes amule.conf with EC enabled and hashes the password
+amuled                     # start the daemon
+npm run dev                # start this app
+```
+
+Helper scripts for WSL2 and Linux live in `scripts/` (`npm run install:amule:wsl2`, `npm run install:amule:linux`).
+
+### Configuration reference
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `AMULE_EC_HOST` | `localhost` | Host running the daemon |
+| `AMULE_EC_PORT` | `4712` | External Connection port |
+| `AMULE_EC_PASSWORD` | – | Plain password **or** its MD5 hash |
+| `NUXT_PORT` / `PORT` | `3000` | Port this app listens on |
+| `LOG_LEVEL` | auto | `error`, `warn`, `info`, `debug`, `trace`, or a number |
+| `NODE_ENV` | – | `development` turns on verbose logging and dev tooling |
+
+`AMULE_EC_HOST` and `AMULE_EC_PORT` are also exposed to the browser (they are not secrets) so the settings page can show what it is connected to. The password never leaves the server.
+
+---
+
+## Deployment
+
+### Docker image from the registry
+
+Images are published to GitHub Container Registry on every push to the main branch and on every tag:
+
+```bash
+docker run -d --name amule-nuxt -p 3000:3000 \
+  -e AMULE_EC_HOST=192.168.1.50 \
+  -e AMULE_EC_PORT=4712 \
+  -e AMULE_EC_PASSWORD=your_password \
+  ghcr.io/<owner>/amule-nuxt:latest
+```
+
+Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server.
+
+### Docker Compose (app + daemon)
+
+```bash
+docker compose up -d        # see docker-compose.yml
+docker compose logs -f
+```
+
+### Plain Node
+
+```bash
+npm ci
+npm run build
+NUXT_PORT=3000 AMULE_EC_HOST=… AMULE_EC_PASSWORD=… node .output/server/index.mjs
+```
+
+The build output is a self-contained Nitro server; no `node_modules` needed at runtime.
+
+### systemd
+
+```ini
+[Unit]
+Description=aMule Nuxt
+After=network.target amuled.service
+
+[Service]
+WorkingDirectory=/opt/amule-nuxt
+Environment=NODE_ENV=production
+Environment=AMULE_EC_HOST=127.0.0.1
+Environment=AMULE_EC_PASSWORD=your_password
+ExecStart=/usr/bin/node /opt/amule-nuxt/.output/server/index.mjs
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Behind a reverse proxy
+
+Serve it over https so the `ed2k:` link handler and clipboard paste work. Proxy `/` to the app, and keep the WebSocket port (3001) reachable, or accept the polling fallback.
+
+---
+
+## Handling ed2k links from your device
+
+On `/settings`, "Open links with this app" registers the page as the handler for `ed2k:` and `magnet:` links. Clicking such a link anywhere on the device then opens `/handle-link`, which shows the file name and the full link and asks before queueing it.
+
+Browsers require a secure origin (https, or http on `localhost`) and confirm the first use. Installed as an app, the same handlers come from `public/manifest.webmanifest`, which lets the operating system route the links too.
+
+---
+
+## MCP server
+
+The app doubles as a [Model Context Protocol](https://modelcontextprotocol.io) server via [`@nuxtjs/mcp-toolkit`](https://mcp-toolkit.nuxt.dev):
+
+```bash
+claude mcp add --transport http amule http://localhost:3000/mcp
+```
+
+| Area | Tools |
+|------|-------|
+| Status | `amule-status`, `amule-statistics`, `amule-logs`, `amule-preferences` |
+| Downloads | `amule-downloads`, `amule-download-add`, `amule-download-control`, `amule-download-remove` |
+| Sharing | `amule-uploads`, `amule-shared-files` |
+| Search | `amule-search`, `amule-search-results`, `amule-search-download` |
+| Network | `amule-servers`, `amule-server-control`, `amule-network` |
+
+Destructive tools require an explicit `confirm: true`. `/mcp-server` documents the live tool list, parameters and client snippets; opening `/mcp` in a browser redirects there.
+
+> The endpoint is unauthenticated: anyone who can reach it can control the daemon. Keep it on a trusted network or put an authenticating proxy in front.
+
+---
+
+## Logging
+
+Logging is level based and picks its verbosity automatically: **debug in development, warnings only in production**. `LOG_LEVEL` overrides it without a rebuild, e.g. `LOG_LEVEL=debug` to see every EC packet in a deployed instance. Lines are tagged per subsystem (`amule-ec`, `amule-client`, `websocket`), timestamped in production, coloured in development. `GET /api/diagnostics` reports the active mode and level; the settings page shows both.
+
+---
+
+## Development
+
+```bash
+npm install
+npm run dev            # http://localhost:3003
+npm run build          # production build
+npm run test:unit      # unit tests (vitest)
+npm run test:e2e       # end-to-end tests (playwright, needs a running instance)
+npx nuxt typecheck     # types
+```
+
+### Tests
+
+- **Unit** (`test/*.test.ts`): EC packet encoding, link validation, download health classification, formatting, sorting, statistics-tree parsing, add-link summaries, logging levels, speed history.
+- **End-to-end** (`test/e2e/*.spec.ts`): every page renders without console errors, no horizontal overflow at desktop and phone widths, add/duplicate/reject flows, details modals, remove confirmation, filters and both sort directions, live search, MCP endpoint, paste buttons.
+- **Offline** (`test/e2e/offline.spec.ts`): with no daemon reachable, pages must still render and report the failure instead of crashing — this one needs no daemon and runs in CI.
+
+E2E targets a running instance via `E2E_BASE_URL` (default `http://localhost:3003`). Tests that need a daemon use links whose hash exists nowhere, so nothing is ever transferred, and clean up after themselves.
+
+### Continuous integration
+
+`.github/workflows/ci.yml` runs on every push and pull request: install, typecheck, unit tests, production build, then the offline end-to-end suite against the built server. `.github/workflows/docker.yml` builds and publishes the multi-arch image to GHCR for the main branch and for tags.
+
+### Layout
+
+```
+app/
+  components/    AddLinkForm, DownloadRow, DownloadDetailsModal, ListControls,
+                 SpeedChart, ActivityBackground, PasteButton, StatsTreeNode…
+  composables/   useDownloads (single queue + command path), useAmuleApi (typed client),
+                 useLinkHandler, useAmuleSocket
+  pages/         one file per page listed above
+server/
+  api/amule/     REST endpoints, all returning the shared ApiResponse envelope
+  mcp/tools/     one file per MCP tool
+  plugins/       WebSocket push, transfer-rate sampler
+  utils/
+    amule-ec/    EC client, protocol implementation, link validation, statistics parsing
+    logger.ts    level based logging
+    speedHistory.ts   rolling transfer-rate samples
+shared/utils/    format, sorting, downloadHealth, addLinks, statsFigures (both sides)
+test/            unit tests, plus test/e2e Playwright specs
+```
+
+### Notes on the EC protocol implementation
+
+Opcodes, tag names and enums come from aMule's own sources (`src/libs/ec/cpp/ECCodes.h`, `src/Constants.h`, `src/Server.h`) rather than guesswork — a wrong opcode makes the daemon answer `Invalid opcode (wrong protocol version?)`, which is easy to mistake for a working request. Strings travel as UTF-8 with byte-accurate tag lengths, so names with accents or CJK characters work. Commands inspect the reply: `EC_OP_FAILED` surfaces the daemon's own message rather than being reported as success, and when aMule only logs the real reason (adding a server, for instance) the log line is read back and shown.
+
+---
+
+## Contributing
+
+Issues and pull requests welcome. Please keep the existing shape: types in `shared/` or `server/utils/amule-types.ts`; one behaviour in one place (the add-link path, the sort helpers and the queue composable are deliberately shared); a unit test for pure logic and an end-to-end test for anything a user can click.
+
+## License
+
+MIT

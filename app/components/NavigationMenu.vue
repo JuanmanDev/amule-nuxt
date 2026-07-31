@@ -5,7 +5,7 @@
       :key="link.to"
       :to="link.to"
       variant="ghost"
-      color="gray"
+      color="neutral"
       :class="itemClass"
       @click="$emit('click')"
     >

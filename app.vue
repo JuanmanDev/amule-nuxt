@@ -21,8 +21,9 @@
                 { label: 'Downloads', to: '/downloads' },
                 { label: 'Search', to: '/search' },
                 { label: 'Uploads', to: '/uploads' },
+                { label: 'Shared Files', to: '/shared' },
                 { label: 'Servers', to: '/servers' },
-                { label: 'Statistics', to: '/statistics' },
+                { label: 'Statistics', to: '/stats' },
                 { label: 'Settings', to: '/settings' }
               ]"
             />

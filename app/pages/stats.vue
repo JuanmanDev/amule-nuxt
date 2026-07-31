@@ -5,38 +5,34 @@
         <h1 class="text-3xl font-bold mb-2">Statistics</h1>
         <p class="text-gray-600 dark:text-gray-400">View detailed transfer statistics</p>
       </div>
-      <UButton @click="refresh" :loading="refreshing" icon="i-heroicons-arrow-path">
+      <UButton @click="refresh" :loading="refreshing" :disabled="loading" icon="i-heroicons-arrow-path">
         Refresh
       </UButton>
     </div>
 
-    <div v-if="loading" class="text-center py-8">
-      <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin mx-auto" />
-      <p class="mt-2 text-gray-600 dark:text-gray-400">Loading statistics...</p>
+    <!-- Loading is the default state until the first fetch resolves -->
+    <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <UCard v-for="n in 4" :key="n">
+        <template #header>
+          <USkeleton class="h-6 w-32" />
+        </template>
+        <div class="space-y-3">
+          <USkeleton v-for="row in 3" :key="row" class="h-5 w-full" />
+        </div>
+      </UCard>
     </div>
 
-    <div v-else-if="error" class="text-center py-8">
-      <UIcon name="i-heroicons-exclamation-circle" class="w-8 h-8 mx-auto text-red-600" />
-      <p class="mt-2 text-red-600">{{ error }}</p>
-    </div>
+    <UAlert
+      v-else-if="error"
+      color="error"
+      variant="subtle"
+      icon="i-heroicons-exclamation-circle"
+      title="Failed to load statistics"
+      :description="error"
+      :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
+    />
 
     <div v-else-if="stats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- General Stats -->
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold flex items-center gap-2">
-            <UIcon name="i-heroicons-clock" />
-            General
-          </h3>
-        </template>
-        <dl class="space-y-2">
-          <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Uptime</dt>
-            <dd class="font-medium">{{ formatUptime(stats.uptime) }}</dd>
-          </div>
-        </dl>
-      </UCard>
-
       <!-- Upload Stats -->
       <UCard>
         <template #header>
@@ -47,16 +43,20 @@
         </template>
         <dl class="space-y-2">
           <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Session</dt>
-            <dd class="font-medium">{{ formatBytes(stats.sessionUploaded) }}</dd>
-          </div>
-          <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Total</dt>
+            <!-- aMule's own all-time counter, not the sum of the shared files'
+                 counters shown on /shared: the two differ after a stats reset -->
+            <dt class="text-gray-600 dark:text-gray-400" title="aMule's own all-time counter">
+              Total (daemon counter)
+            </dt>
             <dd class="font-medium">{{ formatBytes(stats.totalUploaded) }}</dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-gray-600 dark:text-gray-400">Rate</dt>
-            <dd class="font-medium">{{ formatSpeed(stats.uploadRate) }}</dd>
+            <dd class="font-medium">{{ formatBytesPerSecond(stats.uploadRate) }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Limit</dt>
+            <dd class="font-medium">{{ stats.uploadLimit ? formatBytesPerSecond(stats.uploadLimit) : 'Unlimited' }}</dd>
           </div>
         </dl>
       </UCard>
@@ -71,16 +71,16 @@
         </template>
         <dl class="space-y-2">
           <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Session</dt>
-            <dd class="font-medium">{{ formatBytes(stats.sessionDownloaded) }}</dd>
-          </div>
-          <div class="flex justify-between">
             <dt class="text-gray-600 dark:text-gray-400">Total</dt>
             <dd class="font-medium">{{ formatBytes(stats.totalDownloaded) }}</dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-gray-600 dark:text-gray-400">Rate</dt>
-            <dd class="font-medium">{{ formatSpeed(stats.downloadRate) }}</dd>
+            <dd class="font-medium">{{ formatBytesPerSecond(stats.downloadRate) }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Limit</dt>
+            <dd class="font-medium">{{ stats.downloadLimit ? formatBytesPerSecond(stats.downloadLimit) : 'Unlimited' }}</dd>
           </div>
         </dl>
       </UCard>
@@ -95,12 +95,16 @@
         </template>
         <dl class="space-y-2">
           <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Connected</dt>
-            <dd class="font-medium">{{ stats.connectedClients }}</dd>
+            <dt class="text-gray-600 dark:text-gray-400">Upload queue</dt>
+            <dd class="font-medium">{{ stats.queuedClients.toLocaleString() }}</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-gray-600 dark:text-gray-400">Total</dt>
-            <dd class="font-medium">{{ stats.totalClients }}</dd>
+            <dt class="text-gray-600 dark:text-gray-400">Sources found</dt>
+            <dd class="font-medium">{{ stats.totalSourceCount.toLocaleString() }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Banned</dt>
+            <dd class="font-medium">{{ stats.bannedClients.toLocaleString() }}</dd>
           </div>
         </dl>
       </UCard>
@@ -116,7 +120,47 @@
         <dl class="space-y-2">
           <div class="flex justify-between">
             <dt class="text-gray-600 dark:text-gray-400">Count</dt>
-            <dd class="font-medium">{{ stats.sharedFiles }}</dd>
+            <dd class="font-medium">{{ stats.sharedFiles.toLocaleString() }}</dd>
+          </div>
+        </dl>
+      </UCard>
+
+      <!-- eD2k Network -->
+      <UCard>
+        <template #header>
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <UIcon name="i-heroicons-globe-alt" />
+            eD2k Network
+          </h3>
+        </template>
+        <dl class="space-y-2">
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Users</dt>
+            <dd class="font-medium">{{ stats.ed2kUsers.toLocaleString() }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Files</dt>
+            <dd class="font-medium">{{ stats.ed2kFiles.toLocaleString() }}</dd>
+          </div>
+        </dl>
+      </UCard>
+
+      <!-- Kad Network -->
+      <UCard>
+        <template #header>
+          <h3 class="text-lg font-semibold flex items-center gap-2">
+            <UIcon name="i-heroicons-share" />
+            Kad Network
+          </h3>
+        </template>
+        <dl class="space-y-2">
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Users</dt>
+            <dd class="font-medium">{{ stats.kadUsers.toLocaleString() }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-600 dark:text-gray-400">Files</dt>
+            <dd class="font-medium">{{ stats.kadFiles.toLocaleString() }}</dd>
           </div>
         </dl>
       </UCard>
@@ -126,16 +170,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { formatBytes, formatBytesPerSecond } from '#shared/utils/format'
 
 useHead({ title: 'Statistics' })
 
 const stats = ref<any>(null)
-const loading = ref(false)
+// Start in the loading state so the first paint never shows empty cards
+const loading = ref(true)
 const error = ref<string | null>(null)
 const refreshing = ref(false)
 
-async function fetchStats() {
-  loading.value = true
+async function fetchStats(silent = false) {
+  if (!silent) loading.value = true
   error.value = null
   try {
     const result = await $fetch('/api/amule/statistics')
@@ -153,38 +199,11 @@ async function fetchStats() {
 
 async function refresh() {
   refreshing.value = true
-  await fetchStats()
+  await fetchStats(true)
   refreshing.value = false
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes >= 1024 * 1024 * 1024) {
-    return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`
-  }
-  if (bytes >= 1024 * 1024) {
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-  }
-  if (bytes >= 1024) {
-    return `${(bytes / 1024).toFixed(2)} KB`
-  }
-  return `${bytes} B`
-}
 
-function formatSpeed(bytesPerSec: number): string {
-  if (bytesPerSec >= 1024 * 1024) {
-    return `${(bytesPerSec / (1024 * 1024)).toFixed(2)} MB/s`
-  }
-  if (bytesPerSec >= 1024) {
-    return `${(bytesPerSec / 1024).toFixed(2)} KB/s`
-  }
-  return `${bytesPerSec} B/s`
-}
-
-function formatUptime(seconds: number): string {
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  return `${hours}h ${minutes}m`
-}
 
 onMounted(() => {
   fetchStats()

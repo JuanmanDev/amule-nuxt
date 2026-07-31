@@ -3,7 +3,10 @@
  * Returns download queue
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../../shared/types/api';
+import type { Download } from '../../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<Download[]>> => {
     try {
         const client = getAmuleECClient();
         const downloads = await client.getDownloads();
@@ -16,9 +19,7 @@ export default defineEventHandler(async (event) => {
         console.error('API Error:', error);
         return {
             success: false,
-            error: error.message || 'Failed to get downloads',
-            details: error.toString(),
-            stack: error.stack
+            error: error.message || 'Failed to get downloads'
         };
     }
 });

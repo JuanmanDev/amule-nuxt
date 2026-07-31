@@ -5,75 +5,114 @@ export interface WebSocketStatus {
     error: string | null;
 }
 
-export function useAmuleSocket() {
-    const ws = ref<WebSocket | null>(null);
-    const wsStatus = ref<WebSocketStatus>({
-        connected: false,
-        error: null
-    });
+/**
+ * Live push channel, shared by every component that asks for it.
+ *
+ * The dashboard, the download queue and the app shell all want the same stream,
+ * and one socket per consumer meant N sockets and N reconnect loops - which is
+ * what turned an unavailable push server into a storm of retries.
+ */
+// Module scope is safe here because everything below is only ever written in the
+// browser: during SSR these keep their initial values and the pages fall back to
+// polling.
+const wsStatus = ref<WebSocketStatus>({ connected: false, error: null });
+const realtimeStatus = ref<any>(null);
+const realtimeDownloads = ref<any[]>([]);
 
-    // Reactive state for data received via WS
-    const realtimeStatus = ref<any>(null);
-    const realtimeDownloads = ref<any[]>([]);
+/** Reconnect backoff: fast while it looks like a hiccup, slow once it does not. */
+const RECONNECT_MIN_MS = 2000;
+const RECONNECT_MAX_MS = 30000;
 
-    let reconnectTimer: any = null;
+let socket: WebSocket | null = null;
+let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+let reconnectDelay = RECONNECT_MIN_MS;
+let consumers = 0;
 
-    const connect = () => {
-        // Determine WS URL
-        // If in browser, use hostname. Port 3001 (hardcoded for now as per server implementation)
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const hostname = window.location.hostname;
-        const port = '3001'; // Default WS port
-        const url = `${protocol}//${hostname}:${port}`;
+function scheduleReconnect() {
+    if (reconnectTimer || consumers === 0) return;
 
-        try {
-            ws.value = new WebSocket(url);
+    reconnectTimer = setTimeout(() => {
+        reconnectTimer = null;
+        openSocket();
+    }, reconnectDelay);
 
-            ws.value.onopen = () => {
-                wsStatus.value.connected = true;
-                wsStatus.value.error = null;
-                // console.log('WebSocket connected');
-            };
+    reconnectDelay = Math.min(reconnectDelay * 2, RECONNECT_MAX_MS);
+}
 
-            ws.value.onclose = () => {
-                wsStatus.value.connected = false;
-                // console.log('WebSocket disconnected, retrying in 3s...');
-                reconnectTimer = setTimeout(connect, 3000);
-            };
+function openSocket() {
+    if (socket || consumers === 0) return;
 
-            ws.value.onerror = (err) => {
-                wsStatus.value.error = 'Connection error';
-                console.error('WebSocket error:', err);
-                ws.value?.close();
-            };
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const hostname = window.location.hostname;
+    const config = useRuntimeConfig();
+    const port = String(config.public.wsPort || 3001);
+    const url = `${protocol}//${hostname}:${port}`;
 
-            ws.value.onmessage = (event) => {
-                try {
-                    const message = JSON.parse(event.data);
-                    if (message.type === 'status_update') {
-                        realtimeStatus.value = message.data.status;
-                        realtimeDownloads.value = message.data.downloads;
-                    }
-                } catch (e) {
-                    console.error('Error parsing WS message:', e);
+    try {
+        const ws = new WebSocket(url);
+        socket = ws;
+
+        ws.onopen = () => {
+            wsStatus.value.connected = true;
+            wsStatus.value.error = null;
+            reconnectDelay = RECONNECT_MIN_MS;
+        };
+
+        ws.onclose = () => {
+            if (socket === ws) socket = null;
+            wsStatus.value.connected = false;
+            // Polling covers the gap, so a missing push server only costs
+            // freshness - never a broken page.
+            scheduleReconnect();
+        };
+
+        ws.onerror = () => {
+            wsStatus.value.error = 'Live updates unavailable';
+            ws.close();
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const message = JSON.parse(event.data);
+                if (message.type === 'status_update') {
+                    realtimeStatus.value = message.data.status;
+                    realtimeDownloads.value = message.data.downloads;
                 }
-            };
+            } catch {
+                // A malformed frame is not worth dropping the connection over
+                wsStatus.value.error = 'Received an unreadable live update';
+            }
+        };
+    } catch {
+        socket = null;
+        wsStatus.value.connected = false;
+        wsStatus.value.error = 'Live updates unavailable';
+        scheduleReconnect();
+    }
+}
 
-        } catch (e) {
-            console.error('Failed to create WebSocket:', e);
-        }
-    };
-
+export function useAmuleSocket() {
     onMounted(() => {
-        connect();
+        consumers += 1;
+        openSocket();
     });
 
     onUnmounted(() => {
-        if (ws.value) {
-            ws.value.close();
-        }
-        if (reconnectTimer) {
-            clearTimeout(reconnectTimer);
+        consumers = Math.max(0, consumers - 1);
+
+        // Last consumer leaving closes the shared socket and stops retrying.
+        if (consumers === 0) {
+            if (reconnectTimer) {
+                clearTimeout(reconnectTimer);
+                reconnectTimer = null;
+            }
+            if (socket) {
+                const ws = socket;
+                socket = null;
+                ws.onclose = null;
+                ws.close();
+            }
+            wsStatus.value.connected = false;
         }
     });
 

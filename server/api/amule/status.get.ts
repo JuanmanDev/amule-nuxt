@@ -3,7 +3,10 @@
  * Returns current aMule daemon connection status
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { StatusResult } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<StatusResult>> => {
     try {
         const client = getAmuleClient();
         const status = await client.status();

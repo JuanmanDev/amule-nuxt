@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { AMuleProtocol, ECOpCodes, ECCodes } from '../server/utils/amule-ec/lib/AMuleProtocol';
-import md5 from 'blueimp-md5';
+import * as crypto from 'crypto';
+
+const md5Hex = (input: string) => crypto.createHash('md5').update(input).digest('hex');
 
 // Mock net module
 vi.mock('net', () => {
@@ -60,6 +62,27 @@ describe('AMuleProtocol', () => {
 
         // So OpCode is at offset 8.
         expect(view.getUint8(8)).toBe(ECCodes.EC_OP_AUTH_REQ);
+    });
+
+    it('should build auth request 2 with MD5(passwordHash + MD5(saltHexString))', () => {
+      const config = { host: 'localhost', port: 4712, password: 'mule' };
+      const protocol = new AMuleProtocol(config);
+
+      // aMule sends the salt as an uppercase hex string and hashes that string
+      (protocol as any).salt = '0011223344556677';
+
+      // Expected: MD5( md5hex(password) + md5hex(saltAsString) )
+      const expected = md5Hex(md5Hex('mule') + md5Hex('0011223344556677'));
+
+      // Get the request buffer and extract the hash bytes
+      const req2 = (protocol as any).getAuthRequest2();
+      expect(req2).toBeInstanceOf(ArrayBuffer);
+      const view = new Uint8Array(req2 as ArrayBuffer);
+
+      // Extract the 16 bytes content starting at offset 18
+      const contentBytes = view.slice(18, 18 + 16);
+      const contentHex = Buffer.from(contentBytes).toString('hex');
+      expect(contentHex).toBe(expected);
     });
 
     // We can add more tests for packet parsing if we mock the server response

@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-bold">API Test Page</h1>
-      <UBadge color="yellow">Development Only</UBadge>
+      <UBadge color="warning">Development Only</UBadge>
     </div>
 
     <UCard>
@@ -18,10 +18,10 @@
             <UButton @click="testAPI('GET', '/api/amule/status')" size="sm">
               GET /status
             </UButton>
-            <UButton @click="testAPI('POST', '/api/amule/connect')" size="sm" color="green">
+            <UButton @click="testAPI('POST', '/api/amule/connect')" size="sm" color="success">
               POST /connect
             </UButton>
-            <UButton @click="testAPI('POST', '/api/amule/disconnect')" size="sm" color="red">
+            <UButton @click="testAPI('POST', '/api/amule/disconnect')" size="sm" color="error">
               POST /disconnect
             </UButton>
           </div>
@@ -34,7 +34,7 @@
             <UButton @click="testAPI('GET', '/api/amule/downloads')" size="sm">
               GET /downloads
             </UButton>
-            <UButton @click="testDownloadAdd" size="sm" color="blue">
+            <UButton @click="testDownloadAdd" size="sm" color="info">
               POST /downloads/add
             </UButton>
           </div>
@@ -47,7 +47,7 @@
         <div class="border-b pb-4">
           <h3 class="font-medium mb-2">Search</h3>
           <div class="flex gap-2 flex-wrap">
-            <UButton @click="testSearch" size="sm" color="blue">
+            <UButton @click="testSearch" size="sm" color="info">
               POST /search (Start)
             </UButton>
             <UButton @click="testAPI('GET', '/api/amule/search/results')" size="sm">
@@ -56,7 +56,7 @@
           </div>
           <div class="mt-2 flex gap-2">
             <UInput v-model="searchKeyword" placeholder="Search keyword..." size="sm" class="max-w-xs" />
-            <USelect v-model="searchType" :options="['Global', 'Local', 'Kad']" size="sm" class="w-32" />
+            <USelect v-model="searchType" :items="['Global', 'Local', 'Kad']" size="sm" class="w-32" />
           </div>
         </div>
 
@@ -103,7 +103,7 @@
             <UButton @click="testAPI('GET', '/api/amule/bandwidth')" size="sm">
               GET /bandwidth
             </UButton>
-            <UButton @click="testBandwidthSet" size="sm" color="blue">
+            <UButton @click="testBandwidthSet" size="sm" color="info">
               POST /bandwidth (Set)
             </UButton>
           </div>
@@ -121,7 +121,7 @@
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-semibold">Response</h2>
           <div class="flex gap-2">
-            <UBadge :color="response.success ? 'green' : 'red'">
+            <UBadge :color="response.success ? 'success' : 'error'">
               {{ response.success ? 'Success' : 'Error' }}
             </UBadge>
             <UButton @click="copyResponse" size="xs" variant="ghost" icon="i-heroicons-clipboard" />
@@ -136,8 +136,12 @@
         <UTextarea
           v-model="responseText"
           :rows="20"
+          
           readonly
-          class="font-mono text-sm"
+          class="font-mono text-sm w-full"
+          :ui="{
+            base: 'relative inline-flex items-center font-mono text-sm'
+          }"
         />
       </div>
     </UCard>

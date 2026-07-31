@@ -14,6 +14,9 @@ if [ ! -f "${AMULE_CONF}" ]; then
     mkdir -p "${AMULE_HOME}"
     
     # Generate encoded password (simple MD5 for demo - in production use amulecmd --create-config-from)
+    # Compute MD5 hash for aMule EC password field (aMule expects an MD5 hash in amule.conf)
+    EC_PASSWORD_HASH=$(echo -n "${AMULE_EC_PASSWORD}" | md5sum | awk '{print $1}')
+
     cat > "${AMULE_CONF}" <<EOF
 [eMule]
 AppVersion=2.3.3
@@ -52,7 +55,7 @@ IncomingDir=/downloads/incoming
 AcceptExternalConnections=1
 ECAddress=
 ECPort=${AMULE_EC_PORT}
-ECPassword=${AMULE_EC_PASSWORD}
+ECPassword=${EC_PASSWORD_HASH}
 UPnPECEnabled=0
 ShowProgressBar=1
 ShowPercent=1
@@ -96,9 +99,11 @@ else
 fi
 
 # Start Nuxt application
+# Nitro reads PORT/HOST, so map the container's NUXT_PORT onto them; otherwise
+# the server always binds the built-in default and NUXT_PORT is silently ignored.
 echo "Starting Nuxt application on port ${NUXT_PORT}..."
 cd /app
-node .output/server/index.mjs &
+PORT="${NUXT_PORT}" HOST="0.0.0.0" node .output/server/index.mjs &
 NUXT_PID=$!
 
 echo "All services started!"

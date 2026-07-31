@@ -1,6 +1,9 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { getAmuleClient } from '../utils/getAmuleClient';
 import type { IncomingMessage } from 'http';
+import { useLogger } from '../utils/logger';
+
+const log = useLogger('websocket');
 
 export default defineNitroPlugin((nitroApp) => {
     // Only set up WebSocket server if we are running in a way that supports it
@@ -34,17 +37,23 @@ export default defineNitroPlugin((nitroApp) => {
     // Actually, Nuxt 3 has `server/api/...` which are handled by H3.
     // We can creating a specific route `/api/ws` and handle upgrade there.
 
-    // Let's try starting a standalone WS server on port 3001.
-    const WS_PORT = 3001;
-    let wss: WebSocketServer;
+    // Standalone WebSocket server for the live push. The port is configurable so a
+    // second instance (a preview next to a dev server, several containers on one
+    // host) does not collide.
+    const WS_PORT = Number(process.env.WS_PORT ?? 3001);
+    const wss = new WebSocketServer({ port: WS_PORT });
 
-    try {
-        wss = new WebSocketServer({ port: WS_PORT });
-        console.log(`WebSocket server started on port ${WS_PORT}`);
-    } catch (e) {
-        console.warn('Could not start WebSocket server:', e);
-        return;
-    }
+    wss.on('listening', () => log.info(`WebSocket server listening on port ${WS_PORT}`));
+
+    // A bind failure must not take the whole server down: without the push the UI
+    // falls back to polling, which every page already handles.
+    wss.on('error', (error: NodeJS.ErrnoException) => {
+        if (error.code === 'EADDRINUSE') {
+            log.warn(`Port ${WS_PORT} is already in use, live updates are disabled (set WS_PORT to change it)`);
+        } else {
+            log.warn('WebSocket server error, live updates are disabled', error);
+        }
+    });
 
     const amuleClient = getAmuleClient();
 
@@ -58,28 +67,35 @@ export default defineNitroPlugin((nitroApp) => {
         });
     };
 
-    // Poll status every 2 seconds
-    setInterval(async () => {
-        if (wss.clients.size > 0) {
-            try {
-                const status = await amuleClient.status();
-                const downloads = await amuleClient.getDownloads();
+    // Poll status every 2 seconds. The guard matters when the daemon is slow or
+    // gone: overlapping polls would queue up on the single EC connection and
+    // starve the API routes the pages depend on.
+    let polling = false;
 
-                broadcast({
-                    type: 'status_update',
-                    data: {
-                        status,
-                        downloads
-                    }
-                });
-            } catch (e) {
-                // console.error('Error polling status:', e);
-            }
+    setInterval(async () => {
+        if (wss.clients.size === 0 || polling) return;
+
+        polling = true;
+        try {
+            const status = await amuleClient.status();
+            const downloads = await amuleClient.getDownloads();
+
+            broadcast({
+                type: 'status_update',
+                data: {
+                    status,
+                    downloads
+                }
+            });
+        } catch (e) {
+            log.debug('Status poll failed, keeping the previous snapshot', e);
+        } finally {
+            polling = false;
         }
     }, 2000);
 
     wss.on('connection', (ws) => {
-        // console.log('Client connected to WebSocket');
+        log.debug('Client connected');
 
         ws.on('message', async (message) => {
              // Handle incoming messages if needed

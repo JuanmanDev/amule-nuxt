@@ -3,7 +3,10 @@
  * Get server list
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { Server } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<Server[]>> => {
     try {
         const client = getAmuleClient();
         const servers = await client.showServers();

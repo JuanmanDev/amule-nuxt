@@ -1,9 +1,15 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-/* Always show scrollbar to prevent layout shift when modals open */
+/*
+ * Reserve the scrollbar gutter permanently. Nuxt UI overlays (select, modal,
+ * dropdown) lock the body scroll while open; with a stable gutter the layout
+ * cannot shift sideways when that happens. Combined with <UApp :scroll-body="false">
+ * so Reka UI does not also add its own padding compensation, which is what made
+ * the page jump to the left.
+ */
 html {
-    overflow-y: scroll;
+    scrollbar-gutter: stable;
 }
 
 /* Custom Scrollbar Styles */
@@ -54,3 +60,80 @@ html {
 
 /* Firefox Dark Mode - Requires custom logic as 'scrollbar-color' doesn't easily respond to a single .dark class */
 /* For robust Firefox dark mode support, you might need to target a scoped element or use a script to set an explicit CSS variable on the body/html for 'scrollbar-color' */
+
+/* ---------------------------------------------------------------------------
+ * Shared list and value animations
+ *
+ * Used by every list (downloads, uploads, shared files, servers, search results)
+ * through <TransitionGroup name="list">, and by <AnimatedValue> for figures and
+ * badges that change while the page is open. Defined once here so every list
+ * behaves identically.
+ * ------------------------------------------------------------------------- */
+
+.list-enter-active,
+.list-leave-active {
+    transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.list-enter-from {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(1.5rem) scale(0.98);
+}
+
+/* Leaving rows are taken out of the flow so the rest can glide up */
+.list-leave-active {
+    position: absolute;
+    width: 100%;
+}
+
+/* Rows sliding to their new position */
+.list-move {
+    transition: transform 0.34s ease;
+}
+
+/* A changed value crossfades instead of snapping */
+.value-enter-active,
+.value-leave-active {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.value-enter-from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+}
+
+.value-leave-to {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+}
+
+/* Brief highlight when a number or a badge changes */
+@keyframes value-flash {
+    0% { background-color: color-mix(in oklab, var(--ui-primary) 22%, transparent); }
+    100% { background-color: transparent; }
+}
+
+.value-flash {
+    animation: value-flash 0.9s ease-out;
+    border-radius: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .list-enter-active,
+    .list-leave-active,
+    .list-move,
+    .value-enter-active,
+    .value-leave-active {
+        transition: none;
+    }
+
+    .value-flash {
+        animation: none;
+    }
+}

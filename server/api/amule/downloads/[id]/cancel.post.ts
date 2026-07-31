@@ -3,7 +3,9 @@
  * Cancel a download
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../../../shared/types/api';
+
+export default defineEventHandler(async (event): Promise<ApiResponse> => {
     try {
         const id = getRouterParam(event, 'id');
 

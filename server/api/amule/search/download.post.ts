@@ -1,26 +1,31 @@
 /**
  * POST /api/amule/search/download
  * Download a file from search results
- * Body: { resultNumber: number }
+ * Body: { hash: string } or { resultNumber: number }
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../../shared/types/api';
+
+export default defineEventHandler(async (event): Promise<ApiResponse> => {
     try {
         const body = await readBody(event);
 
-        if (body?.resultNumber === undefined) {
+        const identifier = typeof body?.hash === 'string' ? body.hash : body?.resultNumber;
+
+        if (identifier === undefined) {
             return {
                 success: false,
-                error: 'Result number is required'
+                error: 'A file hash or result number is required'
             };
         }
 
         const client = getAmuleClient();
-        const result = await client.download(body.resultNumber);
+        const result = await client.download(identifier);
 
         return {
             success: result.success,
-            message: result.message
+            message: result.success ? result.message : undefined,
+            error: result.success ? undefined : result.message
         };
     } catch (error: any) {
         return {

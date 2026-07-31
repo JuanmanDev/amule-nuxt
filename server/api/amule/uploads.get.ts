@@ -3,7 +3,10 @@
  * Get upload queue
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { Upload } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<Upload[]>> => {
     try {
         const client = getAmuleClient();
         const uploads = await client.showUploads();

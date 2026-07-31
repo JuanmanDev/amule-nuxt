@@ -3,7 +3,10 @@
  * Get aMule statistics
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../shared/types/api';
+import type { Statistics } from '../../utils/amule-types';
+
+export default defineEventHandler(async (event): Promise<ApiResponse<Statistics>> => {
     try {
         const client = getAmuleClient();
         const statistics = await client.getStatistics();

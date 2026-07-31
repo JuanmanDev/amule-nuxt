@@ -3,14 +3,17 @@
  * Get search results
  */
 
-export default defineEventHandler(async (event) => {
+import type { ApiResponse } from '../../../../shared/types/api';
+import type { SearchResult } from '../../../utils/amule-types';
+
+export default defineEventHandler(async (): Promise<ApiResponse<{ results: SearchResult[]; progress: number }>> => {
     try {
         const client = getAmuleClient();
-        const results = await client.getSearchResults();
+        const data = await client.getSearchResults();
 
         return {
             success: true,
-            data: results
+            data
         };
     } catch (error: any) {
         return {

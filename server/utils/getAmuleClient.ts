@@ -14,11 +14,15 @@ let ecClientInstance: AmuleECClient | null = null;
 export function getAmuleClient(): AmuleECClient {
     const config = useRuntimeConfig();
 
+    const host = process.env.AMULE_EC_HOST || config.amuleEcHost || 'localhost';
+    const port = process.env.AMULE_EC_PORT || config.amuleEcPort || 4712;
+    const password = process.env.AMULE_EC_PASSWORD || config.amuleEcPassword || '';
+
     if (!ecClientInstance) {
         ecClientInstance = new AmuleECClient({
-            host: config.amuleEcHost,
-            port: config.amuleEcPort,
-            password: config.amuleEcPassword
+            host: host as string,
+            port: Number(port),
+            password: password as string
         });
     }
 
