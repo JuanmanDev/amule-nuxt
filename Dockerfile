@@ -1,4 +1,4 @@
-FROM node:22-alpine AS nuxt-builder
+FROM node:22-bookworm-slim AS nuxt-builder
 
 WORKDIR /app
 
@@ -14,42 +14,30 @@ COPY . .
 # Build Nuxt app
 RUN npm run build
 
-# Production stage
-FROM alpine:3.22 AS amule-daemon
-
-WORKDIR /tmp
-
-# Install aMule daemon
-RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    amule amule-daemon amule-utils
-
-# Install runtime dependencies
-RUN apk add --no-cache \
-    libedit libgcc libintl libpng libstdc++ libupnp musl wxwidgets zlib tzdata pwgen curl \
-    && apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing crypto++
-
-# Final stage - combine both
-FROM node:22-alpine
+# Final stage
+FROM node:22-bookworm-slim
 
 LABEL maintainer="aMule-Nuxt Project"
 
-# Install aMule from previous stage
-COPY --from=amule-daemon /usr/bin/amuled /usr/bin/
-COPY --from=amule-daemon /usr/bin/amulecmd /usr/bin/
-COPY --from=amule-daemon /usr/share/amule /usr/share/amule
+# aMule was removed from the Alpine package tree, so the daemon comes from
+# Debian instead: apt resolves the wxWidgets/crypto++ runtime chain itself,
+# which the old hand-copied binary approach had to reproduce by hand.
+# bash is needed because the entrypoint relies on `wait -n`, which dash lacks.
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        amule-daemon \
+        amule-utils \
+        bash \
+        ca-certificates \
+        tzdata \
+        wget \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install runtime dependencies for aMule
-RUN apk add --no-cache \
-    libedit libgcc libintl libpng libstdc++ libupnp musl wxwidgets zlib tzdata \
-    && apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing crypto++
-
-# Copy Nuxt build from builder
+# Copy Nuxt build from builder. Nitro bundles every runtime dependency into
+# .output/server/node_modules, so the image needs no npm install of its own.
 WORKDIR /app
 COPY --from=nuxt-builder /app/.output /app/.output
 COPY --from=nuxt-builder /app/package*.json ./
-
-# Install only production dependencies
-RUN npm ci --omit=dev
 
 # Create aMule directories
 RUN mkdir -p /home/amule/.aMule /downloads/incoming /downloads/temp

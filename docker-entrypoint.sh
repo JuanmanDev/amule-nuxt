@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+# bash rather than sh: the supervision at the bottom uses `wait -n`, which the
+# Debian base image's /bin/sh (dash) does not implement.
 set -e
 
 echo "Starting aMule-Nuxt Docker Container..."
