@@ -1,3 +1,14 @@
+import { readFileSync } from 'node:fs'
+
+// The single source of truth for the version is package.json, which
+// semantic-release rewrites on every release. Docker builds pass APP_VERSION so
+// an image built from a tag reports that tag instead of the placeholder version
+// that sits in package.json between releases.
+const { version: packageVersion } = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+) as { version: string }
+const appVersion = process.env.APP_VERSION || packageVersion
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -11,7 +22,7 @@ export default defineNuxtConfig({
     // Browsers opening /mcp get the human readable page instead of a JSON-RPC error
     browserRedirect: '/mcp-server',
     name: 'aMule Nuxt',
-    version: '1.0.0',
+    version: appVersion,
     description: 'Control an aMule daemon: downloads, uploads, shared files, servers, search, Kad and preferences.',
     instructions: [
       'Use amule-status first to check whether the daemon and the networks are connected.',
@@ -31,6 +42,7 @@ export default defineNuxtConfig({
     public: {
       // Client-side environment variables (never secrets)
       appName: 'aMule Nuxt',
+      appVersion,
       amuleEcHost: process.env.AMULE_EC_HOST || 'localhost',
       amuleEcPort: process.env.AMULE_EC_PORT || '4712',
       // Port of the live-update WebSocket server (see server/plugins/websocket.ts)

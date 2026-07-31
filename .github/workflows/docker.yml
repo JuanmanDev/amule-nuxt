@@ -1,8 +1,12 @@
 name: Docker image
 
+# Release images are built by release.yml, which knows the version
+# semantic-release just produced. This workflow covers the two remaining cases:
+#
+#   * workflow_dispatch  -> an `edge` image from any branch, for testing
+#   * a hand pushed v*   -> a semver tagged image, for re-publishing a release
 on:
   push:
-    branches: [main, master]
     tags: ['v*']
   workflow_dispatch:
 
@@ -46,11 +50,23 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=edge,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=sha,format=short,enable=${{ github.event_name == 'workflow_dispatch' }}
+
+      - name: Version for this build
+        id: version
+        # On a tag the version is the tag without its v; a manual build is not a
+        # release, so it is labelled with the commit it came from.
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            echo "value=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=0.0.0-edge.${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -58,6 +74,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          build-args: |
+            APP_VERSION=${{ steps.version.outputs.value }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

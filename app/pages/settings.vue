@@ -155,6 +155,10 @@
 
       <div v-if="diagnostics" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
+          <div class="text-sm text-gray-600 dark:text-gray-400">App version</div>
+          <div class="text-lg font-mono mt-1">{{ diagnostics.appVersion }}</div>
+        </div>
+        <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
           <div class="text-sm text-gray-600 dark:text-gray-400">Server mode</div>
           <div class="text-lg font-mono mt-1">{{ diagnostics.environment }}</div>
         </div>

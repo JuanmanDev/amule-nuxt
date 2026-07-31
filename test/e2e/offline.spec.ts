@@ -128,6 +128,8 @@ test.describe('with no daemon reachable', () => {
         expect(body.success).toBe(true);
         expect(['development', 'production']).toContain(body.data.environment);
         expect(typeof body.data.logLevel).toBe('number');
+        // Stamped from package.json at build time by semantic-release
+        expect(body.data.appVersion).toMatch(/^\d+\.\d+\.\d+/);
     });
 });
 

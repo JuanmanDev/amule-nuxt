@@ -60,7 +60,10 @@ export default defineEventHandler(async (event): Promise<ApiResponse<McpInfo>> =
                 params: {
                     protocolVersion: '2025-06-18',
                     capabilities: {},
-                    clientInfo: { name: 'amule-nuxt-ui', version: '1.0.0' }
+                    clientInfo: {
+                        name: 'amule-nuxt-ui',
+                        version: String(useRuntimeConfig().public.appVersion ?? '0.0.0')
+                    }
                 }
             }),
             call({ jsonrpc: '2.0', id: 2, method: 'tools/list' })

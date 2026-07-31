@@ -1,0 +1,24 @@
+[Unit]
+Description=aMule Nuxt web interface
+Documentation=https://github.com/JuanmanDev/amule-nuxt
+After=network-online.target amule-daemon.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/amule-nuxt
+# Holds AMULE_EC_HOST / AMULE_EC_PORT / AMULE_EC_PASSWORD / NUXT_PORT.
+# Keep it at mode 0600: it contains the External Connection password.
+EnvironmentFile=/etc/amule-nuxt.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /opt/amule-nuxt/.output/server/index.mjs
+Restart=on-failure
+RestartSec=5
+# The app only needs to read its own bundle and talk to the daemon
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

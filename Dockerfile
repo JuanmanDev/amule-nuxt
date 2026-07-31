@@ -1,5 +1,11 @@
 FROM node:22-bookworm-slim AS nuxt-builder
 
+# Release being built. CI passes the semantic-release version so the built app
+# reports the same number as the image tag; local builds fall back to the
+# placeholder version in package.json.
+ARG APP_VERSION=0.0.0-development
+ENV APP_VERSION=${APP_VERSION}
+
 WORKDIR /app
 
 # Copy package files
@@ -17,7 +23,14 @@ RUN npm run build
 # Final stage
 FROM node:22-bookworm-slim
 
-LABEL maintainer="aMule-Nuxt Project"
+ARG APP_VERSION=0.0.0-development
+
+LABEL maintainer="aMule-Nuxt Project" \
+      org.opencontainers.image.title="aMule Nuxt" \
+      org.opencontainers.image.description="Web interface for an aMule daemon, with an MCP server" \
+      org.opencontainers.image.source="https://github.com/JuanmanDev/amule-nuxt" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${APP_VERSION}"
 
 # aMule was removed from the Alpine package tree, so the daemon comes from
 # Debian instead: apt resolves the wxWidgets/crypto++ runtime chain itself,
@@ -46,7 +59,8 @@ RUN mkdir -p /home/amule/.aMule /downloads/incoming /downloads/temp
 ENV AMULE_EC_PASSWORD=amule \
     AMULE_EC_PORT=4712 \
     NUXT_PORT=3000 \
-    NODE_ENV=production
+    NODE_ENV=production \
+    APP_VERSION=${APP_VERSION}
 
 # Expose ports
 # 3000: Nuxt web interface

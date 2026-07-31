@@ -126,17 +126,30 @@ Helper scripts for WSL2 and Linux live in `scripts/` (`npm run install:amule:wsl
 
 ### Docker image from the registry
 
-Images are published to GitHub Container Registry on every push to the main branch and on every tag:
+Every release publishes an image to GitHub Container Registry, tagged `X.Y.Z`, `X.Y`, `X` and `latest`. Pin as tightly as you want to be surprised:
 
 ```bash
 docker run -d --name amule-nuxt -p 3000:3000 \
   -e AMULE_EC_HOST=192.168.1.50 \
   -e AMULE_EC_PORT=4712 \
   -e AMULE_EC_PASSWORD=your_password \
-  ghcr.io/<owner>/amule-nuxt:latest
+  ghcr.io/juanmandev/amule-nuxt:1
 ```
 
-Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server.
+`edge` is a manually triggered build of a branch head; it is not a release. Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server. The image reports its own version at `/api/diagnostics` and in the `org.opencontainers.image.version` label.
+
+### Standalone zip (no Docker)
+
+Each GitHub release attaches `amule-nuxt-X.Y.Z.zip`: the built Nitro server plus launch helpers. Node 22+ is the only requirement — there is nothing to compile and no `npm install`.
+
+```bash
+unzip amule-nuxt-1.0.0.zip
+cd amule-nuxt-1.0.0
+cp .env.example .env       # set AMULE_EC_HOST / _PORT / _PASSWORD
+./start.sh                 # start.ps1 on Windows
+```
+
+`DEPLOY.md` inside the zip covers the systemd unit that ships with it (`amule-nuxt.service`), the reverse proxy notes and how to upgrade in place. Build the same artifact locally with `npm run build && npm run package:zip` — it lands in `dist/`.
 
 ### Docker Compose (app + daemon)
 
@@ -237,7 +250,31 @@ E2E targets a running instance via `E2E_BASE_URL` (default `http://localhost:300
 
 ### Continuous integration
 
-`.github/workflows/ci.yml` runs on every push and pull request: install, typecheck, unit tests, production build, then the offline end-to-end suite against the built server. `.github/workflows/docker.yml` builds and publishes the multi-arch image to GHCR for the main branch and for tags.
+`.github/workflows/ci.yml` runs on every push and pull request: install, typecheck, unit tests, production build, the zip packaging step, then the offline end-to-end suite against the built server. On pull requests it also lints the commit subjects, because the version number is derived from them.
+
+`.github/workflows/release.yml` owns releases (see below). `.github/workflows/docker.yml` is only for the two cases release.yml does not cover: a manual `edge` build of any branch, and re-publishing an image from a hand-pushed `v*` tag.
+
+### Releases and versioning
+
+Versions are decided by [semantic-release](https://semantic-release.gitbook.io) from the commit messages, not by hand. Nothing in the repository should ever be version-bumped manually — `package.json` sits at `0.0.0-development` between releases and is rewritten during one.
+
+Commit subjects follow [Conventional Commits](https://www.conventionalcommits.org) and decide the bump:
+
+| Commit                                        | Bump      |
+| --------------------------------------------- | --------- |
+| `fix: …`, `perf: …`, `refactor: …`, `docs: …`  | patch     |
+| `feat: …`                                     | minor     |
+| any type with `!` or a `BREAKING CHANGE:` body | major     |
+| `chore: …`, `ci: …`, `test: …`                 | no release |
+
+Pushing to `master` then runs, in order: typecheck and unit tests, version bump, `CHANGELOG.md`, the production build, the standalone zip, the git tag `vX.Y.Z`, a GitHub release with the notes and the zip attached, and finally the multi-arch GHCR image built with `APP_VERSION` set to that version. A push with no releasable commits does nothing at all.
+
+```bash
+npx commitlint --from origin/master --to HEAD   # check your commits before pushing
+npm run release:dry                             # what would the next version be? (needs GITHUB_TOKEN)
+```
+
+The `chore(release): …` commit semantic-release pushes back carries `[skip ci]`, so it does not trigger another run. If `master` is a protected branch, allow the GitHub Actions bot to push to it, or the release commit and tag cannot land.
 
 ### Layout
 

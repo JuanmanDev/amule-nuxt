@@ -8,6 +8,8 @@ import type { ApiResponse } from '../../shared/types/api';
 import { currentLogLevel } from '../utils/logger';
 
 export interface Diagnostics {
+    /** Release this build came from, as stamped by semantic-release. */
+    appVersion: string;
     environment: 'development' | 'production';
     logLevel: number;
     logLevelSource: 'LOG_LEVEL' | 'environment';
@@ -27,6 +29,7 @@ export default defineEventHandler(async (): Promise<ApiResponse<Diagnostics>> =>
     return {
         success: true,
         data: {
+            appVersion: String(config.public.appVersion ?? 'unknown'),
             environment: level.environment,
             logLevel: level.level,
             logLevelSource: level.source,
