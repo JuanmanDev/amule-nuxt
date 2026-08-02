@@ -96,10 +96,67 @@ html {
     transition: transform 0.34s ease;
 }
 
-/* A changed value crossfades instead of snapping */
+/* ---------------------------------------------------------------------------
+ * Rows that open and close the space they take
+ *
+ * Driven by <AnimatedList>, which measures each row and animates its height and
+ * bottom margin along with the fade. Spacing lives on the rows rather than on
+ * `* + *`, so a row leaving cannot hand its margin to a neighbour and jump the
+ * list by one gap; the container cancels the trailing margin.
+ * ------------------------------------------------------------------------- */
+
+.animated-list {
+    position: relative;
+    /*
+     * A block formatting context, so the last row's bottom margin stays inside
+     * the list. Without it that margin collapses out, which means the gap above
+     * a leaving row only stops counting once the row is dropped from the DOM -
+     * a gap worth of jump at the very end of an otherwise smooth collapse.
+     * The list then carries one trailing gap, cancelled here.
+     */
+    display: flow-root;
+    margin-bottom: calc(-1 * var(--list-gap, 1rem));
+}
+
+.animated-list > * {
+    margin-bottom: var(--list-gap, 1rem);
+}
+
+.list-smooth-enter-active,
+.list-smooth-leave-active {
+    transition:
+        height 0.34s cubic-bezier(0.22, 0.61, 0.36, 1),
+        margin-bottom 0.34s cubic-bezier(0.22, 0.61, 0.36, 1),
+        /* Rows are border-box, so the padding has to go with the height or the
+           row stalls at padding + border height and then snaps out */
+        padding-top 0.34s cubic-bezier(0.22, 0.61, 0.36, 1),
+        padding-bottom 0.34s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity 0.26s ease,
+        transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    /* The height is animated, so the row must not spill out mid-flight */
+    overflow: hidden;
+}
+
+.list-smooth-enter-from {
+    opacity: 0;
+    transform: translateY(-0.4rem) scale(0.985);
+}
+
+.list-smooth-leave-to {
+    opacity: 0;
+    transform: translateX(1.25rem) scale(0.985);
+}
+
+/* Rows sliding to a new position after a sort or a filter change */
+.list-smooth-move {
+    transition: transform 0.36s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* A changed value crossfades instead of snapping. Both values run at once, so
+   the old one rises out as the new one rises in and the box is never empty. */
 .value-enter-active,
 .value-leave-active {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 .value-enter-from {
@@ -110,6 +167,14 @@ html {
 .value-leave-to {
     opacity: 0;
     transform: translateY(-0.35rem);
+}
+
+/* The outgoing value leaves the flow, so the two do not sit side by side and
+   double the width while they cross */
+.value-leave-active {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* Brief highlight when a number or a badge changes */
@@ -182,6 +247,9 @@ html {
     .list-enter-active,
     .list-leave-active,
     .list-move,
+    .list-smooth-enter-active,
+    .list-smooth-leave-active,
+    .list-smooth-move,
     .value-enter-active,
     .value-leave-active,
     .smooth-swap-enter-active,

@@ -112,7 +112,9 @@
                 :description="`No upload matches '${search}'.`"
               />
 
-              <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-3 relative">
+              <!-- A client that starts uploading pushes the list open, one that
+                   disconnects closes its gap, and a re-sort glides the rows -->
+              <AnimatedList v-else key="rows" gap="0.75rem">
                 <div
                   v-for="upload in visibleUploads"
                   :key="`${upload.fileHash}-${upload.userIp}-${upload.userPort}`"
@@ -172,7 +174,7 @@
                     </div>
                   </div>
                 </div>
-              </TransitionGroup>
+              </AnimatedList>
             </SmoothSwap>
           </UCard>
         </SmoothSwap>
