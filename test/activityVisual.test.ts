@@ -74,6 +74,31 @@ describe('buildActivityVisual', () => {
         expect(visual.upIntensity).toBeLessThanOrEqual(1);
     });
 
+    it('holds the timing steady while the rate wobbles', () => {
+        // A changed duration or spin retimes a running CSS animation, which
+        // teleports the shape; quarters of intensity keep it still
+        const steady = buildActivityVisual({ downloadSpeed: 500, downloadFiles: 2 }).shapes[0]!;
+        const wobbled = buildActivityVisual({ downloadSpeed: 520, downloadFiles: 2 }).shapes[0]!;
+
+        expect(wobbled.duration).toBe(steady.duration);
+        expect(wobbled.spin).toBe(steady.spin);
+        expect(wobbled.opacity).toBe(steady.opacity);
+    });
+
+    it('keeps the shapes small and faint enough to stay a background', () => {
+        const shapes = buildActivityVisual({
+            uploadSpeed: 99_999,
+            downloadSpeed: 99_999,
+            uploadFiles: 4,
+            downloadFiles: 4
+        }).shapes;
+
+        // Sizes are viewBox units out of 100, and the drift clears the edge by one
+        // whole size, so they have to stay well under half the viewport
+        expect(Math.max(...shapes.map(shape => shape.size))).toBeLessThanOrEqual(20);
+        expect(Math.max(...shapes.map(shape => shape.opacity))).toBeLessThanOrEqual(0.15);
+    });
+
     it('is deterministic, so server and client render the same markup', () => {
         const input = { uploadSpeed: 321, downloadSpeed: 123, downloadFiles: 2 };
         expect(buildActivityVisual(input)).toEqual(buildActivityVisual(input));

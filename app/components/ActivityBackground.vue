@@ -13,33 +13,39 @@
     />
 
     <svg class="activity-bg__shapes" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <g
-        v-for="shape in visual.shapes"
-        :key="shape.id"
-        :class="`activity-bg__drift activity-bg__drift--${shape.direction}`"
-        :style="{
-          '--left': `${shape.left}`,
-          '--duration': `${shape.duration}s`,
-          '--delay': `${shape.delay}s`
-        }"
-      >
-        <!-- Rotation lives on an inner group so drift and spin do not fight -->
+      <!-- A shape is added or dropped whenever the transfer changes gear, so the
+           group it lives in fades rather than blinking in and out -->
+      <TransitionGroup tag="g" name="activity-shape" appear>
         <g
-          class="activity-bg__spin"
-          :style="{ '--spin': `${shape.spin}s`, '--size': `${shape.size}` }"
+          v-for="shape in visual.shapes"
+          :key="shape.id"
+          class="activity-bg__shape"
+          :style="{
+            '--left': `${shape.left}`,
+            '--size': `${shape.size}`,
+            '--duration': `${shape.duration}s`,
+            '--delay': `${shape.delay}s`,
+            '--spin': `${shape.spin}s`
+          }"
         >
-          <polygon
-            :points="polygonPoints(shape.sides, shape.size)"
-            :transform="`translate(${-shape.size / 2} ${-shape.size / 2})`"
-            :fill="shape.direction === 'up' ? 'var(--activity-up)' : 'var(--activity-down)'"
-            :fill-opacity="shape.opacity"
-            :stroke="shape.direction === 'up' ? 'var(--activity-up)' : 'var(--activity-down)'"
-            :stroke-opacity="shape.opacity * 2"
-            stroke-width="1.2"
-            vector-effect="non-scaling-stroke"
-          />
+          <g :class="`activity-bg__drift activity-bg__drift--${shape.direction}`">
+            <!-- Rotation lives on an inner group so drift and spin do not fight -->
+            <g class="activity-bg__spin">
+              <polygon
+                :points="polygonPoints(shape.sides, shape.size)"
+                :transform="`translate(${-shape.size / 2} ${-shape.size / 2})`"
+                :fill="shape.direction === 'up' ? 'var(--activity-up)' : 'var(--activity-down)'"
+                :fill-opacity="shape.opacity"
+                :stroke="shape.direction === 'up' ? 'var(--activity-up)' : 'var(--activity-down)'"
+                :stroke-opacity="shape.opacity * 1.6"
+                stroke-width="1"
+                vector-effect="non-scaling-stroke"
+                class="activity-bg__polygon"
+              />
+            </g>
+          </g>
         </g>
-      </g>
+      </TransitionGroup>
     </svg>
   </div>
 </template>
@@ -107,22 +113,45 @@ const washOpacity = computed(() =>
     height: 100%;
 }
 
+/*
+ * Fades a shape that the transfer has just added or dropped. Nested opacities
+ * multiply in SVG, so this sits on top of the per-cycle fade below without
+ * either one having to know about the other.
+ */
+.activity-bg__shape {
+    will-change: opacity;
+}
+
+.activity-shape-enter-active,
+.activity-shape-leave-active {
+    transition: opacity 1.6s ease;
+}
+
+.activity-shape-enter-from,
+.activity-shape-leave-to {
+    opacity: 0;
+}
+
 .activity-bg__drift {
     /* The viewBox is 100x100, so left is already a percentage */
     transform: translate(calc(var(--left) * 1px), 0);
-    animation-duration: var(--duration);
-    animation-delay: var(--delay);
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    will-change: transform;
+    /*
+     * Drift and per-cycle fade share the duration and the delay, so the fade is
+     * always in step with where the shape is.
+     */
+    animation-duration: var(--duration), var(--duration);
+    animation-delay: var(--delay), var(--delay);
+    animation-iteration-count: infinite, infinite;
+    animation-timing-function: linear, ease-in-out;
+    will-change: transform, opacity;
 }
 
 .activity-bg__drift--up {
-    animation-name: activity-rise;
+    animation-name: activity-rise, activity-cycle;
 }
 
 .activity-bg__drift--down {
-    animation-name: activity-fall;
+    animation-name: activity-fall, activity-cycle;
 }
 
 .activity-bg__spin {
@@ -131,14 +160,35 @@ const washOpacity = computed(() =>
     transform-origin: center;
 }
 
+/* The fill follows the rate, which moves in steps; crossfade so the step is not
+   a visible flicker */
+.activity-bg__polygon {
+    transition: fill-opacity 1.2s ease-out, stroke-opacity 1.2s ease-out;
+}
+
+/*
+ * The travel margin is the shape's own size rather than a fixed 15 units: a
+ * shape is drawn centred on the group, so a smaller margin left the biggest ones
+ * still half on screen when the cycle restarted - the shape blinked from the top
+ * edge back to the bottom one. A full size clears the rotated diagonal too.
+ */
 @keyframes activity-rise {
-    from { transform: translate(calc(var(--left) * 1px), 115px); }
-    to { transform: translate(calc(var(--left) * 1px), -15px); }
+    from { transform: translate(calc(var(--left) * 1px), calc((100 + var(--size)) * 1px)); }
+    to { transform: translate(calc(var(--left) * 1px), calc(var(--size) * -1px)); }
 }
 
 @keyframes activity-fall {
-    from { transform: translate(calc(var(--left) * 1px), -15px); }
-    to { transform: translate(calc(var(--left) * 1px), 115px); }
+    from { transform: translate(calc(var(--left) * 1px), calc(var(--size) * -1px)); }
+    to { transform: translate(calc(var(--left) * 1px), calc((100 + var(--size)) * 1px)); }
+}
+
+/* Belt and braces: even off screen, a shape never arrives or leaves at full
+   strength, so a restart cannot read as a pop */
+@keyframes activity-cycle {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 @keyframes activity-spin {
@@ -154,6 +204,12 @@ const washOpacity = computed(() =>
 
     .activity-bg__wash {
         transition: opacity 0.8s ease-out;
+    }
+
+    .activity-shape-enter-active,
+    .activity-shape-leave-active,
+    .activity-bg__polygon {
+        transition: none;
     }
 }
 </style>

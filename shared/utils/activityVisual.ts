@@ -51,6 +51,18 @@ function intensityOf(speed: number, fullScale: number): number {
 }
 
 /**
+ * Rounds an intensity to quarters before it reaches the animation.
+ *
+ * A live rate never holds still, and every change to a shape's duration or spin
+ * retimes a running CSS animation, which teleports the shape to wherever the new
+ * timing says it should be by now. Quarters mean the timing only changes when the
+ * transfer really moves to another gear.
+ */
+function gearOf(intensity: number): number {
+    return Math.round(intensity * 4) / 4;
+}
+
+/**
  * Shape count follows the busier side, and each file adds one shape so a queue
  * with many transfers looks busier than a single fast one.
  */
@@ -74,6 +86,9 @@ export function buildActivityVisual(input: ActivityInput): ActivityVisual {
     // Deterministic placement: the server and the client must render the same DOM
     const shapes: ActivityShape[] = [];
     const push = (direction: ActivityDirection, count: number, intensity: number) => {
+        // Quantised, so a fluctuating rate does not retime the animations
+        const gear = gearOf(intensity);
+
         for (let index = 0; index < count; index++) {
             const seed = shapes.length;
             shapes.push({
@@ -81,12 +96,12 @@ export function buildActivityVisual(input: ActivityInput): ActivityVisual {
                 direction,
                 sides: [4, 6, 3][seed % 3]!,
                 left: (seed * 17 + (direction === 'up' ? 6 : 53)) % 96,
-                size: 18 + (seed % 4) * 12,
+                size: 5.4 + (seed % 4) * 3.6,
                 // Busier means faster travel, but never a blur
-                duration: Math.max(6, 26 - intensity * 16),
+                duration: Math.max(6, 26 - gear * 16),
                 delay: (seed * 27) % 120 / 10,
-                spin: Math.max(4, 22 - intensity * 14),
-                opacity: 0.06 + intensity * 0.14
+                spin: Math.max(4, 22 - gear * 14),
+                opacity: 0.035 + gear * 0.085
             });
         }
     };
