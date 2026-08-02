@@ -309,6 +309,30 @@ Opcodes, tag names and enums come from aMule's own sources (`src/libs/ec/cpp/ECC
 
 ---
 
+## Related projects
+
+The aMule ecosystem is larger than it first appears. If this project is not the shape you want, one of these probably is.
+
+**Standalone web UIs** — their own server process talking to the daemon over External Connections, like this one:
+
+- [aMuTorrent](https://github.com/got3nks/amutorrent) — Node, WebSockets and React. One manager for aMule, rTorrent, qBittorrent, Deluge and Transmission, with multi-instance support, users and SSO, Prowlarr search, a Torznab indexer, a qBittorrent-compatible API for aMule, Apprise notifications and GeoIP peers.
+- [Mularr](https://github.com/joecarl/mularr) — TypeScript, deliberately retro-looking. Exposes qBittorrent-compatible APIs and Torznab indexers so Sonarr and Radarr can drive aMule, plus Gluetun integration and Telegram as a download source.
+- [TransMule](https://github.com/Jo3l/transmule) — Vue. Unifies aMule, Transmission, Soulseek and Pyload behind one interface.
+- [go-amule-webui](https://github.com/neonpc/go-amule-webui) — Go and Vue 3, deployed as a Docker sidecar. Clearly written README, though there are no screenshots to judge it by.
+
+**amuleweb templates** — skins served by aMule's own web server, so there is no extra process to run:
+
+- [AmuleWebUI-Reloaded](https://github.com/MatteoRagni/AmuleWebUI-Reloaded) — Bootstrap, Glyphicons and jQuery reskin of the stock interface. This is what I used before writing this project.
+- [amuleweb-adaptable](https://github.com/esaracho/amuleweb-adaptable) — responsive template built on the default UI and on Reloaded.
+- [mobileMule](https://github.com/elbowz/mobileMule) — mobile-first template that also holds up on the desktop.
+- [amule-m26](https://github.com/jjling2011/amule-m26) — modern-looking template, but it needs its own patched aMule as the backend rather than upstream aMule.
+
+**Other**
+
+- [amule-mcp](https://github.com/mcbarba/amule-mcp) — Rust MCP server that drives aMule through `amulecmd` inside a Docker container over stdio. The same idea as the `/mcp` endpoint here, without the web UI.
+
+---
+
 ## Contributing
 
 Issues and pull requests welcome. Please keep the existing shape: types in `shared/` or `server/utils/amule-types.ts`; one behaviour in one place (the add-link path, the sort helpers and the queue composable are deliberately shared); a unit test for pure logic and an end-to-end test for anything a user can click.
