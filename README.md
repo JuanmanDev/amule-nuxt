@@ -135,11 +135,17 @@ Every release publishes an image to GitHub Container Registry, tagged `X.Y.Z`, `
 
 ```bash
 docker run -d --name amule-nuxt -p 3000:3000 \
+  -e SERVICES=web \
   -e AMULE_EC_HOST=192.168.1.50 \
   -e AMULE_EC_PORT=4712 \
   -e AMULE_EC_PASSWORD=your_password \
-  ghcr.io/juanmandev/amule-nuxt:1
+  ghcr.io/juanmandev/amule-nuxt:1.1
 ```
+
+`SERVICES=web` is what stops the image starting a daemon of its own beside the one
+it is pointed at; leave it out and you get both. It exists from 1.1.0 onwards. Drop
+the variable, and the port publishing from
+[the compose file](#docker-compose--three-layouts), to run the daemon here instead.
 
 `edge` is a manually triggered build of a branch head; it is not a release. Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server. The image reports its own version at `/api/diagnostics` and in the `org.opencontainers.image.version` label.
 
@@ -180,15 +186,100 @@ needs `AcceptExternalConnections=1` and `ECAddress=0.0.0.0` to accept a connecti
 from off its own machine. `host.docker.internal` is the default host, which reaches
 a daemon on the Docker host itself.
 
+#### App only, against an aMule you already run
+
+Nothing to clone: paste this as `docker-compose.yml`, set the three EC values and
+`docker compose up -d`. The published image ships the daemon too, and `SERVICES=web`
+tells it not to start one.
+
+> `SERVICES` exists from **1.1.0** onwards. An image older than that ignores it and
+> starts a daemon of its own inside the container, next to the one you are pointing
+> it at, so do not pin below `1.1` for this layout.
+
+```yaml
+services:
+  amule-nuxt:
+    image: ghcr.io/juanmandev/amule-nuxt:1.1
+    container_name: amule-nuxt
+    environment:
+      SERVICES: web                        # this app only, no daemon in here
+      AMULE_EC_HOST: 192.168.1.50          # host.docker.internal for a daemon on this machine
+      AMULE_EC_PORT: "4712"
+      AMULE_EC_PASSWORD: your_ec_password  # plain password or its MD5 hash
+    ports:
+      - "3000:3000"                        # web interface
+      - "3001:3001"                        # live updates over WebSocket
+    # Only needed when AMULE_EC_HOST is host.docker.internal on Linux
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+```
+
+Building from a clone instead gets the slimmer image that carries no daemon at all:
+`docker compose -f docker-compose.web.yml up -d`.
+
 The **split layout** runs the daemon container with `SERVICES=amule` — the entrypoint
 then binds EC to every interface (override with `AMULE_EC_BIND`) and the web
 container reaches it by service name, so EC never leaves the compose network. The web
 container waits for the daemon's health check, which asks `amulecmd` rather than the
 web server.
 
-Every published host port is overridable from `.env` (`WEB_PORT`, `EC_PORT`,
-`ED2K_TCP_PORT`, …), and both `image:` fields take a registry tag if you would
-rather pull than build.
+#### Split, a daemon container and an app container
+
+```yaml
+services:
+  amuled:
+    image: ghcr.io/juanmandev/amule-nuxt:1.1
+    container_name: amuled
+    environment:
+      SERVICES: amule                      # daemon only; EC binds to 0.0.0.0 for the app
+      AMULE_EC_PASSWORD: your_ec_password
+      AMULE_EC_PORT: "4712"
+    ports:
+      - "4662:4662"                        # eD2k TCP
+      - "4665:4665/udp"                    # eD2k UDP
+      - "4672:4672/udp"                    # Kad UDP
+      # EC stays on the compose network; publish it only if something outside needs it
+      # - "4712:4712"
+    volumes:
+      - amule-config:/home/amule/.aMule
+      - amule-downloads:/downloads/incoming
+      - amule-temp:/downloads/temp
+    # The image's own health check asks the web server, which does not run here
+    healthcheck:
+      test: ["CMD", "amulecmd", "-h", "localhost", "-p", "4712", "-P", "your_ec_password", "-c", "status"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/juanmandev/amule-nuxt:1.1
+    container_name: amule-nuxt
+    depends_on:
+      amuled:
+        condition: service_healthy
+    environment:
+      SERVICES: web
+      AMULE_EC_HOST: amuled                # the daemon's service name
+      AMULE_EC_PORT: "4712"
+      AMULE_EC_PASSWORD: your_ec_password
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    restart: unless-stopped
+
+volumes:
+  amule-config:
+  amule-downloads:
+  amule-temp:
+```
+
+Both examples inline the password to stay paste-and-run; from a clone the shipped
+files read it from `.env` instead. Every published host port is overridable from
+`.env` (`WEB_PORT`, `EC_PORT`, `ED2K_TCP_PORT`, …), and both `image:` fields take a
+registry tag if you would rather pull than build.
 
 The full image bundles **aMule 3.0.1** — the upstream release AppImage, unpacked at build
 time, since Debian still packages 2.3.3. `AMULE_VERSION` plus the two `AMULE_SHA256_*`
