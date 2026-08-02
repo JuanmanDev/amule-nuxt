@@ -82,30 +82,75 @@ RUN set -eux; \
           /opt/amule/usr/bin/alc /opt/amule/usr/bin/alcc; \
     test -f /opt/amule/usr/bin/amuled
 
-# Final stage
-FROM node:24-bookworm-slim
+# Web-only stage: this app on its own, talking EC to a daemon somewhere else.
+#
+# Build it with `--target web`. Nothing aMule-related is installed, so the image
+# is a fraction of the size; `SERVICES=web` tells the entrypoint not to look for
+# a daemon to start. Useful when the daemon already exists (another host, another
+# container, a NAS package) or when the two are deployed and scaled apart.
+FROM node:24-bookworm-slim AS web
 
 ARG APP_VERSION=0.0.0-development
 
 LABEL maintainer="aMule-Nuxt Project" \
-      org.opencontainers.image.title="aMule Nuxt" \
-      org.opencontainers.image.description="Web interface for an aMule daemon, with an MCP server" \
+      org.opencontainers.image.title="aMule Nuxt (web only)" \
+      org.opencontainers.image.description="Web interface and MCP server for an aMule daemon reached over External Connections" \
       org.opencontainers.image.source="https://github.com/JuanmanDev/amule-nuxt" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${APP_VERSION}"
+
+# bash for the entrypoint's process supervision, wget for the health check.
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        tzdata \
+        wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy Nuxt build from builder. Nitro bundles every runtime dependency into
+# .output/server/node_modules, so the image needs no npm install of its own.
+WORKDIR /app
+COPY --from=nuxt-builder /app/.output /app/.output
+COPY --from=nuxt-builder /app/package*.json ./
+
+ENV SERVICES=web \
+    AMULE_EC_HOST=host.docker.internal \
+    AMULE_EC_PORT=4712 \
+    NUXT_PORT=3000 \
+    NODE_ENV=production \
+    APP_VERSION=${APP_VERSION}
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD wget -qO- "http://127.0.0.1:${NUXT_PORT}/" >/dev/null 2>&1 || exit 1
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD []
+
+# All-in-one stage: the daemon and this app in one container. Last on purpose, so
+# a plain `docker build .` keeps producing the image it always has.
+#
+# `SERVICES` picks what actually runs, so the same image also covers the split
+# deployment: `all` (default), `web`, or `amule` for a daemon-only container.
+FROM web AS full
+
+ARG APP_VERSION=0.0.0-development
+
+LABEL org.opencontainers.image.title="aMule Nuxt" \
+      org.opencontainers.image.description="aMule daemon plus its web interface and MCP server, in one container"
 
 # The AppImage bundles its own wxWidgets / crypto++ / boost chain, so nothing
 # aMule-related is installed from apt here. libreadline8 is the one exception:
 # the bundle leaves it out, and amulecmd / amuleweb refuse to start without it
 # (the entrypoint uses amulecmd for its startup check).
-# bash is needed because the entrypoint relies on `wait -n`, which dash lacks.
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        bash \
-        ca-certificates \
         libreadline8 \
-        tzdata \
-        wget \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=amule /opt/amule /opt/amule
@@ -119,17 +164,14 @@ RUN set -eux; \
         chmod +x "/usr/local/bin/${binary}"; \
     done
 
-# Copy Nuxt build from builder. Nitro bundles every runtime dependency into
-# .output/server/node_modules, so the image needs no npm install of its own.
-WORKDIR /app
-COPY --from=nuxt-builder /app/.output /app/.output
-COPY --from=nuxt-builder /app/package*.json ./
-
 # Create aMule directories
 RUN mkdir -p /home/amule/.aMule /downloads/incoming /downloads/temp
 
-# Environment variables with defaults
-ENV AMULE_EC_PASSWORD=amule \
+# Environment variables with defaults. The daemon lives in this container, so it
+# is reached on loopback rather than at the web-only image's default host.
+ENV SERVICES=all \
+    AMULE_EC_PASSWORD=amule \
+    AMULE_EC_HOST=localhost \
     AMULE_EC_PORT=4712 \
     NUXT_PORT=3000 \
     NODE_ENV=production \
@@ -143,13 +185,6 @@ ENV AMULE_EC_PASSWORD=amule \
 # 4672/udp: aMule Kad
 EXPOSE 3000 4712 4662 4665/udp 4672/udp
 
-# Fail the container health check if the web UI stops responding
+# The daemon takes longer to come up than the web server alone
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
     CMD wget -qO- "http://127.0.0.1:${NUXT_PORT}/" >/dev/null 2>&1 || exit 1
-
-# Add startup script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD []

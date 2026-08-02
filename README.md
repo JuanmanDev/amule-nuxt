@@ -90,6 +90,9 @@ docker compose up -d
 # UI on http://localhost:3000, daemon EC on 4712
 ```
 
+Already have a daemon, or want the two apart? See
+[Docker Compose — three layouts](#docker-compose--three-layouts).
+
 **On the host:**
 
 ```bash
@@ -116,6 +119,7 @@ installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 | `AMULE_EC_PORT` | `4712` | External Connection port |
 | `AMULE_EC_PASSWORD` | – | Plain password **or** its MD5 hash |
 | `NUXT_PORT` / `PORT` | `3000` | Port this app listens on |
+| `SERVICES` | `all` | Docker only: `all` (daemon + app), `web` (app only), `amule` (daemon only) |
 | `LOG_LEVEL` | auto | `error`, `warn`, `info`, `debug`, `trace`, or a number |
 | `NODE_ENV` | – | `development` turns on verbose logging and dev tooling |
 
@@ -152,14 +156,41 @@ cp .env.example .env       # set AMULE_EC_HOST / _PORT / _PASSWORD
 
 `DEPLOY.md` inside the zip covers the systemd unit that ships with it (`amule-nuxt.service`), the reverse proxy notes and how to upgrade in place. Build the same artifact locally with `npm run build && npm run package:zip` — it lands in `dist/`.
 
-### Docker Compose (app + daemon)
+### Docker Compose — three layouts
+
+Pick whichever matches what you already run. All three use the same `Dockerfile`;
+`SERVICES` (`all`, `web` or `amule`) decides what a given container starts.
+
+| Layout | Command | What runs | Use it when |
+|--------|---------|-----------|-------------|
+| All in one | `docker compose up -d` | daemon + app, one container | there is no daemon yet, one thing to manage |
+| App only | `docker compose -f docker-compose.web.yml up -d` | app only | a daemon already exists — another host, a NAS package, a systemd service |
+| Split | `docker compose -f docker-compose.split.yml up -d` | daemon and app, one container each | upgrading or restarting the app must not interrupt transfers |
 
 ```bash
-docker compose up -d        # see docker-compose.yml
+cp .env.example .env        # AMULE_EC_PASSWORD, plus AMULE_EC_HOST for the app-only layout
+docker compose up -d
 docker compose logs -f
 ```
 
-The image bundles **aMule 3.0.1** — the upstream release AppImage, unpacked at build
+The **app-only image** (`docker build --target web .`) installs nothing
+aMule-related, needs no volumes, and publishes only the web ports. Point it at the
+daemon with `AMULE_EC_HOST` / `AMULE_EC_PORT` / `AMULE_EC_PASSWORD`; the daemon
+needs `AcceptExternalConnections=1` and `ECAddress=0.0.0.0` to accept a connection
+from off its own machine. `host.docker.internal` is the default host, which reaches
+a daemon on the Docker host itself.
+
+The **split layout** runs the daemon container with `SERVICES=amule` — the entrypoint
+then binds EC to every interface (override with `AMULE_EC_BIND`) and the web
+container reaches it by service name, so EC never leaves the compose network. The web
+container waits for the daemon's health check, which asks `amulecmd` rather than the
+web server.
+
+Every published host port is overridable from `.env` (`WEB_PORT`, `EC_PORT`,
+`ED2K_TCP_PORT`, …), and both `image:` fields take a registry tag if you would
+rather pull than build.
+
+The full image bundles **aMule 3.0.1** — the upstream release AppImage, unpacked at build
 time, since Debian still packages 2.3.3. `AMULE_VERSION` plus the two `AMULE_SHA256_*`
 build args in the `Dockerfile` pin it; bumping the version means refreshing both
 checksums, because each architecture ships its own AppImage.

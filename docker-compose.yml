@@ -1,24 +1,44 @@
-version: '3.8'
+# Everything in one container: the aMule daemon and this web app.
+#
+# The simplest layout, and the one to pick when there is no daemon yet. Two other
+# layouts ship alongside it, both using the same image:
+#
+#   docker-compose.web.yml     this app only, pointed at a daemon you already run
+#   docker-compose.split.yml   daemon in one container, this app in another
+#
+# Copy .env.example to .env first and set AMULE_EC_PASSWORD.
+
+# Named explicitly, so the three layouts keep their own containers and volumes and
+# cannot overwrite each other when you try another one.
+name: amule-nuxt
 
 services:
   amule-nuxt:
-    build: .
+    build:
+      context: .
+      # The last stage; named here so the intent is on the page
+      target: full
+    image: ${AMULE_NUXT_IMAGE:-amule-nuxt:local}
     container_name: amule-nuxt
     ports:
-      - "3000:3000"     # Nuxt web interface
-      - "3001:3001"     # WebSocket updates
-      - "4712:4712"     # aMule External Connection
-      - "4662:4662"     # aMule eD2k TCP
-      - "4665:4665/udp" # aMule eD2k UDP
-      - "4672:4672/udp" # aMule Kad UDP
+      - "${WEB_PORT:-3000}:3000"     # Nuxt web interface
+      - "${WS_PORT:-3001}:3001"      # WebSocket updates
+      - "${EC_PORT:-4712}:4712"      # aMule External Connection
+      - "${ED2K_TCP_PORT:-4662}:4662"      # aMule eD2k TCP
+      - "${ED2K_UDP_PORT:-4665}:4665/udp"  # aMule eD2k UDP
+      - "${KAD_UDP_PORT:-4672}:4672/udp"   # aMule Kad UDP
     environment:
       - NODE_ENV=production
+      # Daemon and app share the container, so EC stays on loopback
+      - SERVICES=all
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
       - AMULE_EC_HOST=localhost
       - AMULE_EC_PORT=4712
       - NUXT_PORT=3000
     volumes:
       - amule-config:/home/amule/.aMule
+      # Bind these to real directories to keep the files outside Docker:
+      #   - ${AMULE_INCOMING:-./downloads/incoming}:/downloads/incoming
       - amule-downloads:/downloads/incoming
       - amule-temp:/downloads/temp
     restart: unless-stopped

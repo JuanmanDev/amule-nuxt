@@ -1,0 +1,39 @@
+# This app only. The daemon runs somewhere you already control: another host, a
+# NAS package, a systemd service, another container.
+#
+# Nothing aMule-related is installed in this image (`--target web`), so it is a
+# fraction of the size of the all-in-one one and needs no volumes at all - the
+# daemon owns the downloads and the configuration.
+#
+#   cp .env.example .env          # set AMULE_EC_HOST / _PORT / _PASSWORD
+#   docker compose -f docker-compose.web.yml up -d
+#
+# The daemon has to accept External Connections from outside its own machine:
+# `AcceptExternalConnections=1` and `ECAddress=0.0.0.0` in its amule.conf, with
+# port 4712 reachable and firewalled to your network.
+
+name: amule-nuxt-web
+
+services:
+  amule-nuxt-web:
+    build:
+      context: .
+      target: web
+    image: ${AMULE_NUXT_WEB_IMAGE:-amule-nuxt-web:local}
+    container_name: amule-nuxt-web
+    ports:
+      - "${WEB_PORT:-3000}:3000"    # Nuxt web interface
+      - "${WS_PORT:-3001}:3001"     # WebSocket updates
+    environment:
+      - NODE_ENV=production
+      - SERVICES=web
+      # host.docker.internal reaches the Docker host itself; use a LAN address or
+      # a hostname for a daemon anywhere else.
+      - AMULE_EC_HOST=${AMULE_EC_HOST:-host.docker.internal}
+      - AMULE_EC_PORT=${AMULE_EC_PORT:-4712}
+      - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:?set AMULE_EC_PASSWORD in .env}
+      - NUXT_PORT=3000
+    # Linux does not resolve host.docker.internal on its own
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

@@ -1,0 +1,85 @@
+# Two containers: the daemon in one, this app in the other.
+#
+# Same image for both, `SERVICES` decides what each runs. Worth it when you want
+# to restart, upgrade or rebuild the web app without interrupting transfers, or to
+# keep the daemon's ports and volumes owned by one container only.
+#
+#   cp .env.example .env          # set AMULE_EC_PASSWORD
+#   docker compose -f docker-compose.split.yml up -d
+#
+# The web container reaches the daemon by service name over the compose network,
+# so EC never leaves it; only the eD2k and Kad ports are published.
+
+name: amule-nuxt-split
+
+services:
+  amuled:
+    build:
+      context: .
+      target: full
+    image: ${AMULE_NUXT_IMAGE:-amule-nuxt:local}
+    container_name: amuled
+    # Daemon only: the entrypoint writes amule.conf with EC bound to every
+    # interface, so the web container can reach it.
+    environment:
+      - SERVICES=amule
+      - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
+      - AMULE_EC_PORT=4712
+    ports:
+      - "${ED2K_TCP_PORT:-4662}:4662"       # aMule eD2k TCP
+      - "${ED2K_UDP_PORT:-4665}:4665/udp"   # aMule eD2k UDP
+      - "${KAD_UDP_PORT:-4672}:4672/udp"    # aMule Kad UDP
+      # EC stays inside the compose network; publish it only if something outside
+      # needs it (another client, amulecmd on the host):
+      #   - "${EC_PORT:-4712}:4712"
+    volumes:
+      - amule-config:/home/amule/.aMule
+      - amule-downloads:/downloads/incoming
+      - amule-temp:/downloads/temp
+    # The image's default health check asks the web server, which is not running
+    # here; ask the daemon over EC instead.
+    healthcheck:
+      test: ["CMD", "amulecmd", "-h", "localhost", "-p", "4712", "-P", "${AMULE_EC_PASSWORD:-amule}", "-c", "status"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - amule-network
+
+  web:
+    build:
+      context: .
+      target: web
+    image: ${AMULE_NUXT_WEB_IMAGE:-amule-nuxt-web:local}
+    container_name: amule-nuxt-web
+    depends_on:
+      amuled:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-3000}:3000"    # Nuxt web interface
+      - "${WS_PORT:-3001}:3001"     # WebSocket updates
+    environment:
+      - NODE_ENV=production
+      - SERVICES=web
+      # The daemon's service name on the compose network
+      - AMULE_EC_HOST=amuled
+      - AMULE_EC_PORT=4712
+      - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
+      - NUXT_PORT=3000
+    restart: unless-stopped
+    networks:
+      - amule-network
+
+volumes:
+  amule-config:
+    driver: local
+  amule-downloads:
+    driver: local
+  amule-temp:
+    driver: local
+
+networks:
+  amule-network:
+    driver: bridge
