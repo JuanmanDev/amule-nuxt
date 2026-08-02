@@ -68,26 +68,49 @@ jobs:
             echo "value=0.0.0-edge.${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build and push
-        uses: docker/build-push-action@v7
+      # The app-only image carries the same tags with a -web suffix, except that
+      # `latest` becomes plain `web`: "latest-web" reads like a variant of latest
+      # rather than the newest app-only image.
+      - name: Derive the app-only tags
+        id: web
+        env:
+          FULL_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          web=$(echo "$FULL_TAGS" | while read -r tag; do
+            [ -n "$tag" ] || continue
+            case "$tag" in
+              *:latest) echo "${tag%:latest}:web" ;;
+              *) echo "$tag-web" ;;
+            esac
+          done | paste -sd, -)
+          echo "tags=$web" >> "$GITHUB_OUTPUT"
+
+      # One bake run builds both images and shares every layer they have in
+      # common; see docker-bake.hcl.
+      - name: Build and push both images
+        uses: docker/bake-action@v6
+        env:
+          APP_VERSION: ${{ steps.version.outputs.value }}
+          REVISION: ${{ github.sha }}
+          TAGS_FULL: ${{ join(fromJSON(steps.meta.outputs.json).tags, ',') }}
+          TAGS_WEB: ${{ steps.web.outputs.tags }}
+          PLATFORMS: linux/amd64,linux/arm64
         with:
-          context: .
-          platforms: linux/amd64,linux/arm64
+          files: docker-bake.hcl
           push: true
-          build-args: |
-            APP_VERSION=${{ steps.version.outputs.value }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           provenance: true
 
       - name: Summarise
         run: |
           {
-            echo "### Published image"
+            echo "### Published images"
             echo
+            echo "Daemon and app together:"
             echo '```'
             echo "${{ steps.meta.outputs.tags }}"
+            echo '```'
+            echo "App only, for a daemon you already run:"
+            echo '```'
+            echo "${{ steps.web.outputs.tags }}" | tr ',' '\n'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"

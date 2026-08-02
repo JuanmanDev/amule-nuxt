@@ -3,7 +3,13 @@
 # see it; BuildKit only fills the automatic platform args in at global scope.
 ARG TARGETARCH
 
-FROM node:24-bookworm-slim AS nuxt-builder
+# Nuxt build stage.
+#
+# Pinned to the *build* platform: Nitro's output is plain JavaScript, so the same
+# .output runs on amd64 and arm64. Building it once natively instead of once per
+# target architecture takes the emulated `npm ci` and `nuxt build` - by far the
+# slowest part of an arm64 image - out of the build entirely.
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:24-bookworm-slim AS nuxt-builder
 
 # Release being built. CI passes the semantic-release version so the built app
 # reports the same number as the image tag; local builds fall back to the
@@ -24,6 +30,18 @@ COPY . .
 
 # Build Nuxt app
 RUN npm run build
+
+# The cross-build above is only sound while the output stays architecture
+# independent. A dependency that ships a native addon would be bundled for the
+# build platform and crash on the other one, so fail here rather than there.
+RUN set -eu; \
+    if find .output -name '*.node' -print -quit | grep -q .; then \
+        echo "A native addon was bundled into .output:" >&2; \
+        find .output -name '*.node' >&2; \
+        echo "The build stage runs on the build platform, so it cannot cross-compile that." >&2; \
+        echo "Either drop the dependency or build this stage on TARGETPLATFORM." >&2; \
+        exit 1; \
+    fi
 
 # aMule daemon stage.
 #

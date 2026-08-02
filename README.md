@@ -129,25 +129,32 @@ installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 
 ## Deployment
 
-### Docker image from the registry
+### Docker images from the registry
 
-Every release publishes an image to GitHub Container Registry, tagged `X.Y.Z`, `X.Y`, `X` and `latest`. Pin as tightly as you want to be surprised:
+Every release publishes **two** images to GitHub Container Registry, built from the same `Dockerfile`:
+
+| Tags | Contains | For |
+|------|----------|-----|
+| `X.Y.Z`, `X.Y`, `X`, `latest` | aMule 3.0.1 **and** this app (~380 MB) | a fresh daemon, or the daemon container of a split deployment |
+| `X.Y.Z-web`, `X.Y-web`, `X-web`, `web` | this app only (~245 MB) | a daemon you already run somewhere |
+
+Pin as tightly as you want to be surprised:
 
 ```bash
+# App only, against a daemon that already exists
 docker run -d --name amule-nuxt -p 3000:3000 \
-  -e SERVICES=web \
   -e AMULE_EC_HOST=192.168.1.50 \
   -e AMULE_EC_PORT=4712 \
   -e AMULE_EC_PASSWORD=your_password \
-  ghcr.io/juanmandev/amule-nuxt:1.1
+  ghcr.io/juanmandev/amule-nuxt:1.1-web
 ```
 
-`SERVICES=web` is what stops the image starting a daemon of its own beside the one
-it is pointed at; leave it out and you get both. It exists from 1.1.0 onwards. Drop
-the variable, and the port publishing from
-[the compose file](#docker-compose--three-layouts), to run the daemon here instead.
+The `-web` image has no daemon in it, so it cannot accidentally run a second one
+beside the one it is pointed at. With the full image, `SERVICES=web` does the same
+job; leave that out and you get both, which is the point of the all-in-one layout.
+Both variables exist from **1.1.0** onwards.
 
-`edge` is a manually triggered build of a branch head; it is not a release. Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server. The image reports its own version at `/api/diagnostics` and in the `org.opencontainers.image.version` label.
+`edge` (and `edge-web`) is a manually triggered build of a branch head; it is not a release. Multi-architecture (`linux/amd64`, `linux/arm64`), so it runs on a Raspberry Pi as happily as on a server. The Nuxt output is architecture independent and is built once for both, which is why an arm64 image does not cost an emulated `npm ci`. Each image reports its own version at `/api/diagnostics` and in the `org.opencontainers.image.version` label.
 
 ### Standalone zip (no Docker)
 
@@ -179,8 +186,8 @@ docker compose up -d
 docker compose logs -f
 ```
 
-The **app-only image** (`docker build --target web .`) installs nothing
-aMule-related, needs no volumes, and publishes only the web ports. Point it at the
+The **app-only image** (`docker build --target web .`, published as the `-web` tags)
+installs nothing aMule-related, needs no volumes, and publishes only the web ports. Point it at the
 daemon with `AMULE_EC_HOST` / `AMULE_EC_PORT` / `AMULE_EC_PASSWORD`; the daemon
 needs `AcceptExternalConnections=1` and `ECAddress=0.0.0.0` to accept a connection
 from off its own machine. `host.docker.internal` is the default host, which reaches
@@ -189,20 +196,19 @@ a daemon on the Docker host itself.
 #### App only, against an aMule you already run
 
 Nothing to clone: paste this as `docker-compose.yml`, set the three EC values and
-`docker compose up -d`. The published image ships the daemon too, and `SERVICES=web`
-tells it not to start one.
+`docker compose up -d`. The `-web` image carries no daemon, so there is nothing to
+switch off and nothing to give volumes to.
 
-> `SERVICES` exists from **1.1.0** onwards. An image older than that ignores it and
-> starts a daemon of its own inside the container, next to the one you are pointing
-> it at, so do not pin below `1.1` for this layout.
+> The `-web` tags and `SERVICES` both exist from **1.1.0** onwards. An older image
+> always carries a daemon and ignores `SERVICES`, so it would start one inside the
+> container next to the one you are pointing it at.
 
 ```yaml
 services:
   amule-nuxt:
-    image: ghcr.io/juanmandev/amule-nuxt:1.1
+    image: ghcr.io/juanmandev/amule-nuxt:1.1-web   # no daemon in this image
     container_name: amule-nuxt
     environment:
-      SERVICES: web                        # this app only, no daemon in here
       AMULE_EC_HOST: 192.168.1.50          # host.docker.internal for a daemon on this machine
       AMULE_EC_PORT: "4712"
       AMULE_EC_PASSWORD: your_ec_password  # plain password or its MD5 hash
@@ -215,8 +221,8 @@ services:
     restart: unless-stopped
 ```
 
-Building from a clone instead gets the slimmer image that carries no daemon at all:
-`docker compose -f docker-compose.web.yml up -d`.
+From a clone, `docker compose -f docker-compose.web.yml up -d` builds the same image
+locally and reads the EC settings from `.env`.
 
 The **split layout** runs the daemon container with `SERVICES=amule` — the entrypoint
 then binds EC to every interface (override with `AMULE_EC_BIND`) and the web
@@ -255,13 +261,12 @@ services:
     restart: unless-stopped
 
   web:
-    image: ghcr.io/juanmandev/amule-nuxt:1.1
+    image: ghcr.io/juanmandev/amule-nuxt:1.1-web
     container_name: amule-nuxt
     depends_on:
       amuled:
         condition: service_healthy
     environment:
-      SERVICES: web
       AMULE_EC_HOST: amuled                # the daemon's service name
       AMULE_EC_PORT: "4712"
       AMULE_EC_PASSWORD: your_ec_password
