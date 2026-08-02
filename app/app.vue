@@ -52,7 +52,7 @@
       <UContainer>
         <div class="flex items-center justify-between h-16">
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            © {{ new Date().getFullYear() }} aMule Nuxt. All rights reserved.
+            © {{ new Date().getFullYear() }} aMule Nuxt. All rights reserved. Juanma was here.
           </p>
           <div class="flex items-center gap-2">
             <ColorSchemeToggle />
@@ -60,7 +60,7 @@
               icon="i-simple-icons-github"
               color="neutral"
               variant="ghost"
-              to="https://github.com/yourusername/amule-nuxt"
+              to="https://github.com/JuanmanDev/amule-nuxt"
               target="_blank"
               aria-label="GitHub Repository"
             />
@@ -98,55 +98,58 @@
 
     <!-- Mobile Menu Slideover -->
     <USlideover title="aMule Nuxt" v-model:open="isMenuOpen" side="right">
-      <template #body class="flex flex-col justify-end ">
-        <!-- Speed Summary in Menu -->
-        <div class="flex items-center justify-around text-sm p-2 bg-elevated/50 backdrop-blur-sm rounded-lg">
-          <!-- Speeds are shortcuts to the page that explains them -->
-          <NuxtLink
-            to="/downloads"
-            class="flex items-center gap-2 text-blue-600 dark:text-blue-400"
+      <template #body>
+        <!-- Bottom weighted: `mt-auto` on the links pushes everything below the
+             speed summary down to the thumb when the menu is taller than its
+             content, and collapses to nothing when it is not, so a long list
+             still scrolls from the top. A class on <template> would be dropped. -->
+        <div class="flex flex-col min-h-full gap-4">
+          <!-- Speed Summary in Menu -->
+          <div class="flex items-center justify-around text-sm p-2 bg-elevated/50 backdrop-blur-sm rounded-lg">
+            <!-- Speeds are shortcuts to the page that explains them -->
+            <NuxtLink
+              to="/downloads"
+              class="flex items-center gap-2 text-blue-600 dark:text-blue-400"
+              @click="() => { isMenuOpen = false }"
+            >
+              <UIcon name="i-heroicons-arrow-down" class="w-5 h-5" />
+              <AnimatedValue class="font-medium" :model-value="status ? formatSpeed(status.downloadSpeed) : '0 KB/s'" />
+            </NuxtLink>
+            <div class="h-4 w-px bg-gray-300 dark:bg-gray-700"></div>
+            <NuxtLink
+              to="/uploads"
+              class="flex items-center gap-2 text-green-600 dark:text-green-400"
+              @click="() => { isMenuOpen = false }"
+            >
+              <UIcon name="i-heroicons-arrow-up" class="w-5 h-5" />
+              <AnimatedValue class="font-medium" :model-value="status ? formatSpeed(status.uploadSpeed) : '0 KB/s'" />
+            </NuxtLink>
+          </div>
+
+          <NavigationMenu
+            :links="navLinks"
+            orientation="vertical"
+            class="mt-auto"
             @click="() => { isMenuOpen = false }"
-          >
-            <UIcon name="i-heroicons-arrow-down" class="w-5 h-5" />
-            <AnimatedValue class="font-medium" :model-value="status ? formatSpeed(status.downloadSpeed) : '0 KB/s'" />
-          </NuxtLink>
-          <div class="h-4 w-px bg-gray-300 dark:bg-gray-700"></div>
-          <NuxtLink
-            to="/uploads"
-            class="flex items-center gap-2 text-green-600 dark:text-green-400"
-            @click="() => { isMenuOpen = false }"
-          >
-            <UIcon name="i-heroicons-arrow-up" class="w-5 h-5" />
-            <AnimatedValue class="font-medium" :model-value="status ? formatSpeed(status.uploadSpeed) : '0 KB/s'" />
-          </NuxtLink>
-        </div>
-
-        <UButton
-          icon="i-heroicons-plus"
-          color="primary"
-          variant="solid"
-          class="mt-4 justify-center w-full"
-          @click="() => { isAddModalOpen = true; isMenuOpen = false }"
-        >
-          Add ed2k Link
-        </UButton>
-
-        <NavigationMenu 
-          :links="navLinks" 
-          orientation="vertical" 
-          @click="() => { isMenuOpen = false }" 
-          class="my-8"
-        />
-
-        <div class="flex items-center justify-between">
-          <UButton icon="i-simple-icons-github" color="neutral" variant="ghost" to="https://github.com/yourusername/amule-nuxt" target="_blank" aria-label="GitHub" />
-          <UButton
-            :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
-            color="neutral"
-            variant="ghost"
-            @click="toggleTheme"
-            aria-label="Toggle theme"
           />
+
+          <!-- Under the links and above the icons: the action closest to the thumb -->
+          <UButton
+            icon="i-heroicons-plus"
+            color="primary"
+            variant="solid"
+            class="justify-center w-full"
+            @click="() => { isAddModalOpen = true; isMenuOpen = false }"
+          >
+            Add ed2k Link
+          </UButton>
+
+          <div class="flex items-center justify-between">
+            <UButton icon="i-simple-icons-github" color="neutral" variant="ghost" to="https://github.com/JuanmanDev/amule-nuxt" target="_blank" aria-label="GitHub" />
+            <!-- Same component as the desktop footer, so the icon is picked by CSS
+                 rather than by a value the server cannot know -->
+            <ColorSchemeToggle />
+          </div>
         </div>
       </template>
     </USlideover>
@@ -158,8 +161,6 @@
 <script setup lang="ts">
 import { formatSpeed } from '#shared/utils/format'
 
-const colorMode = useColorMode()
-const isDark = computed(() => colorMode.value === 'dark')
 const isMenuOpen = ref(false)
 const isAddModalOpen = ref(false)
 const status = ref<any>(null)
@@ -216,10 +217,6 @@ const mobileNavLinks = [
   { label: 'Downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
   { label: 'Shared', icon: 'i-heroicons-folder-open', to: '/shared' }
 ]
-
-function toggleTheme() {
-  colorMode.preference = isDark.value ? 'light' : 'dark'
-}
 
 /** Poll interval while the daemon answers, and the slower one while it does not. */
 const STATUS_POLL_MS = 5000
