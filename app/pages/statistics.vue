@@ -50,19 +50,22 @@
         </div>
       </template>
 
-      <div v-if="historyLoading && samples.length === 0" class="space-y-2">
-        <USkeleton class="h-40 w-full" />
-        <p class="text-center text-sm text-gray-600 dark:text-gray-400">Collecting samples...</p>
-      </div>
+      <SmoothSwap>
+        <div v-if="historyLoading && samples.length === 0" key="collecting" class="space-y-2">
+          <USkeleton class="h-40 w-full" />
+          <p class="text-center text-sm text-gray-600 dark:text-gray-400">Collecting samples...</p>
+        </div>
 
-      <UEmpty
-        v-else-if="samples.length < 2"
-        icon="i-heroicons-chart-bar"
-        title="Not enough samples yet"
-        description="The server samples the transfer rate every two seconds; the chart appears within a few seconds."
-      />
+        <UEmpty
+          v-else-if="samples.length < 2"
+          key="too-few"
+          icon="i-heroicons-chart-bar"
+          title="Not enough samples yet"
+          description="The server samples the transfer rate every two seconds; the chart appears within a few seconds."
+        />
 
-      <SpeedChart v-else :samples="samples" :minutes-span="windowMinutes" />
+        <SpeedChart v-else key="chart" :samples="samples" :minutes-span="windowMinutes" />
+      </SmoothSwap>
 
       <template #footer>
         <!-- aMule tracks these itself since the daemon started, so they show real
@@ -99,11 +102,12 @@
         <h2 class="text-xl font-semibold">Transferred data</h2>
       </template>
 
-      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <SmoothSwap>
+      <div v-if="loading" key="loading" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <USkeleton v-for="n in 3" :key="n" class="h-24 w-full" />
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div v-else key="rows" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div v-for="row in transferRows" :key="row.label" class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
           <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
             <UIcon :name="row.icon" class="w-4 h-4" />
@@ -118,6 +122,7 @@
           </div>
         </div>
       </div>
+      </SmoothSwap>
 
       <template #footer>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -185,13 +190,15 @@
       </template>
 
       <!-- Loading is the default state until the first fetch resolves -->
-      <div v-if="loading" class="space-y-2">
+      <SmoothSwap>
+      <div v-if="loading" key="loading" class="space-y-2">
         <USkeleton v-for="n in 10" :key="n" class="h-4" :class="n % 3 === 0 ? 'w-1/2' : 'w-3/4'" />
         <p class="pt-2 text-center text-sm text-gray-600 dark:text-gray-400">Loading statistics...</p>
       </div>
 
       <UAlert
         v-else-if="error"
+        key="error"
         color="error"
         variant="subtle"
         icon="i-heroicons-exclamation-circle"
@@ -202,30 +209,35 @@
 
       <UEmpty
         v-else-if="!tree"
+        key="empty"
         icon="i-heroicons-chart-bar"
         title="No statistics available"
         description="The daemon returned an empty statistics tree."
       />
 
       <!-- Filtering flattens the tree to matching lines, which is what you want when searching -->
-      <div v-else-if="search.trim()" class="space-y-1">
+      <div v-else-if="search.trim()" key="matches" class="space-y-1">
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ matches.length }} matching entries</p>
+        <SmoothSwap>
         <UEmpty
           v-if="matches.length === 0"
+          key="no-matches"
           icon="i-heroicons-magnifying-glass"
           title="No matches"
           :description="`No statistics entry matches '${search}'.`"
         />
-        <TransitionGroup v-else tag="ul" name="list" class="space-y-0.5 relative">
+        <TransitionGroup v-else key="lines" tag="ul" name="list" class="space-y-0.5 relative">
           <li v-for="(line, index) in matches" :key="`${index}::${line.path}::${line.label}`" class="text-sm break-words">
             <span class="text-gray-400 text-xs">{{ line.path }} / </span>{{ line.label }}
           </li>
         </TransitionGroup>
+        </SmoothSwap>
       </div>
 
-      <ul v-else class="space-y-0.5">
+      <ul v-else key="tree" class="space-y-0.5">
         <StatsTreeNode :node="tree" />
       </ul>
+      </SmoothSwap>
     </UCard>
   </div>
 </template>

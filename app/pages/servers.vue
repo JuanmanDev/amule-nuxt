@@ -26,11 +26,12 @@
         </div>
       </template>
 
-      <div v-if="prefsLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <SmoothSwap>
+      <div v-if="prefsLoading" key="prefs-loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <USkeleton v-for="n in 4" :key="n" class="h-10 w-full" />
       </div>
 
-      <UForm v-else-if="prefs" :state="prefsForm" class="space-y-4" @submit="savePrefs">
+      <UForm v-else-if="prefs" key="prefs-form" :state="prefsForm" class="space-y-4" @submit="savePrefs">
         <UFormField label="Server list URL" name="updateUrl" help="server.met used by 'Update list now'">
           <UInput v-model="prefsForm.updateUrl" class="w-full" placeholder="http://upd.emule-security.org/server.met" />
         </UFormField>
@@ -48,6 +49,7 @@
 
         <UButton type="submit" :loading="savingPrefs" icon="i-heroicons-check">Save settings</UButton>
       </UForm>
+      </SmoothSwap>
     </UCard>
 
     <!-- Add a server -->
@@ -85,7 +87,8 @@
       </template>
 
       <!-- Loading is the default state until the first fetch resolves -->
-      <div v-if="loading" class="space-y-4">
+      <SmoothSwap>
+      <div v-if="loading" key="loading" class="space-y-4">
         <div v-for="n in 4" :key="n" class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg space-y-3">
           <USkeleton class="h-5 w-1/3" />
           <USkeleton class="h-4 w-1/2" />
@@ -98,6 +101,7 @@
 
       <UAlert
         v-else-if="error"
+        key="error"
         color="error"
         variant="subtle"
         icon="i-heroicons-exclamation-circle"
@@ -108,6 +112,7 @@
 
       <UEmpty
         v-else-if="servers.length === 0"
+        key="empty"
         icon="i-heroicons-server-stack"
         title="No servers found"
         description="aMule's server list is empty. Add a server or update the list from a URL."
@@ -115,12 +120,13 @@
 
       <UEmpty
         v-else-if="visibleServers.length === 0"
+        key="no-matches"
         icon="i-heroicons-magnifying-glass"
         title="No matches"
         :description="`No server matches '${search}'.`"
       />
 
-      <TransitionGroup v-else name="list" tag="div" class="space-y-4 relative">
+      <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-4 relative">
         <div
           v-for="server in visibleServers"
           :key="server.ip + ':' + server.port"
@@ -191,6 +197,7 @@
           </div>
         </div>
       </TransitionGroup>
+      </SmoothSwap>
     </UCard>
 
     <UModal v-model:open="removeOpen" title="Remove server">

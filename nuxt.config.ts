@@ -17,6 +17,16 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/ui', '@nuxtjs/mcp-toolkit'],
 
+  // The @iconify-json collections are devDependencies, so they do not exist in
+  // the runtime image: the server-side lookup logged "failed to load icon" for
+  // every icon and rendered none. Scanning the templates bundles the icons the
+  // app actually uses into the client build instead, which also means no icon
+  // request ever leaves the browser.
+  icon: {
+    clientBundle: { scan: true },
+    serverBundle: false
+  },
+
   // Exposes the aMule features of this app as MCP tools on /mcp
   mcp: {
     // Browsers opening /mcp get the human readable page instead of a JSON-RPC error

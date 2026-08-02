@@ -113,6 +113,41 @@ export function isValidFileHash(hash: unknown): hash is string {
     return typeof hash === 'string' && /^[0-9a-fA-F]{32}$/.test(hash);
 }
 
+/**
+ * Upper bound for a bandwidth limit in kB/s. aMule 3.x widened the limit fields
+ * from uint16 to uint32 and caps its own spin buttons at 1,000,000 kB/s, which
+ * is far above any real link; anything larger is a mistake, not a limit.
+ */
+export const MAX_BANDWIDTH_LIMIT_KBPS = 1_000_000;
+
+/**
+ * Turns a bandwidth limit coming from an HTTP body into the whole kB/s the EC
+ * tag carries, or throws with a message worth showing.
+ *
+ * Rejecting instead of coercing matters: the EC tag is written with
+ * `DataView.setUint32`, which silently turns `NaN` or `undefined` into 0 — that
+ * is aMule's "unlimited", so a typo used to remove the limit and report success.
+ */
+export function normalizeBandwidthLimit(value: unknown, label: string): number {
+    if (typeof value === 'boolean' || value === null || value === undefined
+        || (typeof value === 'string' && value.trim() === '')) {
+        throw new Error(`${label} must be a number in kB/s (0 = unlimited)`);
+    }
+
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) {
+        throw new Error(`${label} must be a number in kB/s (0 = unlimited)`);
+    }
+    if (parsed < 0) {
+        throw new Error(`${label} cannot be negative; use 0 for unlimited`);
+    }
+    if (parsed > MAX_BANDWIDTH_LIMIT_KBPS) {
+        throw new Error(`${label} cannot exceed ${MAX_BANDWIDTH_LIMIT_KBPS} kB/s`);
+    }
+
+    return Math.round(parsed);
+}
+
 /** Maps a UI priority label to aMule's PR_* value. */
 function mapPriorityToValue(priority: DownloadPriority): number {
     switch (priority) {
@@ -461,31 +496,54 @@ export class AmuleECClient {
     }
 
     /**
-     * Read the configured bandwidth limits (KB/s, 0 = unlimited)
+     * Read the configured bandwidth limits (kB/s, 0 = unlimited)
      */
     async getBandwidthLimits(): Promise<BandwidthLimits> {
         await this.ensureConnected();
         const prefs: any = await this.client.getConnectionPreferences();
 
         return {
-            // EC stores the limits in bytes/s
             uploadLimit: Number(prefs?.conn_max_ul || 0),
             downloadLimit: Number(prefs?.conn_max_dl || 0)
         };
     }
 
     /**
-     * Set the bandwidth limits (KB/s, 0 = unlimited)
+     * Set the bandwidth limits (kB/s, 0 = unlimited).
+     *
+     * The values are validated before they go on the wire and the result is read
+     * back from the daemon: EC_OP_SET_PREFERENCES answers with a bare
+     * acknowledgement, so a value the daemon clamped or ignored would otherwise
+     * be reported as applied. `data` is always what the daemon now holds.
      */
     async setBandwidthLimits(limits: BandwidthLimits): Promise<CommandResult> {
+        let upload: number;
+        let download: number;
+        try {
+            upload = normalizeBandwidthLimit(limits?.uploadLimit, 'Upload limit');
+            download = normalizeBandwidthLimit(limits?.downloadLimit, 'Download limit');
+        } catch (error: any) {
+            return { success: false, message: error.message };
+        }
+
         try {
             await this.ensureConnected();
-            await this.client.setMaxUpload(Math.max(0, Math.round(limits.uploadLimit)));
-            await this.client.setMaxDownload(Math.max(0, Math.round(limits.downloadLimit)));
+            await this.client.setMaxUpload(upload);
+            await this.client.setMaxDownload(download);
+
+            const applied = await this.getBandwidthLimits();
+            if (applied.uploadLimit !== upload || applied.downloadLimit !== download) {
+                return {
+                    success: false,
+                    message: `The daemon kept ${applied.uploadLimit} kB/s up and ${applied.downloadLimit} kB/s down instead of ${upload}/${download}`,
+                    data: applied
+                };
+            }
+
             return {
                 success: true,
                 message: 'Bandwidth limits updated',
-                data: limits
+                data: applied
             };
         } catch (error: any) {
             return { success: false, message: error.message || 'Failed to set bandwidth limits' };

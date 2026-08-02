@@ -43,6 +43,7 @@
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@iconify-json/heroicons": "^1.2.3",
+    "@iconify-json/simple-icons": "^1.2.92",
     "@nuxtjs/mcp-toolkit": "^0.18.0",
     "@playwright/test": "^1.62.1",
     "@semantic-release/changelog": "^7.0.0",

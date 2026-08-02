@@ -72,6 +72,7 @@
     </UCard>
 
     <!-- Live progress while the network answers -->
+    <SmoothSwap>
     <UCard v-if="searching">
       <div class="space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
@@ -86,9 +87,11 @@
         <UProgress animation="carousel" />
       </div>
     </UCard>
+    </SmoothSwap>
 
     <!-- Results -->
-    <UCard v-if="results.length > 0">
+    <SmoothSwap>
+    <UCard v-if="results.length > 0" key="results">
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <h2 class="text-xl font-semibold">Results ({{ results.length }})</h2>
@@ -103,14 +106,16 @@
         </div>
       </template>
 
+      <SmoothSwap>
       <UEmpty
         v-if="visibleResults.length === 0"
+        key="no-matches"
         icon="i-heroicons-magnifying-glass"
         title="No matches"
         :description="`No result matches '${filter}'.`"
       />
 
-      <TransitionGroup v-else name="list" tag="div" class="space-y-3 relative">
+      <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-3 relative">
         <div
           v-for="result in visibleResults"
           :key="result.hash || result.resultNumber"
@@ -144,14 +149,17 @@
           </div>
         </div>
       </TransitionGroup>
+      </SmoothSwap>
     </UCard>
 
     <UEmpty
       v-else-if="hasSearched && !searching"
+      key="no-results"
       icon="i-heroicons-magnifying-glass"
       title="No results found"
       description="Try different keywords, or search another network."
     />
+    </SmoothSwap>
   </div>
 </template>
 

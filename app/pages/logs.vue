@@ -29,13 +29,15 @@
     />
 
     <!-- Loading is the default state until the first fetch resolves -->
-    <div v-if="loading" class="space-y-2">
+    <SmoothSwap>
+    <div v-if="loading" key="loading" class="space-y-2">
       <USkeleton v-for="n in 12" :key="n" class="h-4" :class="n % 3 === 0 ? 'w-2/3' : 'w-full'" />
       <p class="pt-2 text-center text-sm text-gray-600 dark:text-gray-400">Loading logs...</p>
     </div>
 
     <UAlert
       v-else-if="error"
+        key="error"
       color="error"
       variant="subtle"
       icon="i-heroicons-exclamation-circle"
@@ -46,6 +48,7 @@
 
     <UEmpty
       v-else-if="logs.length === 0"
+        key="empty"
       icon="i-heroicons-document-text"
       title="No logs available"
       description="The aMule daemon has not logged anything yet."
@@ -53,12 +56,13 @@
 
     <UEmpty
       v-else-if="visibleLogs.length === 0"
+        key="no-matches"
       icon="i-heroicons-magnifying-glass"
       title="No matching lines"
       :description="`No log line matches '${filter}'.`"
     />
 
-    <div v-else class="space-y-2">
+    <div v-else key="lines" class="space-y-2">
       <p class="text-sm text-gray-600 dark:text-gray-400">
         Showing <AnimatedValue :model-value="visibleLogs.length" /> of
         <AnimatedValue :model-value="logs.length" /> lines
@@ -81,6 +85,7 @@
         </div>
       </TransitionGroup>
     </div>
+    </SmoothSwap>
   </div>
 </template>
 

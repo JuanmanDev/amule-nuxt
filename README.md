@@ -93,19 +93,20 @@ docker compose up -d
 **On the host:**
 
 ```bash
-# Debian / Ubuntu
-sudo apt install -y amule-daemon amule-utils
-# Arch
-sudo pacman -S amule
-# macOS
-brew install amule
+# Linux / WSL2 — installs the upstream aMule 3.0.1 release into ~/.local
+npm run install:amule:linux    # or install:amule:wsl2
+# macOS — the 3.0.1 .dmg from https://github.com/amule-org/amule/releases
+# ships amuled alongside the GUI; Homebrew's formula is still 2.3.3
 
 npm run configure:amule    # writes amule.conf with EC enabled and hashes the password
 amuled                     # start the daemon
 npm run dev                # start this app
 ```
 
-Helper scripts for WSL2 and Linux live in `scripts/` (`npm run install:amule:wsl2`, `npm run install:amule:linux`).
+Distribution packages (`apt install amule-daemon`, `pacman -S amule`, `brew install amule`)
+are still on aMule 2.3.3 from 2021. This app speaks EC to both — the protocol version is
+unchanged at `0x0204` — but 3.x is worth having for the throughput rewrite, so the
+installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 
 ### Configuration reference
 
@@ -157,6 +158,11 @@ cp .env.example .env       # set AMULE_EC_HOST / _PORT / _PASSWORD
 docker compose up -d        # see docker-compose.yml
 docker compose logs -f
 ```
+
+The image bundles **aMule 3.0.1** — the upstream release AppImage, unpacked at build
+time, since Debian still packages 2.3.3. `AMULE_VERSION` plus the two `AMULE_SHA256_*`
+build args in the `Dockerfile` pin it; bumping the version means refreshing both
+checksums, because each architecture ships its own AppImage.
 
 ### Plain Node
 

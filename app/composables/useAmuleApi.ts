@@ -12,6 +12,7 @@ import type {
     DownloadPriority,
     SearchResult,
     Server,
+    SharedFile,
     Statistics,
     StatusResult,
     Upload
@@ -113,7 +114,7 @@ export const useAmuleApi = () => {
         },
 
         async getSharedFiles() {
-            return await $fetch<ApiResponse<any[]>>(apiUrl('/shared'));
+            return await $fetch<ApiResponse<{ sharedFiles: SharedFile[] }>>(apiUrl('/shared'));
         },
 
         async getServers() {

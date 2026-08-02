@@ -30,15 +30,14 @@ export const useDownloads = () => {
     const toast = useToast();
     const { wsStatus, realtimeDownloads } = useAmuleSocket();
 
-    const downloads = useState<Download[]>('amule-downloads', () => []);
-    // Loading is the initial state: the UI must never show "empty" before the
-    // first fetch has resolved.
-    const loading = useState<boolean>('amule-downloads-loading', () => true);
-    const error = useState<string | null>('amule-downloads-error', () => null);
+    // The queue itself lives in the prefetched feed, so it is already loaded
+    // whichever page the user opens first and it keeps refreshing in the
+    // background while they are elsewhere.
+    const feed = useDownloadsFeed();
+    const downloads = feed.items;
+    const loading = feed.loading;
+    const error = feed.error;
     const busyHash = useState<string | null>('amule-downloads-busy', () => null);
-    // Shared across every consumer: the dashboard and the queue page poll the
-    // same endpoint, and a slow daemon must not turn that into a backlog.
-    const inFlight = useState<boolean>('amule-downloads-in-flight', () => false);
 
     /** Real-time data when the socket is up, otherwise the polled queue. */
     const items = computed<Download[]>(() => {
@@ -54,30 +53,13 @@ export const useDownloads = () => {
     const stalledCount = computed(() => items.value.filter(item => isLikelyDeadLink(item)).length);
     const totalSpeed = computed(() => items.value.reduce((sum, item) => sum + (item.speed || 0), 0));
 
-    async function fetchDownloads({ silent = false }: { silent?: boolean } = {}) {
-        if (inFlight.value) return;
-        inFlight.value = true;
-
-        if (!silent && items.value.length === 0) {
-            loading.value = true;
-        }
-
-        try {
-            const result = await api.getDownloads();
-            if (result.success) {
-                downloads.value = result.data ?? [];
-                error.value = null;
-            } else {
-                // The last known queue stays on screen; the error explains why
-                // it is not moving.
-                error.value = result.error || 'Failed to load downloads';
-            }
-        } catch (e: any) {
-            error.value = e.message || 'Failed to load downloads';
-        } finally {
-            inFlight.value = false;
-            loading.value = false;
-        }
+    /**
+     * Reads the queue now. `silent` is kept for call sites that used it; the feed
+     * never drops back to the loading state once it holds data, so a refresh is
+     * always silent in practice.
+     */
+    async function fetchDownloads(_options: { silent?: boolean } = {}) {
+        await feed.refresh({ force: true });
     }
 
     /**
@@ -176,24 +158,13 @@ export const useDownloads = () => {
     }
 
     /**
-     * Starts the initial fetch plus a polling fallback used whenever the
-     * WebSocket push is unavailable. Call from a component's setup.
+     * Asks for the fast refresh cadence while the calling component is mounted.
+     *
+     * The polling loop itself belongs to the feed (see `useAmuleFeeds`), which
+     * runs for the whole session; a page only says "I am showing this now".
      */
-    function startPolling(intervalMs = 5000) {
-        let timer: ReturnType<typeof setInterval> | undefined;
-
-        onMounted(() => {
-            fetchDownloads();
-            timer = setInterval(() => {
-                if (!wsStatus.value.connected) {
-                    fetchDownloads({ silent: true });
-                }
-            }, intervalMs);
-        });
-
-        onUnmounted(() => {
-            if (timer) clearInterval(timer);
-        });
+    function startPolling() {
+        feed.focus();
     }
 
     return {

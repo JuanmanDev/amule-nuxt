@@ -21,26 +21,41 @@
       </div>
     </div>
 
-    <!-- Loading is the default state until the first fetch resolves -->
-    <div v-if="loading" class="space-y-4">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <USkeleton v-for="n in 4" :key="n" class="h-20 w-full" />
+    <!-- Loading only before the first read of the session: the cached list is
+         rendered straight away on every later visit -->
+    <SmoothSwap>
+      <div v-if="loading" key="loading" class="space-y-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <USkeleton v-for="n in 4" :key="n" class="h-20 w-full" />
+        </div>
+        <USkeleton v-for="n in 5" :key="`row-${n}`" class="h-14 w-full" />
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400">Loading shared files...</p>
       </div>
-      <USkeleton v-for="n in 5" :key="`row-${n}`" class="h-14 w-full" />
-      <p class="text-center text-sm text-gray-600 dark:text-gray-400">Loading shared files...</p>
-    </div>
 
-    <UAlert
-      v-else-if="error"
-      color="error"
-      variant="subtle"
-      icon="i-heroicons-exclamation-circle"
-      title="Failed to load shared files"
-      :description="error"
-      :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
-    />
+      <UAlert
+        v-else-if="error && files.length === 0"
+        key="error"
+        color="error"
+        variant="subtle"
+        icon="i-heroicons-exclamation-circle"
+        title="Failed to load shared files"
+        :description="error"
+        :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
+      />
 
-    <template v-else>
+      <div v-else key="content" class="space-y-6">
+        <SmoothSwap>
+          <UAlert
+            v-if="error"
+            color="warning"
+            variant="subtle"
+            icon="i-heroicons-exclamation-triangle"
+            title="Showing the last list that could be read"
+            :description="error"
+            :actions="[{ label: 'Retry', color: 'warning', variant: 'outline', onClick: () => refresh() }]"
+          />
+        </SmoothSwap>
+
       <!-- Totals -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
@@ -66,14 +81,16 @@
         </div>
       </div>
 
+      <SmoothSwap>
       <UEmpty
         v-if="files.length === 0"
+        key="empty"
         icon="i-heroicons-document-text"
         title="No shared files"
         description="aMule reports no files in your shared directories."
       />
 
-      <UCard v-else>
+      <UCard v-else key="list">
         <template #header>
           <div class="flex flex-wrap items-center justify-between gap-2">
             <h2 class="text-xl font-semibold">Files ({{ visibleFiles.length }})</h2>
@@ -88,14 +105,16 @@
           </div>
         </template>
 
+        <SmoothSwap>
         <UEmpty
           v-if="visibleFiles.length === 0"
+          key="no-matches"
           icon="i-heroicons-magnifying-glass"
           title="No matches"
           :description="`No shared file matches '${search}'.`"
         />
 
-        <TransitionGroup v-else name="list" tag="div" class="space-y-2 relative">
+        <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-2 relative">
           <div
             v-for="file in visibleFiles"
             :key="file.hash || file.fileName"
@@ -124,8 +143,11 @@
             </div>
           </div>
         </TransitionGroup>
+        </SmoothSwap>
       </UCard>
-    </template>
+      </SmoothSwap>
+      </div>
+    </SmoothSwap>
 
     <!-- Details -->
     <UModal v-model:open="detailsOpen" :ui="{ content: 'max-w-3xl' }" title="Shared file details">
@@ -200,10 +222,12 @@ const toast = useToast();
 
 useHead({ title: 'Shared files' });
 
-const files = ref<SharedFile[]>([]);
-// Loading first, so the page never flashes an empty list
-const loading = ref(true);
-const error = ref<string | null>(null);
+// Shared, prefetched feed: refreshed once a minute in the background, faster
+// while this page is open, and never re-fetched from scratch on a revisit.
+const feed = useSharedFilesFeed();
+const { items: files, loading, error } = feed;
+feed.focus();
+
 const refreshing = ref(false);
 const search = ref('');
 const sortBy = ref('transferred');
@@ -264,27 +288,9 @@ const facts = computed(() => {
   ];
 });
 
-async function fetchShared({ silent = false }: { silent?: boolean } = {}) {
-  if (!silent) loading.value = files.value.length === 0;
-  error.value = null;
-
-  try {
-    const result = await $fetch('/api/amule/shared');
-    if (result.success) {
-      files.value = result.data?.sharedFiles ?? [];
-    } else {
-      error.value = result.error || 'Failed to load shared files';
-    }
-  } catch (e: any) {
-    error.value = e.message || 'Failed to load shared files';
-  } finally {
-    loading.value = false;
-  }
-}
-
 async function refresh() {
   refreshing.value = true;
-  await fetchShared({ silent: true });
+  await feed.refresh({ force: true });
   refreshing.value = false;
 }
 
@@ -302,7 +308,4 @@ async function copy(value: string, successTitle: string) {
   }
 }
 
-onMounted(() => {
-  fetchShared();
-});
 </script>

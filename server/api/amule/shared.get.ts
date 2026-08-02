@@ -1,23 +1,23 @@
 /**
  * GET /api/amule/shared
- * Returns shared files list (uploaded files)
+ * Returns the shared files this daemon offers.
+ *
+ * The active uploads used to be fetched here as well, which cost a second EC
+ * round trip on an endpoint nothing read them from; /api/amule/uploads serves
+ * those. It matters more now that this endpoint is polled in the background.
  */
 
 import type { ApiResponse } from '../../../shared/types/api';
-import type { Upload } from '../../utils/amule-types';
+import type { SharedFile } from '../../utils/amule-types';
 
-export default defineEventHandler(async (): Promise<ApiResponse<{ uploads: Upload[]; sharedFiles: any[] }>> => {
+export default defineEventHandler(async (): Promise<ApiResponse<{ sharedFiles: SharedFile[] }>> => {
     try {
         const client = getAmuleClient();
-        const uploads = await client.showUploads();
         const sharedFiles = await client.getSharedFiles();
 
         return {
             success: true,
-            data: {
-                uploads,
-                sharedFiles
-            }
+            data: { sharedFiles }
         };
     } catch (error: any) {
         return {

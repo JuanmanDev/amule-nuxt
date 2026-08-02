@@ -1,0 +1,6 @@
+# Shell scripts and the Dockerfile must keep LF: the Docker build context is the
+# working tree, and a CRLF shebang makes the container fail with
+# "exec /docker-entrypoint.sh: no such file or directory" on a Windows checkout.
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker-entrypoint.sh text eol=lf

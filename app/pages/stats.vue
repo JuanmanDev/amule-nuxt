@@ -11,7 +11,8 @@
     </div>
 
     <!-- Loading is the default state until the first fetch resolves -->
-    <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <SmoothSwap>
+    <div v-if="loading" key="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <UCard v-for="n in 4" :key="n">
         <template #header>
           <USkeleton class="h-6 w-32" />
@@ -24,6 +25,7 @@
 
     <UAlert
       v-else-if="error"
+        key="error"
       color="error"
       variant="subtle"
       icon="i-heroicons-exclamation-circle"
@@ -32,7 +34,7 @@
       :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
     />
 
-    <div v-else-if="stats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div v-else-if="stats" key="stats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Upload Stats -->
       <UCard>
         <template #header>
@@ -165,6 +167,7 @@
         </dl>
       </UCard>
     </div>
+    </SmoothSwap>
   </div>
 </template>
 

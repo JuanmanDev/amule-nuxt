@@ -26,51 +26,57 @@
 
     <AddLinkForm />
 
-    <!-- Loading is the default state until the first fetch resolves -->
-    <div v-if="loading" class="space-y-4">
-      <div
-        v-for="n in 3"
-        :key="n"
-        class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg space-y-3"
-      >
-        <USkeleton class="h-5 w-2/3" />
-        <USkeleton class="h-2 w-full" />
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
-          <USkeleton v-for="c in 4" :key="c" class="h-8 w-full" />
+    <!-- Loading only before the first read of the session; the queue is cached
+         app-wide afterwards, so a revisit renders it straight away -->
+    <SmoothSwap>
+      <div v-if="loading" key="loading" class="space-y-4">
+        <div
+          v-for="n in 3"
+          :key="n"
+          class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg space-y-3"
+        >
+          <USkeleton class="h-5 w-2/3" />
+          <USkeleton class="h-2 w-full" />
+          <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+            <USkeleton v-for="c in 4" :key="c" class="h-8 w-full" />
+          </div>
         </div>
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400">Loading downloads...</p>
       </div>
-      <p class="text-center text-sm text-gray-600 dark:text-gray-400">Loading downloads...</p>
-    </div>
 
-    <!-- Only a hard error when there is nothing to show; with a queue in hand the
-         failure is reported above it, so the page stays usable -->
-    <UAlert
-      v-else-if="error && items.length === 0"
-      color="error"
-      variant="subtle"
-      icon="i-heroicons-exclamation-circle"
-      title="Failed to load downloads"
-      :description="error"
-      :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
-    />
-
-    <UEmpty
-      v-else-if="items.length === 0"
-      icon="i-heroicons-inbox"
-      title="No downloads found"
-      description="Paste an eD2k or magnet link above to start downloading."
-    />
-
-    <template v-else>
+      <!-- Only a hard error when there is nothing to show; with a queue in hand the
+           failure is reported above it, so the page stays usable -->
       <UAlert
-        v-if="error"
-        color="warning"
+        v-else-if="error && items.length === 0"
+        key="error"
+        color="error"
         variant="subtle"
-        icon="i-heroicons-exclamation-triangle"
-        title="Showing the last queue that could be read"
+        icon="i-heroicons-exclamation-circle"
+        title="Failed to load downloads"
         :description="error"
-        :actions="[{ label: 'Retry', color: 'warning', variant: 'outline', onClick: () => refresh() }]"
+        :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
       />
+
+      <UEmpty
+        v-else-if="items.length === 0"
+        key="empty"
+        icon="i-heroicons-inbox"
+        title="No downloads found"
+        description="Paste an eD2k or magnet link above to start downloading."
+      />
+
+      <div v-else key="queue" class="space-y-6">
+      <SmoothSwap>
+        <UAlert
+          v-if="error"
+          color="warning"
+          variant="subtle"
+          icon="i-heroicons-exclamation-triangle"
+          title="Showing the last queue that could be read"
+          :description="error"
+          :actions="[{ label: 'Retry', color: 'warning', variant: 'outline', onClick: () => refresh() }]"
+        />
+      </SmoothSwap>
       <!-- Queue summary + filters -->
       <!-- Controls first, then the speed and the badges aligned right: on a phone
            the speed sits directly under the filter, on wider screens beside it -->
@@ -110,28 +116,32 @@
         </div>
       </div>
 
-      <UEmpty
-        v-if="visibleDownloads.length === 0"
-        icon="i-heroicons-magnifying-glass"
-        title="No matches"
-        :description="`No download matches '${search}'.`"
-      />
-
-      <!-- Rows fade in when a download is added and slide out when it is removed -->
-      <TransitionGroup v-else name="list" tag="div" class="space-y-4 relative">
-        <DownloadRow
-          v-for="download in visibleDownloads"
-          :key="download.hash"
-          :download="download"
-          :busy="busyHash === download.hash"
-          @open="openDetails"
-          @remove="askRemove"
-          @pause="pause"
-          @resume="resume"
-          @priority="setPriority"
+      <SmoothSwap>
+        <UEmpty
+          v-if="visibleDownloads.length === 0"
+          key="no-matches"
+          icon="i-heroicons-magnifying-glass"
+          title="No matches"
+          :description="`No download matches '${search}'.`"
         />
-      </TransitionGroup>
-    </template>
+
+        <!-- Rows fade in when a download is added and slide out when it is removed -->
+        <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-4 relative">
+          <DownloadRow
+            v-for="download in visibleDownloads"
+            :key="download.hash"
+            :download="download"
+            :busy="busyHash === download.hash"
+            @open="openDetails"
+            @remove="askRemove"
+            @pause="pause"
+            @resume="resume"
+            @priority="setPriority"
+          />
+        </TransitionGroup>
+      </SmoothSwap>
+      </div>
+    </SmoothSwap>
 
     <DownloadDetailsModal
       v-model="detailsOpen"

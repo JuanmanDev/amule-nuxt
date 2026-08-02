@@ -123,13 +123,72 @@ html {
     border-radius: 0.25rem;
 }
 
+/* ---------------------------------------------------------------------------
+ * Blocks that appear, disappear or replace each other
+ *
+ * Driven by <SmoothSwap>, which measures the block and pins its height for the
+ * duration so the animation can run from 0 to the real height and back. Used for
+ * every loading skeleton, empty state, error alert and list container, so the
+ * page grows and shrinks instead of snapping between states.
+ * ------------------------------------------------------------------------- */
+
+.smooth-swap-enter-active,
+.smooth-swap-leave-active {
+    transition:
+        height 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity 0.24s ease,
+        transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+    /* The height is animated, so the content must not spill out mid-flight */
+    overflow: hidden;
+}
+
+.smooth-swap-enter-from {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+}
+
+.smooth-swap-leave-to {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+}
+
+/* ---------------------------------------------------------------------------
+ * Page transitions
+ *
+ * nuxt.config declares `pageTransition: { name: 'page', mode: 'out-in' }`; these
+ * are the classes it expects. Short and mostly opacity, so moving between pages
+ * reads as a crossfade rather than an animation to sit through.
+ * ------------------------------------------------------------------------- */
+
+.page-enter-active,
+.page-leave-active {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(0.5rem);
+}
+
+/* A block whose content changes size on its own (a card that gains a row, a
+ * details panel that expands) can opt into the same easing. */
+.smooth-size {
+    transition: height 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     .list-enter-active,
     .list-leave-active,
     .list-move,
     .value-enter-active,
-    .value-leave-active {
+    .value-leave-active,
+    .smooth-swap-enter-active,
+    .smooth-swap-leave-active,
+    .page-enter-active,
+    .page-leave-active,
+    .smooth-size {
         transition: none;
     }
 

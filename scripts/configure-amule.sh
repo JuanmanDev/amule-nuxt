@@ -32,9 +32,14 @@ if [ ! -f "$AMULE_CONF" ]; then
     echo "Creating new aMule configuration..."
     
 [ -n "$EC_PASSWORD_HASH" ] || EC_PASSWORD_HASH="$EC_PASSWORD"
+    # aMule rewrites AppVersion on its own, but seeding it with the installed
+    # daemon's version keeps a fresh config honest.
+    AMULE_VERSION=$(amuled --version 2>&1 | sed -n 's/^aMuleD \([0-9.]*\).*/\1/p' | head -1)
+    [ -n "$AMULE_VERSION" ] || AMULE_VERSION="3.0.1"
+
     cat > "$AMULE_CONF" <<EOF
 [eMule]
-AppVersion=2.3.3
+AppVersion=$AMULE_VERSION
 Nick=aMule-Nuxt-User
 Port=4662
 UDPPort=4672
@@ -43,6 +48,9 @@ IncomingDir=$HOME/amule-downloads/incoming
 Autoconnect=1
 MaxUpload=0
 MaxDownload=0
+# aMule 3.x default; the old 2 kB/s value sliced uploads into so many
+# sub-slots that fast peers were shaped down to a trickle.
+SlotAllocation=10
 MaxConnections=500
 ConnectToKad=1
 ConnectToED2K=1

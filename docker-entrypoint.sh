@@ -21,12 +21,14 @@ if [ ! -f "${AMULE_CONF}" ]; then
 
     cat > "${AMULE_CONF}" <<EOF
 [eMule]
-AppVersion=2.3.3
+AppVersion=3.0.1
 Nick=aMule-Nuxt
 QueueSizePref=50
 MaxUpload=0
 MaxDownload=0
-SlotAllocation=2
+# aMule 3.x default: the old 2 kB/s value sliced uploads into so many sub-slots
+# that fast peers were shaped down to a trickle.
+SlotAllocation=10
 Port=4662
 UDPPort=4672
 UDPEnable=1
@@ -113,8 +115,27 @@ echo "  - aMule daemon: localhost:${AMULE_EC_PORT}"
 echo "  - Nuxt web UI: http://localhost:${NUXT_PORT}"
 echo ""
 
-# Wait for any process to exit
-wait -n
+# Supervise both processes explicitly rather than with a bare `wait -n`: that
+# returns for *any* reaped child (the startup amulecmd check among them), so the
+# container could stop while both services were still running, and it never said
+# which side had gone. Polling the two PIDs keeps the container up as long as both
+# live and names the one that died.
+while kill -0 "${AMULE_PID}" 2>/dev/null && kill -0 "${NUXT_PID}" 2>/dev/null; do
+    sleep 5
+done
 
-# Exit with status of process that exited first
-exit $?
+if kill -0 "${AMULE_PID}" 2>/dev/null; then
+    echo "The Nuxt server exited; stopping the container." >&2
+    wait "${NUXT_PID}"
+    STATUS=$?
+    kill "${AMULE_PID}" 2>/dev/null || true
+else
+    echo "The aMule daemon exited; stopping the container." >&2
+    wait "${AMULE_PID}"
+    STATUS=$?
+    kill "${NUXT_PID}" 2>/dev/null || true
+fi
+
+# Give the survivor a moment to shut down before the container goes away
+wait 2>/dev/null || true
+exit "${STATUS}"

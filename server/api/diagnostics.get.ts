@@ -36,8 +36,12 @@ export default defineEventHandler(async (): Promise<ApiResponse<Diagnostics>> =>
             nodeVersion: process.version,
             uptime: Math.round(process.uptime()),
             amule: {
-                host: String(config.public.amuleEcHost ?? ''),
-                port: config.public.amuleEcPort ?? ''
+                // Read the environment first, exactly as getAmuleClient does: the
+                // values baked into runtimeConfig.public are the ones from build
+                // time, so a container started with AMULE_EC_PORT=… would
+                // otherwise be reported connecting to the wrong port.
+                host: String(process.env.AMULE_EC_HOST || config.public.amuleEcHost || ''),
+                port: process.env.AMULE_EC_PORT || config.public.amuleEcPort || ''
             }
         }
     };

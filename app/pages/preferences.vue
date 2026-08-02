@@ -17,7 +17,8 @@
     </div>
 
     <!-- Loading is the default state until the daemon answered -->
-    <div v-if="loading" class="space-y-6">
+    <SmoothSwap>
+    <div v-if="loading" key="loading" class="space-y-6">
       <UCard v-for="n in 3" :key="n">
         <template #header>
           <USkeleton class="h-6 w-40" />
@@ -30,6 +31,7 @@
 
     <UAlert
       v-else-if="error"
+        key="error"
       color="error"
       variant="subtle"
       icon="i-heroicons-exclamation-circle"
@@ -38,7 +40,7 @@
       :actions="[{ label: 'Retry', color: 'error', variant: 'outline', onClick: () => refresh() }]"
     />
 
-    <template v-else-if="prefs">
+    <div v-else-if="prefs" key="prefs" class="space-y-6">
       <!-- Identity -->
       <UCard>
         <template #header>
@@ -159,7 +161,8 @@
         description="Options for updating and cleaning the server list live on the Servers page."
         :actions="[{ label: 'Open servers', to: '/servers', color: 'info', variant: 'outline' }]"
       />
-    </template>
+    </div>
+    </SmoothSwap>
   </div>
 </template>
 

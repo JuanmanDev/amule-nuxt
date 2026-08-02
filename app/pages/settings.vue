@@ -12,7 +12,8 @@
       </template>
 
       <!-- Loading is the default state until the limits have been read -->
-      <div v-if="loadingLimits" class="flex flex-wrap gap-6">
+      <SmoothSwap>
+      <div v-if="loadingLimits" key="loading" class="flex flex-wrap gap-6">
         <div class="space-y-2">
           <USkeleton class="h-4 w-40" />
           <USkeleton class="h-10 w-56" />
@@ -27,7 +28,7 @@
         </div>
       </div>
 
-      <UForm v-else :state="bandwidthForm" @submit="handleSaveBandwidth"
+      <UForm v-else key="form" :state="bandwidthForm" @submit="handleSaveBandwidth"
         class="flex flex-wrap gap-6 space-y-6"
       >
         <UFormField
@@ -81,6 +82,7 @@
           </UButton>
         </div>
       </UForm>
+      </SmoothSwap>
     </UCard>
 
     <!-- Handle ed2k / magnet links from the device -->
@@ -95,6 +97,7 @@
           anywhere on this device opens it here and offers to add it to the queue.
         </p>
 
+        <SmoothSwap>
         <UAlert
           v-if="!linkHandler.isSupported.value"
           color="warning"
@@ -103,6 +106,7 @@
           title="Needs a secure origin"
           description="Browsers only allow this over https, or over http on localhost. Open the app that way to enable it."
         />
+        </SmoothSwap>
 
         <div class="flex flex-wrap gap-2">
           <UButton
@@ -142,17 +146,24 @@
       </template>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Prefer the diagnostics values: those are what the server actually
+             dials, while runtimeConfig.public holds the build-time defaults -->
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
           <div class="text-sm text-gray-600 dark:text-gray-400">External Connection host</div>
-          <div class="text-lg font-mono mt-1 break-all">{{ runtimeConfig.public.amuleEcHost }}</div>
+          <div class="text-lg font-mono mt-1 break-all">
+            {{ diagnostics?.amule.host || runtimeConfig.public.amuleEcHost }}
+          </div>
         </div>
 
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
           <div class="text-sm text-gray-600 dark:text-gray-400">External Connection port</div>
-          <div class="text-lg font-mono mt-1">{{ runtimeConfig.public.amuleEcPort }}</div>
+          <div class="text-lg font-mono mt-1">
+            {{ diagnostics?.amule.port || runtimeConfig.public.amuleEcPort }}
+          </div>
         </div>
       </div>
 
+      <SmoothSwap>
       <div v-if="diagnostics" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">
           <div class="text-sm text-gray-600 dark:text-gray-400">App version</div>
@@ -170,6 +181,7 @@
           </div>
         </div>
       </div>
+      </SmoothSwap>
 
       <UAlert
         icon="i-heroicons-information-circle"
@@ -227,6 +239,13 @@ async function handleSaveBandwidth() {
       bandwidthForm.downloadLimit
     );
     
+    // The server reads the limits back from the daemon after writing them, so
+    // show what actually took effect rather than what was typed.
+    if (result.data) {
+      bandwidthForm.uploadLimit = result.data.uploadLimit;
+      bandwidthForm.downloadLimit = result.data.downloadLimit;
+    }
+
     if (result.success) {
       toast.add({ title: 'Settings saved successfully', color: 'success' });
     } else {

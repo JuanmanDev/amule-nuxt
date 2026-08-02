@@ -37,7 +37,8 @@
       </template>
 
       <!-- Loading first, never an empty list before the queue is known -->
-      <div v-if="downloadsLoading" class="space-y-3">
+      <SmoothSwap>
+      <div v-if="downloadsLoading" key="loading" class="space-y-3">
         <div v-for="n in 3" :key="n" class="space-y-2">
           <USkeleton class="h-4 w-2/3" />
           <USkeleton class="h-2 w-full" />
@@ -46,6 +47,7 @@
 
       <UAlert
         v-else-if="downloadsError"
+        key="error"
         color="error"
         variant="subtle"
         icon="i-heroicons-exclamation-circle"
@@ -55,12 +57,13 @@
 
       <UEmpty
         v-else-if="downloadItems.length === 0"
+        key="empty"
         icon="i-heroicons-inbox"
         title="Nothing downloading"
         description="Paste an eD2k or magnet link above to get started."
       />
 
-      <TransitionGroup v-else name="list" tag="div" class="space-y-3 relative">
+      <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-3 relative">
         <NuxtLink
           v-for="download in summaryDownloads"
           :key="download.hash"
@@ -79,6 +82,7 @@
           <UProgress :model-value="download.percentComplete" :min="0" :max="100" size="sm" />
         </NuxtLink>
       </TransitionGroup>
+      </SmoothSwap>
 
       <!-- Always reachable, whatever the queue looks like -->
       <template #footer>

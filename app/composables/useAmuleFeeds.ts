@@ -1,0 +1,263 @@
+/**
+ * App-wide cache for the three collections every page reads: the download queue,
+ * the active uploads and the shared files.
+ *
+ * Two problems this solves:
+ *
+ *  * **Flashing lists.** Each page used to own its data, so navigating to it
+ *    started from "loading" and the list appeared, vanished and reappeared. The
+ *    state lives in `useState` here, so a page that has been visited once always
+ *    has something to render immediately.
+ *  * **Waiting for the daemon.** The feeds keep refreshing in the background
+ *    (see `app/plugins/amule-prefetch.client.ts`), so opening Downloads or
+ *    Uploads shows data that is already a few seconds old at worst instead of
+ *    starting a round trip.
+ *
+ * The cadence depends on whether the page showing a feed is open: a page calls
+ * `focus()` and gets the fast interval for as long as it is mounted, everything
+ * else polls slowly. The daemon serves a single EC connection, so nothing here
+ * ever runs two fetches of the same feed at once, and polling stops while the
+ * tab is hidden.
+ */
+
+import type { ApiResponse } from '#shared/types/api';
+import type { Download, SharedFile, Upload } from '../../server/utils/amule-types';
+
+export type FeedName = 'downloads' | 'uploads' | 'shared';
+
+interface FeedDefinition {
+    /** Interval used while a page that shows this feed is open. */
+    focusMs: number;
+    /** Interval used when no page shows it, i.e. the prefetch cadence. */
+    idleMs: number;
+    label: string;
+}
+
+/**
+ * Downloads and uploads are what the user watches move, so they stay warm at 10
+ * seconds in the background. The shared file list is long and changes rarely, so
+ * it is refreshed once a minute.
+ */
+export const FEED_DEFINITIONS: Record<FeedName, FeedDefinition> = {
+    downloads: { focusMs: 3000, idleMs: 10_000, label: 'downloads' },
+    uploads: { focusMs: 3000, idleMs: 10_000, label: 'uploads' },
+    shared: { focusMs: 15_000, idleMs: 60_000, label: 'shared files' }
+};
+
+/** How long the first shared-files read waits, so it does not land with the others. */
+const SHARED_WARMUP_DELAY_MS = 1500;
+
+/**
+ * Per-feed bookkeeping that must not be reactive: in-flight guards and the
+ * number of mounted pages interested in the feed. Client-only, one map per
+ * browser tab.
+ */
+interface FeedRuntime {
+    inFlight: boolean;
+    /** How many mounted components are showing this feed right now. */
+    focusCount: number;
+    /**
+     * When the last attempt *started*. `updatedAt` only moves once a fetch
+     * settles, so without this a second trigger arriving while the first is
+     * still in flight (the startup warm-up and the visibility check can land
+     * together) would fetch again the moment the first one finished.
+     */
+    lastAttemptAt: number;
+}
+
+/**
+ * One runtime map per browser tab.
+ *
+ * It hangs off `globalThis` rather than being a module-level `const` because the
+ * dev server can hand the same module to more than one chunk: with a map per
+ * module copy the guards below stop being shared and the feeds double-fetch.
+ * On the server every request gets a throwaway map — nothing there polls, and a
+ * shared one would leak one request's timings into the next.
+ */
+function runtimeStore(): Map<FeedName, FeedRuntime> {
+    if (import.meta.server) return new Map();
+
+    const global = globalThis as typeof globalThis & { __amuleFeedRuntime?: Map<FeedName, FeedRuntime> };
+    global.__amuleFeedRuntime ??= new Map();
+    return global.__amuleFeedRuntime;
+}
+
+function runtimeFor(name: FeedName): FeedRuntime {
+    const store = runtimeStore();
+    let entry = store.get(name);
+    if (!entry) {
+        entry = { inFlight: false, focusCount: 0, lastAttemptAt: 0 };
+        store.set(name, entry);
+    }
+    return entry;
+}
+
+/** Feed state, shared by every component that asks for the same feed. */
+function feedState<T>(name: FeedName) {
+    return {
+        items: useState<T[]>(`amule-feed-${name}`, () => []),
+        // True only until the first attempt settles. A cached feed never goes
+        // back to loading, which is what keeps a revisit from flashing.
+        loading: useState<boolean>(`amule-feed-${name}-loading`, () => true),
+        error: useState<string | null>(`amule-feed-${name}-error`, () => null),
+        /** Epoch ms of the last settled attempt, 0 before the first one. */
+        updatedAt: useState<number>(`amule-feed-${name}-updated`, () => 0)
+    };
+}
+
+function fetcherFor(name: FeedName): () => Promise<ApiResponse<any[]>> {
+    const api = useAmuleApi();
+    switch (name) {
+        case 'downloads': return () => api.getDownloads();
+        case 'uploads': return () => api.getUploads();
+        // /api/amule/shared answers with an object, so it is unwrapped here and
+        // every feed downstream deals with a plain array.
+        case 'shared': return async () => {
+            const result = await api.getSharedFiles();
+            return { ...result, data: result.data?.sharedFiles ?? [] };
+        };
+    }
+}
+
+/** How long this feed may go without a refresh, given who is watching it. */
+export function feedIntervalMs(name: FeedName): number {
+    const definition = FEED_DEFINITIONS[name];
+    return runtimeFor(name).focusCount > 0 ? definition.focusMs : definition.idleMs;
+}
+
+export interface AmuleFeed<T> {
+    items: Ref<T[]>;
+    loading: Ref<boolean>;
+    error: Ref<string | null>;
+    updatedAt: Ref<number>;
+    /** True once data has been read at least once, successfully or not. */
+    settled: ComputedRef<boolean>;
+    refresh: (options?: { force?: boolean }) => Promise<void>;
+    /**
+     * Keeps the fast interval while the calling component is alive. Pass a ref or
+     * getter to tie it to a toggle (an "auto refresh" switch, say); the feed then
+     * drops back to the background cadence while that is false.
+     */
+    focus: (active?: MaybeRefOrGetter<boolean>) => void;
+}
+
+export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
+    const state = feedState<T>(name);
+    const fetcher = fetcherFor(name);
+    const definition = FEED_DEFINITIONS[name];
+
+    const settled = computed(() => state.updatedAt.value > 0);
+
+    async function refresh({ force = false }: { force?: boolean } = {}) {
+        const entry = runtimeFor(name);
+        // A single EC connection serves every request: overlapping fetches only
+        // queue behind each other and make the whole UI slower.
+        if (entry.inFlight) return;
+
+        const interval = feedIntervalMs(name);
+        const since = Math.max(state.updatedAt.value, entry.lastAttemptAt);
+        if (!force && since > 0 && Date.now() - since < interval) return;
+
+        entry.inFlight = true;
+        entry.lastAttemptAt = Date.now();
+        try {
+            const result = await fetcher();
+            if (result.success) {
+                state.items.value = (result.data ?? []) as T[];
+                state.error.value = null;
+            } else {
+                // Keep the last list on screen and report why it is not moving;
+                // replacing it with an error box is the flicker users noticed.
+                state.error.value = result.error || `Failed to load ${definition.label}`;
+            }
+        } catch (e: any) {
+            state.error.value = e?.message || `Failed to load ${definition.label}`;
+        } finally {
+            entry.inFlight = false;
+            state.loading.value = false;
+            state.updatedAt.value = Date.now();
+        }
+    }
+
+    function focus(active: MaybeRefOrGetter<boolean> = true) {
+        if (import.meta.server) return;
+
+        const entry = runtimeFor(name);
+        let held = false;
+
+        const acquire = () => {
+            if (held) return;
+            held = true;
+            entry.focusCount += 1;
+            // Whatever is cached is shown right away; this only tops it up.
+            refresh();
+        };
+
+        const release = () => {
+            if (!held) return;
+            held = false;
+            entry.focusCount = Math.max(0, entry.focusCount - 1);
+        };
+
+        watch(() => toValue(active), on => (on ? acquire() : release()), { immediate: true });
+        onScopeDispose(release);
+    }
+
+    return { ...state, settled, refresh, focus };
+}
+
+export const useDownloadsFeed = () => useAmuleFeed<Download>('downloads');
+export const useUploadsFeed = () => useAmuleFeed<Upload>('uploads');
+export const useSharedFilesFeed = () => useAmuleFeed<SharedFile>('shared');
+
+/**
+ * Drives every feed from one timer.
+ *
+ * Called by the client plugin, so the loops exist for the whole session rather
+ * than being torn down and restarted on every navigation.
+ */
+export function startFeedPrefetch() {
+    const feeds = {
+        downloads: useAmuleFeed<Download>('downloads'),
+        uploads: useAmuleFeed<Upload>('uploads'),
+        shared: useAmuleFeed<SharedFile>('shared')
+    } satisfies Record<FeedName, AmuleFeed<any>>;
+
+    const names = Object.keys(feeds) as FeedName[];
+
+    /** One tick per second decides which feeds are due; cheaper than one timer each. */
+    const timer = setInterval(() => {
+        if (document.visibilityState !== 'visible') return;
+
+        for (const name of names) {
+            const feed = feeds[name];
+            if (Date.now() - feed.updatedAt.value >= feedIntervalMs(name)) {
+                feed.refresh();
+            }
+        }
+    }, 1000);
+
+    // A hidden tab stops polling entirely; coming back should not wait out the
+    // remainder of an interval before the numbers move again.
+    const onVisibility = () => {
+        if (document.visibilityState !== 'visible') return;
+        for (const name of names) feeds[name].refresh();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    // First fill: the queue and the uploads matter immediately.
+    feeds.downloads.refresh();
+    feeds.uploads.refresh();
+
+    // The shared list is the heaviest of the three and the daemon serves a single
+    // EC connection, so its first read is held back by pre-dating its last
+    // attempt: the tick above then picks it up once that offset has elapsed. A
+    // timer of its own would race the tick and fetch the list twice.
+    runtimeFor('shared').lastAttemptAt =
+        Date.now() - FEED_DEFINITIONS.shared.idleMs + SHARED_WARMUP_DELAY_MS;
+
+    return () => {
+        clearInterval(timer);
+        document.removeEventListener('visibilitychange', onVisibility);
+    };
+}

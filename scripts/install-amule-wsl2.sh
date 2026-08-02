@@ -1,38 +1,28 @@
 #!/bin/bash
-# Install aMule daemon on WSL2 (Ubuntu/Debian)
+# Install the aMule daemon on WSL2 (Ubuntu/Debian).
+#
+# Same approach as install-amule-linux.sh: the distribution package is aMule
+# 2.3.3, so the upstream 3.0.1 AppImage is unpacked into ~/.local instead. WSL2
+# ships no FUSE by default, which is exactly why the bundle is unpacked rather
+# than executed in place.
 
-set -e
+set -euo pipefail
 
-echo "aMule-Nuxt: Installing aMule daemon on WSL2..."
+echo "aMule-Nuxt: installing the aMule daemon on WSL2..."
 echo ""
 
-# Update package list
-echo "Updating package lists..."
-sudo apt update
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$SCRIPT_DIR/install-amule-linux.sh"
 
-# Install aMule daemon and utilities
-echo "Installing aMule daemon..."
-sudo apt install -y amule-daemon amule-utils
-
-# Create aMule configuration directory
-echo "Creating aMule configuration directory..."
-mkdir -p ~/.aMule
-
-# Create download directories
-echo "Creating download directories..."
-mkdir -p ~/amule-downloads/incoming
-mkdir -p ~/amule-downloads/temp
-
-echo ""
-echo "aMule daemon installed successfully!"
+echo "WSL2 notes:"
+echo "- The daemon listens inside WSL2. Either run this app inside WSL2 as well,"
+echo "  or set ECAddress=0.0.0.0 in amule.conf and point AMULE_EC_HOST at the"
+echo "  WSL2 address from 'hostname -I'."
+echo "- Windows Firewall may need to allow the eD2k / Kad ports for a High ID."
 echo ""
 echo "Next steps:"
 echo "1. Run the configuration script: npm run configure:amule"
-echo "2. Or manually edit ~/.aMule/amule.conf to set:"
-echo "   - AcceptExternalConnections=1"
-echo "   - ECPassword=<your-password>"
-echo "   - ECPort=4712"
-echo "3. Start aMule daemon: amuled -c ~/.aMule -o"
-echo "4. Update .env file with your EC password"
-echo "5. Start the Nuxt app: npm run dev"
+echo "2. Start the daemon: amuled -c ~/.aMule -o"
+echo "3. Update .env with your EC password"
+echo "4. Start the Nuxt app: npm run dev"
 echo ""

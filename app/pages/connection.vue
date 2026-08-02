@@ -163,18 +163,21 @@
         <h2 class="text-xl font-semibold">Server message</h2>
       </template>
 
-      <div v-if="serverInfoLoading" class="space-y-2">
-        <USkeleton v-for="n in 4" :key="n" class="h-4" :class="n % 2 ? 'w-3/4' : 'w-1/2'" />
-      </div>
-      <UEmpty
-        v-else-if="serverInfo.length === 0"
-        icon="i-heroicons-chat-bubble-left-right"
-        title="No server message"
-        description="Connect to an eD2k server to see its message of the day."
-      />
-      <div v-else class="space-y-1 text-sm">
-        <p v-for="(line, index) in serverInfo" :key="index" class="break-words">{{ line }}</p>
-      </div>
+      <SmoothSwap>
+        <div v-if="serverInfoLoading" key="loading" class="space-y-2">
+          <USkeleton v-for="n in 4" :key="n" class="h-4" :class="n % 2 ? 'w-3/4' : 'w-1/2'" />
+        </div>
+        <UEmpty
+          v-else-if="serverInfo.length === 0"
+          key="empty"
+          icon="i-heroicons-chat-bubble-left-right"
+          title="No server message"
+          description="Connect to an eD2k server to see its message of the day."
+        />
+        <div v-else key="message" class="space-y-1 text-sm">
+          <p v-for="(line, index) in serverInfo" :key="index" class="break-words">{{ line }}</p>
+        </div>
+      </SmoothSwap>
     </UCard>
   </div>
 </template>
