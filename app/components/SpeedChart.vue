@@ -90,24 +90,46 @@ const PADDING = 4;
 const drawn = ref<Sample[]>([...props.samples]);
 let frame: number | undefined;
 
-const scale = computed(() => {
-  const peak = Math.max(
-    ...drawn.value.map(sample => Math.max(sample.upload, sample.download)),
-    1
-  );
-  // Round the axis up so small changes do not rescale the whole chart
-  const magnitude = 10 ** Math.floor(Math.log10(peak));
-  return Math.ceil(peak / magnitude) * magnitude;
-});
+/** Rounds an axis top up to 1, 2 or 5 times a power of ten. */
+function niceCeil(value: number): number {
+    const magnitude = 10 ** Math.floor(Math.log10(value));
+    const normalised = value / magnitude;
+    return (([1, 2, 5, 10] as const).find(step => normalised <= step) ?? 10) * magnitude;
+}
+
+/**
+ * Axis top for a series.
+ *
+ * Read from the samples, never from the tweened series: a scale recomputed while
+ * the tween runs rescales the chart on every frame, which made the graph pump up
+ * and down between samples and settle on a different scale once it stopped.
+ *
+ * It also only shrinks once the peak has dropped well below the current top, so
+ * a rate that jitters around a round number does not flip the axis every sample.
+ */
+function scaleFor(series: Sample[], current: number): number {
+    const peak = series.reduce((top, sample) => Math.max(top, sample.upload, sample.download), 1);
+    const wanted = niceCeil(peak);
+    if (wanted > current) return wanted;
+    return peak < current * 0.4 ? wanted : current;
+}
+
+/** Axis top the chart is heading for; also what the label reports. */
+const scale = ref(scaleFor(props.samples, 1));
+/** Axis top actually drawn, tweened towards `scale` so a rescale glides. */
+const drawnScale = ref(scale.value);
 
 function buildPath(pick: (sample: Sample) => number, close: boolean): string {
     const list = drawn.value;
     if (list.length < 2) return '';
 
     const stepX = (WIDTH - PADDING * 2) / (list.length - 1);
+    const floor = HEIGHT - PADDING;
     const points = list.map((sample, index) => {
         const x = PADDING + index * stepX;
-        const y = HEIGHT - PADDING - (pick(sample) / scale.value) * (HEIGHT - PADDING * 2);
+        const height = (pick(sample) / drawnScale.value) * (HEIGHT - PADDING * 2);
+        // Clamped: mid-tween a sample can briefly sit above the drawn axis top
+        const y = Math.max(PADDING, floor - height);
         return `${x.toFixed(2)},${y.toFixed(2)}`;
     });
 
@@ -140,11 +162,12 @@ function resample(series: Sample[], length: number): Sample[] {
     });
 }
 
-function animateTo(target: Sample[]) {
+function animateTo(target: Sample[], targetScale: number) {
     if (frame) cancelAnimationFrame(frame);
 
     const length = target.length;
     const from = resample(drawn.value, length);
+    const fromScale = drawnScale.value;
     const start = performance.now();
 
     const step = (now: number) => {
@@ -156,12 +179,15 @@ function animateTo(target: Sample[]) {
             upload: from[index]!.upload + (sample.upload - from[index]!.upload) * eased,
             download: from[index]!.download + (sample.download - from[index]!.download) * eased
         }));
+        // Tweened alongside the samples, so a new axis top arrives gradually
+        drawnScale.value = fromScale + (targetScale - fromScale) * eased;
 
         if (progress < 1) {
             frame = requestAnimationFrame(step);
         } else {
             frame = undefined;
             drawn.value = [...target];
+            drawnScale.value = targetScale;
         }
     };
 
@@ -169,11 +195,14 @@ function animateTo(target: Sample[]) {
 }
 
 watch(() => props.samples, samples => {
+  scale.value = scaleFor(samples, scale.value);
+
   if (samples.length < 2) {
     drawn.value = [...samples];
+    drawnScale.value = scale.value;
     return;
   }
-  animateTo([...samples]);
+  animateTo([...samples], scale.value);
 }, { deep: true });
 
 onUnmounted(() => {
