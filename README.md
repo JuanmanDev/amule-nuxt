@@ -141,7 +141,7 @@ docker run -d --name amule-nuxt -p 3000:3000 \
 
 ### Standalone zip (no Docker)
 
-Each GitHub release attaches `amule-nuxt-X.Y.Z.zip`: the built Nitro server plus launch helpers. Node 22+ is the only requirement — there is nothing to compile and no `npm install`.
+Each GitHub release attaches `amule-nuxt-X.Y.Z.zip`: the built Nitro server plus launch helpers. Node 24+ is the only requirement — there is nothing to compile and no `npm install`.
 
 ```bash
 unzip amule-nuxt-1.0.0.zip

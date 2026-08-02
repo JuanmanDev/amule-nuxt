@@ -5,7 +5,7 @@ This bundle is a self-contained Nitro server. There is nothing to compile and no
 
 ## Requirements
 
-- Node.js 22 or newer (`node --version`)
+- Node.js 24 or newer (`node --version`)
 - A reachable aMule daemon with External Connections enabled
   (`AcceptExternalConnections=1` and a password in `~/.aMule/amule.conf`)
 

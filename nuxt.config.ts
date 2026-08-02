@@ -21,9 +21,14 @@ export default defineNuxtConfig({
   // the runtime image: the server-side lookup logged "failed to load icon" for
   // every icon and rendered none. Scanning the templates bundles the icons the
   // app actually uses into the client build instead, which also means no icon
-  // request ever leaves the browser.
+  // request ever leaves the browser. `lucide` is not referenced by any template
+  // -- it is what Nuxt UI reaches for internally (chevrons, close buttons) --
+  // so it has to be listed explicitly.
   icon: {
-    clientBundle: { scan: true },
+    clientBundle: {
+      scan: true,
+      icons: ['lucide:chevron-down', 'lucide:chevron-up', 'lucide:chevron-left', 'lucide:chevron-right', 'lucide:check', 'lucide:x', 'lucide:search', 'lucide:loader-circle', 'lucide:arrow-up-down']
+    },
     serverBundle: false
   },
 

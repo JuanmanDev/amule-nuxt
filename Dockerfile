@@ -3,7 +3,7 @@
 # see it; BuildKit only fills the automatic platform args in at global scope.
 ARG TARGETARCH
 
-FROM node:22-bookworm-slim AS nuxt-builder
+FROM node:24-bookworm-slim AS nuxt-builder
 
 # Release being built. CI passes the semantic-release version so the built app
 # reports the same number as the image tag; local builds fall back to the
@@ -83,7 +83,7 @@ RUN set -eux; \
     test -f /opt/amule/usr/bin/amuled
 
 # Final stage
-FROM node:22-bookworm-slim
+FROM node:24-bookworm-slim
 
 ARG APP_VERSION=0.0.0-development
 
