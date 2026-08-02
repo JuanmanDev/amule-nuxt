@@ -87,7 +87,7 @@ If the daemon listens only on loopback, either run this app on the same host, or
 ```bash
 cp .env.example .env      # set AMULE_EC_PASSWORD
 docker compose up -d
-# UI on http://localhost:3000, daemon EC on 4712
+# UI on http://localhost:3000, live updates on 3001, daemon EC on 4712
 ```
 
 Already have a daemon, or want the two apart? See
@@ -119,6 +119,7 @@ installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 | `AMULE_EC_PORT` | `4712` | External Connection port |
 | `AMULE_EC_PASSWORD` | – | Plain password **or** its MD5 hash |
 | `NUXT_PORT` / `PORT` | `3000` | Port this app listens on |
+| `WS_PORT` | `3001` | Second port, for the live updates: their own WebSocket server. The browser is told this number, so it must be reachable at that same value from outside |
 | `SERVICES` | `all` | Docker only: `all` (daemon + app), `web` (app only), `amule` (daemon only) |
 | `LOG_LEVEL` | auto | `error`, `warn`, `info`, `debug`, `trace`, or a number |
 | `NODE_ENV` | – | `development` turns on verbose logging and dev tooling |
@@ -142,12 +143,24 @@ Pin as tightly as you want to be surprised:
 
 ```bash
 # App only, against a daemon that already exists
-docker run -d --name amule-nuxt -p 3000:3000 \
+docker run -d --name amule-nuxt \
+  -p 3000:3000 \
+  -p 3001:3001 \
   -e AMULE_EC_HOST=192.168.1.50 \
   -e AMULE_EC_PORT=4712 \
   -e AMULE_EC_PASSWORD=your_password \
   ghcr.io/juanmandev/amule-nuxt:1.1-web
 ```
+
+**Two ports, not one.** 3000 serves the app; **3001** is a second server that pushes
+the live updates — queue, speeds and transfers as they change. Leave it unpublished
+and the pages still work, falling back to polling, but the UI reports that live
+updates are unavailable first.
+
+Already using 3001 for something else? Move it with `WS_PORT` and publish the same
+number on both sides — `-e WS_PORT=3091 -p 3091:3091`. Both sides matter because the
+browser is told which port to dial, so a host-only remap leaves it knocking on the
+old one. The entrypoint passes the new value on to the page for you.
 
 The `-web` image has no daemon in it, so it cannot accidentally run a second one
 beside the one it is pointed at. With the full image, `SERVICES=web` does the same
@@ -214,7 +227,9 @@ services:
       AMULE_EC_PASSWORD: your_ec_password  # plain password or its MD5 hash
     ports:
       - "3000:3000"                        # web interface
-      - "3001:3001"                        # live updates over WebSocket
+      # Live updates run on their own server on a second port, and the browser is
+      # told this number: publish it unchanged, or set WS_PORT and change both sides
+      - "3001:3001"
     # Only needed when AMULE_EC_HOST is host.docker.internal on Linux
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -271,8 +286,8 @@ services:
       AMULE_EC_PORT: "4712"
       AMULE_EC_PASSWORD: your_ec_password
     ports:
-      - "3000:3000"
-      - "3001:3001"
+      - "3000:3000"                        # web interface
+      - "3001:3001"                        # live updates, see above
     restart: unless-stopped
 
 volumes:
@@ -301,6 +316,20 @@ NUXT_PORT=3000 AMULE_EC_HOST=… AMULE_EC_PASSWORD=… node .output/server/index
 
 The build output is a self-contained Nitro server; no `node_modules` needed at runtime.
 
+Running `node` directly is the one case where the live-update port needs two
+variables, because nothing is there to pair them up:
+
+```bash
+WS_PORT=3091 NUXT_PUBLIC_WS_PORT=3091 node .output/server/index.mjs
+```
+
+`WS_PORT` moves the listener, `NUXT_PUBLIC_WS_PORT` is what the page tells the
+browser to dial — Nitro reads that name at runtime, while plain `WS_PORT` is only
+read into the public config at build time. Set one without the other and the server
+logs the mismatch and clients fall back to polling. Docker and the release zip's
+`start.sh` / `start.ps1` derive the second from the first, so there `WS_PORT` alone
+is enough.
+
 ### systemd
 
 ```ini
@@ -322,7 +351,7 @@ WantedBy=multi-user.target
 
 ### Behind a reverse proxy
 
-Serve it over https so the `ed2k:` link handler and clipboard paste work. Proxy `/` to the app, and keep the WebSocket port (3001) reachable, or accept the polling fallback.
+Serve it over https so the `ed2k:` link handler and clipboard paste work. Proxy `/` to the app, and keep the live-update port (`WS_PORT`, 3001 by default) reachable from the browser — it is a separate server, not a path on the app, so it needs its own proxy entry or its own hostname. Without it every page still works on the polling fallback.
 
 ---
 

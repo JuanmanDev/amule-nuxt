@@ -40,7 +40,27 @@ export default defineNitroPlugin((nitroApp) => {
     // Standalone WebSocket server for the live push. The port is configurable so a
     // second instance (a preview next to a dev server, several containers on one
     // host) does not collide.
+    /*
+     * The browser is told which port to dial through `runtimeConfig.public.wsPort`,
+     * which is resolved from WS_PORT when the app is *built*. So a deployment that
+     * moves the port has to pass NUXT_PUBLIC_WS_PORT as well, or the page keeps
+     * sending browsers to the built-in default while this server listens elsewhere:
+     * live updates report as unavailable and every page falls back to polling.
+     *
+     * Both launchers do that for you (docker-entrypoint.sh and the start scripts in
+     * the release zip default NUXT_PUBLIC_WS_PORT to WS_PORT). It cannot be done
+     * here: the runtime config is frozen by the time a Nitro plugin runs.
+     */
     const WS_PORT = Number(process.env.WS_PORT ?? 3001);
+    const announced = Number(useRuntimeConfig().public.wsPort ?? 3001);
+
+    if (announced !== WS_PORT) {
+        log.warn(
+            `Listening for live updates on ${WS_PORT} but telling browsers ${announced}: `
+            + `set NUXT_PUBLIC_WS_PORT=${WS_PORT} as well, or clients will fall back to polling`
+        );
+    }
+
     const wss = new WebSocketServer({ port: WS_PORT });
 
     wss.on('listening', () => log.info(`WebSocket server listening on port ${WS_PORT}`));

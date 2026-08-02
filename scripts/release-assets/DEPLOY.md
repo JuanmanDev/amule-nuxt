@@ -23,7 +23,7 @@ Edit `.env` and set at least:
 | `AMULE_EC_PORT`     | External Connection port                         | `4712`      |
 | `AMULE_EC_PASSWORD` | External Connection password (required)          | —           |
 | `NUXT_PORT`         | Port the web UI listens on                       | `3000`      |
-| `WS_PORT`           | Live-update WebSocket port                       | `3001`      |
+| `WS_PORT`           | Live-update WebSocket port, a second listener. The browser is told this number, so it must be reachable at the same value | `3001`      |
 | `LOG_LEVEL`         | `error`, `warn`, `info` or `debug`               | `info`      |
 
 ## 2. Start

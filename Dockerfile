@@ -136,10 +136,15 @@ ENV SERVICES=web \
     AMULE_EC_HOST=host.docker.internal \
     AMULE_EC_PORT=4712 \
     NUXT_PORT=3000 \
+    WS_PORT=3001 \
     NODE_ENV=production \
     APP_VERSION=${APP_VERSION}
 
-EXPOSE 3000
+# 3000: web interface
+# 3001: live updates, on their own WebSocket server and their own port. The browser
+#       is told this number, so publish it unchanged, or move both ends together
+#       with WS_PORT.
+EXPOSE 3000 3001
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD wget -qO- "http://127.0.0.1:${NUXT_PORT}/" >/dev/null 2>&1 || exit 1
@@ -192,16 +197,18 @@ ENV SERVICES=all \
     AMULE_EC_HOST=localhost \
     AMULE_EC_PORT=4712 \
     NUXT_PORT=3000 \
+    WS_PORT=3001 \
     NODE_ENV=production \
     APP_VERSION=${APP_VERSION}
 
 # Expose ports
 # 3000: Nuxt web interface
+# 3001: live updates over WebSocket (see the web stage above)
 # 4712: aMule External Connection
 # 4662: aMule eD2k
 # 4665/udp: aMule UD2k
 # 4672/udp: aMule Kad
-EXPOSE 3000 4712 4662 4665/udp 4672/udp
+EXPOSE 3000 3001 4712 4662 4665/udp 4672/udp
 
 # The daemon takes longer to come up than the web server alone
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \

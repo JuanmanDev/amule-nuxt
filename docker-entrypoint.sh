@@ -150,6 +150,14 @@ if [ "${run_amule}" = true ]; then
 fi
 
 if [ "${run_web}" = true ]; then
+    # Live updates listen on their own port, and the browser is told which one
+    # through the public runtime config - a value baked when the app was built. So
+    # WS_PORT on its own would move this listener while clients kept dialling the
+    # built-in 3001 and silently fell back to polling. NUXT_PUBLIC_WS_PORT is the
+    # name Nitro reads at runtime, so it follows WS_PORT unless it was set by hand.
+    export WS_PORT="${WS_PORT:-3001}"
+    export NUXT_PUBLIC_WS_PORT="${NUXT_PUBLIC_WS_PORT:-${WS_PORT}}"
+
     if [ "${SERVICES}" = "web" ]; then
         echo "Reaching the daemon at ${AMULE_EC_HOST:-localhost}:${AMULE_EC_PORT}"
         if [ -z "${AMULE_EC_PASSWORD}" ]; then
@@ -173,6 +181,7 @@ if [ "${run_amule}" = true ]; then
 fi
 if [ "${run_web}" = true ]; then
     echo "  - Nuxt web UI: http://localhost:${NUXT_PORT}"
+    echo "  - Live updates: ws://localhost:${WS_PORT} (publish this port too, or the UI polls)"
 fi
 echo ""
 

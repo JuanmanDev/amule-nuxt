@@ -59,7 +59,8 @@ services:
         condition: service_healthy
     ports:
       - "${WEB_PORT:-3000}:3000"    # Nuxt web interface
-      - "${WS_PORT:-3001}:3001"     # WebSocket updates
+      # Live updates; the same number on both sides, see docker-compose.yml
+      - "${WS_PORT:-3001}:${WS_PORT:-3001}"
     environment:
       - NODE_ENV=production
       - SERVICES=web
@@ -68,6 +69,7 @@ services:
       - AMULE_EC_PORT=4712
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
       - NUXT_PORT=3000
+      - WS_PORT=${WS_PORT:-3001}
     restart: unless-stopped
     networks:
       - amule-network

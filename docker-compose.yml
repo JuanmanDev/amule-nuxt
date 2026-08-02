@@ -22,7 +22,9 @@ services:
     container_name: amule-nuxt
     ports:
       - "${WEB_PORT:-3000}:3000"     # Nuxt web interface
-      - "${WS_PORT:-3001}:3001"      # WebSocket updates
+      # Live updates. Same number on both sides on purpose: the browser is told
+      # this port, so a host-only remap would leave it dialling the wrong one.
+      - "${WS_PORT:-3001}:${WS_PORT:-3001}"
       - "${EC_PORT:-4712}:4712"      # aMule External Connection
       - "${ED2K_TCP_PORT:-4662}:4662"      # aMule eD2k TCP
       - "${ED2K_UDP_PORT:-4665}:4665/udp"  # aMule eD2k UDP
@@ -35,6 +37,7 @@ services:
       - AMULE_EC_HOST=localhost
       - AMULE_EC_PORT=4712
       - NUXT_PORT=3000
+      - WS_PORT=${WS_PORT:-3001}
     volumes:
       - amule-config:/home/amule/.aMule
       # Bind these to real directories to keep the files outside Docker:
