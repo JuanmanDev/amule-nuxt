@@ -137,15 +137,40 @@ test.describe('downloads page', () => {
         await expect(page.getByText(/Already downloaded and shared as/).first()).toBeVisible();
     });
 
-    test('shows a dead link as "No sources" with a remove shortcut', async ({ page }) => {
+    test('shows a sourceless link as "Searching", with what to check and a remove shortcut', async ({ page }) => {
         await addTestDownload(page);
         await gotoReady(page, '/downloads');
 
         const row = page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' }).first();
         await expect(row).toBeVisible();
-        await expect(row.getByText('No sources')).toBeVisible();
+        // Leads with the search, since that is the normal state after adding a link
+        await expect(row.getByText('Searching', { exact: true })).toBeVisible();
+        await expect(row.getByText(/Searching for sources/)).toBeVisible();
+        // and still says what to check when it stays that way
         await expect(row.getByText(/32 character hash/)).toBeVisible();
-        await expect(row.getByRole('button', { name: 'Remove' })).toBeVisible();
+
+        const remove = row.getByRole('button', { name: 'Remove' });
+        await expect(remove).toBeVisible();
+
+        // Badge and remove action both sit at the right edge of the row
+        const edges = await row.evaluate(element => {
+            const right = (node: Element | null) =>
+                node ? Math.round(node.getBoundingClientRect().right) : null;
+            const badge = [...element.querySelectorAll('span')]
+                .find(node => node.textContent?.trim() === 'Searching');
+            return {
+                row: Math.round(element.getBoundingClientRect().right),
+                badge: right(badge?.parentElement ?? badge ?? null),
+                actions: right(element.querySelector('[aria-label="Actions"]')),
+                remove: right([...element.querySelectorAll('button')]
+                    .find(node => node.textContent?.trim() === 'Remove') ?? null)
+            };
+        });
+
+        // Within the padding of the row's right edge, not adrift after the text
+        expect(edges.row - edges.actions!).toBeLessThan(40);
+        expect(edges.actions! - edges.badge!).toBeLessThan(120);
+        expect(edges.row - edges.remove!).toBeLessThan(40);
     });
 
     test('truncates long names in the list but shows them in full in the details modal', async ({ page }) => {
@@ -236,8 +261,13 @@ test.describe('dashboard', () => {
         await expect(addButton).toBeEnabled();
         await addButton.click();
 
+        // AddLinkForm takes you to the queue you just added to, so the row is
+        // asserted there rather than in the dashboard summary: that summary only
+        // holds the new download for the tick between the refresh and the
+        // navigation, which is a race, not a behaviour.
+        await expect(page).toHaveURL(/\/downloads$/, { timeout: 20_000 });
         await expect(
-            page.locator('a[href="/downloads"]').filter({ hasText: 'amule-nuxt-e2e' }).first()
+            page.locator('div[role="button"]').filter({ hasText: 'amule-nuxt-e2e' }).first()
         ).toBeVisible({ timeout: 20_000 });
     });
 });
@@ -256,6 +286,39 @@ test.describe('mobile layout', () => {
         expect(overflows, 'no horizontal scrolling on mobile').toBe(false);
 
         await removeTestDownload(page);
+    });
+
+    test('the menu sits at the bottom, with adding a link under the links', async ({ page }) => {
+        await gotoReady(page, '/downloads');
+        await page.getByRole('button', { name: 'Menu' }).click();
+
+        const addLink = page.getByRole('button', { name: 'Add ed2k Link' });
+        await expect(addLink).toBeVisible();
+
+        const layout = await page.evaluate(() => {
+            const dialog = document.querySelector('[role="dialog"]')!;
+            const top = (node: Element | null | undefined) =>
+                node ? Math.round(node.getBoundingClientRect().top) : null;
+
+            const settings = [...dialog.querySelectorAll('a')]
+                .find(link => link.textContent?.trim() === 'Settings');
+            const add = [...dialog.querySelectorAll('button')]
+                .find(button => button.textContent?.trim() === 'Add ed2k Link');
+
+            return {
+                links: top(settings),
+                add: top(add),
+                icons: top(dialog.querySelector('[aria-label="GitHub"]')),
+                // The wrapper has to be a full-height column for `mt-auto` to
+                // push the content down; a class on <template> would be dropped
+                wrapper: dialog.querySelector('.min-h-full')?.className ?? null
+            };
+        });
+
+        // Order down the menu: links, then the add action, then the icon row
+        expect(layout.links).toBeLessThan(layout.add!);
+        expect(layout.add).toBeLessThan(layout.icons!);
+        expect(layout.wrapper).toContain('flex-col');
     });
 });
 

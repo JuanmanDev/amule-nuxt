@@ -43,11 +43,45 @@ test.describe('list animations', () => {
         const row = page.locator('div[role="button"]', { hasText: TEST_NAME }).first();
         await expect(row).toBeVisible();
 
-        // The row lives inside the animated group, so removals get a transition
-        const animated = await row.evaluate(element =>
-            Boolean(element.parentElement?.className.includes('space-y-4'))
+        // The row lives inside <AnimatedList>, which animates the space it takes
+        expect(await row.evaluate(element =>
+            element.parentElement!.classList.contains('animated-list')
+        )).toBeTruthy();
+
+        // Polled, not read once: the margin is part of the enter animation, so a
+        // single read lands mid-tween on some value between 0 and the real gap.
+        // Spacing sits on the row rather than on `* + *`, so a leaving row cannot
+        // hand its margin to a neighbour and jump the list by one gap...
+        await expect.poll(
+            () => row.evaluate(element => getComputedStyle(element).marginBottom),
+            { timeout: 5000 }
+        ).toBe('16px');
+
+        // ...and the container cancels the trailing one
+        const listGap = await row.evaluate(element =>
+            getComputedStyle(element.parentElement!).marginBottom
         );
-        expect(animated).toBeTruthy();
+        expect(listGap).toBe('-16px');
+    });
+
+    test('an added row transitions its height, not only its opacity', async ({ page }) => {
+        await removeTestDownload(page);
+        await gotoReady(page, '/downloads');
+
+        const properties = await page.evaluate(() => {
+            const probe = document.createElement('div');
+            probe.className = 'list-smooth-enter-active';
+            document.body.appendChild(probe);
+            const style = getComputedStyle(probe);
+            const value = { property: style.transitionProperty, overflow: style.overflow };
+            probe.remove();
+            return value;
+        });
+
+        // Without height and margin the row below snaps into place in one frame
+        expect(properties.property).toContain('height');
+        expect(properties.property).toContain('margin-bottom');
+        expect(properties.overflow).toBe('hidden');
     });
 
     test('removing a download leaves the list without an abrupt jump', async ({ page }) => {
@@ -64,7 +98,7 @@ test.describe('list animations', () => {
         // Scoped to the dialog: the row menu also offers a Remove entry
         await page.getByRole('dialog').getByRole('button', { name: 'Remove', exact: true }).click();
 
-        // Leaving rows are taken out of the flow, so the row disappears cleanly
+        // A leaving row collapses in place, so the list closes the gap behind it
         await expect(row).toBeHidden({ timeout: 15000 });
     });
 });
@@ -155,6 +189,24 @@ test.describe('glass surfaces', () => {
         expect(style.background).toMatch(/rgba|color\(|oklch\(.+\/|\/\s*0\./);
     });
 
+    test('download rows are translucent and blurred like the upload rows', async ({ page }) => {
+        await addTestDownload(page);
+        await gotoReady(page, '/downloads');
+
+        const row = page.locator('div[role="button"]', { hasText: TEST_NAME }).first();
+        await expect(row).toBeVisible();
+
+        const style = await row.evaluate(element => {
+            const computed = getComputedStyle(element);
+            return { filter: computed.backdropFilter, background: computed.backgroundColor };
+        });
+
+        expect(style.filter).toContain('blur');
+        expect(style.background).toMatch(/rgba|color\(|oklch\(.+\/|oklab\(.+\/|\/\s*0\./);
+
+        await removeTestDownload(page);
+    });
+
     test('the dashboard tiles let the background through', async ({ page }) => {
         await gotoReady(page, '/');
 
@@ -165,21 +217,65 @@ test.describe('glass surfaces', () => {
     });
 });
 
+test.describe('activity background', () => {
+    test('shapes are small, faint, and fade instead of blinking', async ({ page }) => {
+        await gotoReady(page, '/');
+        // Shapes only exist while the daemon reports traffic
+        const shape = page.locator('.activity-bg__shape').first();
+        test.skip(await shape.count() === 0, 'The daemon is idle, so there are no shapes');
+
+        const facts = await page.evaluate(() => {
+            const shapes = [...document.querySelectorAll('.activity-bg__shape')];
+            const scope = [...shapes[0]!.attributes]
+                .map(attribute => attribute.name)
+                .find(name => name.startsWith('data-v-'));
+
+            // The leave fade, read through the scoped attribute the shapes carry
+            const probe = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            if (scope) probe.setAttribute(scope, '');
+            probe.setAttribute('class', 'activity-bg__shape activity-shape-leave-active');
+            shapes[0]!.parentElement!.appendChild(probe);
+            const leave = getComputedStyle(probe).transitionProperty;
+            probe.remove();
+
+            return {
+                leave,
+                sizes: shapes.map(node => Number(getComputedStyle(node).getPropertyValue('--size'))),
+                // Both the drift and the per-cycle fade run on the same element
+                animations: getComputedStyle(shapes[0]!.querySelector('.activity-bg__drift')!).animationName,
+                opacities: shapes.map(node =>
+                    Number(node.querySelector('polygon')!.getAttribute('fill-opacity'))
+                )
+            };
+        });
+
+        expect(facts.leave).toContain('opacity');
+        expect(facts.animations).toContain('activity-cycle');
+        // Small enough that a full-size travel margin still clears the viewport
+        expect(Math.max(...facts.sizes)).toBeLessThanOrEqual(20);
+        expect(Math.max(...facts.opacities)).toBeLessThanOrEqual(0.15);
+    });
+});
+
 test.describe('reduced motion', () => {
     test('animations are neutralised when the user asks for less motion', async ({ page }) => {
         await gotoReady(page, '/downloads');
         await page.emulateMedia({ reducedMotion: 'reduce' });
 
-        const durations = await page.evaluate(() => {
-            const probe = document.createElement('div');
-            probe.className = 'list-enter-active';
-            document.body.appendChild(probe);
-            const value = getComputedStyle(probe).transitionDuration;
-            probe.remove();
-            return value;
-        });
+        const durations = await page.evaluate(() =>
+            ['list-enter-active', 'list-smooth-enter-active', 'list-smooth-move'].map(className => {
+                const probe = document.createElement('div');
+                probe.className = className;
+                document.body.appendChild(probe);
+                const value = getComputedStyle(probe).transitionDuration;
+                probe.remove();
+                return value;
+            })
+        );
 
         // 0s: the CSS drops every transition under prefers-reduced-motion
-        expect(durations.replace(/\s/g, '')).toMatch(/^0s(,0s)*$/);
+        for (const duration of durations) {
+            expect(duration.replace(/\s/g, '')).toMatch(/^0s(,0s)*$/);
+        }
     });
 });
