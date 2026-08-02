@@ -77,7 +77,7 @@
  * useDownloads().addLinks, and only adds the per-link listing on top.
  */
 import type { AddLinkResult, AddLinkStatus } from '#shared/types/api';
-import { summariseAddResults } from '#shared/utils/addLinks';
+import { splitLinks, summariseAddResults } from '#shared/utils/addLinks';
 
 const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
@@ -135,7 +135,7 @@ function closeAndRedirect() {
 }
 
 async function submit() {
-  const links = linksText.value.split('\n').map(line => line.trim()).filter(Boolean);
+  const links = splitLinks(linksText.value);
   if (links.length === 0) return;
 
   submitting.value = true;

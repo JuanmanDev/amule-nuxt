@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { summariseAddResults } from '../shared/utils/addLinks';
+import { splitLinks, summariseAddResults } from '../shared/utils/addLinks';
 import type { AddLinkResult, AddLinksResult } from '../shared/types/api';
 
 const result = (status: AddLinkResult['status'], overrides: Partial<AddLinkResult> = {}): AddLinkResult => ({
@@ -86,5 +86,60 @@ describe('summariseAddResults', () => {
         const summary = summariseAddResults(payload([result('rejected'), result('rejected')]));
         expect(summary.title).toBe('No links added');
         expect(summary.color).toBe('error');
+    });
+});
+
+describe('splitLinks', () => {
+    const first = 'ed2k://|file|First.File.mkv|1132587375|1B73A9AA0DEC788A6DA5A59FB20FCBF0|/';
+    const second = 'ed2k://|file|Second.File.mkv|993|2B73A9AA0DEC788A6DA5A59FB20FCBF1|/';
+    const magnet = 'magnet:?xt=urn:ed2k:3B73A9AA0DEC788A6DA5A59FB20FCBF2&dn=Third.File.mkv';
+
+    it('splits one link per line', () => {
+        expect(splitLinks([first, second].join('\n'))).toEqual([first, second]);
+    });
+
+    it('splits links that a single line input glued together', () => {
+        // A single line <input> strips the newlines out of a paste, which is how a
+        // batch of twenty links arrived as one string and only the first was added
+        expect(splitLinks(first + second)).toEqual([first, second]);
+    });
+
+    it('splits links separated by spaces or blank lines', () => {
+        expect(splitLinks(`${first} ${second}`)).toEqual([first, second]);
+        expect(splitLinks([first, '', '', second].join('\n'))).toEqual([first, second]);
+        expect(splitLinks([first, second].join('\r\n'))).toEqual([first, second]);
+    });
+
+    it('handles ed2k and magnet links in one paste', () => {
+        expect(splitLinks([magnet, first].join('\n'))).toEqual([magnet, first]);
+        expect(splitLinks(magnet + first)).toEqual([magnet, first]);
+    });
+
+    it('keeps the sources section, whose commas are not separators', () => {
+        const withSources = `${first}|sources,1.2.3.4:4662,5.6.7.8:4662|/`;
+        expect(splitLinks(withSources)).toEqual([withSources]);
+    });
+
+    it('keeps spaces inside a file name', () => {
+        const spaced = 'ed2k://|file|A File With Spaces.mkv|10|4B73A9AA0DEC788A6DA5A59FB20FCBF3|/';
+        expect(splitLinks(spaced)).toEqual([spaced]);
+        expect(splitLinks(spaced + second)).toEqual([spaced, second]);
+    });
+
+    it('ignores whatever surrounds the links', () => {
+        expect(splitLinks(`look at this: ${first}  `)).toEqual([first]);
+    });
+
+    it('drops exact duplicates', () => {
+        expect(splitLinks([first, first, second].join('\n'))).toEqual([first, second]);
+    });
+
+    it('returns nothing for empty input', () => {
+        expect(splitLinks('')).toEqual([]);
+        expect(splitLinks(' \n  ')).toEqual([]);
+    });
+
+    it('falls back to lines when nothing looks like a link, so it is still reported', () => {
+        expect(splitLinks('not a link\nalso not a link')).toEqual(['not a link', 'also not a link']);
     });
 });

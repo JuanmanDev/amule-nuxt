@@ -8,6 +8,45 @@
 
 import type { AddLinkResult, AddLinksResult } from '../types/api';
 
+/**
+ * Every link in a pasted blob, however it was separated.
+ *
+ * Splitting on newlines alone was not enough: a single line <input> strips the
+ * newlines out of a multi-link paste, so twenty links arrived as one string and
+ * only the first was ever added. A scheme therefore starts a new link wherever it
+ * appears - after a newline, after a space, or glued straight onto the previous
+ * link - and text before the first scheme is ignored, so pasting a link out of a
+ * sentence works too.
+ *
+ * Commas and semicolons are deliberately not separators: an ed2k link carries them
+ * inside its own `sources,1.2.3.4:4662` section. Spaces inside a file name survive
+ * for the same reason, since only the next scheme ends a link.
+ *
+ * Exact duplicates are dropped, so pasting the same batch twice does not ask the
+ * daemon about every link twice.
+ */
+export function splitLinks(text: string): string[] {
+    const trimmed = (text ?? '').trim();
+    if (!trimmed) return [];
+
+    const found = trimmed.match(/(?:ed2k:\/\/|magnet:\?)[\s\S]*?(?=ed2k:\/\/|magnet:\?|$)/gi);
+
+    // Nothing that looks like a link: fall back to lines, so whatever was typed
+    // still reaches validation and is reported instead of vanishing.
+    const candidates = found ?? trimmed.split(/\r?\n/);
+
+    const seen = new Set<string>();
+    return candidates
+        .map(candidate => candidate.trim())
+        .filter(candidate => candidate.length > 0)
+        .filter(candidate => {
+            const key = candidate.toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+}
+
 export interface AddLinksSummary {
     added: number;
     duplicates: number;

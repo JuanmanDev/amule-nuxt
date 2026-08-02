@@ -137,6 +137,59 @@ test.describe('downloads page', () => {
         await expect(page.getByText(/Already downloaded and shared as/).first()).toBeVisible();
     });
 
+    test('adds a whole pasted batch, not just the first link', async ({ page }) => {
+        const hashes = [
+            'cccc1111dddd2222cccc1111dddd0011',
+            'cccc1111dddd2222cccc1111dddd0012',
+            'cccc1111dddd2222cccc1111dddd0013'
+        ];
+        const links = hashes.map(hash =>
+            `ed2k://|file|batch-e2e-${hash.slice(-4)}.bin|2048|${hash.toUpperCase()}|/`);
+        const drop = async () => {
+            for (const hash of hashes) {
+                await page.request.post(`/api/amule/downloads/${hash}/cancel`).catch(() => undefined);
+            }
+        };
+
+        await drop();
+        await gotoReady(page, '/downloads');
+
+        const field = page.getByPlaceholder(/^ed2k:\/\/\|file\|name\|size\|hash\|\/ or magnet/);
+        await field.fill(links.join('\n'));
+        await page.getByRole('button', { name: 'Add', exact: true }).click();
+
+        // All three, not the one the old single line field could carry
+        for (const hash of hashes) {
+            await expect(
+                page.locator('div[role="button"]', { hasText: `batch-e2e-${hash.slice(-4)}` }).first()
+            ).toBeVisible({ timeout: 20_000 });
+        }
+
+        await drop();
+    });
+
+    test('adds every link even when a paste arrives with its newlines stripped', async ({ page }) => {
+        // What a single line input hands over, and what an API caller may post in one
+        // `link` field: the links glued together with nothing between them
+        const hashes = [
+            'cccc1111dddd2222cccc1111dddd0021',
+            'cccc1111dddd2222cccc1111dddd0022'
+        ];
+        const glued = hashes
+            .map(hash => `ed2k://|file|glued-e2e-${hash.slice(-4)}.bin|2048|${hash.toUpperCase()}|/`)
+            .join('');
+
+        const response = await page.request.post('/api/amule/downloads/add', { data: { link: glued } });
+        const body = await response.json();
+
+        expect(body.data.results).toHaveLength(hashes.length);
+        expect(body.data.added).toBe(hashes.length);
+
+        for (const hash of hashes) {
+            await page.request.post(`/api/amule/downloads/${hash}/cancel`).catch(() => undefined);
+        }
+    });
+
     test('shows a sourceless link as "Searching", with what to check and a remove shortcut', async ({ page }) => {
         await addTestDownload(page);
         await gotoReady(page, '/downloads');
@@ -247,8 +300,21 @@ test.describe('dashboard', () => {
         await expect(page.getByRole('heading', { name: 'Add download' })).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Current downloads' })).toBeVisible();
 
-        const summary = page.locator('a[href="/downloads"]').filter({ hasText: 'amule-nuxt-e2e' }).first();
-        await expect(summary).toBeVisible();
+        // The summary is a top-five, so which rows it holds depends on how busy the
+        // daemon is. Asserting the test download was there only ever worked against
+        // a nearly empty queue.
+        const queue = await page.request.get('/api/amule/downloads');
+        const size: number = (await queue.json()).data?.length ?? 0;
+
+        if (size > 5) {
+            // A longer queue says so instead, and offers the whole list
+            await expect(page.getByRole('link', { name: `See all ${size} downloads` })).toBeVisible();
+        } else {
+            await expect(
+                page.locator('a[href="/downloads"]').filter({ hasText: 'amule-nuxt-e2e' }).first()
+            ).toBeVisible();
+        }
+
         await expect(page.getByText(/in queue/).first()).toBeVisible();
     });
 

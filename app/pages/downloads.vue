@@ -24,7 +24,9 @@
       </div>
     </div>
 
-    <AddLinkForm />
+    <!-- Multiline, like the dashboard and the add page: this was the one add field
+         left on a single line, where a pasted batch loses its newlines -->
+    <AddLinkForm multiline />
 
     <!-- Loading only before the first read of the session; the queue is cached
          app-wide afterwards, so a revisit renders it straight away -->

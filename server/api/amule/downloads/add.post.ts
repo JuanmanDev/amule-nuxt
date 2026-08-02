@@ -2,9 +2,15 @@
  * POST /api/amule/downloads/add
  * Add one or more downloads
  * Body: { link: string } or { links: string[] }
+ *
+ * Either field may itself carry several links - separated by newlines, by spaces or
+ * glued together - and each one is added on its own. The same splitting the UI does,
+ * so a caller pasting a batch into `link` gets the batch rather than the first of
+ * it. That includes the MCP tool, which passes what the agent gives it.
  */
 
 import type { ApiResponse, AddLinksResult } from '../../../../shared/types/api';
+import { splitLinks } from '../../../../shared/utils/addLinks';
 import { addLinksWithStatus } from '../../../utils/amule-ec/addLinks';
 
 export default defineEventHandler(async (event): Promise<ApiResponse<AddLinksResult>> => {
@@ -18,7 +24,9 @@ export default defineEventHandler(async (event): Promise<ApiResponse<AddLinksRes
             linksToProcess.push(body.link);
         }
 
-        const links = linksToProcess.map(link => link.trim()).filter(link => link.length > 0);
+        const links = linksToProcess.flatMap(entry =>
+            typeof entry === 'string' ? splitLinks(entry) : []
+        );
 
         if (links.length === 0) {
             return { success: false, error: 'At least one link is required' };

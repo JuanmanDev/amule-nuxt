@@ -3,16 +3,18 @@
     <UFormField
       :label="label"
       name="link"
-      help="One ed2k:// or magnet: link. Paste several lines to add a batch."
+      help="One ed2k:// or magnet: link per line. Paste as many as you like, in one go or a few at a time."
     >
       <div class="flex flex-col sm:flex-row gap-2">
+        <!-- Same placeholder in both shapes: they accept exactly the same input,
+             and only the room to show it differs -->
         <UTextarea
           v-if="multiline"
           v-model="state.link"
           :rows="3"
           autoresize
           class="flex-1"
-          placeholder="ed2k://|file|name|size|hash|/"
+          placeholder="ed2k://|file|name|size|hash|/ or magnet:?xt=..."
         />
         <UInput
           v-else
@@ -57,11 +59,13 @@
  * Shared add-link form. Lives in one place so the dashboard, the downloads page
  * and the modal all validate and report the same way.
  */
+import { splitLinks } from '#shared/utils/addLinks';
+
 const props = withDefaults(defineProps<{
   label?: string;
   multiline?: boolean;
 }>(), {
-  label: 'Add download (eD2k or magnet link)',
+  label: 'Add downloads (eD2k or magnet links)',
   multiline: false
 });
 
@@ -80,7 +84,9 @@ function onPaste(text: string) {
 }
 
 async function submit() {
-  const links = state.link.split('\n').map(line => line.trim()).filter(Boolean);
+  // Shared with the batch modal: a paste is split the same way everywhere, so the
+  // single line variant of this form handles a batch too
+  const links = splitLinks(state.link);
   if (links.length === 0) return;
 
   submitting.value = true;
