@@ -50,7 +50,11 @@ export const useDownloads = () => {
     const activeCount = computed(() =>
         items.value.filter(item => classifyDownload(item).health === 'downloading').length
     );
-    const stalledCount = computed(() => items.value.filter(item => isLikelyDeadLink(item)).length);
+    /**
+     * Entries with no source and nothing received. Normal right after adding a
+     * link, so the summaries call it "searching" rather than a failure.
+     */
+    const searchingCount = computed(() => items.value.filter(item => isLikelyDeadLink(item)).length);
     const totalSpeed = computed(() => items.value.reduce((sum, item) => sum + (item.speed || 0), 0));
 
     /**
@@ -174,7 +178,7 @@ export const useDownloads = () => {
         busyHash,
         wsStatus,
         activeCount,
-        stalledCount,
+        searchingCount,
         totalSpeed,
         fetchDownloads,
         startPolling,

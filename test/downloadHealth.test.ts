@@ -12,17 +12,23 @@ const base = {
 };
 
 describe('classifyDownload', () => {
-    it('flags a queued file with no sources as stalled and explains the hash', () => {
+    it('reports a queued file with no sources yet as still searching', () => {
         const info = classifyDownload(base);
-        expect(info.health).toBe('stalled');
-        expect(info.label).toBe('No sources');
-        expect(info.color).toBe('warning');
+        expect(info.health).toBe('searching');
+        expect(info.label).toBe('Searching');
+        // Info, not a warning: this is the normal state right after adding a link
+        expect(info.color).toBe('info');
+        expect(info.reason).toContain('Searching for sources');
+        // and it still says what to check when it does not resolve
         expect(info.reason).toContain('32 character hash');
+        expect(info.reason).toContain('servers');
     });
 
     it('treats a partially downloaded file that lost its sources differently', () => {
         const info = classifyDownload({ ...base, sizeDone: 1024, percentComplete: 12 });
         expect(info.health).toBe('stalled');
+        expect(info.label).toBe('No sources');
+        expect(info.color).toBe('warning');
         expect(info.reason).toContain('went offline');
         expect(info.reason).not.toContain('32 character hash');
     });
@@ -54,12 +60,14 @@ describe('classifyDownload', () => {
         expect(classifyDownload({ ...base, status: 'Paused', stopped: true }).health).toBe('stopped');
     });
 
-    it('does not mark a paused file as stalled even without sources', () => {
-        expect(classifyDownload({ ...base, status: 'Paused' }).health).not.toBe('stalled');
+    it('does not mark a paused file as searching or stalled even without sources', () => {
+        const health = classifyDownload({ ...base, status: 'Paused' }).health;
+        expect(health).not.toBe('stalled');
+        expect(health).not.toBe('searching');
     });
 
     it('tolerates a partial payload', () => {
-        expect(classifyDownload({}).health).toBe('stalled');
+        expect(classifyDownload({}).health).toBe('searching');
     });
 });
 

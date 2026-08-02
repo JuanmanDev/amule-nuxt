@@ -27,7 +27,7 @@
               <AnimatedValue :model-value="downloadItems.length" /> in queue
             </UBadge>
             <UBadge v-if="activeCount" color="success" variant="subtle">{{ activeCount }} downloading</UBadge>
-            <UBadge v-if="stalledCount" color="warning" variant="subtle">{{ stalledCount }} without sources</UBadge>
+            <UBadge v-if="searchingCount" color="info" variant="subtle">{{ searchingCount }} searching</UBadge>
             <span v-if="totalSpeed > 0" class="flex items-center gap-1 text-gray-600 dark:text-gray-400">
               <UIcon name="i-heroicons-arrow-down" class="w-4 h-4" />
               {{ formatSpeed(totalSpeed) }}
@@ -316,7 +316,7 @@ const {
   loading: downloadsLoading,
   error: downloadsError,
   activeCount,
-  stalledCount,
+  searchingCount,
   totalSpeed,
   startPolling
 } = useDownloads();

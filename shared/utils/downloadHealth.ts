@@ -12,6 +12,9 @@ export type DownloadHealth =
     | 'complete'
     | 'downloading'
     | 'waiting'
+    /** No source found yet and nothing received: still looking. */
+    | 'searching'
+    /** Had sources, or received data, and now has none. */
     | 'stalled'
     | 'paused'
     | 'stopped'
@@ -39,9 +42,18 @@ export interface DownloadHealthInput {
     stopped?: boolean;
 }
 
-const NO_SOURCES_REASON =
-    'aMule has not found any source for this file. If the link was typed or edited by hand, '
-    + 'check the file size and the 32 character hash - a wrong hash creates a download that can never start.';
+/*
+ * Shown the moment a download is added, when nothing has arrived yet and no
+ * source is known. That is the normal state for the first seconds or minutes, so
+ * the wording leads with the search and keeps the diagnosis as the follow-up:
+ * "no source" on a brand new entry read like a failure when it usually is not.
+ */
+const SEARCHING_REASON =
+    'Searching for sources. aMule asks the eD2k servers and Kad, which normally takes '
+    + 'seconds but can take a few minutes for a rare file. If it stays like this: check that '
+    + 'the link\'s file size and 32 character hash are exactly as published (a wrong hash '
+    + 'creates a download that can never start), connect to more servers and to Kad, and '
+    + 'consider that nobody may be sharing the file any more.';
 
 export function classifyDownload(download: DownloadHealthInput): DownloadHealthInfo {
     const status = download.status ?? 'Waiting';
@@ -75,14 +87,21 @@ export function classifyDownload(download: DownloadHealthInput): DownloadHealthI
     }
 
     if (sources === 0) {
-        return {
-            health: 'stalled',
-            label: 'No sources',
-            color: 'warning',
-            reason: sizeDone > 0
-                ? 'All sources for this file went offline. It will resume automatically if one comes back.'
-                : NO_SOURCES_REASON
-        };
+        // Nothing received yet is a search in progress; data already on disk means
+        // the sources that were there have gone away, which is a different story
+        return sizeDone > 0
+            ? {
+                health: 'stalled',
+                label: 'No sources',
+                color: 'warning',
+                reason: 'All sources for this file went offline. It will resume automatically if one comes back.'
+            }
+            : {
+                health: 'searching',
+                label: 'Searching',
+                color: 'info',
+                reason: SEARCHING_REASON
+            };
     }
 
     return {
@@ -95,5 +114,5 @@ export function classifyDownload(download: DownloadHealthInput): DownloadHealthI
 
 /** True for entries that never received a single byte and have no source. */
 export function isLikelyDeadLink(download: DownloadHealthInput): boolean {
-    return classifyDownload(download).health === 'stalled' && (download.sizeDone ?? 0) === 0;
+    return classifyDownload(download).health === 'searching' && (download.sizeDone ?? 0) === 0;
 }

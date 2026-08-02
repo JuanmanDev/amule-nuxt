@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+    class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors cursor-pointer hover:bg-elevated/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     role="button"
     tabindex="0"
     :aria-label="`Show details for ${download.name}`"
@@ -9,14 +9,15 @@
     @keydown.space.prevent="emit('open', download)"
   >
     <div class="min-w-0 space-y-2">
-      <div class="flex items-start justify-between gap-2">
-        <!-- Long names truncate here; the details modal shows them in full -->
-        <div class="min-w-0 flex items-center gap-2">
-          <p class="font-semibold truncate" :title="download.name">{{ download.name }}</p>
-          <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">
-            <AnimatedValue :model-value="info.label" />
-          </UBadge>
-        </div>
+      <div class="flex items-center gap-2">
+        <!-- Long names truncate here; the details modal shows them in full. The
+             name takes the space that is left so the badge lands next to the
+             actions at the right edge on every width, not adrift mid-row after a
+             short name on a wide screen. -->
+        <p class="font-semibold truncate min-w-0 flex-1" :title="download.name">{{ download.name }}</p>
+        <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">
+          <AnimatedValue :model-value="info.label" />
+        </UBadge>
 
         <div class="flex items-center gap-1 shrink-0" @click.stop>
           <UButton
@@ -39,24 +40,26 @@
         </div>
       </div>
 
-      <!-- Why this entry is not progressing -->
+      <!-- Why this entry is not progressing. Full width, with the remove action
+           pushed to the far right so it lines up with the row's other controls
+           instead of trailing the end of the sentence. -->
       <div
         v-if="info.reason"
-        class="flex items-start gap-2 text-xs"
+        class="flex items-start gap-2 text-xs w-full"
         :class="info.health === 'stalled' ? 'text-amber-700 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400'"
       >
         <UIcon
           :name="info.health === 'stalled' ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-information-circle'"
           class="w-4 h-4 shrink-0 mt-0.5"
         />
-        <span class="min-w-0">{{ info.reason }}</span>
+        <span class="min-w-0 flex-1">{{ info.reason }}</span>
         <UButton
           v-if="dead"
           size="xs"
           color="error"
           variant="ghost"
           icon="i-heroicons-trash"
-          class="shrink-0"
+          class="shrink-0 ms-auto"
           @click.stop="emit('remove', download)"
         >
           Remove

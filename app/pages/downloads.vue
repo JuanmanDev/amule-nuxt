@@ -107,8 +107,10 @@
           <UBadge v-if="activeCount" color="success" variant="subtle">
             <AnimatedValue :model-value="activeCount" /> downloading
           </UBadge>
-          <UBadge v-if="stalledCount" color="warning" variant="subtle">
-            <AnimatedValue :model-value="stalledCount" /> without sources
+          <!-- Info, not a warning: a download with no source yet is normally just
+               being looked up -->
+          <UBadge v-if="searchingCount" color="info" variant="subtle">
+            <AnimatedValue :model-value="searchingCount" /> searching for sources
           </UBadge>
           <UBadge color="neutral" variant="subtle">
             <AnimatedValue :model-value="items.length" /> in queue
@@ -125,8 +127,9 @@
           :description="`No download matches '${search}'.`"
         />
 
-        <!-- Rows fade in when a download is added and slide out when it is removed -->
-        <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-4 relative">
+        <!-- An added download pushes the queue open, a removed one closes the gap
+             behind it, and a re-sort glides the rows to their new place -->
+        <AnimatedList v-else key="rows" gap="1rem">
           <DownloadRow
             v-for="download in visibleDownloads"
             :key="download.hash"
@@ -138,7 +141,7 @@
             @resume="resume"
             @priority="setPriority"
           />
-        </TransitionGroup>
+        </AnimatedList>
       </SmoothSwap>
       </div>
     </SmoothSwap>
@@ -184,7 +187,7 @@ const {
   busyHash,
   wsStatus,
   activeCount,
-  stalledCount,
+  searchingCount,
   totalSpeed,
   fetchDownloads,
   startPolling,
