@@ -75,6 +75,25 @@ export interface Download {
     lastReceived: number;
     /** Unix seconds when the file was last seen complete on a source. */
     lastSeenComplete: number;
+
+    /*
+     * Timestamps this app records itself, in epoch ms. aMule reports neither: a
+     * partfile says when data last arrived, never when the download began. See
+     * `server/utils/downloadHistory.ts`.
+     */
+
+    /** When it joined the queue, if that was actually observed. */
+    addedAt?: number;
+    /** When it finished, if that was observed. */
+    completedAt?: number;
+    /** When this app first saw the hash, whatever its state was then. */
+    firstSeenAt?: number;
+    /**
+     * True when `addedAt` is a real start time. False for a download that was
+     * already queued the first time this app looked - it began at some unknown
+     * point before `firstSeenAt`.
+     */
+    startKnown?: boolean;
 }
 
 // ========== Upload Management ==========
@@ -121,6 +140,11 @@ export interface SharedFile {
     comment: string;
     /** Bytes sent divided by file size. */
     shareRatio: number;
+
+    /** Epoch ms this file finished downloading, when this app saw it happen. */
+    completedAt?: number;
+    /** Epoch ms it was added to the queue, when this app saw it happen. */
+    addedAt?: number;
 }
 
 export interface AmulePreferences {
@@ -166,7 +190,23 @@ export interface SearchResult {
     fileName: string;
     size: number;
     sources: number;
+    /*
+     * No "complete sources" field: aMule's search results carry a source count
+     * and nothing that distinguishes a complete source from a partial one. The
+     * tag that looks like it (SOURCE_COUNT_XFER) is 0 for every search result on
+     * a live daemon - see getSearchResults.
+     */
+    /** Broad kind guessed from the extension: video, audio, archive... */
     fileType?: string;
+    /** Extension without the dot, lower case; empty when the name has none. */
+    extension?: string;
+    /**
+     * The link for this result, built from its name, size and hash.
+     *
+     * The daemon does not send one, and it is what everything downstream deals in:
+     * copying, sharing, and adding the file by link rather than by search index.
+     */
+    ed2kLink: string;
 }
 
 export interface ProgressResult {

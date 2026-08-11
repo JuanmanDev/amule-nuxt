@@ -26,6 +26,7 @@ import {
     type ECResponse
 } from './lib/AMuleProtocol';
 import { validateDownloadLink } from './links';
+import { buildEd2kLink, fileExtension, fileKind } from '../../../shared/utils/fileKind';
 import { useLogger } from '../logger';
 import { buildStatsTree, type StatsTreeNode } from './statsTree';
 
@@ -761,14 +762,34 @@ export class AmuleECClient {
             this.client.getSearchProgress()
         ]);
 
-        this.lastSearchResults = files.map((file: any, index: number) => ({
-            resultNumber: index,
-            hash: typeof file.partfile_hash === 'string' ? file.partfile_hash.toLowerCase() : '',
-            fileName: file.partfile_name || 'Unknown',
-            size: Number(file.partfile_size_full || 0),
-            sources: Number(file.partfile_source_count || 0),
-            fileType: file.partfile_ed2k_link ? 'ed2k' : 'Unknown'
-        }));
+        this.lastSearchResults = files.map((file: any, index: number) => {
+            const hash = typeof file.partfile_hash === 'string' ? file.partfile_hash.toLowerCase() : '';
+            const fileName = file.partfile_name || 'Unknown';
+            const size = Number(file.partfile_size_full || 0);
+
+            return {
+                resultNumber: index,
+                hash,
+                fileName,
+                size,
+                sources: Number(file.partfile_source_count || 0),
+                /*
+                 * There is deliberately no "complete sources" here.
+                 *
+                 * EC_TAG_PARTFILE_SOURCE_COUNT_XFER is sent for a search result,
+                 * which makes it tempting - but a live daemon answers 0 for every
+                 * single result, because it counts sources *currently
+                 * transferring* and nothing is transferring for a file that is
+                 * not in the queue. Showing it as "complete sources" put a
+                 * warning on all 441 results of a plain search.
+                 */
+                fileType: fileKind(fileName),
+                extension: fileExtension(fileName),
+                // Built here rather than in the browser so the link is identical
+                // whether a result came from a search, the queue or the MCP tools.
+                ed2kLink: file.partfile_ed2k_link || buildEd2kLink(fileName, size, hash)
+            };
+        });
 
         return { results: this.lastSearchResults, progress };
     }

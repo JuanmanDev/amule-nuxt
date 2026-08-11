@@ -100,6 +100,24 @@ export const useAmuleApi = () => {
             return await $fetch<ApiResponse>(apiUrl('/search/stop'), { method: 'POST' });
         },
 
+        /** Searches kept server-side for a week, so a reload or another browser finds them. */
+        async getStoredSearches() {
+            return await $fetch<ApiResponse<{ searches: any[]; retentionMs: number }>>(apiUrl('/search/sessions'));
+        },
+
+        async storeSearch(search: Record<string, unknown>) {
+            return await $fetch<ApiResponse<{ stored: number }>>(apiUrl('/search/sessions'), {
+                method: 'POST',
+                body: search
+            });
+        },
+
+        async forgetSearch(id: string) {
+            return await $fetch<ApiResponse>(apiUrl(`/search/sessions/${encodeURIComponent(id)}`), {
+                method: 'DELETE'
+            });
+        },
+
         async downloadFromSearch(hash: string) {
             return await $fetch<ApiResponse>(apiUrl('/search/download'), {
                 method: 'POST',
