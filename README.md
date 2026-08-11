@@ -17,11 +17,16 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 
 - **Complete daemon control** — downloads, uploads, shared files, search, servers, Kad, preferences
 - **MCP server built in** — 16 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
+- **A local AI assistant** — a language model that runs *in the browser* on WebGPU and drives aMule through those same MCP tools; the conversation never leaves the machine
+- **Speaks 38 languages** — the 37 aMule itself ships, plus English, chosen per device and rendered server-side
+- **Tells you when downloads start and finish** — in the page, as an OS notification, and over Web Push with no tab open at all
+- **Paged lists** — 100 rows at a time by default with a per-page selector, so a queue of thousands stays as fast as a queue of ten
 - **Real EC protocol client** — opcodes and tags mirrored from aMule's own headers, UTF-8 safe, verified against a live daemon
 - **Honest UI states** — every page starts in a loading state, explains *why* something is not progressing, and never claims success the daemon did not confirm
 - **Handles `ed2k:` and `magnet:` links** from the operating system, with a confirmation step
 - **Live updates** over WebSocket, with polling as a fallback, and a background that reacts to real traffic
 - **Motion that means something** — rows animate in and out as the queue changes, live figures crossfade instead of snapping, translucent blurred surfaces let the activity background through, and everything is switched off under `prefers-reduced-motion`
+- **Cheap by default** — the background is a static tint unless you ask for the drifting shapes, and both it and the frosted panels can be turned down in Settings when the GPU has better things to do
 - **Well tested** — unit tests for the protocol and helpers, Playwright end-to-end tests driving a real daemon, CI on every push
 
 ## Pages
@@ -32,17 +37,64 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 | `/downloads` | Queue with progress, ETA, sources, health badges, details modal, pause/resume/priority/remove |
 | `/uploads` | Who is downloading from you: file, address, client software, speed, session and all-time bytes, queue position |
 | `/shared` | Every shared file with requests, accepted requests, bytes sent, share ratio, queued clients, details modal |
-| `/search` | Kad / eD2k / local search with live incoming results and one-click download |
+| `/search` | Kad / eD2k / local search on one row, searches kept in tabs for a week, results split by what you already have, and a details view per result |
+| `/assistant` | A language model running entirely in this browser that can answer questions about the daemon and operate it |
 | `/servers` | Server list with connect, add, remove, plus server-list preferences and "update from URL" |
 | `/connection` | eD2k and Kad state, connect/disconnect, Kad start/stop/bootstrap/nodes.dat, server message of the day |
 | `/statistics` | Animated rate chart with server-side history, session **and** all-time totals, and aMule's full statistics tree |
 | `/stats` | Compact statistics summary |
 | `/preferences` | Nickname, bandwidth and connection limits, ports, directories |
 | `/logs` | Daemon log with filter, newest-first toggle, highlighted warnings |
-| `/settings` | Bandwidth limits, link-handler registration, runtime diagnostics |
+| `/settings` | Bandwidth limits, background and glass appearance, link-handler registration, runtime diagnostics |
 | `/mcp-server` | Live documentation of the MCP endpoint and its tools |
 
 Every list page shares the same controls: a filter that grows to fill the row, a compact sort menu that collapses to an icon on small screens, and an ascending/descending toggle for every sort field. Lists animate their additions and removals, and figures that change while a page is open (speeds, counts, badges) crossfade with a brief highlight. On a phone the download rows drop the ETA column so the stats stay on one line.
+
+Long lists are paged: 100 rows at a time by default, with a per-page selector (25 to 500, or all) that is remembered per list on the device. Filtering and sorting always run over the whole list, never over the page you happen to be on, and turning a page does not animate — a hundred rows leaving while a hundred others arrive is not a change anyone made.
+
+### Selecting several rows
+
+Downloads, uploads and shared files each have a **Select** button that turns the list into a set of checkboxes and opens an action bar. Selecting is off until asked for, because a list of checkboxes makes the ordinary case — click a row, read it — worse.
+
+- **Select all** means every row matching the current filter, not every row on the page. Which page happens to be open must never change what Remove does.
+- Downloads can be **paused, resumed or removed** in bulk. The commands run one after another, because the daemon serves a single EC connection, and report once at the end rather than once per file.
+- Every list offers **Totals** — what the selection adds up to, which is the question a selection is usually about: how much is left, how fast is all of this going, how much have I sent — and **the eD2k links** for everything picked, shown as text as well as copied, since a clipboard write is refused on a plain-HTTP origin.
+- Uploads cannot be paused or cancelled: aMule's protocol exposes no way to control an individual upload. Their links are resolved through the shared files, which hold the size an upload does not carry.
+
+Removing is confirmed with the number of files and the bytes that will be deleted. A row that disappears while selected drops out of the selection, so a bulk action never runs against a hash the daemon no longer has.
+
+### Languages
+
+The interface is translated into the same 37 languages aMule itself ships, plus English. Pick one from the globe in the footer or the mobile menu; the choice is stored in a cookie so the *server* renders the right language on the next request, with no flash of English.
+
+Translations fall back key by key, so a language that has not caught up with a new screen shows English for those strings only. `npx vitest run test/locales.test.ts` prints exactly how complete each language is, and checks that every translation keeps the placeholders and plural forms of the English original.
+
+### Searches
+
+aMule holds exactly one search: starting another throws the previous results away, and nothing survives a restart. Kad queries take the better part of a minute to settle, so results are worth keeping — and they are kept **on the server**, for seven days:
+
+- reloading the page keeps them, and so does opening the app in another browser or on the phone;
+- each search is its own tab; only the newest can be refreshed, because it is the only one aMule still knows about. Older tabs say when their snapshot was taken and offer to run the keywords again;
+- a search that returned nothing is not stored — an empty tab that cannot be resumed is only clutter.
+
+Results are split by what this daemon already knows about each file hash: **not added yet**, **in the queue**, **already here**. Each group carries its count, so a search for something you have been collecting can be narrowed to just the files you are missing. Bounded, because the store is a JSON file: 20 searches, 500 results each, seven days.
+
+### Download notifications
+
+The server watches the queue itself, so a download added from another machine, from amuleGUI, or by an `ed2k:` link handler is announced here too — not only the ones started in this browser. There are two layers, and Settings turns each on or off:
+
+- **In the page**: a toast with a link to the queue, plus an operating-system notification when the tab is not the one on screen. Needs nothing but an open tab.
+- **Web Push**: a service worker receives the same events with the app closed entirely. It needs notification permission and a secure origin (HTTPS, or `localhost`), and a *Send a test* button proves the whole chain in one click.
+
+Because aMule's protocol reports neither, this app also records **when each download started and when it finished** and shows both in the details view. A download that was already queued the first time the app looked says "in the queue since" rather than claiming a start time nobody observed.
+
+### The local assistant
+
+`/assistant` runs a language model in the browser with [WebLLM](https://github.com/mlc-ai/web-llm) on WebGPU. The model is downloaded once (0.9–5 GB depending on which you pick) and cached by the browser; after that it runs offline. Nothing you type is sent anywhere.
+
+It operates aMule through this app's own MCP endpoint — the same 16 tools external agents get — so anything the interface can do, it can do, and a tool added there appears in the assistant with no further work. Tools published by the page through the draft WebMCP API (`navigator.modelContext`) are picked up as well when a browser supports it. Every tool call is shown in the transcript and can be expanded to see exactly what was sent and what came back.
+
+WebGPU is required: Chrome, Edge and Opera have it on the desktop today. Elsewhere the page says so instead of failing.
 
 ---
 
@@ -121,6 +173,9 @@ installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 | `NUXT_PORT` / `PORT` | `3000` | Port this app listens on |
 | `WS_PORT` | `3001` | Second port, for the live updates: their own WebSocket server. The browser is told this number, so it must be reachable at that same value from outside |
 | `SERVICES` | `all` | Docker only: `all` (daemon + app), `web` (app only), `amule` (daemon only) |
+| `AMULE_DATA_DIR` | `./.amule-data` | Where this app keeps what it must remember across restarts: the push keys and subscriptions, the download start/finish times, and the searches of the last seven days. **Mount it as a volume**, or every browser has to grant notifications again after a rebuild |
+| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | generated | Identity used to sign push messages. Generated on first run and stored in `AMULE_DATA_DIR`; set them explicitly when several replicas serve the same users, since a subscription is bound to the key it was created with (`npx web-push generate-vapid-keys`) |
+| `VAPID_SUBJECT` | `mailto:amule-nuxt@localhost` | Contact address required by the push spec |
 | `LOG_LEVEL` | auto | `error`, `warn`, `info`, `debug`, `trace`, or a number |
 | `NODE_ENV` | – | `development` turns on verbose logging and dev tooling |
 
@@ -387,7 +442,9 @@ Destructive tools require an explicit `confirm: true`. `/mcp-server` documents t
 
 ## Logging
 
-Logging is level based and picks its verbosity automatically: **debug in development, warnings only in production**. `LOG_LEVEL` overrides it without a rebuild, e.g. `LOG_LEVEL=debug` to see every EC packet in a deployed instance. Lines are tagged per subsystem (`amule-ec`, `amule-client`, `websocket`), timestamped in production, coloured in development. `GET /api/diagnostics` reports the active mode and level; the settings page shows both.
+Logging is level based and picks its verbosity automatically: **debug in development, warnings only in production**. `LOG_LEVEL` overrides it without a rebuild.
+
+`debug` covers connections, authentication, commands and failures. **`trace` adds the packets** — every read, write and reassembly on the EC socket, which is what you want when checking an opcode or a tag against a live daemon, and eight lines per request the rest of the time. The app polls continuously, so leave `trace` on only while you are reading it. Lines are tagged per subsystem (`amule-ec`, `amule-client`, `websocket`), timestamped in production, coloured in development. `GET /api/diagnostics` reports the active mode and level; the settings page shows both.
 
 ---
 

@@ -70,11 +70,18 @@ services:
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
       - NUXT_PORT=3000
       - WS_PORT=${WS_PORT:-3001}
+      - AMULE_DATA_DIR=/data/amule-nuxt
+    volumes:
+      # Push keys, push subscriptions and the recorded download start/finish
+      # times: they belong to the web container, not to the daemon
+      - amule-appdata:/data/amule-nuxt
     restart: unless-stopped
     networks:
       - amule-network
 
 volumes:
+  amule-appdata:
+    driver: local
   amule-config:
     driver: local
   amule-downloads:

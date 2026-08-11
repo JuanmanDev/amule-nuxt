@@ -38,8 +38,14 @@ services:
       - AMULE_EC_PORT=4712
       - NUXT_PORT=3000
       - WS_PORT=${WS_PORT:-3001}
+      - AMULE_DATA_DIR=/data/amule-nuxt
     volumes:
       - amule-config:/home/amule/.aMule
+      # Push keys, push subscriptions, the recorded download start/finish times
+      # and the searches of the last seven days. Without this volume they are
+      # lost on every rebuild, and every browser has to be granted notification
+      # permission again.
+      - amule-appdata:/data/amule-nuxt
       # Bind these to real directories to keep the files outside Docker:
       #   - ${AMULE_INCOMING:-./downloads/incoming}:/downloads/incoming
       - amule-downloads:/downloads/incoming
@@ -49,6 +55,8 @@ services:
       - amule-network
 
 volumes:
+  amule-appdata:
+    driver: local
   amule-config:
     driver: local
   amule-downloads:

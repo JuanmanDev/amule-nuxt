@@ -2,8 +2,9 @@
 # NAS package, a systemd service, another container.
 #
 # Nothing aMule-related is installed in this image (`--target web`), so it is a
-# fraction of the size of the all-in-one one and needs no volumes at all - the
-# daemon owns the downloads and the configuration.
+# fraction of the size of the all-in-one one: the daemon owns the downloads and
+# the configuration. The one volume here is this app's own - push keys, push
+# subscriptions and the recorded download start/finish times.
 #
 #   cp .env.example .env          # set AMULE_EC_HOST / _PORT / _PASSWORD
 #   docker compose -f docker-compose.web.yml up -d
@@ -35,7 +36,16 @@ services:
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:?set AMULE_EC_PASSWORD in .env}
       - NUXT_PORT=3000
       - WS_PORT=${WS_PORT:-3001}
+      - AMULE_DATA_DIR=/data/amule-nuxt
+    volumes:
+      # Drop this and every browser has to grant notifications again after a
+      # rebuild, since the push keys are regenerated with the container
+      - amule-appdata:/data/amule-nuxt
     # Linux does not resolve host.docker.internal on its own
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
+
+volumes:
+  amule-appdata:
+    driver: local
