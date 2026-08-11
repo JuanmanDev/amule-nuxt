@@ -22,6 +22,7 @@
 
 import type { ApiResponse } from '#shared/types/api';
 import type { Download, SharedFile, Upload } from '../../server/utils/amule-types';
+import { mergeCollections } from '#shared/utils/mergeCollections';
 
 export type FeedName = 'downloads' | 'uploads' | 'shared';
 
@@ -31,6 +32,12 @@ interface FeedDefinition {
     /** Interval used when no page shows it, i.e. the prefetch cadence. */
     idleMs: number;
     label: string;
+    /**
+     * What makes an entry the same entry between two reads. Used to merge a fresh
+     * read into the list on screen instead of replacing it — see
+     * `mergeCollections` for why that matters.
+     */
+    keyOf: (item: any) => string;
 }
 
 /**
@@ -39,9 +46,25 @@ interface FeedDefinition {
  * it is refreshed once a minute.
  */
 export const FEED_DEFINITIONS: Record<FeedName, FeedDefinition> = {
-    downloads: { focusMs: 3000, idleMs: 10_000, label: 'downloads' },
-    uploads: { focusMs: 3000, idleMs: 10_000, label: 'uploads' },
-    shared: { focusMs: 15_000, idleMs: 60_000, label: 'shared files' }
+    downloads: {
+        focusMs: 3000,
+        idleMs: 10_000,
+        label: 'downloads',
+        keyOf: (item: Download) => item.hash
+    },
+    uploads: {
+        // An upload has no id of its own: it is one peer transferring one file.
+        focusMs: 3000,
+        idleMs: 10_000,
+        label: 'uploads',
+        keyOf: (item: Upload) => `${item.fileHash}@${item.userIp}:${item.userPort}`
+    },
+    shared: {
+        focusMs: 15_000,
+        idleMs: 60_000,
+        label: 'shared files',
+        keyOf: (item: SharedFile) => item.hash || item.fullPath
+    }
 };
 
 /** How long the first shared-files read waits, so it does not land with the others. */
@@ -163,7 +186,13 @@ export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
         try {
             const result = await fetcher();
             if (result.success) {
-                state.items.value = (result.data ?? []) as T[];
+                // Merged, not assigned: an unchanged read leaves the ref alone, so
+                // the rows on screen neither re-render nor re-animate.
+                state.items.value = mergeCollections(
+                    state.items.value as object[],
+                    (result.data ?? []) as object[],
+                    definition.keyOf
+                ) as T[];
                 state.error.value = null;
             } else {
                 // Keep the last list on screen and report why it is not moving;
@@ -204,6 +233,33 @@ export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
     }
 
     return { ...state, settled, refresh, focus };
+}
+
+/**
+ * Feeds a snapshot that arrived over the live socket into the same state the HTTP
+ * poll writes to.
+ *
+ * The queue used to have two sources — this push and the poll — and a computed
+ * that picked whichever looked usable. Every time the choice flipped the entire
+ * list was replaced, which is what made rows (idle ones most visibly, since
+ * nothing else about them ever changes) vanish and come back every few seconds.
+ * There is one list now; the socket is just the faster way to fill it.
+ *
+ * Marking the feed fresh here also throttles the poll: while pushes keep
+ * arriving the timer below finds the feed up to date and asks the daemon for
+ * nothing, which leaves its single EC connection to the pages.
+ */
+export function applyLiveDownloads(list: Download[]): void {
+    const state = feedState<Download>('downloads');
+
+    state.items.value = mergeCollections(
+        state.items.value as object[],
+        list as object[],
+        FEED_DEFINITIONS.downloads.keyOf
+    ) as Download[];
+    state.error.value = null;
+    state.loading.value = false;
+    state.updatedAt.value = Date.now();
 }
 
 export const useDownloadsFeed = () => useAmuleFeed<Download>('downloads');
