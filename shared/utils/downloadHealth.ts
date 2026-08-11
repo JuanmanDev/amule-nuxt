@@ -23,12 +23,24 @@ export type DownloadHealth =
 
 export interface DownloadHealthInfo {
     health: DownloadHealth;
-    /** Short label for a badge. */
+    /**
+     * Short label for a badge, in English.
+     *
+     * Still here because it is what the MCP tools and the logs report, where the
+     * audience is a program or an operator rather than the person using the app.
+     * The interface renders `labelKey` through the message catalogue instead.
+     */
     label: string;
+    /** Message key for `label`, under `health.`. */
+    labelKey: string;
     /** Nuxt UI colour token for that badge. */
     color: 'success' | 'info' | 'warning' | 'error' | 'neutral';
     /** Explanation shown next to the entry, when there is something to explain. */
     reason?: string;
+    /** Message key for `reason`, when there is one. */
+    reasonKey?: string;
+    /** Values `reasonKey` interpolates, when it takes any. */
+    reasonValues?: Record<string, string | number>;
 }
 
 /** Minimal shape needed to classify; matches the Download API payload. */
@@ -63,27 +75,34 @@ export function classifyDownload(download: DownloadHealthInput): DownloadHealthI
     const sizeDone = download.sizeDone ?? 0;
 
     if (status === 'Complete') {
-        return { health: 'complete', label: 'Complete', color: 'success' };
+        return { health: 'complete', label: 'Complete', labelKey: 'health.complete', color: 'success' };
     }
 
     if (status === 'Error') {
-        return { health: 'error', label: 'Error', color: 'error', reason: 'aMule reported this file as erroneous.' };
+        return {
+            health: 'error',
+            label: 'Error',
+            labelKey: 'health.error',
+            color: 'error',
+            reason: 'aMule reported this file as erroneous.',
+            reasonKey: 'health.errorReason'
+        };
     }
 
     if (status === 'Hashing') {
-        return { health: 'hashing', label: 'Hashing', color: 'info' };
+        return { health: 'hashing', label: 'Hashing', labelKey: 'health.hashing', color: 'info' };
     }
 
     if (download.stopped) {
-        return { health: 'stopped', label: 'Stopped', color: 'neutral' };
+        return { health: 'stopped', label: 'Stopped', labelKey: 'health.stopped', color: 'neutral' };
     }
 
     if (status === 'Paused') {
-        return { health: 'paused', label: 'Paused', color: 'neutral' };
+        return { health: 'paused', label: 'Paused', labelKey: 'health.paused', color: 'neutral' };
     }
 
     if (speed > 0 || sourcesXfer > 0) {
-        return { health: 'downloading', label: 'Downloading', color: 'success' };
+        return { health: 'downloading', label: 'Downloading', labelKey: 'health.downloading', color: 'success' };
     }
 
     if (sources === 0) {
@@ -93,22 +112,29 @@ export function classifyDownload(download: DownloadHealthInput): DownloadHealthI
             ? {
                 health: 'stalled',
                 label: 'No sources',
+                labelKey: 'health.noSources',
                 color: 'warning',
-                reason: 'All sources for this file went offline. It will resume automatically if one comes back.'
+                reason: 'All sources for this file went offline. It will resume automatically if one comes back.',
+                reasonKey: 'health.stalledReason'
             }
             : {
                 health: 'searching',
                 label: 'Searching',
+                labelKey: 'health.searching',
                 color: 'info',
-                reason: SEARCHING_REASON
+                reason: SEARCHING_REASON,
+                reasonKey: 'health.searchingReason'
             };
     }
 
     return {
         health: 'waiting',
         label: 'Waiting',
+        labelKey: 'health.waiting',
         color: 'info',
-        reason: `Queued at ${sources} source${sources === 1 ? '' : 's'}, waiting for a free upload slot.`
+        reason: `Queued at ${sources} source${sources === 1 ? '' : 's'}, waiting for a free upload slot.`,
+        reasonKey: 'health.waitingReason',
+        reasonValues: { count: sources }
     };
 }
 

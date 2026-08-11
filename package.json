@@ -32,11 +32,14 @@
     "release:dry": "semantic-release --dry-run --no-ci"
   },
   "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.84",
     "@nuxt/ui": "^4.10.0",
+    "@nuxtjs/i18n": "^10.6.0",
     "@types/ws": "^8.18.1",
     "nuxt": "^4.2.1",
     "vue": "^3.5.24",
     "vue-router": "^5.2.0",
+    "web-push": "^3.6.7",
     "ws": "^8.18.3"
   },
   "devDependencies": {
@@ -51,6 +54,7 @@
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^11.0.1",
     "@types/node": "^26.1.2",
+    "@types/web-push": "^3.6.4",
     "archiver": "^8.0.0",
     "conventional-changelog-conventionalcommits": "^10.2.1",
     "secure-exec": "^0.3.3",
