@@ -818,9 +818,19 @@ export class AMuleProtocol {
         });
     }
 
+    /*
+     * The packet-level chatter below is `trace`, not `debug`.
+     *
+     * Every request logs eight lines, and the app polls the daemon continuously:
+     * a couple of hours of `LOG_LEVEL=debug` (which is the default while
+     * developing) produced 4,800 requests and a multi-megabyte log of nothing
+     * but this. It is exactly what you want when reading the wire, and exactly
+     * what you do not want the rest of the time - so `debug` keeps the
+     * connection, authentication and failure lines, and `trace` has the packets.
+     */
     private processNextRequest(): void {
         if (this.isProcessingRequest || this.requestQueue.length === 0 || !this.client) {
-            log.debug('processNextRequest skipped - processing:', this.isProcessingRequest, 'queueLen:', this.requestQueue.length, 'client:', !!this.client);
+            log.trace('processNextRequest skipped - processing:', this.isProcessingRequest, 'queueLen:', this.requestQueue.length, 'client:', !!this.client);
             return;
         }
 
@@ -831,7 +841,7 @@ export class AMuleProtocol {
             return;
         }
 
-        log.debug('processNextRequest starting');
+        log.trace('processNextRequest starting');
         this.isProcessingRequest = true;
         const request = this.requestQueue.shift()!;
 
@@ -854,7 +864,7 @@ export class AMuleProtocol {
         this.activeRequest = { reject: request.reject, timeout: timeoutHandle };
 
         this.dataHandler = (data: Buffer) => {
-            log.debug('Received data:', data.length, 'bytes');
+            log.trace('Received data:', data.length, 'bytes');
             if (request.multiChunk) {
                 // Multi-chunk: accumulate until we have full packet
                 buf.push(this.toArrayBuffer(data));
@@ -863,14 +873,14 @@ export class AMuleProtocol {
                     const headerView = new DataView(buf[0]);
                     const packetLength = headerView.getUint32(4);
                     totalSizeOfRequest = packetLength + 8;
-                    log.debug('Expected total size:', totalSizeOfRequest);
+                    log.trace('Expected total size:', totalSizeOfRequest);
                 }
 
                 const currentLength = buf.reduce((acc, b) => acc + b.byteLength, 0);
-                log.debug('Current length:', currentLength, 'of', totalSizeOfRequest);
+                log.trace('Current length:', currentLength, 'of', totalSizeOfRequest);
 
                 if (totalSizeOfRequest > 0 && currentLength >= totalSizeOfRequest) {
-                    log.debug('Multi-chunk complete!');
+                    log.trace('Multi-chunk complete!');
                     clearTimeout(timeoutHandle);
                     this.cleanupListeners();
 
@@ -911,9 +921,9 @@ export class AMuleProtocol {
         this.client.once('error', this.errorHandler);
         
         const sendBuf = this.toBuffer(request.data);
-        log.debug('Sending', sendBuf.length, 'bytes, socket readable:', this.client.readable, 'writable:', this.client.writable);
+        log.trace('Sending', sendBuf.length, 'bytes, socket readable:', this.client.readable, 'writable:', this.client.writable);
         const writeResult = this.client.write(sendBuf);
-        log.debug('Write result:', writeResult);
+        log.trace('Write result:', writeResult);
     }
 
     private cleanupListeners(): void {
