@@ -13,7 +13,10 @@ export default defineEventHandler(async (event): Promise<ApiResponse<Download[]>
 
         return {
             success: true,
-            data: downloads
+            // aMule cannot say when a download started or finished; the queue
+            // watcher records both, and they are merged in here so the polled
+            // queue carries the same information as the live one
+            data: await withHistory(downloads)
         };
     } catch (error: any) {
         console.error('API Error:', error);

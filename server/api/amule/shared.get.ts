@@ -17,7 +17,9 @@ export default defineEventHandler(async (): Promise<ApiResponse<{ sharedFiles: S
 
         return {
             success: true,
-            data: { sharedFiles }
+            // A file this app watched finish keeps its completion time here, after
+            // aMule has moved it out of the download queue
+            data: { sharedFiles: await withHistory(sharedFiles) }
         };
     } catch (error: any) {
         return {

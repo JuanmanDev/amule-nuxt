@@ -1,56 +1,32 @@
+/**
+ * Live updates over a WebSocket of its own.
+ *
+ * Nitro has no portable way to hand a plugin the HTTP server it is about to
+ * listen on, so the push channel gets its own port rather than sharing one. The
+ * port is configurable so a preview next to a dev server, or several containers
+ * on one host, do not collide.
+ *
+ * The browser is told which port to dial through `runtimeConfig.public.wsPort`,
+ * which is resolved from WS_PORT when the app is *built*. So a deployment that
+ * moves the port has to pass NUXT_PUBLIC_WS_PORT as well, or the page keeps
+ * sending browsers to the built-in default while this server listens elsewhere:
+ * live updates report as unavailable and every page falls back to polling.
+ *
+ * Both launchers do that for you (docker-entrypoint.sh and the start scripts in
+ * the release zip default NUXT_PUBLIC_WS_PORT to WS_PORT). It cannot be done
+ * here: the runtime config is frozen by the time a Nitro plugin runs.
+ *
+ * The daemon itself is read by `amuleMonitor`, which this only subscribes to -
+ * one loop feeds both the live push and the notifications.
+ */
+
 import { WebSocketServer, WebSocket } from 'ws';
-import { getAmuleClient } from '../utils/getAmuleClient';
-import type { IncomingMessage } from 'http';
+import { latestFrame, onDownloadEvents, onFrame, setWatcherCount } from '../utils/amuleMonitor';
 import { useLogger } from '../utils/logger';
 
 const log = useLogger('websocket');
 
 export default defineNitroPlugin((nitroApp) => {
-    // Only set up WebSocket server if we are running in a way that supports it
-    // Nitro handles HTTP server creation, but we need to hook into it
-    // Note: Nuxt 4 (nitro 2.x+) has experimental websocket support, but standard 'ws' library
-    // works well by attaching to the node server.
-
-    // However, Nitro plugins run before server starts listening.
-    // We can use the 'request' hook or just setup a separate WS server or attach to existing one if possible.
-    // Since we don't have direct access to the `server` object in Nitro plugin easily without hooks.
-
-    // Better approach: Use a Nitro middleware to upgrade connections?
-    // Or hooks: 'render:response'? No.
-
-    // Since this is a "best feature" request, I will try to implement a robust WS solution.
-    // Using `nitroApp.hooks.hook('request', ...)` won't help with upgrade.
-
-    // NOTE: In Nuxt 3/Nitro, `nitropack` supports websockets via `h3`.
-    // But let's stick to a simple separate WS server on a different port or same port if we can access it.
-    // Since we can't easily access the main HTTP server in a generic way in Nitro presets (unless using specific preset),
-    // we'll try to use the experimental websocket feature or just start a WS server on a separate port for simplicity,
-    // OR (better) use standard Nuxt server API endpoint to handle upgrade.
-
-    // BUT: standard node `ws` can attach to a server.
-    // Let's try to access the node server via global context if available or use a workaround.
-
-    // Workaround: We can't easily hook into the server listen event from a plugin in a platform-agnostic way.
-    // But for a "Docker" / "Local" deployment (which is the target), we can perhaps just start a WS server on a dedicated port.
-    // Let's use port 3001 for WebSocket for now, or share port if possible.
-
-    // Actually, Nuxt 3 has `server/api/...` which are handled by H3.
-    // We can creating a specific route `/api/ws` and handle upgrade there.
-
-    // Standalone WebSocket server for the live push. The port is configurable so a
-    // second instance (a preview next to a dev server, several containers on one
-    // host) does not collide.
-    /*
-     * The browser is told which port to dial through `runtimeConfig.public.wsPort`,
-     * which is resolved from WS_PORT when the app is *built*. So a deployment that
-     * moves the port has to pass NUXT_PUBLIC_WS_PORT as well, or the page keeps
-     * sending browsers to the built-in default while this server listens elsewhere:
-     * live updates report as unavailable and every page falls back to polling.
-     *
-     * Both launchers do that for you (docker-entrypoint.sh and the start scripts in
-     * the release zip default NUXT_PUBLIC_WS_PORT to WS_PORT). It cannot be done
-     * here: the runtime config is frozen by the time a Nitro plugin runs.
-     */
     const WS_PORT = Number(process.env.WS_PORT ?? 3001);
     const announced = Number(useRuntimeConfig().public.wsPort ?? 3001);
 
@@ -75,10 +51,7 @@ export default defineNitroPlugin((nitroApp) => {
         }
     });
 
-    const amuleClient = getAmuleClient();
-
-    // Broadcast function
-    const broadcast = (data: any) => {
+    const broadcast = (data: unknown) => {
         const message = JSON.stringify(data);
         wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
@@ -87,51 +60,39 @@ export default defineNitroPlugin((nitroApp) => {
         });
     };
 
-    // Poll status every 2 seconds. The guard matters when the daemon is slow or
-    // gone: overlapping polls would queue up on the single EC connection and
-    // starve the API routes the pages depend on.
-    let polling = false;
+    const stopListening = onFrame(frame => {
+        if (wss.clients.size === 0) return;
+        broadcast({ type: 'status_update', data: frame });
+    });
 
-    setInterval(async () => {
-        if (wss.clients.size === 0 || polling) return;
-
-        polling = true;
-        try {
-            const status = await amuleClient.status();
-            const downloads = await amuleClient.getDownloads();
-
-            broadcast({
-                type: 'status_update',
-                data: {
-                    status,
-                    downloads
-                }
-            });
-        } catch (e) {
-            log.debug('Status poll failed, keeping the previous snapshot', e);
-        } finally {
-            polling = false;
-        }
-    }, 2000);
+    // Open tabs get the same events the push notifications carry, so a browser
+    // that is already looking at the app is told by the app rather than by the
+    // operating system.
+    const stopEvents = onDownloadEvents(events => {
+        if (wss.clients.size === 0) return;
+        broadcast({ type: 'download_events', data: { events } });
+    });
 
     wss.on('connection', (ws) => {
         log.debug('Client connected');
+        setWatcherCount(wss.clients.size);
 
-        ws.on('message', async (message) => {
-             // Handle incoming messages if needed
-             // For now, we mainly push updates
-        });
+        ws.on('close', () => setWatcherCount(wss.clients.size));
 
-        // Send immediate update
-        (async () => {
-             try {
-                const status = await amuleClient.status();
-                ws.send(JSON.stringify({ type: 'status_update', data: { status, downloads: [] } }));
-             } catch (e) {}
-        })();
+        // Whatever the monitor read last, so a fresh tab is filled immediately
+        // without an EC round trip of its own. Note what is *not* sent when there
+        // is no reading yet: an empty `downloads` array, which the browser cannot
+        // tell from "the queue is empty" and which used to blank the list on every
+        // reconnect.
+        const frame = latestFrame();
+        if (frame) {
+            ws.send(JSON.stringify({ type: 'status_update', data: frame }));
+        }
     });
 
     nitroApp.hooks.hook('close', () => {
+        stopListening();
+        stopEvents();
         wss.close();
     });
 });
