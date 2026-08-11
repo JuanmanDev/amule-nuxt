@@ -11,8 +11,8 @@
       v-if="!connectionState.connected"
       color="error"
       icon="i-heroicons-exclamation-triangle"
-      :title="`Cannot reach the aMule daemon: ${connectionState.error || 'check the host, port and password'}`"
-      :actions="[{ label: 'Open settings', to: '/settings', color: 'neutral', variant: 'outline', size: 'xs' }]"
+      :title="$t('app.daemonUnreachable', { reason: connectionState.error || $t('app.daemonUnreachableFallback') })"
+      :actions="[{ label: $t('app.openSettings'), to: '/settings', color: 'neutral', variant: 'outline', size: 'xs' }]"
     />
     <!-- Desktop Navigation - Top Bar -->
     <header class="hidden lg:block sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
@@ -21,7 +21,7 @@
           <!-- Logo -->
           <NuxtLink to="/" class="flex items-center gap-2 font-bold text-xl">
             <UIcon name="i-heroicons-server" class="w-6 h-6" />
-            aMule Nuxt
+            {{ $t('app.name') }}
           </NuxtLink>
 
           <!-- Navigation Links: primary inline, the rest in a menu -->
@@ -29,11 +29,11 @@
             <NavigationMenu :links="primaryNavLinks" orientation="horizontal" />
             <UDropdownMenu :items="[secondaryNavItems]" :modal="false">
               <UButton variant="ghost" color="neutral" trailing-icon="i-heroicons-chevron-down">
-                More
+                {{ $t('app.more') }}
               </UButton>
             </UDropdownMenu>
             <UButton icon="i-heroicons-plus" color="primary" variant="solid" @click="() => { isAddModalOpen = true }">
-              Add Link
+              {{ $t('app.addLink') }}
             </UButton>
           </div>
         </div>
@@ -52,9 +52,10 @@
       <UContainer>
         <div class="flex items-center justify-between h-16">
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            © {{ new Date().getFullYear() }} aMule Nuxt. All rights reserved. Juanma was here.
+            {{ $t('app.footer', { year: new Date().getFullYear() }) }} Juanma was here.
           </p>
           <div class="flex items-center gap-2">
+            <LanguageSwitcher />
             <ColorSchemeToggle />
             <UButton
               icon="i-simple-icons-github"
@@ -62,7 +63,7 @@
               variant="ghost"
               to="https://github.com/JuanmanDev/amule-nuxt"
               target="_blank"
-              aria-label="GitHub Repository"
+              :aria-label="$t('app.github')"
             />
           </div>
         </div>
@@ -91,19 +92,30 @@
           class="flex flex-col items-center justify-center gap-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
         >
           <UIcon name="i-heroicons-bars-3" class="w-6 h-6" />
-          <span class="text-xs">Menu</span>
+          <span class="text-xs">{{ $t('app.menu') }}</span>
         </button>
       </div>
     </nav>
 
     <!-- Mobile Menu Slideover -->
-    <USlideover title="aMule Nuxt" v-model:open="isMenuOpen" side="right">
+    <USlideover :title="$t('app.name')" v-model:open="isMenuOpen" side="right">
       <template #body>
-        <!-- Bottom weighted: `mt-auto` on the links pushes everything below the
-             speed summary down to the thumb when the menu is taller than its
-             content, and collapses to nothing when it is not, so a long list
-             still scrolls from the top. A class on <template> would be dropped. -->
+        <!-- Bottom weighted: `mt-auto` on the links pushes them and the add button
+             down to the thumb when the menu is taller than its content, and
+             collapses to nothing when it is not, so a long list still scrolls from
+             the top. A class on <template> would be dropped. -->
         <div class="flex flex-col min-h-full gap-4">
+          <!-- Settings for the app itself, at the top and out of the way of the
+               thumb: they are the things you touch once, unlike the links and the
+               add button below. Same components as the desktop footer, so the
+               icons are picked by CSS rather than by a value the server cannot
+               know. -->
+          <div class="flex items-center justify-between">
+            <UButton icon="i-simple-icons-github" color="neutral" variant="ghost" to="https://github.com/JuanmanDev/amule-nuxt" target="_blank" :aria-label="$t('app.github')" />
+            <LanguageSwitcher />
+            <ColorSchemeToggle />
+          </div>
+
           <!-- Speed Summary in Menu -->
           <div class="flex items-center justify-around text-sm p-2 bg-elevated/50 backdrop-blur-sm rounded-lg">
             <!-- Speeds are shortcuts to the page that explains them -->
@@ -133,7 +145,7 @@
             @click="() => { isMenuOpen = false }"
           />
 
-          <!-- Under the links and above the icons: the action closest to the thumb -->
+          <!-- Last, so it is the control closest to the thumb -->
           <UButton
             icon="i-heroicons-plus"
             color="primary"
@@ -141,15 +153,8 @@
             class="justify-center w-full"
             @click="() => { isAddModalOpen = true; isMenuOpen = false }"
           >
-            Add ed2k Link
+            {{ $t('app.addEd2kLink') }}
           </UButton>
-
-          <div class="flex items-center justify-between">
-            <UButton icon="i-simple-icons-github" color="neutral" variant="ghost" to="https://github.com/JuanmanDev/amule-nuxt" target="_blank" aria-label="GitHub" />
-            <!-- Same component as the desktop footer, so the icon is picked by CSS
-                 rather than by a value the server cannot know -->
-            <ColorSchemeToggle />
-          </div>
         </div>
       </template>
     </USlideover>
@@ -160,6 +165,8 @@
 
 <script setup lang="ts">
 import { formatSpeed } from '#shared/utils/format'
+
+const { t } = useI18n()
 
 const isMenuOpen = ref(false)
 const isAddModalOpen = ref(false)
@@ -176,30 +183,33 @@ const activeDownloadFiles = computed(
 const runtimeConfig = useRuntimeConfig()
 const isDev = computed(() => process.dev || runtimeConfig.public.isDev)
 
-// Navigation links for desktop and mobile menu
+// Navigation links for desktop and mobile menu. Labels are resolved through a
+// computed rather than built once, so switching language relabels the menu
+// without a reload.
 const baseNavLinks = [
-  { label: 'Dashboard', icon: 'i-heroicons-home', to: '/' },
-  { label: 'Downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
-  { label: 'Uploads', icon: 'i-heroicons-arrow-up-tray', to: '/uploads' },
-  { label: 'Search', icon: 'i-heroicons-magnifying-glass', to: '/search' },
-  { label: 'Shared', icon: 'i-heroicons-folder-open', to: '/shared' },
-  { label: 'Servers', icon: 'i-heroicons-server-stack', to: '/servers' },
-  { label: 'Connection', icon: 'i-heroicons-signal', to: '/connection' },
-  { label: 'Statistics', icon: 'i-heroicons-chart-bar', to: '/statistics' },
-  { label: 'Stats summary', icon: 'i-heroicons-presentation-chart-line', to: '/stats' },
-  { label: 'Preferences', icon: 'i-heroicons-adjustments-horizontal', to: '/preferences' },
-  { label: 'Logs', icon: 'i-heroicons-document-text', to: '/logs' },
-  { label: 'MCP server', icon: 'i-heroicons-cpu-chip', to: '/mcp-server' },
-  { label: 'Settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
+  { key: 'dashboard', icon: 'i-heroicons-home', to: '/' },
+  { key: 'downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
+  { key: 'uploads', icon: 'i-heroicons-arrow-up-tray', to: '/uploads' },
+  { key: 'search', icon: 'i-heroicons-magnifying-glass', to: '/search' },
+  { key: 'shared', icon: 'i-heroicons-folder-open', to: '/shared' },
+  { key: 'assistant', icon: 'i-heroicons-sparkles', to: '/assistant' },
+  { key: 'servers', icon: 'i-heroicons-server-stack', to: '/servers' },
+  { key: 'connection', icon: 'i-heroicons-signal', to: '/connection' },
+  { key: 'statistics', icon: 'i-heroicons-chart-bar', to: '/statistics' },
+  { key: 'statsSummary', icon: 'i-heroicons-presentation-chart-line', to: '/stats' },
+  { key: 'preferences', icon: 'i-heroicons-adjustments-horizontal', to: '/preferences' },
+  { key: 'logs', icon: 'i-heroicons-document-text', to: '/logs' },
+  { key: 'mcpServer', icon: 'i-heroicons-cpu-chip', to: '/mcp-server' },
+  { key: 'settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
 ]
 
 // Add API Test link only in development
 const navLinks = computed(() => {
   const links = [...baseNavLinks]
   if (isDev.value) {
-    links.push({ label: 'API Test', icon: 'i-heroicons-code-bracket', to: '/api-test' })
+    links.push({ key: 'apiTest', icon: 'i-heroicons-code-bracket', to: '/api-test' })
   }
-  return links
+  return links.map(link => ({ ...link, label: t(`nav.${link.key}`) }))
 })
 
 /** Links shown directly in the desktop bar; the rest go into the "More" menu. */
@@ -212,11 +222,11 @@ const secondaryNavItems = computed(() => navLinks.value
   .map(link => ({ label: link.label, icon: link.icon, to: link.to })))
 
 // Simplified navigation for mobile (3 pages + menu)
-const mobileNavLinks = [
-  { label: 'Home', icon: 'i-heroicons-home', to: '/' },
-  { label: 'Downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
-  { label: 'Shared', icon: 'i-heroicons-folder-open', to: '/shared' }
-]
+const mobileNavLinks = computed(() => [
+  { label: t('nav.home'), icon: 'i-heroicons-home', to: '/' },
+  { label: t('nav.downloads'), icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
+  { label: t('nav.shared'), icon: 'i-heroicons-folder-open', to: '/shared' }
+])
 
 /** Poll interval while the daemon answers, and the slower one while it does not. */
 const STATUS_POLL_MS = 5000
@@ -274,19 +284,15 @@ onUnmounted(() => {
   if (statusTimer) clearTimeout(statusTimer)
 })
 
+// Frosted panels are a `backdrop-filter` on every card, row and tile: the browser
+// re-blurs the region behind each one whenever anything there moves or scrolls.
+// A class on <html> lets the whole app drop them in one go, and it is set during
+// SSR so the first paint is already correct.
+const { glass } = useAppearance()
+
 // SEO
 useHead({
-  titleTemplate: '%s - aMule Nuxt'
+  titleTemplate: '%s - aMule Nuxt',
+  htmlAttrs: { class: computed(() => (glass.value ? '' : 'no-glass')) }
 })
 </script>
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.2s;
-}
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-}
-</style>

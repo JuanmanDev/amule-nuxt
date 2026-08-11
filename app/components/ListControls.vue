@@ -3,7 +3,7 @@
   <div class="flex items-center gap-2 w-full">
     <UInput
       :model-value="search"
-      :placeholder="placeholder"
+      :placeholder="placeholder || $t('common.filter')"
       icon="i-heroicons-magnifying-glass"
       class="flex-1 min-w-0"
       :ui="{ trailing: 'pe-1' }"
@@ -15,7 +15,7 @@
           variant="link"
           color="neutral"
           size="xs"
-          aria-label="Clear filter"
+          :aria-label="$t('common.clearFilter')"
           @click="emit('update:search', '')"
         />
       </template>
@@ -28,7 +28,7 @@
         color="neutral"
         variant="outline"
         class="shrink-0"
-        :aria-label="`Sort by ${activeOption?.label ?? sortBy}`"
+        :aria-label="$t('common.sortBy', { field: activeOption?.label ?? sortBy })"
       >
         <span class="hidden sm:inline">{{ activeOption?.label ?? sortBy }}</span>
       </UButton>
@@ -40,8 +40,8 @@
       color="neutral"
       variant="outline"
       class="shrink-0"
-      :aria-label="direction === 'asc' ? 'Ascending, switch to descending' : 'Descending, switch to ascending'"
-      :title="direction === 'asc' ? 'Ascending' : 'Descending'"
+      :aria-label="direction === 'asc' ? $t('common.ascending') : $t('common.descending')"
+      :title="direction === 'asc' ? $t('common.ascendingShort') : $t('common.descendingShort')"
       @click="toggleDirection"
     />
   </div>
@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<{
   options: SortOption[];
   placeholder?: string;
 }>(), {
-  placeholder: 'Filter...'
+  placeholder: ''
 });
 
 const emit = defineEmits<{

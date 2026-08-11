@@ -74,7 +74,7 @@
     <UCard>
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <h2 class="text-xl font-semibold">Server list ({{ servers.length }})</h2>
+          <h2 class="text-xl font-semibold">Server list ({{ servers.length.toLocaleString() }})</h2>
           <ListControls
             v-model:search="search"
             v-model:sort-by="sortBy"
@@ -126,7 +126,7 @@
         :description="`No server matches '${search}'.`"
       />
 
-      <TransitionGroup v-else key="rows" name="list" tag="div" class="space-y-4 relative">
+      <AnimatedList v-else key="rows" gap="1rem" :reset-key="pageKey">
         <div
           v-for="server in visibleServers"
           :key="server.ip + ':' + server.port"
@@ -196,8 +196,21 @@
             </div>
           </div>
         </div>
-      </TransitionGroup>
+      </AnimatedList>
       </SmoothSwap>
+
+      <!-- A list updated from a URL runs to thousands of servers -->
+      <ListPagination
+        v-model:page="page"
+        v-model:page-size="pageSize"
+        :page-count="pageCount"
+        :matched="matched"
+        :total="total"
+        :first-on-page="firstOnPage"
+        :last-on-page="lastOnPage"
+        label="servers"
+        class="mt-4"
+      />
     </UCard>
 
     <UModal v-model:open="removeOpen" title="Remove server">
@@ -220,7 +233,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { AmulePreferences } from '../../server/utils/amule-types'
-import { filterItems, sortItems, type SortDirection, type SortOption } from '#shared/utils/sorting'
+import type { SortOption } from '#shared/utils/sorting'
 
 useHead({ title: 'Servers' })
 
@@ -229,9 +242,6 @@ const toast = useToast()
 const { status } = useAmuleStatus()
 
 const servers = ref<any[]>([])
-const search = ref('')
-const sortBy = ref('users')
-const direction = ref<SortDirection>('desc')
 
 const sortOptions: SortOption[] = [
   { label: 'Users', value: 'users', defaultDirection: 'desc' },
@@ -331,12 +341,27 @@ const address = (server: any) => `${server.ip}:${server.port}`
 const isConnected = (server: any) =>
   Boolean(status.value?.ed2kConnected && status.value?.serverIP && status.value.serverIP === server.ip)
 
-const visibleServers = computed(() => sortItems(
-  filterItems(servers.value, search.value, (server: any) => [server.name, server.ip, server.port, server.description]),
-  sortBy.value,
-  direction.value,
-  sortAccessors
-))
+const {
+  search,
+  sortBy,
+  direction,
+  page,
+  pageSize,
+  pageKey,
+  visible: visibleServers,
+  matched,
+  total,
+  pageCount,
+  firstOnPage,
+  lastOnPage
+} = usePaginatedList<any>({
+  items: servers,
+  fields: (server: any) => [server.name, server.ip, server.port, server.description],
+  accessors: sortAccessors,
+  sortBy: 'users',
+  direction: 'desc',
+  storageKey: 'servers'
+})
 
 async function handleAdd() {
   adding.value = true

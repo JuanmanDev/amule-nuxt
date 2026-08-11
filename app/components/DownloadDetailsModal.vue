@@ -1,30 +1,30 @@
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" title="Download details">
+  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('downloads.detailsTitle')">
     <template #body>
       <div v-if="download" class="space-y-6">
         <!-- Full file name: wraps instead of truncating, which is the point of this modal -->
         <div class="space-y-2">
           <div class="flex items-start gap-2">
             <p class="text-sm font-semibold break-all leading-snug">{{ download.name }}</p>
-            <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">{{ info.label }}</UBadge>
+            <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">{{ $t(info.labelKey) }}</UBadge>
           </div>
           <UButton
             size="xs"
             variant="ghost"
             color="neutral"
             icon="i-heroicons-clipboard-document"
-            @click="copy(download.name, 'File name copied')"
+            @click="copy(download.name, t('downloads.fileNameCopied'))"
           >
-            Copy name
+            {{ $t('downloads.copyName') }}
           </UButton>
         </div>
 
         <UAlert
-          v-if="info.reason"
+          v-if="reason"
           :color="info.health === 'stalled' ? 'warning' : 'info'"
           variant="subtle"
           :icon="info.health === 'stalled' ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-information-circle'"
-          :description="info.reason"
+          :description="reason"
         />
 
         <!-- Progress -->
@@ -47,7 +47,7 @@
         <!-- Identifiers -->
         <div class="space-y-3">
           <div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">File hash</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.fileHash') }}</div>
             <div class="flex items-center gap-2">
               <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">{{ download.hash }}</code>
               <UButton
@@ -55,14 +55,14 @@
                 variant="ghost"
                 color="neutral"
                 icon="i-heroicons-clipboard-document"
-                aria-label="Copy hash"
-                @click="copy(download.hash, 'Hash copied')"
+                :aria-label="$t('downloads.copyHash')"
+                @click="copy(download.hash, t('downloads.hashCopied'))"
               />
             </div>
           </div>
 
           <div v-if="download.ed2kLink">
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">eD2k link</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.ed2kLink') }}</div>
             <div class="flex items-start gap-2">
               <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1 max-h-24 overflow-y-auto">{{ download.ed2kLink }}</code>
               <UButton
@@ -70,8 +70,8 @@
                 variant="ghost"
                 color="neutral"
                 icon="i-heroicons-clipboard-document"
-                aria-label="Copy ed2k link"
-                @click="copy(download.ed2kLink, 'ed2k link copied')"
+                :aria-label="$t('downloads.copyLink')"
+                @click="copy(download.ed2kLink, t('downloads.linkCopied'))"
               />
             </div>
           </div>
@@ -92,16 +92,18 @@
             class="sm:w-auto"
             @click="() => { isPaused ? resume(download!) : pause(download!) }"
           >
-            {{ isPaused ? 'Resume' : 'Pause' }}
+            {{ isPaused ? $t('downloads.resume') : $t('downloads.pause') }}
           </UButton>
 
           <USelect
             :model-value="download.priority"
             :items="priorities"
+            value-key="value"
+            label-key="label"
             :disabled="busyHash === download.hash"
             icon="i-heroicons-arrow-up"
             class="w-full sm:w-32"
-            aria-label="Download priority"
+            :aria-label="$t('downloads.fields.priority')"
             @update:model-value="value => setPriority(download!, value as any)"
           />
         </div>
@@ -114,7 +116,7 @@
             class="flex-1 sm:flex-none justify-center"
             @click="emit('remove', download)"
           >
-            Remove
+            {{ $t('common.remove') }}
           </UButton>
           <UButton
             color="neutral"
@@ -122,7 +124,7 @@
             class="flex-1 sm:flex-none justify-center"
             @click="() => { open = false }"
           >
-            Close
+            {{ $t('common.close') }}
           </UButton>
         </div>
       </div>
@@ -150,10 +152,22 @@ const open = computed({
   set: value => emit('update:modelValue', value)
 });
 
-const toast = useToast();
+const { copy } = useClipboard();
+const { t } = useI18n();
+const time = useLocalTime();
 const { busyHash, pause, resume, setPriority } = useDownloads();
 
-const priorities = ['Auto', 'High', 'Normal', 'Low'];
+const priorities = computed(() => (['Auto', 'High', 'Normal', 'Low'] as const)
+  .map(value => ({ label: t(`downloads.priorities.${value}`), value })));
+
+/** The explanation for the current state, translated. */
+const reason = computed(() => {
+  const { reasonKey, reasonValues } = info.value;
+  if (!reasonKey) return '';
+  return reasonValues?.count === undefined
+    ? t(reasonKey)
+    : t(reasonKey, Number(reasonValues.count), { named: reasonValues });
+});
 
 const info = computed(() => classifyDownload(props.download ?? {}));
 const isPaused = computed(() => props.download?.status === 'Paused' || props.download?.stopped === true);
@@ -166,27 +180,32 @@ const facts = computed(() => {
   const eta = formatEta(remaining, download.speed || 0);
 
   return [
-    { label: 'Status', value: download.status },
-    { label: 'Speed', value: formatSpeed(download.speed) },
-    { label: 'ETA', value: eta ?? '-' },
-    { label: 'Size', value: formatBytes(download.size) },
-    { label: 'Remaining', value: formatBytes(remaining) },
-    { label: 'Priority', value: `${download.priority}${download.autoPriority ? ' (auto)' : ''}` },
-    { label: 'Sources', value: String(download.sources ?? 0) },
-    { label: 'Transferring', value: String(download.sourcesXfer ?? 0) },
-    { label: 'A4AF sources', value: String(download.sourcesA4AF ?? 0) },
-    { label: 'Available parts', value: String(download.availableParts ?? 0) },
-    { label: 'Last data received', value: formatTimestamp(download.lastReceived) },
-    { label: 'Last seen complete', value: formatTimestamp(download.lastSeenComplete) }
+    { label: t('downloads.fields.status'), value: t(info.value.labelKey) },
+    { label: t('downloads.fields.speed'), value: formatSpeed(download.speed) },
+    { label: t('downloads.fields.eta'), value: eta ?? '-' },
+    { label: t('downloads.fields.size'), value: formatBytes(download.size) },
+    { label: t('downloads.fields.remaining'), value: formatBytes(remaining) },
+    { label: t('downloads.fields.priority'), value: `${t('downloads.priorities.' + download.priority)}${download.autoPriority ? ' ' + t('downloads.priorities.autoSuffix') : ''}` },
+    { label: t('downloads.fields.sources'), value: String(download.sources ?? 0) },
+    { label: t('downloads.fields.transferring'), value: String(download.sourcesXfer ?? 0) },
+    { label: t('downloads.fields.a4afSources'), value: String(download.sourcesA4AF ?? 0) },
+    { label: t('downloads.fields.availableParts'), value: String(download.availableParts ?? 0) },
+    { label: t('downloads.fields.lastReceived'), value: formatTimestamp(download.lastReceived) },
+    { label: t('downloads.fields.lastSeenComplete'), value: formatTimestamp(download.lastSeenComplete) },
+    // Recorded by this app, not by aMule: see server/utils/downloadHistory.ts.
+    // A download that predates the app reports when it was first seen instead of
+    // claiming a start time nobody observed.
+    {
+      label: download.startKnown ? t('downloads.fields.addedAt') : t('downloads.fields.seenSince'),
+      value: time.dateTime(download.startKnown ? download.addedAt : download.firstSeenAt)
+    },
+    {
+      label: download.completedAt ? t('downloads.fields.completedAt') : t('downloads.fields.runningFor'),
+      value: download.completedAt
+        ? time.dateTime(download.completedAt)
+        : (time.duration(download.addedAt ?? download.firstSeenAt, Date.now()) || '-')
+    }
   ];
 });
 
-async function copy(value: string, successTitle: string) {
-  try {
-    await navigator.clipboard.writeText(value);
-    toast.add({ title: successTitle, color: 'success' });
-  } catch {
-    toast.add({ title: 'Could not copy to clipboard', description: value, color: 'warning' });
-  }
-}
 </script>

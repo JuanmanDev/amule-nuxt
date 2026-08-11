@@ -13,6 +13,9 @@ import { summariseAddResults, type AddLinksSummary } from '#shared/utils/addLink
 
 export type DownloadPriorityName = 'Auto' | 'High' | 'Normal' | 'Low';
 
+/** The queue commands that can be applied to a whole selection. */
+export type BulkAction = 'pause' | 'resume' | 'remove';
+
 export interface AddLinksOutcome {
     /** True when no link was refused. */
     ok: boolean;
@@ -28,24 +31,27 @@ export function isValidDownloadHash(hash: unknown): hash is string {
 export const useDownloads = () => {
     const api = useAmuleApi();
     const toast = useToast();
-    const { wsStatus, realtimeDownloads } = useAmuleSocket();
+    const { t } = useI18n();
+    // Only for the "Live" badge: the socket's data goes into the feed, not here.
+    const { wsStatus } = useAmuleSocket();
 
     // The queue itself lives in the prefetched feed, so it is already loaded
     // whichever page the user opens first and it keeps refreshing in the
     // background while they are elsewhere.
     const feed = useDownloadsFeed();
-    const downloads = feed.items;
     const loading = feed.loading;
     const error = feed.error;
     const busyHash = useState<string | null>('amule-downloads-busy', () => null);
 
-    /** Real-time data when the socket is up, otherwise the polled queue. */
-    const items = computed<Download[]>(() => {
-        if (wsStatus.value.connected && realtimeDownloads.value.length > 0) {
-            return realtimeDownloads.value as Download[];
-        }
-        return downloads.value;
-    });
+    /**
+     * The queue, from one place.
+     *
+     * Live pushes and the HTTP poll both write into this feed (see
+     * `applyLiveDownloads`), merged by hash. Choosing between two arrays here
+     * instead is what made the list flicker: whenever the choice flipped, every
+     * row was a new object and the whole queue animated out and back in.
+     */
+    const items = feed.items;
 
     const activeCount = computed(() =>
         items.value.filter(item => classifyDownload(item).health === 'downloading').length
@@ -109,16 +115,68 @@ export const useDownloads = () => {
     }
 
     const pause = (download: Download) =>
-        runCommand(download, () => api.pauseDownload(download.hash), 'Failed to pause');
+        runCommand(download, () => api.pauseDownload(download.hash), t('downloads.failedToPause'));
 
     const resume = (download: Download) =>
-        runCommand(download, () => api.resumeDownload(download.hash), 'Failed to resume');
+        runCommand(download, () => api.resumeDownload(download.hash), t('downloads.failedToResume'));
 
     const remove = (download: Download) =>
-        runCommand(download, () => api.cancelDownload(download.hash), 'Failed to remove', 'warning');
+        runCommand(download, () => api.cancelDownload(download.hash), t('downloads.failedToRemove'), 'warning');
 
     const setPriority = (download: Download, priority: DownloadPriorityName) =>
-        runCommand(download, () => api.setPriority(download.hash, priority), 'Failed to set priority');
+        runCommand(download, () => api.setPriority(download.hash, priority), t('downloads.failedToSetPriority'));
+
+    /**
+     * Runs one command over a selection.
+     *
+     * Sequential, deliberately: the daemon serves a single EC connection, so
+     * firing twenty requests at once only queues them behind each other while
+     * making every other page wait. One toast at the end rather than one per
+     * file, and one refresh, so a selection of fifty does not produce fifty of
+     * each.
+     */
+    async function runBulk(downloads: readonly Download[], action: BulkAction): Promise<{ done: number; failed: number }> {
+        const valid = downloads.filter(download => isValidDownloadHash(download.hash));
+        let done = 0;
+        let failed = 0;
+
+        for (const download of valid) {
+            busyHash.value = download.hash;
+            try {
+                const result = action === 'pause'
+                    ? await api.pauseDownload(download.hash)
+                    : action === 'resume'
+                        ? await api.resumeDownload(download.hash)
+                        : await api.cancelDownload(download.hash);
+
+                if (result.success) done += 1;
+                else failed += 1;
+            } catch {
+                failed += 1;
+            }
+        }
+
+        busyHash.value = null;
+        await fetchDownloads({ silent: true });
+
+        const skipped = downloads.length - valid.length;
+        toast.add({
+            // `done` twice: the number to print, and the plural form to pick
+            title: t(`downloads.bulk.${action}Done`, { count: done }, done),
+            // Everything that did not work, in one line: a per-file failure toast
+            // for a selection of fifty is unreadable
+            description: failed + skipped > 0
+                ? t('downloads.bulk.someFailed', { count: failed + skipped })
+                : undefined,
+            color: failed + skipped > 0 ? 'warning' : (action === 'remove' ? 'warning' : 'success')
+        });
+
+        return { done, failed: failed + skipped };
+    }
+
+    const pauseMany = (downloads: readonly Download[]) => runBulk(downloads, 'pause');
+    const resumeMany = (downloads: readonly Download[]) => runBulk(downloads, 'resume');
+    const removeMany = (downloads: readonly Download[]) => runBulk(downloads, 'remove');
 
     /**
      * The single add-link path used by every page and component.
@@ -186,6 +244,9 @@ export const useDownloads = () => {
         pause,
         resume,
         remove,
-        setPriority
+        setPriority,
+        pauseMany,
+        resumeMany,
+        removeMany
     };
 };
