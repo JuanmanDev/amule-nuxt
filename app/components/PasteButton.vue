@@ -5,12 +5,12 @@
     color="neutral"
     icon="i-heroicons-clipboard"
     :loading="pasting"
-    :aria-label="label"
-    :title="label"
+    :aria-label="label ?? $t('addLinks.paste')"
+    :title="label ?? $t('addLinks.paste')"
     @click="paste"
   >
     <!-- Label only where there is room for it -->
-    <span v-if="showLabel" class="hidden sm:inline">{{ label }}</span>
+    <span v-if="showLabel" class="hidden sm:inline">{{ label ?? $t('addLinks.paste') }}</span>
   </UButton>
 </template>
 
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<{
   variant?: 'solid' | 'outline' | 'soft' | 'subtle' | 'ghost' | 'link';
   showLabel?: boolean;
 }>(), {
-  label: 'Paste',
+  label: undefined,
   size: 'sm',
   variant: 'outline',
   showLabel: true
@@ -38,6 +38,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{ paste: [text: string] }>();
 
 const toast = useToast();
+const { t } = useI18n();
 const pasting = ref(false);
 
 async function paste() {
@@ -47,7 +48,7 @@ async function paste() {
     const trimmed = text.trim();
 
     if (!trimmed) {
-      toast.add({ title: 'The clipboard is empty', color: 'warning' });
+      toast.add({ title: t('addLinks.clipboardEmpty'), color: 'warning' });
       return;
     }
 

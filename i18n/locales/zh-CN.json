@@ -193,7 +193,10 @@
     "help": "每行一个 ed2k:// 或 magnet: 链接。想粘贴多少都可以，一次或分批都行。",
     "paste": "粘贴",
     "enterLink": "请输入链接",
-    "nothingToAdd": "没有可添加的内容"
+    "nothingToAdd": "没有可添加的内容",
+    "clipboardEmpty": "剪贴板是空的",
+    "addMore": "继续添加",
+    "modalLabel": "ed2k 或磁力链接（每行一个）"
   },
   "uploads": {
     "title": "上传",

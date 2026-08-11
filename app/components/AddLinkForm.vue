@@ -1,9 +1,9 @@
 <template>
   <UForm :state="state" @submit="submit">
     <UFormField
-      :label="label"
+      :label="label ?? $t('addLinks.label')"
       name="link"
-      help="One ed2k:// or magnet: link per line. Paste as many as you like, in one go or a few at a time."
+      :help="$t('addLinks.help')"
     >
       <div class="flex flex-col sm:flex-row gap-2">
         <!-- Same placeholder in both shapes: they accept exactly the same input,
@@ -14,14 +14,14 @@
           :rows="3"
           autoresize
           class="flex-1"
-          placeholder="ed2k://|file|name|size|hash|/ or magnet:?xt=..."
+          :placeholder="$t('addLinks.placeholder')"
         />
         <UInput
           v-else
           v-model="state.link"
           class="flex-1"
           size="lg"
-          placeholder="ed2k://|file|name|size|hash|/ or magnet:?xt=..."
+          :placeholder="$t('addLinks.placeholder')"
           @keydown.enter.prevent="submit"
         >
           <!-- Pasting is the normal way to fill this in, so offer it while empty -->
@@ -46,7 +46,7 @@
             icon="i-heroicons-plus"
             class="flex-1 sm:flex-none justify-center"
           >
-            Add
+            {{ $t('common.add') }}
           </UButton>
         </div>
       </div>
@@ -65,7 +65,8 @@ const props = withDefaults(defineProps<{
   label?: string;
   multiline?: boolean;
 }>(), {
-  label: 'Add downloads (eD2k or magnet links)',
+  // Falls back to the catalogue when a caller does not name the field itself
+  label: undefined,
   multiline: false
 });
 

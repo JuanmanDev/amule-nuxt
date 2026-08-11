@@ -193,7 +193,10 @@
     "help": "Un enlace ed2k:// o magnet: por línea. Pega los que quieras, de una vez o poco a poco.",
     "paste": "Pegar",
     "enterLink": "Introduce un enlace",
-    "nothingToAdd": "Nada que añadir"
+    "nothingToAdd": "Nada que añadir",
+    "clipboardEmpty": "El portapapeles está vacío",
+    "addMore": "Añadir más",
+    "modalLabel": "Enlaces ed2k o magnet (uno por línea)"
   },
   "uploads": {
     "title": "Subidas",

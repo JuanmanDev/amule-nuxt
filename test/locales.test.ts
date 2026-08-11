@@ -163,6 +163,26 @@ describe('locales', () => {
      * This is here so "which languages are actually done" is answerable without
      * opening 38 files.
      */
+    /**
+     * Regional variants are deltas, not copies: they inherit their base language
+     * (see `fallbackLocale` in i18n.config.ts) and hold only what differs. Every
+     * key they *do* define must therefore actually differ from the base, or it is
+     * a copy that will silently stop tracking the language it came from.
+     */
+    it.each([['it-CH', 'it'], ['pt-BR', 'pt'], ['en-GB', 'en']])('%s only overrides what differs from %s', (variant, base) => {
+        const variantFile = join(LOCALES_DIR, `${variant}.json`);
+        const baseFile = join(LOCALES_DIR, `${base}.json`);
+
+        const messages = flatten(JSON.parse(readFileSync(variantFile, 'utf8')));
+        const baseMessages = flatten(JSON.parse(readFileSync(baseFile, 'utf8')));
+
+        const redundant = Object.entries(messages)
+            .filter(([key, value]) => baseMessages[key] === value)
+            .map(([key]) => key);
+
+        expect(redundant, `${variant}.json repeats ${base}.json`).toEqual([]);
+    });
+
     it('reports how complete each locale is', () => {
         const report = files
             .filter(file => file !== 'en.json')

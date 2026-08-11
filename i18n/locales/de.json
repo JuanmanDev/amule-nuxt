@@ -193,7 +193,10 @@
     "help": "Ein ed2k://- oder magnet:-Link pro Zeile. Füge so viele ein, wie du möchtest, auf einmal oder nach und nach.",
     "paste": "Einfügen",
     "enterLink": "Bitte einen Link eingeben",
-    "nothingToAdd": "Nichts hinzuzufügen"
+    "nothingToAdd": "Nichts hinzuzufügen",
+    "clipboardEmpty": "Die Zwischenablage ist leer",
+    "addMore": "Mehr hinzufügen",
+    "modalLabel": "ed2k- oder Magnet-Links (einer pro Zeile)"
   },
   "uploads": {
     "title": "Uploads",

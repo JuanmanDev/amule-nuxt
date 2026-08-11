@@ -193,7 +193,10 @@
     "help": "One ed2k:// or magnet: link per line. Paste as many as you like, in one go or a few at a time.",
     "paste": "Paste",
     "enterLink": "Please enter a link",
-    "nothingToAdd": "Nothing to add"
+    "nothingToAdd": "Nothing to add",
+    "clipboardEmpty": "The clipboard is empty",
+    "addMore": "Add more",
+    "modalLabel": "ed2k or magnet links (one per line)"
   },
   "uploads": {
     "title": "Uploads",

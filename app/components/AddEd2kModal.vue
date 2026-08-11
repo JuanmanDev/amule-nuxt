@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="isOpen" title="Add ed2k links">
+  <UModal v-model:open="isOpen" :title="$t('app.addEd2kLink')">
     <template #body>
       <!-- After submitting, show what happened to each link -->
       <div v-if="results.length > 0" class="space-y-4">
@@ -32,21 +32,21 @@
         </TransitionGroup>
 
         <div class="flex justify-end gap-2 pt-2 mt-4 border-t border-gray-200 dark:border-gray-700">
-          <UButton color="neutral" variant="ghost" @click="reset">Add more</UButton>
-          <UButton color="primary" @click="closeAndRedirect">Done</UButton>
+          <UButton color="neutral" variant="ghost" @click="reset">{{ $t('addLinks.addMore') }}</UButton>
+          <UButton color="primary" @click="closeAndRedirect">{{ $t('selection.done') }}</UButton>
         </div>
       </div>
 
       <form v-else @submit.prevent="submit">
         <UFormField
-          label="ed2k or magnet links (one per line)"
+          :label="$t('addLinks.modalLabel')"
           name="links"
           help="Links already in aMule are reported instead of silently merged."
         >
           <UTextarea
             v-model="linksText"
             :rows="5"
-            placeholder="ed2k://|file|name|size|hash|/"
+            :placeholder="$t('addLinks.placeholder')"
             autoresize
             class="w-full"
           />
@@ -55,7 +55,7 @@
         <div class="mt-4 flex flex-wrap justify-end gap-2">
           <!-- Offered while the field is empty, which is when it is useful -->
           <PasteButton v-if="!linksText" class="me-auto" @paste="onPaste" />
-          <UButton color="neutral" variant="ghost" @click="() => { isOpen = false }">Cancel</UButton>
+          <UButton color="neutral" variant="ghost" @click="() => { isOpen = false }">{{ $t('common.cancel') }}</UButton>
           <UButton
             type="submit"
             color="primary"

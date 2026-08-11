@@ -32,7 +32,20 @@ function slavicPlural(choice: number, choicesLength: number): number {
 
 export default defineI18nConfig(() => ({
     legacy: false,
-    fallbackLocale: 'en',
+    /*
+     * Regional variants fall back to their own language before English.
+     *
+     * Swiss Italian is Italian apart from a handful of words, and British
+     * English differs from American English nowhere in this catalogue at all -
+     * so those files hold only what actually differs, and inherit the rest.
+     * Copying 431 keys to change three is how translations drift apart.
+     */
+    fallbackLocale: {
+        'it-CH': ['it', 'en'],
+        'pt-BR': ['pt', 'en'],
+        'en-GB': ['en'],
+        default: ['en']
+    },
     // A missing key in a translation is expected, not a bug worth a console line
     // on every render; the English fallback is the intended behaviour.
     missingWarn: false,

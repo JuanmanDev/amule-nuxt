@@ -193,7 +193,10 @@
     "help": "Un lien ed2k:// ou magnet: par ligne. Collez-en autant que vous voulez, d'un coup ou petit à petit.",
     "paste": "Coller",
     "enterLink": "Saisissez un lien",
-    "nothingToAdd": "Rien à ajouter"
+    "nothingToAdd": "Rien à ajouter",
+    "clipboardEmpty": "Le presse-papiers est vide",
+    "addMore": "En ajouter",
+    "modalLabel": "Liens ed2k ou magnet (un par ligne)"
   },
   "uploads": {
     "title": "Envois",

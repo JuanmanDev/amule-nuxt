@@ -193,7 +193,10 @@
     "help": "1行に ed2k:// またはマグネットリンクを1つ。まとめて貼っても、少しずつ貼っても構いません。",
     "paste": "貼り付け",
     "enterLink": "リンクを入力してください",
-    "nothingToAdd": "追加するものがありません"
+    "nothingToAdd": "追加するものがありません",
+    "clipboardEmpty": "クリップボードが空です",
+    "addMore": "さらに追加",
+    "modalLabel": "ed2k またはマグネットリンク（1行に1つ）"
   },
   "uploads": {
     "title": "アップロード",
