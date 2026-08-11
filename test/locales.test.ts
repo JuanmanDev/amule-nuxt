@@ -148,7 +148,7 @@ describe('locales', () => {
     });
 
     it('backs every three-form language with a plural rule', () => {
-        const config = readFileSync(join(process.cwd(), 'i18n.config.ts'), 'utf8');
+        const config = readFileSync(join(process.cwd(), 'i18n', 'i18n.config.ts'), 'utf8');
 
         // Three branches with vue-i18n's default rule means zero/one/other, which
         // silently renders the wrong form rather than failing

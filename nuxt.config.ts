@@ -31,11 +31,11 @@ export default defineNuxtConfig({
   i18n: {
     defaultLocale: 'en',
     strategy: 'no_prefix',
-    lazy: true,
     langDir: 'locales',
-    // Falls back key by key, so a translation that is missing a string shows the
-    // English one rather than the key itself
-    vueI18n: './i18n.config.ts',
+    // vueI18n is deliberately unset: the module scans the i18n directory for
+    // i18n.config.ts on its own, and a path here is resolved relative to that
+    // same directory - pointing at the project root silently skipped the file,
+    // taking the fallback chains and the plural rules with it.
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'amule_locale',
