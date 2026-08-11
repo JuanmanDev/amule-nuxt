@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { splitLinks, summariseAddResults } from '../shared/utils/addLinks';
+import { decodeHtmlEntities, splitLinks, summariseAddResults } from '../shared/utils/addLinks';
 import type { AddLinkResult, AddLinksResult } from '../shared/types/api';
 
 const result = (status: AddLinkResult['status'], overrides: Partial<AddLinkResult> = {}): AddLinkResult => ({
@@ -141,5 +141,43 @@ describe('splitLinks', () => {
 
     it('falls back to lines when nothing looks like a link, so it is still reported', () => {
         expect(splitLinks('not a link\nalso not a link')).toEqual(['not a link', 'also not a link']);
+    });
+
+    it('undoes the HTML escaping a link picks up from a web page', () => {
+        // The daemon names the part file after the link, so this is what produced
+        // downloads called "C&oacute;digo.Da.Vinci.mkv"
+        const escaped = 'ed2k://|file|C&oacute;digo.Da.Vinci.mkv|10|5B73A9AA0DEC788A6DA5A59FB20FCBF4|/';
+        expect(splitLinks(escaped)).toEqual([
+            'ed2k://|file|Código.Da.Vinci.mkv|10|5B73A9AA0DEC788A6DA5A59FB20FCBF4|/'
+        ]);
+    });
+
+    it('restores the parameter separators of an escaped magnet link', () => {
+        expect(splitLinks('magnet:?xt=urn:ed2k:3B73A9AA0DEC788A6DA5A59FB20FCBF2&amp;dn=Third.File.mkv'))
+            .toEqual([magnet]);
+    });
+});
+
+describe('decodeHtmlEntities', () => {
+    it('decodes named letters in both cases', () => {
+        expect(decodeHtmlEntities('C&oacute;digo &Ntilde;u &uuml;ber')).toBe('Código Ñu über');
+    });
+
+    it('decodes symbols and numeric escapes', () => {
+        expect(decodeHtmlEntities('Rock &amp; Roll')).toBe('Rock & Roll');
+        expect(decodeHtmlEntities('C&#243;digo &#xe9;xito')).toBe('Código éxito');
+    });
+
+    it('leaves anything that is not an entity alone', () => {
+        expect(decodeHtmlEntities('Tom&Jerry; 100&nothing;')).toBe('Tom&Jerry; 100&nothing;');
+        expect(decodeHtmlEntities('a & b')).toBe('a & b');
+    });
+
+    it('runs once, so a name that really contains an escape survives', () => {
+        expect(decodeHtmlEntities('&amp;amp;')).toBe('&amp;');
+    });
+
+    it('refuses control characters, which have no place in a file name', () => {
+        expect(decodeHtmlEntities('a&#0;b&#10;c')).toBe('a&#0;b&#10;c');
     });
 });
