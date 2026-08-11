@@ -21,8 +21,17 @@
   transitions (stylesheet) and the stagger (below).
 -->
 <template>
+  <!--
+    The name is what is switched for a whole-list swap, not `css`.
+
+    Toggling `css` changes the transition mode underneath rows that are already
+    mid-flight, and Vue then runs its move bookkeeping against nodes it recorded
+    under the other mode. Swapping to a name no stylesheet defines leaves the
+    mechanism alone and simply gives every class an empty rule set, so nothing
+    animates and nothing is left half-transitioned.
+  -->
   <TransitionGroup
-    name="list-smooth"
+    :name="swapping ? 'list-instant' : 'list-smooth'"
     :tag="tag"
     class="animated-list"
     :style="{ '--list-gap': gap }"
@@ -52,11 +61,34 @@ const props = withDefaults(defineProps<{
   appear?: boolean;
   /** Milliseconds between rows when several enter at once. 0 disables it. */
   stagger?: number;
+  /**
+   * Identifies *which* rows are being shown, as opposed to what they contain.
+   * When it changes the next update is treated as a swap of the whole list -
+   * turning a page, say - and is not animated at all.
+   *
+   * Animating it would be wrong twice over: a hundred rows leaving while a
+   * hundred others enter is not a change the user made to any row, and with a
+   * stagger it would take seconds to settle.
+   */
+  resetKey?: string | number;
 }>(), {
   gap: '1rem',
   tag: 'div',
   appear: false,
-  stagger: 45
+  stagger: 45,
+  resetKey: ''
+});
+
+/** True for the single flush that applies a whole-list swap. */
+const swapping = ref(false);
+
+watch(() => props.resetKey, async () => {
+  swapping.value = true;
+  // Two ticks: one for the rows to be replaced with transitions off, one more
+  // before they are armed again, so the swap cannot arm them mid-flight.
+  await nextTick();
+  await nextTick();
+  swapping.value = false;
 });
 
 /**
@@ -117,6 +149,10 @@ function apply(el: HTMLElement, box: Box) {
 const pending = new WeakMap<HTMLElement, number>();
 
 function onEnter(element: Element) {
+  // A whole-list swap: `:css="false"` has already dropped the transitions, and
+  // measuring rows that are not going to animate only costs layout passes.
+  if (swapping.value) return;
+
   const el = element as HTMLElement;
   const index = nextInBatch();
 
@@ -148,6 +184,8 @@ function onEnter(element: Element) {
 }
 
 function onLeave(element: Element) {
+  if (swapping.value) return;
+
   const el = element as HTMLElement;
   // The row has been sitting at its natural box for frames, so the browser
   // already has every start value; it can collapse straight away.

@@ -12,6 +12,27 @@ html {
     scrollbar-gutter: stable;
 }
 
+/* ---------------------------------------------------------------------------
+ * Frosted panels, switchable
+ *
+ * Cards, rows, tiles, modals and toasts use `backdrop-filter` so the activity
+ * background shows through them. That filter is the most expensive thing on the
+ * page after the background itself: the browser has to re-blur the region behind
+ * every one of them whenever the content there moves, which on a long list means
+ * one full-region blur per row per scrolled frame.
+ *
+ * `useAppearance` puts `no-glass` on <html> (during SSR, so the first paint is
+ * already right) when the user turns them off in Settings. The surfaces stay
+ * translucent, they simply stop blurring what is behind them.
+ * ------------------------------------------------------------------------- */
+
+.no-glass *,
+.no-glass *::before,
+.no-glass *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
 /* Custom Scrollbar Styles */
 
 /* WebKit (Chrome, Safari, Edge) */
@@ -150,6 +171,26 @@ html {
 /* Rows sliding to a new position after a sort or a filter change */
 .list-smooth-move {
     transition: transform 0.36s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/*
+ * The other name <AnimatedList> uses, for turning a page.
+ *
+ * Every rule here is deliberately empty of transitions: a hundred rows leaving
+ * while a hundred others arrive is not a change the user made to any row, and
+ * animating it would take seconds to settle. Declared rather than left undefined
+ * so it is obvious that the silence is on purpose.
+ */
+.list-instant-enter-active,
+.list-instant-leave-active,
+.list-instant-move {
+    transition: none;
+}
+
+.list-instant-leave-active {
+    /* Out of the flow immediately, so the incoming page does not land under it */
+    position: absolute;
+    visibility: hidden;
 }
 
 /* A changed value crossfades instead of snapping. Both values run at once, so

@@ -17,6 +17,18 @@
       <List v-else key="list" />
     </SmoothSwap>
 
+  One rule: at least one branch inside must be able to render during SSR. A
+  <Transition> whose every branch is false renders nothing on the server, and
+  hydrating that empty transition throws inside Vue itself
+  ("el.hasAttribute is not a function") - taking the hydration of everything
+  below it down with it. Where all the branches are conditional, put the same
+  condition on <SmoothSwap> as well:
+
+    <SmoothSwap v-if="notice">
+      <Alert v-if="notice === 'a'" key="a" />
+      <Alert v-else key="b" />
+    </SmoothSwap>
+
   `prefers-reduced-motion` is honoured by the stylesheet: the classes still apply,
   their durations are zero.
 -->
