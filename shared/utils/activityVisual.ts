@@ -42,7 +42,13 @@ export interface ActivityVisual {
     shapes: ActivityShape[];
 }
 
-const MAX_SHAPES = 14;
+/**
+ * Hard ceiling on how many shapes can be on screen at once.
+ *
+ * Every shape is a composited layer the GPU keeps around for as long as the tab
+ * is open, so this is a frame-rate budget rather than a stylistic choice.
+ */
+const MAX_SHAPES = 10;
 
 /** Compressed so a slow transfer is still visible, and clamped to 0..1. */
 function intensityOf(speed: number, fullScale: number): number {
@@ -117,7 +123,7 @@ export function buildActivityVisual(input: ActivityInput): ActivityVisual {
     };
 }
 
-/** SVG points for a regular polygon inscribed in a unit box, pointing up. */
+/** Points for a regular polygon inscribed in a unit box, pointing up. */
 export function polygonPoints(sides: number, size = 100): string {
     const radius = size / 2;
     const offset = -Math.PI / 2;
@@ -126,4 +132,18 @@ export function polygonPoints(sides: number, size = 100): string {
         const angle = offset + (index * 2 * Math.PI) / Math.max(3, sides);
         return `${(radius + radius * Math.cos(angle)).toFixed(2)},${(radius + radius * Math.sin(angle)).toFixed(2)}`;
     }).join(' ');
+}
+
+/**
+ * The same polygon as a `clip-path`, so a plain `<div>` can be the shape.
+ *
+ * A clipped div animates on the compositor; the SVG this replaced had to be
+ * re-rasterised on the main thread on every frame of every drift and spin.
+ */
+export function polygonClipPath(sides: number): string {
+    const points = polygonPoints(sides, 100)
+        .split(' ')
+        .map(point => point.split(',').map(value => `${value}%`).join(' '));
+
+    return `polygon(${points.join(', ')})`;
 }

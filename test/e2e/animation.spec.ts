@@ -218,8 +218,37 @@ test.describe('glass surfaces', () => {
 });
 
 test.describe('activity background', () => {
-    test('shapes are small, faint, and fade instead of blinking', async ({ page }) => {
+    /**
+     * Picks a mode in Settings, which is where the cookie behind it is written.
+     * Matched on the start of the option: each one also renders its description,
+     * and that is part of the accessible name.
+     */
+    async function chooseBackground(page: Page, option: RegExp) {
+        await gotoReady(page, '/settings');
+        await page.getByRole('combobox').first().click();
+        await page.getByRole('option', { name: option }).click();
+    }
+
+    test('the drifting shapes are off until they are asked for', async ({ page }) => {
         await gotoReady(page, '/');
+
+        // The tint costs one composited layer; the shapes animate for as long as
+        // the tab is open, so they are not what a first visit pays for
+        await expect(page.locator('.activity-bg')).toBeAttached();
+        await expect(page.locator('.activity-bg__shapes')).toHaveCount(0);
+    });
+
+    test('turning it off removes the layer entirely', async ({ page }) => {
+        await chooseBackground(page, /^Off/);
+        await gotoReady(page, '/');
+
+        await expect(page.locator('.activity-bg')).toHaveCount(0);
+    });
+
+    test('shapes are small, faint, and fade instead of blinking', async ({ page }) => {
+        await chooseBackground(page, /^Full animation/);
+        await gotoReady(page, '/');
+
         // Shapes only exist while the daemon reports traffic
         const shape = page.locator('.activity-bg__shape').first();
         test.skip(await shape.count() === 0, 'The daemon is idle, so there are no shapes');
@@ -231,21 +260,30 @@ test.describe('activity background', () => {
                 .find(name => name.startsWith('data-v-'));
 
             // The leave fade, read through the scoped attribute the shapes carry
-            const probe = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            const probe = document.createElement('div');
             if (scope) probe.setAttribute(scope, '');
             probe.setAttribute('class', 'activity-bg__shape activity-shape-leave-active');
             shapes[0]!.parentElement!.appendChild(probe);
             const leave = getComputedStyle(probe).transitionProperty;
             probe.remove();
 
+            const polygons = shapes.map(node => node.querySelector('.activity-bg__polygon')!);
+
             return {
                 leave,
                 sizes: shapes.map(node => Number(getComputedStyle(node).getPropertyValue('--size'))),
                 // Both the drift and the per-cycle fade run on the same element
                 animations: getComputedStyle(shapes[0]!.querySelector('.activity-bg__drift')!).animationName,
-                opacities: shapes.map(node =>
-                    Number(node.querySelector('polygon')!.getAttribute('fill-opacity'))
-                )
+                opacities: polygons.map(node => Number(getComputedStyle(node).opacity)),
+                // Only transform and opacity animate, so every frame stays on the
+                // compositor instead of going back through layout and paint
+                animated: [
+                    ...new Set([
+                        ...getComputedStyle(shapes[0]!.querySelector('.activity-bg__drift')!)
+                            .transitionProperty.split(', '),
+                        ...getComputedStyle(polygons[0]!).transitionProperty.split(', ')
+                    ])
+                ]
             };
         });
 
@@ -253,7 +291,41 @@ test.describe('activity background', () => {
         expect(facts.animations).toContain('activity-cycle');
         // Small enough that a full-size travel margin still clears the viewport
         expect(Math.max(...facts.sizes)).toBeLessThanOrEqual(20);
-        expect(Math.max(...facts.opacities)).toBeLessThanOrEqual(0.15);
+        expect(Math.max(...facts.opacities)).toBeLessThanOrEqual(0.2);
+        for (const property of facts.animated) {
+            expect(['opacity', 'transform', 'all', 'none']).toContain(property);
+        }
+    });
+
+    test('the tint is composited rather than blurred over the whole viewport', async ({ page }) => {
+        await gotoReady(page, '/');
+
+        const wash = page.locator('.activity-bg__wash').first();
+        await expect(wash).toBeAttached();
+
+        const style = await wash.evaluate(element => {
+            const computed = getComputedStyle(element);
+            return { filter: computed.filter, transition: computed.transitionProperty };
+        });
+
+        // A full screen blur filter had to be re-rendered on every frame of the
+        // transition that followed each status poll
+        expect(style.filter).toBe('none');
+        expect(style.transition).toBe('opacity');
+    });
+});
+
+test.describe('frosted panels', () => {
+    test('can be turned off, and then nothing blurs its backdrop', async ({ page }) => {
+        await gotoReady(page, '/settings');
+        await page.getByRole('switch').first().click();
+
+        await gotoReady(page, '/');
+        const card = page.locator('div.backdrop-blur-md').first();
+        await expect(card).toBeAttached();
+
+        const filter = await card.evaluate(element => getComputedStyle(element).backdropFilter);
+        expect(filter).toBe('none');
     });
 });
 

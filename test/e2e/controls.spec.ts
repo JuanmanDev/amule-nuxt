@@ -300,18 +300,30 @@ test.describe('activity background', () => {
         expect(styles.position).toBe('fixed');
         expect(Number(styles.zIndex)).toBeLessThan(0);
 
-        // The daemon under test is seeding, so polygons are present
-        const shapes = await page.locator('.activity-bg polygon').count();
-        expect(shapes).toBeGreaterThan(0);
+        // Tint only by default: it leans towards whichever direction moves data,
+        // and the daemon under test is seeding
+        const washes = page.locator('.activity-bg__wash');
+        await expect(washes).toHaveCount(2);
+
+        const opacities = await washes.evaluateAll(elements =>
+            elements.map(element => Number(getComputedStyle(element).opacity))
+        );
+        expect(Math.max(...opacities)).toBeGreaterThan(Math.min(...opacities));
     });
 
     test('drops the motion when reduced motion is requested', async ({ page }) => {
         await page.emulateMedia({ reducedMotion: 'reduce' });
+
+        // The shapes are opt-in, so ask for them before checking they are dropped
+        await gotoReady(page, '/settings');
+        await page.getByRole('combobox').first().click();
+        await page.getByRole('option', { name: /^Full animation/ }).click();
+
         await gotoReady(page, '/');
 
-        await expect(page.locator('.activity-bg__shapes')).toBeHidden();
+        await expect(page.locator('.activity-bg__shapes')).toHaveCount(0);
         // The ambient tint stays
-        await expect(page.locator('.activity-bg__wash')).toBeAttached();
+        await expect(page.locator('.activity-bg__wash').first()).toBeAttached();
     });
 });
 
