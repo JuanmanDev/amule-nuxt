@@ -1,1 +1,261 @@
-{}
+{
+  "app": {
+    "addLink": "Adicionar link",
+    "addEd2kLink": "Adicionar link ed2k",
+    "daemonUnreachable": "Não foi possível contatar o daemon do aMule: {reason}",
+    "daemonUnreachableFallback": "verifique o host, a porta e a senha",
+    "openSettings": "Abrir configurações"
+  },
+  "nav": {
+    "downloads": "Downloads",
+    "uploads": "Uploads",
+    "shared": "Arquivos compartilhados",
+    "connection": "Conexão",
+    "logs": "Logs",
+    "settings": "Configurações"
+  },
+  "common": {
+    "save": "Salvar alterações",
+    "reset": "Redefinir",
+    "loading": "Carregando...",
+    "live": "Ao vivo",
+    "goToDownloads": "Ir para os downloads"
+  },
+  "pagination": {
+    "showing": "Mostrando {from}-{to} de {count} {label}",
+    "labels": {
+      "downloads": "downloads",
+      "files": "arquivos"
+    }
+  },
+  "sort": {
+    "fileName": "Nome do arquivo",
+    "user": "Usuário",
+    "shareRatio": "Taxa de compartilhamento",
+    "queuedClients": "Clientes na fila",
+    "users": "Usuários",
+    "files": "Arquivos"
+  },
+  "downloads": {
+    "title": "Downloads",
+    "subtitle": "Gerencie sua fila de downloads",
+    "loading": "Carregando os downloads...",
+    "loadFailed": "Não foi possível carregar os downloads",
+    "emptyTitle": "Nenhum download encontrado",
+    "emptyDescription": "Cole acima um link eD2k ou magnet para começar a baixar.",
+    "noMatchesDescription": "Nenhum download corresponde a “{query}”.",
+    "downloading": "baixando",
+    "removeTitle": "Remover o download",
+    "removeQuestion": "Remover {name} da fila? O aMule apaga os dados baixados até agora.",
+    "detailsTitle": "Detalhes do download",
+    "fileHash": "Hash do arquivo",
+    "fileNameCopied": "Nome do arquivo copiado",
+    "ed2kLink": "Link eD2k",
+    "linkCopied": "Link eD2k copiado",
+    "copyLink": "Copiar o link ed2k",
+    "noHashReported": "O aMule não informou um hash de arquivo para este download.",
+    "fields": {
+      "remaining": "Restante",
+      "transferring": "Baixando de",
+      "addedAt": "Iniciado",
+      "completedAt": "Concluído",
+      "runningFor": "Em andamento há"
+    },
+    "startNotRecorded": "Este download já estava na fila quando este aplicativo olhou pela primeira vez, então o horário de início não é conhecido.",
+    "bulk": {
+      "pauseDone": "{count} download pausado | {count} downloads pausados",
+      "resumeDone": "{count} download retomado | {count} downloads retomados",
+      "removeDone": "{count} download removido | {count} downloads removidos"
+    }
+  },
+  "health": {
+    "complete": "Concluído",
+    "downloading": "Baixando",
+    "paused": "Pausado",
+    "stopped": "Parado",
+    "errorReason": "O aMule marcou este arquivo como incorreto.",
+    "searchingReason": "Procurando fontes. O aMule pergunta aos servidores eD2k e ao Kad, o que normalmente leva segundos, mas pode levar alguns minutos com um arquivo raro. Se continuar assim: confira se o tamanho e o hash de 32 caracteres do link são exatamente os publicados (um hash errado cria um download que nunca poderá começar), conecte-se a mais servidores e ao Kad, e considere que talvez ninguém mais esteja compartilhando o arquivo.",
+    "stalledReason": "Todas as fontes deste arquivo ficaram offline. O download recomeça sozinho assim que uma voltar.",
+    "waitingReason": "Na fila em {count} fonte, aguardando uma vaga de upload livre. | Na fila em {count} fontes, aguardando uma vaga de upload livre."
+  },
+  "addLinks": {
+    "label": "Adicionar downloads (links eD2k ou magnet)",
+    "help": "Um link ed2k:// ou magnet: por linha. Cole quantos quiser, de uma vez ou aos poucos.",
+    "enterLink": "Digite um link",
+    "modalLabel": "Links ed2k ou magnet (um por linha)"
+  },
+  "uploads": {
+    "title": "Uploads",
+    "subtitle": "O que este daemon está enviando agora, e para quem",
+    "loading": "Carregando os uploads...",
+    "loadFailed": "Não foi possível carregar os uploads",
+    "staleTitle": "Mostrando os últimos uploads que foi possível ler",
+    "emptyTitle": "Nenhum upload ativo",
+    "emptyDescription": "Os clientes aparecem aqui enquanto baixam de você.",
+    "noMatchesDescription": "Nenhum upload corresponde a “{query}”.",
+    "filterPlaceholder": "Filtrar por arquivo ou usuário...",
+    "clientsUploading": "Clientes baixando",
+    "totalUploadSpeed": "Velocidade total de upload",
+    "waitingInQueue": "Aguardando na fila",
+    "requestedAs": "Solicitado como: {name}",
+    "fields": {
+      "user": "Usuário"
+    },
+    "uploadingNow": "enviando"
+  },
+  "shared": {
+    "title": "Arquivos compartilhados",
+    "subtitle": "Tudo o que este daemon oferece, com detalhes de solicitações e transferências",
+    "activeUploads": "Uploads ativos",
+    "loading": "Carregando os arquivos compartilhados...",
+    "loadFailed": "Não foi possível carregar os arquivos compartilhados",
+    "emptyTitle": "Nenhum arquivo compartilhado",
+    "emptyDescription": "O aMule não encontra arquivos nas suas pastas compartilhadas.",
+    "noMatchesDescription": "Nenhum arquivo compartilhado corresponde a “{query}”.",
+    "filterPlaceholder": "Filtrar arquivos...",
+    "files": "Arquivos ({count})",
+    "filesShared": "Arquivos compartilhados",
+    "perFileNote": "Soma dos contadores de cada arquivo",
+    "requestsAllTime": "Solicitações no total",
+    "detailsTitle": "Detalhes do arquivo compartilhado",
+    "row": {
+      "requests": "Solicitações",
+      "accepted": "Aceitas",
+      "ratio": "Taxa"
+    },
+    "fields": {
+      "shareRatio": "Taxa de compartilhamento",
+      "requestsAll": "Solicitações (total)",
+      "requestsSession": "Solicitações (sessão)",
+      "acceptedAll": "Aceitas (total)",
+      "acceptedSession": "Aceitas (sessão)",
+      "clientsQueued": "Clientes na fila",
+      "uploadPriority": "Prioridade de upload",
+      "completedAt": "Baixado em"
+    },
+    "notRecorded": "Não registrado"
+  },
+  "search": {
+    "subtitle": "Procure arquivos nas redes eD2k e Kad",
+    "keywordsPlaceholder": "Digite as palavras-chave...",
+    "tabsHelp": "Cada nova pesquisa abre a própria aba e mantém os resultados anteriores. O próprio aMule guarda apenas uma pesquisa por vez, então só a mais recente pode ser atualizada.",
+    "closeTab": "Fechar a pesquisa de “{keyword}”",
+    "searchingFor": "Pesquisando “{keyword}” em {network}...",
+    "noMatchesDescription": "Nenhum resultado corresponde a “{query}”.",
+    "noResultsDescription": "Tente outras palavras-chave, ou pesquise em outra rede.",
+    "idleDescription": "O Kad funciona sem servidor; uma pesquisa global eD2k precisa de um servidor conectado.",
+    "enterKeywords": "Digite as palavras-chave",
+    "result": {
+      "download": "Baixar",
+      "addToDownloads": "Adicionar aos downloads",
+      "showInDownloads": "Ver nos downloads",
+      "showInShared": "Ver nos arquivos compartilhados",
+      "cannotDownload": "Não é possível baixar",
+      "noHash": "O aMule não informou um hash para este resultado.",
+      "downloadAdded": "Download adicionado",
+      "failedToStart": "Não foi possível iniciar o download",
+      "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online."
+    },
+    "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão em outro."
+  },
+  "fileKinds": {
+    "archive": "Arquivo compactado"
+  },
+  "status": {
+    "downloading": "Baixando",
+    "paused": "Pausado",
+    "completed": "Concluído",
+    "shared": "Já compartilhado"
+  },
+  "servers": {
+    "loading": "Carregando os servidores...",
+    "emptyDescription": "A lista de servidores do aMule está vazia. Adicione um servidor ou atualize a lista a partir de uma URL.",
+    "noMatchesDescription": "Nenhum servidor corresponde a “{query}”.",
+    "connected": "Conectado"
+  },
+  "logs": {
+    "title": "Logs do aMule",
+    "filterPlaceholder": "Filtrar as linhas do log...",
+    "loading": "Carregando os logs...",
+    "loadFailed": "Não foi possível carregar os logs",
+    "emptyTitle": "Nenhum log disponível",
+    "emptyDescription": "O daemon do aMule ainda não registrou nada.",
+    "noMatchesDescription": "Nenhuma linha do log corresponde a “{query}”."
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Configure a banda e as preferências do aMule",
+    "bandwidth": {
+      "title": "Limites de banda",
+      "download": "Limite de download (KB/s)",
+      "upload": "Limite de upload (KB/s)"
+    },
+    "appearance": {
+      "title": "Aparência e desempenho",
+      "glassHelp": "Os cartões e as linhas desfocam o que está atrás. Ao desligar, continuam translúcidos mas sem o desfoque, que é a maior economia numa GPU fraca ou com listas longas.",
+      "storedNote": "Guardado num cookie neste dispositivo, para que a página chegue ao navegador já desenhada do jeito certo. O movimento é desligado sozinho quando o sistema pede menos animação.",
+      "languageHelp": "Os mesmos idiomas para os quais o próprio aMule é traduzido. Lembrado neste dispositivo."
+    },
+    "notifications": {
+      "title": "Notificações de download",
+      "intro": "O servidor observa a fila por conta própria, então um download adicionado de outra máquina, do amuleGUI ou por um manipulador de links também é anunciado aqui — e não apenas os iniciados neste navegador.",
+      "added": "Quando um download é adicionado",
+      "completed": "Quando um download termina",
+      "completedHelp": "Incluindo os que o aMule move para a pasta de entrada enquanto você está ausente.",
+      "systemHelp": "Mostra uma notificação do sistema quando esta aba não é a que está na tela. A mensagem dentro do aplicativo é sempre exibida.",
+      "backgroundTitle": "Sem nenhuma aba aberta",
+      "backgroundIntro": "Um service worker pode receber notificações deste servidor mesmo com o aplicativo fechado. Precisa ser autorizado uma vez em cada navegador.",
+      "insecureDescription": "Os navegadores só permitem push por https, ou por http em localhost. As notificações continuam funcionando enquanto houver uma aba aberta.",
+      "deniedDescription": "Autorize-as nas configurações do site no navegador e ative novamente aqui.",
+      "subscribed": "Este navegador está inscrito",
+      "downloadAdded": "Download adicionado",
+      "downloadCompleted": "Download concluído"
+    },
+    "links": {
+      "title": "Abrir links com este aplicativo",
+      "intro": "Registre esta página como manipuladora dos links eD2k e magnet, para que clicar num link desses neste dispositivo o abra aqui e ofereça adicioná-lo à fila.",
+      "insecureDescription": "Os navegadores só permitem isso por https, ou por http em localhost. Abra o aplicativo desse jeito para poder ativar.",
+      "scheme": "Links {scheme}:",
+      "note": "O navegador pede confirmação na primeira vez. Instalado como aplicativo (PWA), os mesmos manipuladores são declarados no manifesto, o que cobre também o sistema operacional."
+    },
+    "connection": {
+      "title": "Informações da conexão",
+      "host": "Host da conexão externa",
+      "port": "Porta da conexão externa",
+      "appVersion": "Versão do aplicativo",
+      "logLevel": "Nível de log",
+      "configDescription": "As configurações de conexão são definidas por variáveis de ambiente. Veja o .env.example para mais detalhes."
+    }
+  },
+  "assistant": {
+    "subtitle": "Um modelo de linguagem que roda inteiramente neste navegador e pode operar o aMule para você",
+    "placeholder": "Pergunte sobre seus downloads, ou diga o que fazer...",
+    "loading": "Carregando o modelo ({percent}%)",
+    "downloadNote": "O modelo é baixado uma vez e fica em cache no navegador. Nada do que você escrever sai deste dispositivo.",
+    "unsupportedDescription": "É necessário WebGPU. O Chrome, o Edge e o Opera já têm no computador; o Safari e o Firefox ainda estão adicionando.",
+    "thinking": "Pensando...",
+    "emptyTitle": "Nada perguntado ainda",
+    "emptyDescription": "Tente: “o que está baixando agora?” ou “pause tudo que não tem fontes”."
+  },
+  "selection": {
+    "selectAll": "Selecionar tudo que corresponde ao filtro",
+    "totalsTitle": "Arquivos selecionados",
+    "totalsIntro": "Tudo abaixo se refere ao arquivo escolhido. | Tudo abaixo é o total dos {count} arquivos escolhidos.",
+    "linksLabel": "{count} link eD2k | {count} links eD2k",
+    "copyLinks": "Copiar todos",
+    "linksCopied": "{count} link copiado | {count} links copiados",
+    "noLinks": "Nenhum dos arquivos selecionados informou um link eD2k, então não há nada para copiar.",
+    "removeTitle": "Remover os downloads selecionados",
+    "removeQuestion": "Remover {count} download da fila? O aMule apaga os {size} baixados até agora. | Remover {count} downloads da fila? O aMule apaga os {size} baixados até agora.",
+    "facts": {
+      "files": "Arquivos",
+      "downloaded": "Baixado",
+      "remaining": "Restante",
+      "eta": "Tempo para todos",
+      "completed": "Já concluídos",
+      "shareRatio": "Taxa média de compartilhamento",
+      "queued": "Clientes na fila",
+      "users": "Usuários distintos"
+    }
+  }
+}
