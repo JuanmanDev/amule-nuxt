@@ -160,6 +160,9 @@
     </USlideover>
 
     <AddEd2kModal v-model="isAddModalOpen" />
+
+    <!-- Names the icon-only controls for touch, where `title` never opens -->
+    <TouchHint />
   </UApp>
 </template>
 

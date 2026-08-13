@@ -83,27 +83,34 @@
       <!-- Controls first, then the speed and the badges aligned right: on a phone
            the speed sits directly under the filter, on wider screens beside it -->
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-        <ListControls
-          v-model:search="search"
-          v-model:sort-by="sortBy"
-          v-model:direction="direction"
-          :options="sortOptions"
-          :placeholder="$t('downloads.filterPlaceholder')"
-          class="sm:flex-1 sm:max-w-md"
-        />
+        <!-- The column layout on a phone would stretch the icon-only select
+             button across its own row, so it rides on the filter row instead.
+             From sm up the wrapper is display:contents and the three controls
+             lay out as direct children of the row again. -->
+        <div class="flex items-center gap-2 sm:contents">
+          <ListControls
+            v-model:search="search"
+            v-model:sort-by="sortBy"
+            v-model:direction="direction"
+            :options="sortOptions"
+            :placeholder="$t('downloads.filterPlaceholder')"
+            class="flex-1 min-w-0 sm:max-w-md"
+          />
 
-        <!-- Off by default: a list of checkboxes makes the ordinary case of
-             reading a row worse -->
-        <UButton
-          v-if="!selection.active.value"
-          icon="i-heroicons-check-circle"
-          color="neutral"
-          variant="outline"
-          class="shrink-0"
-          @click="selection.start"
-        >
-          <span class="hidden sm:inline">{{ $t('selection.select') }}</span>
-        </UButton>
+          <!-- Off by default: a list of checkboxes makes the ordinary case of
+               reading a row worse -->
+          <UButton
+            v-if="!selection.active.value"
+            icon="i-heroicons-check-circle"
+            color="neutral"
+            variant="outline"
+            class="shrink-0"
+            :aria-label="$t('selection.select')"
+            @click="selection.start"
+          >
+            <span class="hidden sm:inline">{{ $t('selection.select') }}</span>
+          </UButton>
+        </div>
 
         <div class="flex flex-wrap items-center justify-end gap-2 text-sm text-gray-600 dark:text-gray-400 w-full sm:w-auto sm:ms-auto">
           <!-- Always shown so the row does not jump when the rate drops to zero.

@@ -109,6 +109,7 @@
                 color="neutral"
                 variant="outline"
                 class="shrink-0"
+                :aria-label="$t('selection.select')"
                 @click="selection.start"
               >
                 <span class="hidden sm:inline">{{ $t('selection.select') }}</span>
