@@ -130,8 +130,20 @@ describe('locales', () => {
      * which is not what any of these languages do.
      */
     const PLURAL_FORMS: Record<string, number> = {
-        ru: 3, uk: 3, pl: 3,
+        ru: 3, uk: 3, pl: 3, hr: 3, lt: 3,
+        sl: 4,
         ja: 1, ko: 1, 'zh-CN': 1, 'zh-TW': 1
+    };
+
+    /**
+     * Which rule each of those languages is wired to, since they do not all split
+     * the same way: Slovene keeps a dual, and Lithuanian's "few" runs to 9 and
+     * gives up the whole of the teens rather than only 11 to 14.
+     */
+    const PLURAL_RULES: Record<string, string> = {
+        ru: 'slavicPlural', uk: 'slavicPlural', pl: 'slavicPlural', hr: 'slavicPlural',
+        sl: 'slovenePlural',
+        lt: 'lithuanianPlural'
     };
 
     it.each(files.filter(file => file !== 'en.json'))('%s writes the plural forms its language needs', file => {
@@ -147,14 +159,18 @@ describe('locales', () => {
         expect(wrong, `${file} should use ${expected} plural form(s)`).toEqual([]);
     });
 
-    it('backs every three-form language with a plural rule', () => {
+    it('backs every language with extra forms with the right plural rule', () => {
         const config = readFileSync(join(process.cwd(), 'i18n', 'i18n.config.ts'), 'utf8');
 
-        // Three branches with vue-i18n's default rule means zero/one/other, which
-        // silently renders the wrong form rather than failing
+        // More branches than English with vue-i18n's default rule means
+        // zero/one/other, which silently renders the wrong form rather than
+        // failing. The rule also has to be the one that language actually uses:
+        // wiring Slovene to the Russian rule would pass a "has a rule" check and
+        // still never reach its dual.
         for (const [locale, forms] of Object.entries(PLURAL_FORMS)) {
             if (forms < 3) continue;
-            expect(config, `${locale} needs a pluralRules entry`).toContain(`${locale}: slavicPlural`);
+            expect(PLURAL_RULES[locale], `${locale} has no rule named`).toBeDefined();
+            expect(config, `${locale} needs a pluralRules entry`).toContain(`${locale}: ${PLURAL_RULES[locale]}`);
         }
     });
 

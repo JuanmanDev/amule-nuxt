@@ -36,3 +36,53 @@ export function slavicPlural(choice: number, choicesLength: number): number {
 
     return 2;
 }
+
+/**
+ * one / two / few / other, as Slovene inflects.
+ *
+ * Slovene kept the dual, so it needs a form the other Slavic languages here do
+ * not: two of a thing is neither singular nor plural but its own ending.
+ *
+ *  * 1, 101, 201    - one    ("1 vir")
+ *  * 2, 102, 202    - two    ("2 vira")
+ *  * 3-4, 103-104   - few    ("3 viri")
+ *  * 0, 5-100       - other  ("5 virov")
+ *
+ * Unlike the rule above it is the last two digits that decide, with no teen
+ * exception: 111 takes "one" because 11 does.
+ */
+export function slovenePlural(choice: number, choicesLength: number): number {
+    if (choicesLength < 4) return choice === 1 ? 0 : choicesLength - 1;
+
+    const mod100 = choice % 100;
+
+    if (mod100 === 1) return 0;
+    if (mod100 === 2) return 1;
+    if (mod100 === 3 || mod100 === 4) return 2;
+
+    return 3;
+}
+
+/**
+ * one / few / other, as Lithuanian inflects.
+ *
+ * Close to the Slavic rule but not the same: "few" reaches all the way to 9
+ * rather than stopping at 4, and the whole of 11 to 19 - not just 11 to 14 -
+ * falls through to "other".
+ *
+ *  * 1, 21, 31      - one    ("1 šaltinis")
+ *  * 2-9, 22-29     - few    ("2 šaltiniai")
+ *  * 0, 10-20, 30   - other  ("10 šaltinių")
+ */
+export function lithuanianPlural(choice: number, choicesLength: number): number {
+    if (choicesLength < 3) return choice === 1 ? 0 : 1;
+
+    const mod10 = choice % 10;
+    const mod100 = choice % 100;
+    const teen = mod100 >= 11 && mod100 <= 19;
+
+    if (mod10 === 1 && !teen) return 0;
+    if (mod10 >= 2 && mod10 <= 9 && !teen) return 1;
+
+    return 2;
+}

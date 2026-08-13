@@ -11,7 +11,7 @@
 
 // The `#shared` alias, not a relative path: this file is copied into the Nitro
 // build, where "../shared/..." no longer resolves and Rollup fails outright.
-import { slavicPlural } from '#shared/utils/plurals';
+import { lithuanianPlural, slavicPlural, slovenePlural } from '#shared/utils/plurals';
 
 export default defineI18nConfig(() => ({
     legacy: false,
@@ -34,13 +34,17 @@ export default defineI18nConfig(() => ({
     missingWarn: false,
     fallbackWarn: false,
     /*
-     * Applied only to the languages whose files carry three branches. Everything
-     * else keeps two and uses vue-i18n's own rule. See shared/utils/plurals.ts
-     * for what the three forms are and why the built-in rule will not do.
+     * Applied only to the languages whose files carry more branches than English.
+     * Everything else keeps two and uses vue-i18n's own rule, which counts
+     * branches to choose one - and gets every language below wrong. See
+     * shared/utils/plurals.ts for what each rule splits on.
      */
     pluralRules: {
         ru: slavicPlural,
         uk: slavicPlural,
-        pl: slavicPlural
+        pl: slavicPlural,
+        hr: slavicPlural,
+        sl: slovenePlural,
+        lt: lithuanianPlural
     }
 }));
