@@ -326,9 +326,20 @@ onUnmounted(() => {
 // SSR so the first paint is already correct.
 const { glass } = useAppearance()
 
+// Writing direction and language for <html>. The locales declare `dir`, but the
+// i18n module only turns that into an attribute through this composable - left
+// uncalled, Arabic and Hebrew rendered left to right with the whole layout
+// mirrored the wrong way. `seo: false` because the app is a private client for a
+// daemon: alternate and canonical links for 38 languages are of no use to it.
+const localeHead = useLocaleHead({ dir: true, lang: true, seo: false })
+
 // SEO
 useHead({
   titleTemplate: '%s - aMule Nuxt',
-  htmlAttrs: { class: computed(() => (glass.value ? '' : 'no-glass')) }
+  htmlAttrs: {
+    class: computed(() => (glass.value ? '' : 'no-glass')),
+    lang: computed(() => localeHead.value.htmlAttrs?.lang),
+    dir: computed(() => localeHead.value.htmlAttrs?.dir)
+  }
 })
 </script>

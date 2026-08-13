@@ -132,6 +132,7 @@ describe('locales', () => {
     const PLURAL_FORMS: Record<string, number> = {
         ru: 3, uk: 3, pl: 3, hr: 3, lt: 3,
         sl: 4,
+        ar: 6,
         ja: 1, ko: 1, 'zh-CN': 1, 'zh-TW': 1
     };
 
@@ -143,7 +144,8 @@ describe('locales', () => {
     const PLURAL_RULES: Record<string, string> = {
         ru: 'slavicPlural', uk: 'slavicPlural', pl: 'slavicPlural', hr: 'slavicPlural',
         sl: 'slovenePlural',
-        lt: 'lithuanianPlural'
+        lt: 'lithuanianPlural',
+        ar: 'arabicPlural'
     };
 
     it.each(files.filter(file => file !== 'en.json'))('%s writes the plural forms its language needs', file => {

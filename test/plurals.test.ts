@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { lithuanianPlural, slavicPlural, slovenePlural } from '../shared/utils/plurals';
+import { arabicPlural, lithuanianPlural, slavicPlural, slovenePlural } from '../shared/utils/plurals';
 
 /**
  * The forms, using "источник" (source) as the example:
@@ -158,6 +158,60 @@ describe('lithuanianPlural', () => {
         for (let count = 0; count <= 220; count += 1) {
             expect(lithuanianPlural(count, 3)).toBeLessThan(3);
             expect(lithuanianPlural(count, 2)).toBeLessThan(2);
+        }
+    });
+});
+
+/**
+ * The forms, using "مصدر" (source) as the example:
+ *
+ *   0 -> zero   1 -> one    2 -> two    3 -> few
+ *  11 -> many 100 -> other 103 -> few 111 -> many
+ */
+describe('arabicPlural', () => {
+    const branch = (count: number) => arabicPlural(count, 6);
+
+    it('gives nothing at all its own form', () => {
+        // The only language here that does not say "no downloads" with the plural
+        expect(branch(0)).toBe(0);
+    });
+
+    it('separates one, two, and a few', () => {
+        expect(branch(1)).toBe(1);
+        expect(branch(2)).toBe(2);
+        for (const count of [3, 5, 10]) {
+            expect(branch(count), `${count} should take the few form`).toBe(3);
+        }
+    });
+
+    it('uses the "many" form from 11 to 99', () => {
+        for (const count of [11, 25, 50, 99]) {
+            expect(branch(count), `${count} should take the many form`).toBe(4);
+        }
+    });
+
+    it('uses the "other" form for the round hundreds', () => {
+        for (const count of [100, 101, 102, 200, 300]) {
+            expect(branch(count), `${count} should take the other form`).toBe(5);
+        }
+    });
+
+    it('reads the last two digits above a hundred', () => {
+        expect(branch(103)).toBe(3);
+        expect(branch(111)).toBe(4);
+        expect(branch(199)).toBe(4);
+    });
+
+    it('falls back to a plain singular/plural split for a two-branch message', () => {
+        expect(arabicPlural(1, 2)).toBe(0);
+        expect(arabicPlural(0, 2)).toBe(1);
+        expect(arabicPlural(5, 2)).toBe(1);
+    });
+
+    it('never picks a branch the message does not have', () => {
+        for (let count = 0; count <= 320; count += 1) {
+            expect(arabicPlural(count, 6)).toBeLessThan(6);
+            expect(arabicPlural(count, 2)).toBeLessThan(2);
         }
     });
 });

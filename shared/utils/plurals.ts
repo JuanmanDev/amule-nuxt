@@ -74,6 +74,35 @@ export function slovenePlural(choice: number, choicesLength: number): number {
  *  * 2-9, 22-29     - few    ("2 šaltiniai")
  *  * 0, 10-20, 30   - other  ("10 šaltinių")
  */
+/**
+ * zero / one / two / few / many / other, as Arabic inflects.
+ *
+ * The widest split of any language here, and the only one with a branch for
+ * nothing at all - Arabic says "no downloads" with its own form rather than by
+ * reusing the plural.
+ *
+ *  * 0              - zero   ("لا مصادر")
+ *  * 1              - one    ("مصدر واحد")
+ *  * 2              - two    ("مصدران")
+ *  * 3-10, 103-110  - few    ("3 مصادر")
+ *  * 11-99, 111-199 - many   ("11 مصدرًا")
+ *  * 100-102, 200   - other  ("100 مصدر")
+ */
+export function arabicPlural(choice: number, choicesLength: number): number {
+    if (choicesLength < 6) return choice === 1 ? 0 : choicesLength - 1;
+
+    if (choice === 0) return 0;
+    if (choice === 1) return 1;
+    if (choice === 2) return 2;
+
+    const mod100 = choice % 100;
+
+    if (mod100 >= 3 && mod100 <= 10) return 3;
+    if (mod100 >= 11 && mod100 <= 99) return 4;
+
+    return 5;
+}
+
 export function lithuanianPlural(choice: number, choicesLength: number): number {
     if (choicesLength < 3) return choice === 1 ? 0 : 1;
 

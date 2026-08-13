@@ -11,7 +11,7 @@
 
 // The `#shared` alias, not a relative path: this file is copied into the Nitro
 // build, where "../shared/..." no longer resolves and Rollup fails outright.
-import { lithuanianPlural, slavicPlural, slovenePlural } from '#shared/utils/plurals';
+import { arabicPlural, lithuanianPlural, slavicPlural, slovenePlural } from '#shared/utils/plurals';
 
 export default defineI18nConfig(() => ({
     legacy: false,
@@ -45,6 +45,7 @@ export default defineI18nConfig(() => ({
         pl: slavicPlural,
         hr: slavicPlural,
         sl: slovenePlural,
-        lt: lithuanianPlural
+        lt: lithuanianPlural,
+        ar: arabicPlural
     }
 }));
