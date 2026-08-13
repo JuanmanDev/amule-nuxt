@@ -71,6 +71,18 @@ export const FEED_DEFINITIONS: Record<FeedName, FeedDefinition> = {
 const SHARED_WARMUP_DELAY_MS = 1500;
 
 /**
+ * How long one read may take before it is abandoned.
+ *
+ * Generous, because the daemon can genuinely be slow with a long shared list.
+ * The point is only that a read always ends: a browser that freezes a
+ * background tab drops the connection without failing the request, and a poll
+ * that waits forever on a promise like that never runs again - which is why a
+ * tab left idle used to come back stuck on its last error until it was
+ * reloaded.
+ */
+const READ_TIMEOUT_MS = 20_000;
+
+/**
  * Per-feed bookkeeping that must not be reactive: in-flight guards and the
  * number of mounted pages interested in the feed. Client-only, one map per
  * browser tab.
@@ -86,6 +98,8 @@ interface FeedRuntime {
      * together) would fetch again the moment the first one finished.
      */
     lastAttemptAt: number;
+    /** Counts attempts, so a late reply can tell it has been superseded. */
+    generation: number;
 }
 
 /**
@@ -109,7 +123,7 @@ function runtimeFor(name: FeedName): FeedRuntime {
     const store = runtimeStore();
     let entry = store.get(name);
     if (!entry) {
-        entry = { inFlight: false, focusCount: 0, lastAttemptAt: 0 };
+        entry = { inFlight: false, focusCount: 0, lastAttemptAt: 0, generation: 0 };
         store.set(name, entry);
     }
     return entry;
@@ -128,15 +142,15 @@ function feedState<T>(name: FeedName) {
     };
 }
 
-function fetcherFor(name: FeedName): () => Promise<ApiResponse<any[]>> {
+function fetcherFor(name: FeedName): (signal: AbortSignal) => Promise<ApiResponse<any[]>> {
     const api = useAmuleApi();
     switch (name) {
-        case 'downloads': return () => api.getDownloads();
-        case 'uploads': return () => api.getUploads();
+        case 'downloads': return signal => api.getDownloads({ signal });
+        case 'uploads': return signal => api.getUploads({ signal });
         // /api/amule/shared answers with an object, so it is unwrapped here and
         // every feed downstream deals with a plain array.
-        case 'shared': return async () => {
-            const result = await api.getSharedFiles();
+        case 'shared': return async signal => {
+            const result = await api.getSharedFiles({ signal });
             return { ...result, data: result.data?.sharedFiles ?? [] };
         };
     }
@@ -174,8 +188,11 @@ export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
     async function refresh({ force = false }: { force?: boolean } = {}) {
         const entry = runtimeFor(name);
         // A single EC connection serves every request: overlapping fetches only
-        // queue behind each other and make the whole UI slower.
-        if (entry.inFlight) return;
+        // queue behind each other and make the whole UI slower. The guard is
+        // given up on once the read is past any time it could still return in,
+        // so a request the browser abandoned without failing cannot leave the
+        // feed permanently silent.
+        if (entry.inFlight && Date.now() - entry.lastAttemptAt < READ_TIMEOUT_MS * 2) return;
 
         const interval = feedIntervalMs(name);
         const since = Math.max(state.updatedAt.value, entry.lastAttemptAt);
@@ -183,8 +200,15 @@ export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
 
         entry.inFlight = true;
         entry.lastAttemptAt = Date.now();
+        // Which attempt this is. An abandoned read that comes back late has been
+        // overtaken by the one that replaced it, and must not write anything.
+        const attempt = ++entry.generation;
+        const current = () => entry.generation === attempt;
+
         try {
-            const result = await fetcher();
+            const result = await fetcher(AbortSignal.timeout(READ_TIMEOUT_MS));
+            if (!current()) return;
+
             if (result.success) {
                 // Merged, not assigned: an unchanged read leaves the ref alone, so
                 // the rows on screen neither re-render nor re-animate.
@@ -200,11 +224,14 @@ export function useAmuleFeed<T = unknown>(name: FeedName): AmuleFeed<T> {
                 state.error.value = result.error || `Failed to load ${definition.label}`;
             }
         } catch (e: any) {
+            if (!current()) return;
             state.error.value = e?.message || `Failed to load ${definition.label}`;
         } finally {
-            entry.inFlight = false;
-            state.loading.value = false;
-            state.updatedAt.value = Date.now();
+            if (current()) {
+                entry.inFlight = false;
+                state.loading.value = false;
+                state.updatedAt.value = Date.now();
+            }
         }
     }
 
@@ -293,13 +320,20 @@ export function startFeedPrefetch() {
         }
     }, 1000);
 
-    // A hidden tab stops polling entirely; coming back should not wait out the
-    // remainder of an interval before the numbers move again.
-    const onVisibility = () => {
+    // A hidden tab stops polling entirely, and a browser that froze it may have
+    // dropped the connections underneath. Coming back is therefore a forced
+    // read: not "refresh if due", which a stale `updatedAt` can talk out of
+    // running, but "go and ask now". Same on regaining the network, since the
+    // error on screen is usually from the moment it went away.
+    const catchUp = () => {
         if (document.visibilityState !== 'visible') return;
-        for (const name of names) feeds[name].refresh();
+        for (const name of names) feeds[name].refresh({ force: true });
     };
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener('visibilitychange', catchUp);
+    window.addEventListener('online', catchUp);
+    // A frozen tab is resumed by a pageshow rather than a visibility change when
+    // it comes back out of the back/forward cache.
+    window.addEventListener('pageshow', catchUp);
 
     // First fill: the queue and the uploads matter immediately.
     feeds.downloads.refresh();
@@ -314,6 +348,8 @@ export function startFeedPrefetch() {
 
     return () => {
         clearInterval(timer);
-        document.removeEventListener('visibilitychange', onVisibility);
+        document.removeEventListener('visibilitychange', catchUp);
+        window.removeEventListener('online', catchUp);
+        window.removeEventListener('pageshow', catchUp);
     };
 }

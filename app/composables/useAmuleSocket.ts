@@ -46,6 +46,8 @@ let reconnectDelay = RECONNECT_MIN_MS;
  * so writing to shared state (`useState`) has to be wrapped in its context.
  */
 let host: ReturnType<typeof useNuxtApp> | null = null;
+/** The wake listeners are attached once per tab, not once per caller. */
+let wakeListenersAttached = false;
 
 function scheduleReconnect() {
     if (reconnectTimer) return;
@@ -131,17 +133,58 @@ function connect() {
 }
 
 /**
+ * Reconnects at once instead of waiting out the backoff.
+ *
+ * A browser that freezes a background tab closes its sockets, and the tab can
+ * sit there for hours: by the time the user comes back the retry timer is at its
+ * slowest and the page would stay dead for another half minute for no reason.
+ * Returning to the tab, or regaining the network, is good evidence that this
+ * attempt will go better than the last, so the backoff is dropped.
+ *
+ * A socket left in CLOSING is also treated as gone. `onclose` still fires and
+ * clears the reference, so nothing is leaked by replacing it here.
+ */
+function reconnectNow(): void {
+    if (document.visibilityState !== 'visible') return;
+
+    if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+    }
+    reconnectDelay = RECONNECT_MIN_MS;
+
+    if (socket && socket.readyState !== WebSocket.CLOSING && socket.readyState !== WebSocket.CLOSED) return;
+
+    socket = null;
+    connect();
+}
+
+/**
  * Opens the shared socket if it is not already open. Idempotent, so every caller
  * can ask without coordinating; called once by the prefetch plugin in practice.
  */
 export function openAmuleSocket(): void {
     if (import.meta.server) return;
     host ??= useNuxtApp();
+
+    if (!wakeListenersAttached) {
+        wakeListenersAttached = true;
+        document.addEventListener('visibilitychange', reconnectNow);
+        window.addEventListener('online', reconnectNow);
+        window.addEventListener('pageshow', reconnectNow);
+    }
+
     connect();
 }
 
 /** Only used to stop a dev-server reload leaving the previous socket behind. */
 export function closeAmuleSocket(): void {
+    if (wakeListenersAttached) {
+        wakeListenersAttached = false;
+        document.removeEventListener('visibilitychange', reconnectNow);
+        window.removeEventListener('online', reconnectNow);
+        window.removeEventListener('pageshow', reconnectNow);
+    }
     if (reconnectTimer) {
         clearTimeout(reconnectTimer);
         reconnectTimer = null;

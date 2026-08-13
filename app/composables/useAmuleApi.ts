@@ -20,6 +20,19 @@ import type {
 import type { StatsTreeNode } from '../../server/utils/amule-ec/statsTree';
 import type { SpeedHistoryResponse } from '../../server/api/amule/statistics/history.get';
 
+/**
+ * Options the polled reads accept.
+ *
+ * A poll needs to be able to give up. A browser that freezes a background tab
+ * drops its connections without failing the requests that were in flight, so
+ * those promises can hang for as long as the tab lives - and a caller that
+ * serialises its polls behind an in-flight guard then never polls again. An
+ * abort signal is how that is bounded.
+ */
+export interface ReadOptions {
+    signal?: AbortSignal;
+}
+
 export const useAmuleApi = () => {
     // Helper to create API URLs
     const apiUrl = (path: string) => `/api/amule${path}`;
@@ -27,8 +40,8 @@ export const useAmuleApi = () => {
     return {
         // ========== Status & Connection ==========
 
-        async getStatus() {
-            return await $fetch<ApiResponse<StatusResult>>(apiUrl('/status'));
+        async getStatus(options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<StatusResult>>(apiUrl('/status'), { signal: options.signal });
         },
 
         async connect(network?: 'kad' | 'ed2k') {
@@ -47,8 +60,8 @@ export const useAmuleApi = () => {
 
         // ========== Downloads ==========
 
-        async getDownloads() {
-            return await $fetch<ApiResponse<Download[]>>(apiUrl('/downloads'));
+        async getDownloads(options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<Download[]>>(apiUrl('/downloads'), { signal: options.signal });
         },
 
         async addDownload(links: string | string[]) {
@@ -127,12 +140,12 @@ export const useAmuleApi = () => {
 
         // ========== Uploads & Servers ==========
 
-        async getUploads() {
-            return await $fetch<ApiResponse<Upload[]>>(apiUrl('/uploads'));
+        async getUploads(options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<Upload[]>>(apiUrl('/uploads'), { signal: options.signal });
         },
 
-        async getSharedFiles() {
-            return await $fetch<ApiResponse<{ sharedFiles: SharedFile[] }>>(apiUrl('/shared'));
+        async getSharedFiles(options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<{ sharedFiles: SharedFile[] }>>(apiUrl('/shared'), { signal: options.signal });
         },
 
         async getServers() {

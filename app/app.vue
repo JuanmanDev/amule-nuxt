@@ -234,18 +234,28 @@ const mobileNavLinks = computed(() => [
 /** Poll interval while the daemon answers, and the slower one while it does not. */
 const STATUS_POLL_MS = 5000
 const STATUS_POLL_WHEN_DOWN_MS = 15000
+/**
+ * How long one status read may take before it is abandoned. A browser that
+ * freezes a background tab drops the connection without failing the request, so
+ * an unbounded read plus the guard below is a banner that stays wrong until the
+ * page is reloaded.
+ */
+const STATUS_TIMEOUT_MS = 10000
 
 let statusTimer: ReturnType<typeof setTimeout> | null = null
+let statusStartedAt = 0
 let statusInFlight = false
 
 async function fetchStatus() {
   // Overlapping polls only pile up on the daemon's single EC connection, which
-  // is exactly what makes the UI crawl once requests start timing out.
-  if (statusInFlight) return
+  // is exactly what makes the UI crawl once requests start timing out. The
+  // guard is dropped once a read is past any time it could still answer in.
+  if (statusInFlight && Date.now() - statusStartedAt < STATUS_TIMEOUT_MS * 2) return
   statusInFlight = true
+  statusStartedAt = Date.now()
 
   try {
-    const result = await $fetch('/api/amule/status')
+    const result = await $fetch('/api/amule/status', { signal: AbortSignal.timeout(STATUS_TIMEOUT_MS) })
     if (result.success && result.data && result.data.connected) {
       status.value = result.data
       connectionState.value.connected = true
@@ -274,6 +284,22 @@ function scheduleStatus(delay: number) {
   }, delay)
 }
 
+/**
+ * Coming back to a tab the browser had put to sleep restarts the poll from now.
+ *
+ * Its timers did not run while it was frozen, so the pending one can be minutes
+ * late, and the banner would go on claiming the daemon is unreachable long after
+ * it is back. Asking straight away is also the only way to clear an error that
+ * only ever described the moment the tab went away.
+ */
+function wake() {
+  if (document.visibilityState !== 'visible') return
+  if (statusTimer) clearTimeout(statusTimer)
+  fetchStatus().then(() => {
+    scheduleStatus(connectionState.value.connected ? STATUS_POLL_MS : STATUS_POLL_WHEN_DOWN_MS)
+  })
+}
+
 // The status is chrome (banner and the speed readouts), so it is fetched in the
 // browser only. Awaiting it during SSR made every page wait for the EC timeout
 // and served a blank shell whenever the daemon was down.
@@ -281,10 +307,17 @@ onMounted(() => {
   fetchStatus().then(() => {
     scheduleStatus(connectionState.value.connected ? STATUS_POLL_MS : STATUS_POLL_WHEN_DOWN_MS)
   })
+
+  document.addEventListener('visibilitychange', wake)
+  window.addEventListener('online', wake)
+  window.addEventListener('pageshow', wake)
 })
 
 onUnmounted(() => {
   if (statusTimer) clearTimeout(statusTimer)
+  document.removeEventListener('visibilitychange', wake)
+  window.removeEventListener('online', wake)
+  window.removeEventListener('pageshow', wake)
 })
 
 // Frosted panels are a `backdrop-filter` on every card, row and tile: the browser
