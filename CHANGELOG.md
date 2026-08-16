@@ -2,6 +2,22 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.6.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.5.0...v1.6.0) (2026-08-16)
+
+### Features
+
+* **i18n:** translate the auto search and related pages everywhere ([20d076e](https://github.com/JuanmanDev/amule-nuxt/commit/20d076e307a674fc6a956b8a5e1e6e83233a4ead))
+* **search:** autonomous searches the server repeats and accumulates ([a234203](https://github.com/JuanmanDev/amule-nuxt/commit/a23420354a10604a2b2cd19dd3d795af5e14ddb6))
+* **ui:** related-page links at the foot of every page ([d5bab5c](https://github.com/JuanmanDev/amule-nuxt/commit/d5bab5c8473e89b1b379e3299275995dfeffd52e))
+
+### Bug fixes
+
+* **release:** pin the conventionalcommits preset to the v8 line ([5ccb37c](https://github.com/JuanmanDev/amule-nuxt/commit/5ccb37c9aa2d2d75bab005746a74e2b46f5a3f3f))
+
+### Documentation
+
+* backfill the changelog and add badges to the README ([c485e0a](https://github.com/JuanmanDev/amule-nuxt/commit/c485e0a6ebef5ff3c646ad6e734eff6e3a8c0058))
+
 ## [1.5.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.4.0...v1.5.0) (2026-08-13)
 
 ### Features
