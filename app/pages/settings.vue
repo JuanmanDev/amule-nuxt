@@ -360,6 +360,8 @@
         class="mt-4"
       />
     </UCard>
+
+    <RelatedPages :pages="['preferences', 'logs', 'mcpServer']" />
   </div>
 </template>
 

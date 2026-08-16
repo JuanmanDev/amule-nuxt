@@ -168,6 +168,8 @@
       </UCard>
     </div>
     </SmoothSwap>
+
+    <RelatedPages :pages="['statistics', 'connection', 'servers']" />
   </div>
 </template>
 

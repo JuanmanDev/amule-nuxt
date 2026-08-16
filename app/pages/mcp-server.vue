@@ -189,6 +189,8 @@
         </template>
       </UCard>
     </template>
+
+    <RelatedPages :pages="['assistant', 'settings']" />
   </div>
 </template>
 

@@ -227,6 +227,8 @@
         </div>
       </template>
     </UModal>
+
+    <RelatedPages :pages="['connection', 'search', 'preferences']" />
   </div>
 </template>
 

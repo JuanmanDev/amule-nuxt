@@ -289,6 +289,8 @@
         </div>
       </template>
     </UModal>
+
+    <RelatedPages :pages="['search', 'searchAuto', 'shared', 'statistics']" />
   </div>
 </template>
 

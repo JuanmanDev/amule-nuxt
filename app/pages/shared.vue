@@ -287,6 +287,8 @@
         </div>
       </template>
     </UModal>
+
+    <RelatedPages :pages="['uploads', 'downloads', 'statistics']" />
   </div>
 </template>
 

@@ -184,6 +184,8 @@
       :title="$t('assistant.failed')"
       :description="error"
     />
+
+    <RelatedPages :pages="['mcpServer', 'search', 'downloads']" />
   </div>
 </template>
 

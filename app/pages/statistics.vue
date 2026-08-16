@@ -239,6 +239,8 @@
       </ul>
       </SmoothSwap>
     </UCard>
+
+    <RelatedPages :pages="['statsSummary', 'connection', 'downloads', 'uploads']" />
   </div>
 </template>
 

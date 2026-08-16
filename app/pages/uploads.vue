@@ -260,6 +260,8 @@
       :facts="selectionFacts"
       :links="selectionLinks"
     />
+
+    <RelatedPages :pages="['shared', 'statistics', 'downloads']" />
   </div>
 </template>
 

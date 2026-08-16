@@ -179,6 +179,8 @@
         </div>
       </SmoothSwap>
     </UCard>
+
+    <RelatedPages :pages="['servers', 'statistics', 'logs']" />
   </div>
 </template>
 

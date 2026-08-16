@@ -163,6 +163,8 @@
       />
     </div>
     </SmoothSwap>
+
+    <RelatedPages :pages="['settings', 'connection', 'servers']" />
   </div>
 </template>
 
