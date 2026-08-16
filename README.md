@@ -25,7 +25,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 
 - **Complete daemon control** — downloads, uploads, shared files, search, servers, Kad, preferences
 - **Autonomous search** — the server re-runs your keywords every 5 minutes for an hour, a day, a week, a month or until stopped, cycling Kad and eD2k and merging every pass into one deduplicated list — so files on machines that were offline earlier keep turning up
-- **MCP server built in** — 16 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
+- **MCP server built in** — 19 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
 - **A local AI assistant** — a language model that runs *in the browser* on WebGPU and drives aMule through those same MCP tools; the conversation never leaves the machine
 - **Speaks 38 languages** — the 37 aMule itself ships, plus English, chosen per device and rendered server-side
 - **Tells you when downloads start and finish** — in the page, as an OS notification, and over Web Push with no tab open at all
@@ -104,7 +104,7 @@ Because aMule's protocol reports neither, this app also records **when each down
 
 `/assistant` runs a language model in the browser with [WebLLM](https://github.com/mlc-ai/web-llm) on WebGPU. The model is downloaded once (0.9–5 GB depending on which you pick) and cached by the browser; after that it runs offline. Nothing you type is sent anywhere.
 
-It operates aMule through this app's own MCP endpoint — the same 16 tools external agents get — so anything the interface can do, it can do, and a tool added there appears in the assistant with no further work. Tools published by the page through the draft WebMCP API (`navigator.modelContext`) are picked up as well when a browser supports it. Every tool call is shown in the transcript and can be expanded to see exactly what was sent and what came back.
+It operates aMule through this app's own MCP endpoint — the same 19 tools external agents get — so anything the interface can do, it can do, and a tool added there appears in the assistant with no further work. Tools published by the page through the draft WebMCP API (`navigator.modelContext`) are picked up as well when a browser supports it. Every tool call is shown in the transcript and can be expanded to see exactly what was sent and what came back.
 
 WebGPU is required: Chrome, Edge and Opera have it on the desktop today. Elsewhere the page says so instead of failing.
 

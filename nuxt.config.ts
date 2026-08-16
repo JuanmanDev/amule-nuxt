@@ -135,7 +135,9 @@ export default defineNuxtConfig({
       'Use amule-status first to check whether the daemon and the networks are connected.',
       'Downloads are identified by their 32 hex character file hash, which amule-downloads returns.',
       'amule-download-remove and amule-server-remove are destructive: confirm with the user before calling them.',
-      'Start a search with amule-search, then poll amule-search-results - results keep arriving for a few seconds.'
+      'Start a search with amule-search, then poll amule-search-results - results keep arriving for a few seconds.',
+      'For keywords worth watching over hours or days, create an automatic search with amule-auto-search-start; the server re-runs it every few minutes and amule-auto-searches reads what it has accumulated.',
+      'amule-auto-search-control with action delete discards the accumulated results: confirm with the user before calling it.'
     ].join(' ')
   },
 

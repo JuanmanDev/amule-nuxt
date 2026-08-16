@@ -38,7 +38,9 @@ const DESTRUCTIVE = new Set([
     'amule-server-remove',
     'amule-server-control',
     'amule-preferences',
-    'amule-network'
+    'amule-network',
+    // Deleting discards everything the search accumulated; stop/resume ride along
+    'amule-auto-search-control'
 ]);
 
 export function isDestructiveTool(name: string): boolean {
