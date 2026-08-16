@@ -1,5 +1,13 @@
 # aMule Nuxt
 
+[![Latest release](https://img.shields.io/github/v/release/JuanmanDev/amule-nuxt?logo=github&label=release)](https://github.com/JuanmanDev/amule-nuxt/releases/latest)
+[![CI](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/ci.yml)
+[![Release](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/release.yml/badge.svg)](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/release.yml)
+[![Docker image](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/docker.yml/badge.svg)](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/docker.yml)
+[![Container on GHCR](https://img.shields.io/badge/ghcr.io-juanmandev%2Famule--nuxt-2496ED?logo=docker&logoColor=white)](https://github.com/JuanmanDev/amule-nuxt/pkgs/container/amule-nuxt)
+[![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-blue)](CHANGELOG.md)
+![Node >= 24](https://img.shields.io/badge/node-%E2%89%A5%2024-339933?logo=node.js&logoColor=white)
+
 ![aMule Nuxt dashboard](images/home2.png)
 
 A modern web interface **and MCP server** for an [aMule](https://amule.org) daemon, built with **Nuxt 4**, **Nuxt UI 4** and **TypeScript**.
@@ -16,6 +24,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 ## Highlights
 
 - **Complete daemon control** — downloads, uploads, shared files, search, servers, Kad, preferences
+- **Autonomous search** — the server re-runs your keywords every 5 minutes for an hour, a day, a week, a month or until stopped, cycling Kad and eD2k and merging every pass into one deduplicated list — so files on machines that were offline earlier keep turning up
 - **MCP server built in** — 16 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
 - **A local AI assistant** — a language model that runs *in the browser* on WebGPU and drives aMule through those same MCP tools; the conversation never leaves the machine
 - **Speaks 38 languages** — the 37 aMule itself ships, plus English, chosen per device and rendered server-side
@@ -38,6 +47,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 | `/uploads` | Who is downloading from you: file, address, client software, speed, session and all-time bytes, queue position |
 | `/shared` | Every shared file with requests, accepted requests, bytes sent, share ratio, queued clients, details modal |
 | `/search` | Kad / eD2k / local search on one row, searches kept in tabs for a week, results split by what you already have, and a details view per result |
+| `/search-auto` | Autonomous search: the server repeats a search every 5 minutes for a chosen time span (or until stopped), alternating networks and accumulating deduplicated results — no browser needed |
 | `/assistant` | A language model running entirely in this browser that can answer questions about the daemon and operate it |
 | `/servers` | Server list with connect, add, remove, plus server-list preferences and "update from URL" |
 | `/connection` | eD2k and Kad state, connect/disconnect, Kad start/stop/bootstrap/nodes.dat, server message of the day |
@@ -47,6 +57,8 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 | `/logs` | Daemon log with filter, newest-first toggle, highlighted warnings |
 | `/settings` | Bandwidth limits, background and glass appearance, link-handler registration, runtime diagnostics |
 | `/mcp-server` | Live documentation of the MCP endpoint and its tools |
+
+Pages that overlap link to each other: a short **Related pages** section at the foot of each page points where you would likely go next — the two statistics views at each other, servers at connection, search at its autonomous sibling.
 
 Every list page shares the same controls: a filter that grows to fill the row, a compact sort menu that collapses to an icon on small screens, and an ascending/descending toggle for every sort field. Lists animate their additions and removals, and figures that change while a page is open (speeds, counts, badges) crossfade with a brief highlight. On a phone the download rows drop the ETA column so the stats stay on one line.
 
