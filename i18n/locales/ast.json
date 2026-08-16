@@ -29,7 +29,8 @@
     "mcpServer": "Sirvidor MCP",
     "settings": "Axustes",
     "assistant": "Asistente",
-    "apiTest": "Prueba de la API"
+    "apiTest": "Prueba de la API",
+    "searchAuto": "Gueta automática"
   },
   "common": {
     "refresh": "Anovar",
@@ -337,7 +338,8 @@
       "queued": "Na cola",
       "here": "Yá los tienes"
     },
-    "noneInGroup": "Nada nesti grupu. Tolos resultaos d'esta gueta tán n'otru sitiu."
+    "noneInGroup": "Nada nesti grupu. Tolos resultaos d'esta gueta tán n'otru sitiu.",
+    "autoLink": "Gueta automática"
   },
   "fileKinds": {
     "video": "Videu",
@@ -501,6 +503,68 @@
       "queued": "Veceros na cola",
       "users": "Usuarios distintos",
       "sentSession": "Unviao nesta sesión"
+    }
+  },
+  "searchAuto": {
+    "title": "Gueta automática",
+    "subtitle": "El sirvidor repite una gueta por ti, cada pocos minutos, y recueye tolo qu’atopa",
+    "backToSearch": "Volver a la gueta",
+    "howTitle": "¿Por qué repetir una gueta?",
+    "howDescription": "Una gueta única namái algama los sirvidores y los nodos Kad coneutaos nesi momentu. Una gueta automática execútase otra vuelta cada 5 minutos — nel sirvidor, con tolos restoladores zarraos — alternando ente les redes escoyíes y amestando los resultaos ensin duplicaos. Los ficheros compartíos por máquines que taben desconeutaes enantes siguen apaeciendo, pasada tres pasada.",
+    "networksLabel": "Redes",
+    "durationLabel": "Siguir guetando durante",
+    "start": "Aniciar la gueta automática",
+    "formHelp": "Cada {minutes} minutos execútase una pasada, alternando ente les redes esbillaes. Una gueta qu’anicies tu siempre tien prioridá — la pasada automática cenciellamente espera.",
+    "durations": {
+      "1h": "1 hora",
+      "1d": "1 día",
+      "1w": "1 selmana",
+      "1m": "1 mes",
+      "forever": "Hasta que la pares"
+    },
+    "listTitle": "Les tos guetes automátiques",
+    "status": {
+      "active": "Activa",
+      "stopped": "Parada",
+      "finished": "Finada"
+    },
+    "resultsSuffix": "resultaos recoyíos",
+    "passes": "{count} pasada | {count} pasaes",
+    "newLastPass": "{count} nuevos na última pasada",
+    "nextPass": "próxima pasada en {minutes} min",
+    "passRunning": "toca pasada agora",
+    "until": "execútase hasta {time}",
+    "untilStopped": "execútase hasta que la pares",
+    "lastPassFailed": "La última pasada falló: {error}",
+    "emptyTitle": "Entá nun hai guetes automátiques",
+    "emptyDescription": "Anicia una arriba; el sirvidor caltiénla n’execución inclusive con esta páxina zarrada.",
+    "accumulatedSince": "recoyíos dende {time}, colos duplicaos amestaos pel hash del ficheru",
+    "noResultsYetTitle": "Entá nun se recoyó nada",
+    "noResultsYetDescription": "La primer pasada execútase nun minutu o dos dende la creación de la gueta. Los resultaos apaecen equí según se completen les pasaes.",
+    "created": "Anicióse la gueta automática de «{keyword}»",
+    "createFailed": "Nun se pudo crear la gueta automática",
+    "stoppedToast": "Parose la gueta automática",
+    "resumedToast": "Siguió la gueta automática",
+    "deletedToast": "Desanicióse la gueta automática de «{keyword}»"
+  },
+  "related": {
+    "title": "Páxines rellacionaes",
+    "descriptions": {
+      "dashboard": "Resume de la cola, velocidaes en direuto y estáu de la conexón",
+      "downloads": "La cola: progresu, fontes, posar y siguir",
+      "uploads": "Quién ta descargando de ti nesti momentu",
+      "shared": "Cada ficheru que compartes, con peticiones y ratios",
+      "search": "Gueta nes redes una vegada, agora mesmo",
+      "searchAuto": "El sirvidor repite una gueta y recueye tolo qu’atopa",
+      "assistant": "Una IA llocal que pue responder por aMule y manexalu",
+      "servers": "La llista de sirvidores eD2k: coneutar, amestar, desaniciar",
+      "connection": "Estáu d’eD2k y Kad, coneutar y desconeutar",
+      "statistics": "Gráfiques de velocidá, totales y l’árbole completu d’estadístiques",
+      "statsSummary": "Los mesmos númberos d’un vistazu",
+      "preferences": "Les llendes, los puertos y los direutorios del propiu degorriu",
+      "logs": "Lo que tuvo diciendo’l degorriu",
+      "settings": "Esta aplicación web: aspeutu, avisos, diagnósticos",
+      "mcpServer": "El puntu de conexón MCP pel que los axentes d’IA puen manexar aMule"
     }
   }
 }

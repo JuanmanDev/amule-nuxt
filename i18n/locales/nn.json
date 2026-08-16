@@ -29,7 +29,8 @@
     "mcpServer": "MCP-tenar",
     "settings": "Innstillingar",
     "assistant": "Assistent",
-    "apiTest": "API-test"
+    "apiTest": "API-test",
+    "searchAuto": "Automatisk søk"
   },
   "common": {
     "refresh": "Oppdater",
@@ -337,7 +338,8 @@
       "queued": "I køen",
       "here": "Alt her"
     },
-    "noneInGroup": "Ingenting i denne gruppa. Alle resultata frå dette søket ligg ein annan stad."
+    "noneInGroup": "Ingenting i denne gruppa. Alle resultata frå dette søket ligg ein annan stad.",
+    "autoLink": "Automatisk søk"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Klientar i kø",
       "users": "Ulike brukarar",
       "sentSession": "Sendt denne økta"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatisk søk",
+    "subtitle": "Tenaren gjentek eit søk for deg, med nokre minutts mellomrom, og samlar alt han finn",
+    "backToSearch": "Tilbake til søk",
+    "howTitle": "Kvifor gjenta eit søk?",
+    "howDescription": "Eit enkelt søk når berre dei tenarane og Kad-nodane som er tilkopla akkurat då. Eit automatisk søk køyrer på nytt kvart 5. minutt — på tenaren, med alle nettlesarar lukka — vekslar mellom dei valde nettverka og slår saman resultata utan duplikat. Filer delte av maskiner som var fråkopla tidlegare, held fram med å dukke opp, runde etter runde.",
+    "networksLabel": "Nettverk",
+    "durationLabel": "Hald fram med å søkje i",
+    "start": "Start automatisk søk",
+    "formHelp": "Éin runde køyrer med {minutes} minutts mellomrom, vekselvis mellom dei valde nettverka. Eit søk du startar sjølv har alltid prioritet — den automatiske runden ventar berre.",
+    "durations": {
+      "1h": "1 time",
+      "1d": "1 dag",
+      "1w": "1 veke",
+      "1m": "1 månad",
+      "forever": "Til det blir stoppa"
+    },
+    "listTitle": "Dine automatiske søk",
+    "status": {
+      "active": "Aktivt",
+      "stopped": "Stoppa",
+      "finished": "Fullført"
+    },
+    "resultsSuffix": "resultat samla",
+    "passes": "{count} runde | {count} rundar",
+    "newLastPass": "{count} nye i siste runde",
+    "nextPass": "neste runde om {minutes} min",
+    "passRunning": "runde skal køyre no",
+    "until": "køyrer til {time}",
+    "untilStopped": "køyrer til det blir stoppa",
+    "lastPassFailed": "Den siste runden feila: {error}",
+    "emptyTitle": "Ingen automatiske søk enno",
+    "emptyDescription": "Start eitt ovanfor; tenaren held det i gang sjølv om denne sida er lukka.",
+    "accumulatedSince": "samla sidan {time}, duplikat slått saman etter filhash",
+    "noResultsYetTitle": "Ingenting samla enno",
+    "noResultsYetDescription": "Den første runden køyrer innan eitt–to minutt etter at søket er oppretta. Resultat dukkar opp her etter kvart som rundane blir fullførte.",
+    "created": "Automatisk søk etter «{keyword}» starta",
+    "createFailed": "Klarte ikkje å opprette det automatiske søket",
+    "stoppedToast": "Automatisk søk stoppa",
+    "resumedToast": "Automatisk søk teke opp att",
+    "deletedToast": "Automatisk søk etter «{keyword}» fjerna"
+  },
+  "related": {
+    "title": "Relaterte sider",
+    "descriptions": {
+      "dashboard": "Køsamandrag, sanntidsfart og tilkoplingsstatus",
+      "downloads": "Køen: framdrift, kjelder, pause og hald fram",
+      "uploads": "Kven som lastar ned frå deg akkurat no",
+      "shared": "Kvar fil du deler, med førespurnader og delingsforhold",
+      "search": "Søk i nettverka éin gong, akkurat no",
+      "searchAuto": "Tenaren gjentek eit søk og samlar alt",
+      "assistant": "Ein lokal KI som kan svare for og styre aMule",
+      "servers": "eD2k-tenarlista: kople til, legg til, fjern",
+      "connection": "Status for eD2k og Kad, kople til og frå",
+      "statistics": "Fartsgrafar, totalar og heile statistikktreet",
+      "statsSummary": "Dei same tala med eitt blikk",
+      "preferences": "Daemonen sine eigne grenser, portar og mapper",
+      "logs": "Kva daemonen har sagt i det siste",
+      "settings": "Denne vevappen: utsjånad, varsel, diagnostikk",
+      "mcpServer": "MCP-endepunktet KI-agentar kan styre aMule gjennom"
     }
   }
 }

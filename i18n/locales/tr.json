@@ -29,7 +29,8 @@
     "mcpServer": "MCP sunucusu",
     "settings": "Ayarlar",
     "assistant": "Asistan",
-    "apiTest": "API testi"
+    "apiTest": "API testi",
+    "searchAuto": "Otomatik arama"
   },
   "common": {
     "refresh": "Yenile",
@@ -337,7 +338,8 @@
       "queued": "Kuyrukta",
       "here": "Zaten var"
     },
-    "noneInGroup": "Bu kümede hiçbir şey yok. Bu aramanın tüm sonuçları başka kümelerde."
+    "noneInGroup": "Bu kümede hiçbir şey yok. Bu aramanın tüm sonuçları başka kümelerde.",
+    "autoLink": "Otomatik arama"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Kuyruktaki istemciler",
       "users": "Farklı kullanıcı",
       "sentSession": "Bu oturumda gönderilen"
+    }
+  },
+  "searchAuto": {
+    "title": "Otomatik arama",
+    "subtitle": "Sunucu, birkaç dakikada bir aramayı sizin için yineler ve bulduğu her şeyi toplar",
+    "backToSearch": "Aramaya dön",
+    "howTitle": "Bir arama neden yinelensin?",
+    "howDescription": "Tek bir arama, yalnızca o anda çevrimiçi olan sunuculara ve Kad düğümlerine ulaşır. Otomatik arama her 5 dakikada bir yeniden çalışır — sunucuda, tüm tarayıcılar kapalıyken bile — seçilen ağlar arasında dönüşümlü ilerler ve sonuçları yinelenenler olmadan birleştirir. Daha önce çevrimdışı olan makinelerin paylaştığı dosyalar, geçiş geçiş ortaya çıkmaya devam eder.",
+    "networksLabel": "Ağlar",
+    "durationLabel": "Arama süresi",
+    "start": "Otomatik aramayı başlat",
+    "formHelp": "Her {minutes} dakikada bir geçiş çalışır ve seçilen ağlar arasında dönüşümlü ilerler. Kendi başlattığınız arama her zaman önceliklidir — otomatik geçiş yalnızca bekler.",
+    "durations": {
+      "1h": "1 saat",
+      "1d": "1 gün",
+      "1w": "1 hafta",
+      "1m": "1 ay",
+      "forever": "Durdurulana kadar"
+    },
+    "listTitle": "Otomatik aramalarınız",
+    "status": {
+      "active": "Etkin",
+      "stopped": "Durduruldu",
+      "finished": "Tamamlandı"
+    },
+    "resultsSuffix": "sonuç toplandı",
+    "passes": "{count} geçiş | {count} geçiş",
+    "newLastPass": "son geçişte {count} yeni | son geçişte {count} yeni",
+    "nextPass": "sonraki geçiş {minutes} dk sonra",
+    "passRunning": "geçiş şimdi sırada",
+    "until": "{time} tarihine kadar çalışır",
+    "untilStopped": "durdurulana kadar çalışır",
+    "lastPassFailed": "Son geçiş başarısız oldu: {error}",
+    "emptyTitle": "Henüz otomatik arama yok",
+    "emptyDescription": "Yukarıdan bir tane başlatın; bu sayfa kapalıyken bile sunucu onu çalıştırmaya devam eder.",
+    "accumulatedSince": "{time} zamanından beri toplandı, yinelenenler dosya özetine göre birleştirildi",
+    "noResultsYetTitle": "Henüz bir şey toplanmadı",
+    "noResultsYetDescription": "İlk geçiş, arama oluşturulduktan sonra bir iki dakika içinde çalışır. Geçişler tamamlandıkça sonuçlar burada görünür.",
+    "created": "“{keyword}” için otomatik arama başlatıldı",
+    "createFailed": "Otomatik arama oluşturulamadı",
+    "stoppedToast": "Otomatik arama durduruldu",
+    "resumedToast": "Otomatik arama sürdürüldü",
+    "deletedToast": "“{keyword}” için otomatik arama kaldırıldı"
+  },
+  "related": {
+    "title": "İlgili sayfalar",
+    "descriptions": {
+      "dashboard": "Kuyruk özeti, anlık hızlar ve bağlantı durumu",
+      "downloads": "Kuyruk: ilerleme, kaynaklar, duraklatma ve sürdürme",
+      "uploads": "Şu anda sizden kimlerin indirdiği",
+      "shared": "Paylaştığınız her dosya, istekler ve oranlarla birlikte",
+      "search": "Ağlarda bir kez, hemen şimdi arayın",
+      "searchAuto": "Sunucu aramayı yineler ve her şeyi toplar",
+      "assistant": "aMule adına yanıt verebilen ve onu yönetebilen yerel bir yapay zeka",
+      "servers": "eD2k sunucu listesi: bağlan, ekle, kaldır",
+      "connection": "eD2k ve Kad durumu, bağlanma ve bağlantıyı kesme",
+      "statistics": "Hız grafikleri, toplamlar ve tam istatistik ağacı",
+      "statsSummary": "Aynı sayılar bir bakışta",
+      "preferences": "aMule arka plan servisinin kendi sınırları, bağlantı noktaları ve dizinleri",
+      "logs": "Arka plan servisinin neler söylediği",
+      "settings": "Bu web uygulaması: görünüm, bildirimler, tanılama",
+      "mcpServer": "Yapay zeka aracılarının aMule'yi yönetebildiği MCP uç noktası"
     }
   }
 }

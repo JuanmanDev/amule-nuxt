@@ -29,7 +29,8 @@
     "mcpServer": "MCP-palvelin",
     "settings": "Asetukset",
     "assistant": "Avustaja",
-    "apiTest": "API-testi"
+    "apiTest": "API-testi",
+    "searchAuto": "Automaattihaku"
   },
   "common": {
     "refresh": "Päivitä",
@@ -337,7 +338,8 @@
       "queued": "Jonossa",
       "here": "Jo täällä"
     },
-    "noneInGroup": "Tässä ryhmässä ei ole mitään. Kaikki tämän haun tulokset ovat muualla."
+    "noneInGroup": "Tässä ryhmässä ei ole mitään. Kaikki tämän haun tulokset ovat muualla.",
+    "autoLink": "Automaattihaku"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Asiakkaita jonossa",
       "users": "Eri käyttäjiä",
       "sentSession": "Lähetetty tässä istunnossa"
+    }
+  },
+  "searchAuto": {
+    "title": "Automaattihaku",
+    "subtitle": "Palvelin toistaa haun puolestasi muutaman minuutin välein ja kerää kaiken löytämänsä",
+    "backToSearch": "Takaisin hakuun",
+    "howTitle": "Miksi toistaa haku?",
+    "howDescription": "Yksittäinen haku tavoittaa vain sillä hetkellä verkossa olevat palvelimet ja Kad-solmut. Automaattinen haku suoritetaan uudelleen 5 minuutin välein — palvelimella, kaikkien selainten ollessa kiinni — vuorotellen valittujen verkkojen välillä ja yhdistäen tulokset ilman kaksoiskappaleita. Aiemmin poissa verkosta olleiden koneiden jakamia tiedostoja löytyy lisää kierros kierrokselta.",
+    "networksLabel": "Verkot",
+    "durationLabel": "Jatka hakua",
+    "start": "Aloita automaattihaku",
+    "formHelp": "Yksi kierros suoritetaan {minutes} minuutin välein vuorotellen valittujen verkkojen kesken. Itse aloittamasi haku on aina etusijalla — automaattinen kierros vain odottaa.",
+    "durations": {
+      "1h": "1 tunti",
+      "1d": "1 päivä",
+      "1w": "1 viikko",
+      "1m": "1 kuukausi",
+      "forever": "Kunnes pysäytetään"
+    },
+    "listTitle": "Automaattihakusi",
+    "status": {
+      "active": "Aktiivinen",
+      "stopped": "Pysäytetty",
+      "finished": "Valmis"
+    },
+    "resultsSuffix": "tulosta kerätty",
+    "passes": "{count} kierros | {count} kierrosta",
+    "newLastPass": "{count} uutta viime kierroksella",
+    "nextPass": "seuraava kierros {minutes} min kuluttua",
+    "passRunning": "kierros alkamassa",
+    "until": "käynnissä {time} asti",
+    "untilStopped": "käynnissä kunnes pysäytetään",
+    "lastPassFailed": "Viimeisin kierros epäonnistui: {error}",
+    "emptyTitle": "Ei vielä automaattihakuja",
+    "emptyDescription": "Aloita yksi yllä; palvelin pitää sen käynnissä, vaikka tämä sivu olisi kiinni.",
+    "accumulatedSince": "kerätty {time} alkaen, kaksoiskappaleet yhdistetty tiedoston hashin perusteella",
+    "noResultsYetTitle": "Mitään ei ole vielä kerätty",
+    "noResultsYetDescription": "Ensimmäinen kierros suoritetaan minuutin tai parin kuluessa haun luomisesta. Tulokset ilmestyvät tänne kierrosten valmistuessa.",
+    "created": "Automaattihaku ”{keyword}” aloitettu",
+    "createFailed": "Automaattihakua ei voitu luoda",
+    "stoppedToast": "Automaattihaku pysäytetty",
+    "resumedToast": "Automaattihakua jatkettu",
+    "deletedToast": "Automaattihaku ”{keyword}” poistettu"
+  },
+  "related": {
+    "title": "Aiheeseen liittyvät sivut",
+    "descriptions": {
+      "dashboard": "Jonon yhteenveto, reaaliaikaiset nopeudet ja yhteyden tila",
+      "downloads": "Jono: edistyminen, lähteet, keskeytys ja jatkaminen",
+      "uploads": "Kuka lataa sinulta juuri nyt",
+      "shared": "Kaikki jakamasi tiedostot pyyntöineen ja suhteineen",
+      "search": "Hae verkoista kerran, heti",
+      "searchAuto": "Palvelin toistaa haun ja kerää kaiken",
+      "assistant": "Paikallinen tekoäly, joka vastaa aMulen puolesta ja voi ohjata sitä",
+      "servers": "eD2k-palvelinluettelo: yhdistä, lisää, poista",
+      "connection": "eD2k:n ja Kadin tila, yhdistäminen ja katkaisu",
+      "statistics": "Nopeuskaaviot, kokonaismäärät ja koko tilastopuu",
+      "statsSummary": "Samat luvut yhdellä silmäyksellä",
+      "preferences": "Taustapalvelun omat rajoitukset, portit ja hakemistot",
+      "logs": "Mitä taustapalvelu on kertonut",
+      "settings": "Tämä verkkosovellus: ulkoasu, ilmoitukset, diagnostiikka",
+      "mcpServer": "MCP-päätepiste, jonka kautta tekoälyagentit voivat ohjata aMulea"
     }
   }
 }

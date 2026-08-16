@@ -29,7 +29,8 @@
     "mcpServer": "Servidor MCP",
     "settings": "Definições",
     "assistant": "Assistente",
-    "apiTest": "Teste da API"
+    "apiTest": "Teste da API",
+    "searchAuto": "Pesquisa automática"
   },
   "common": {
     "refresh": "Atualizar",
@@ -337,7 +338,8 @@
       "queued": "Na fila",
       "here": "Já existentes"
     },
-    "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão noutro."
+    "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão noutro.",
+    "autoLink": "Pesquisa automática"
   },
   "fileKinds": {
     "video": "Vídeo",
@@ -501,6 +503,68 @@
       "queued": "Clientes em fila",
       "users": "Utilizadores distintos",
       "sentSession": "Enviado nesta sessão"
+    }
+  },
+  "searchAuto": {
+    "title": "Pesquisa automática",
+    "subtitle": "O servidor repete uma pesquisa por si, de poucos em poucos minutos, e recolhe tudo o que encontra",
+    "backToSearch": "Voltar à pesquisa",
+    "howTitle": "Porquê repetir uma pesquisa?",
+    "howDescription": "Uma pesquisa única só chega aos servidores e nós Kad que estão online nesse momento. Uma pesquisa automática volta a executar-se de 5 em 5 minutos — no servidor, com todos os navegadores fechados — alternando entre as redes escolhidas e juntando os resultados sem duplicados. Ficheiros partilhados por máquinas que antes estavam offline continuam a aparecer, passagem após passagem.",
+    "networksLabel": "Redes",
+    "durationLabel": "Continuar a pesquisar durante",
+    "start": "Iniciar pesquisa automática",
+    "formHelp": "Uma passagem executa-se a cada {minutes} minutos, alternando entre as redes selecionadas. Uma pesquisa iniciada por si tem sempre prioridade — a passagem automática simplesmente espera.",
+    "durations": {
+      "1h": "1 hora",
+      "1d": "1 dia",
+      "1w": "1 semana",
+      "1m": "1 mês",
+      "forever": "Até ser parada"
+    },
+    "listTitle": "As suas pesquisas automáticas",
+    "status": {
+      "active": "Ativa",
+      "stopped": "Parada",
+      "finished": "Concluída"
+    },
+    "resultsSuffix": "resultados recolhidos",
+    "passes": "{count} passagem | {count} passagens",
+    "newLastPass": "{count} novos na última passagem",
+    "nextPass": "próxima passagem em {minutes} min",
+    "passRunning": "passagem prevista para já",
+    "until": "ativa até {time}",
+    "untilStopped": "ativa até ser parada",
+    "lastPassFailed": "A última passagem falhou: {error}",
+    "emptyTitle": "Ainda não há pesquisas automáticas",
+    "emptyDescription": "Inicie uma acima; o servidor mantém-na a correr mesmo com esta página fechada.",
+    "accumulatedSince": "recolhidos desde {time}, duplicados juntados pelo hash do ficheiro",
+    "noResultsYetTitle": "Ainda nada recolhido",
+    "noResultsYetDescription": "A primeira passagem executa-se um ou dois minutos depois de criar a pesquisa. Os resultados aparecem aqui à medida que as passagens terminam.",
+    "created": "Pesquisa automática por “{keyword}” iniciada",
+    "createFailed": "Não foi possível criar a pesquisa automática",
+    "stoppedToast": "Pesquisa automática parada",
+    "resumedToast": "Pesquisa automática retomada",
+    "deletedToast": "Pesquisa automática por “{keyword}” removida"
+  },
+  "related": {
+    "title": "Páginas relacionadas",
+    "descriptions": {
+      "dashboard": "Resumo da fila, velocidades em tempo real e estado da ligação",
+      "downloads": "A fila: progresso, fontes, pausar e retomar",
+      "uploads": "Quem está a descarregar de si neste momento",
+      "shared": "Todos os ficheiros que partilha, com pedidos e rácios",
+      "search": "Pesquisar as redes uma vez, agora mesmo",
+      "searchAuto": "O servidor repete uma pesquisa e recolhe tudo",
+      "assistant": "Uma IA local que responde sobre o aMule e o pode controlar",
+      "servers": "A lista de servidores eD2k: ligar, adicionar, remover",
+      "connection": "Estado do eD2k e do Kad, ligar e desligar",
+      "statistics": "Gráficos de débito, totais e a árvore completa de estatísticas",
+      "statsSummary": "Os mesmos números num relance",
+      "preferences": "Os limites, portas e diretórios do próprio daemon",
+      "logs": "O que o daemon tem andado a dizer",
+      "settings": "Esta aplicação web: aspeto, notificações, diagnóstico",
+      "mcpServer": "O ponto de acesso MCP através do qual agentes de IA podem controlar o aMule"
     }
   }
 }

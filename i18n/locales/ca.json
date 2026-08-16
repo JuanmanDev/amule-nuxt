@@ -29,7 +29,8 @@
     "mcpServer": "Servidor MCP",
     "settings": "Configuració",
     "assistant": "Assistent",
-    "apiTest": "Prova de l'API"
+    "apiTest": "Prova de l'API",
+    "searchAuto": "Cerca automàtica"
   },
   "common": {
     "refresh": "Actualitza",
@@ -337,7 +338,8 @@
       "queued": "A la cua",
       "here": "Ja els teniu"
     },
-    "noneInGroup": "Res en aquest grup. Tots els resultats d'aquesta cerca són en un altre lloc."
+    "noneInGroup": "Res en aquest grup. Tots els resultats d'aquesta cerca són en un altre lloc.",
+    "autoLink": "Cerca automàtica"
   },
   "fileKinds": {
     "video": "Vídeo",
@@ -501,6 +503,68 @@
       "queued": "Clients a la cua",
       "users": "Usuaris diferents",
       "sentSession": "Enviat en aquesta sessió"
+    }
+  },
+  "searchAuto": {
+    "title": "Cerca automàtica",
+    "subtitle": "El servidor repeteix una cerca per vosaltres, cada pocs minuts, i recull tot el que troba",
+    "backToSearch": "Torna a la cerca",
+    "howTitle": "Per què repetir una cerca?",
+    "howDescription": "Una cerca única només arriba als servidors i als nodes Kad que són en línia en aquell moment. Una cerca automàtica es torna a executar cada 5 minuts — al servidor, amb tots els navegadors tancats — alternant entre les xarxes triades i fusionant els resultats sense duplicats. Els fitxers compartits per màquines que abans eren fora de línia continuen apareixent, passada rere passada.",
+    "networksLabel": "Xarxes",
+    "durationLabel": "Continua cercant durant",
+    "start": "Inicia la cerca automàtica",
+    "formHelp": "Cada {minutes} minuts s’executa una passada, alternant entre les xarxes seleccionades. Una cerca que inicieu vosaltres sempre té prioritat — la passada automàtica simplement espera.",
+    "durations": {
+      "1h": "1 hora",
+      "1d": "1 dia",
+      "1w": "1 setmana",
+      "1m": "1 mes",
+      "forever": "Fins que s’aturi"
+    },
+    "listTitle": "Les vostres cerques automàtiques",
+    "status": {
+      "active": "Activa",
+      "stopped": "Aturada",
+      "finished": "Finalitzada"
+    },
+    "resultsSuffix": "resultats recollits",
+    "passes": "{count} passada | {count} passades",
+    "newLastPass": "{count} de nous a l’última passada",
+    "nextPass": "propera passada d’aquí a {minutes} min",
+    "passRunning": "ara toca una passada",
+    "until": "s’executa fins a {time}",
+    "untilStopped": "s’executa fins que s’aturi",
+    "lastPassFailed": "L’última passada ha fallat: {error}",
+    "emptyTitle": "Encara no hi ha cerques automàtiques",
+    "emptyDescription": "Inicieu-ne una aquí sobre; el servidor la manté en marxa encara que aquesta pàgina estigui tancada.",
+    "accumulatedSince": "recollits des de {time}, duplicats fusionats pel resum del fitxer",
+    "noResultsYetTitle": "Encara no s’ha recollit res",
+    "noResultsYetDescription": "La primera passada s’executa al cap d’un minut o dos de crear la cerca. Els resultats apareixen aquí a mesura que es completen les passades.",
+    "created": "S’ha iniciat la cerca automàtica de «{keyword}»",
+    "createFailed": "No s’ha pogut crear la cerca automàtica",
+    "stoppedToast": "S’ha aturat la cerca automàtica",
+    "resumedToast": "S’ha reprès la cerca automàtica",
+    "deletedToast": "S’ha suprimit la cerca automàtica de «{keyword}»"
+  },
+  "related": {
+    "title": "Pàgines relacionades",
+    "descriptions": {
+      "dashboard": "Resum de la cua, velocitats en directe i estat de la connexió",
+      "downloads": "La cua: progrés, fonts, pausa i represa",
+      "uploads": "Qui està baixant de vosaltres ara mateix",
+      "shared": "Cada fitxer que compartiu, amb peticions i ràtios",
+      "search": "Cerqueu a les xarxes una sola vegada, ara mateix",
+      "searchAuto": "El servidor repeteix una cerca i recull tot el que troba",
+      "assistant": "Una IA local que pot respondre per l’aMule i fer-lo anar",
+      "servers": "La llista de servidors eD2k: connectar, afegir, suprimir",
+      "connection": "Estat d’eD2k i Kad, connexió i desconnexió",
+      "statistics": "Gràfics de velocitat, totals i l’arbre complet d’estadístiques",
+      "statsSummary": "Els mateixos números d’un cop d’ull",
+      "preferences": "Els límits, ports i directoris del mateix dimoni",
+      "logs": "Què ha estat dient el dimoni",
+      "settings": "Aquesta aplicació web: aparença, notificacions, diagnòstics",
+      "mcpServer": "El punt final MCP a través del qual els agents d’IA poden fer anar l’aMule"
     }
   }
 }

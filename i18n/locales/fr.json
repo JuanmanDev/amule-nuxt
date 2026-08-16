@@ -29,7 +29,8 @@
     "mcpServer": "Serveur MCP",
     "settings": "Réglages",
     "assistant": "Assistant",
-    "apiTest": "Test de l'API"
+    "apiTest": "Test de l'API",
+    "searchAuto": "Recherche automatique"
   },
   "common": {
     "refresh": "Actualiser",
@@ -337,7 +338,8 @@
       "queued": "Dans la file",
       "here": "Déjà présents"
     },
-    "noneInGroup": "Rien dans ce groupe. Tous les résultats de cette recherche sont ailleurs."
+    "noneInGroup": "Rien dans ce groupe. Tous les résultats de cette recherche sont ailleurs.",
+    "autoLink": "Recherche automatique"
   },
   "fileKinds": {
     "video": "Vidéo",
@@ -501,6 +503,68 @@
       "queued": "Clients en attente",
       "users": "Utilisateurs distincts",
       "sentSession": "Envoyé cette session"
+    }
+  },
+  "searchAuto": {
+    "title": "Recherche automatique",
+    "subtitle": "Le serveur répète une recherche pour vous, toutes les quelques minutes, et rassemble tout ce qu’il trouve",
+    "backToSearch": "Retour à la recherche",
+    "howTitle": "Pourquoi répéter une recherche ?",
+    "howDescription": "Une recherche unique n’atteint que les serveurs et les nœuds Kad en ligne à cet instant. Une recherche automatique se relance toutes les 5 minutes — sur le serveur, tous les navigateurs fermés — en alternant entre les réseaux choisis et en fusionnant les résultats sans doublons. Les fichiers partagés par des machines hors ligne auparavant continuent d’apparaître, passe après passe.",
+    "networksLabel": "Réseaux",
+    "durationLabel": "Continuer à chercher pendant",
+    "start": "Lancer la recherche automatique",
+    "formHelp": "Une passe s’exécute toutes les {minutes} minutes, en alternant entre les réseaux sélectionnés. Une recherche que vous lancez vous-même est toujours prioritaire — la passe automatique attend simplement.",
+    "durations": {
+      "1h": "1 heure",
+      "1d": "1 jour",
+      "1w": "1 semaine",
+      "1m": "1 mois",
+      "forever": "Jusqu’à l’arrêt"
+    },
+    "listTitle": "Vos recherches automatiques",
+    "status": {
+      "active": "Active",
+      "stopped": "Arrêtée",
+      "finished": "Terminée"
+    },
+    "resultsSuffix": "résultats collectés",
+    "passes": "{count} passe | {count} passes",
+    "newLastPass": "{count} nouveaux à la dernière passe",
+    "nextPass": "prochaine passe dans {minutes} min",
+    "passRunning": "passe imminente",
+    "until": "s’exécute jusqu’à {time}",
+    "untilStopped": "s’exécute jusqu’à l’arrêt",
+    "lastPassFailed": "La dernière passe a échoué : {error}",
+    "emptyTitle": "Aucune recherche automatique pour l’instant",
+    "emptyDescription": "Lancez-en une ci-dessus ; le serveur la fait tourner même cette page fermée.",
+    "accumulatedSince": "collectés depuis {time}, doublons fusionnés par hachage de fichier",
+    "noResultsYetTitle": "Rien de collecté pour l’instant",
+    "noResultsYetDescription": "La première passe s’exécute une à deux minutes après la création de la recherche. Les résultats apparaissent ici au fil des passes.",
+    "created": "Recherche automatique de « {keyword} » lancée",
+    "createFailed": "Impossible de créer la recherche automatique",
+    "stoppedToast": "Recherche automatique arrêtée",
+    "resumedToast": "Recherche automatique reprise",
+    "deletedToast": "Recherche automatique de « {keyword} » supprimée"
+  },
+  "related": {
+    "title": "Pages liées",
+    "descriptions": {
+      "dashboard": "Résumé de la file, vitesses en direct et état de la connexion",
+      "downloads": "La file d’attente : progression, sources, pause et reprise",
+      "uploads": "Qui télécharge depuis chez vous en ce moment",
+      "shared": "Tous les fichiers que vous partagez, avec demandes et ratios",
+      "search": "Chercher sur les réseaux une fois, maintenant",
+      "searchAuto": "Le serveur répète une recherche et rassemble tout",
+      "assistant": "Une IA locale qui répond pour aMule et peut le piloter",
+      "servers": "La liste des serveurs eD2k : connexion, ajout, suppression",
+      "connection": "État eD2k et Kad, connexion et déconnexion",
+      "statistics": "Graphiques de débit, totaux et l’arbre complet des statistiques",
+      "statsSummary": "Les mêmes chiffres en un coup d’œil",
+      "preferences": "Les limites, ports et répertoires du démon lui-même",
+      "logs": "Ce que le démon a raconté",
+      "settings": "Cette application web : apparence, notifications, diagnostics",
+      "mcpServer": "Le point d’accès MCP par lequel les agents IA peuvent piloter aMule"
     }
   }
 }

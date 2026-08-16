@@ -29,7 +29,8 @@
     "mcpServer": "MCP-kiszolgáló",
     "settings": "Beállítások",
     "assistant": "Asszisztens",
-    "apiTest": "API-teszt"
+    "apiTest": "API-teszt",
+    "searchAuto": "Automatikus keresés"
   },
   "common": {
     "refresh": "Frissítés",
@@ -337,7 +338,8 @@
       "queued": "A sorban",
       "here": "Már megvan"
     },
-    "noneInGroup": "Ebben a csoportban nincs semmi. A keresés összes találata máshol van."
+    "noneInGroup": "Ebben a csoportban nincs semmi. A keresés összes találata máshol van.",
+    "autoLink": "Automatikus keresés"
   },
   "fileKinds": {
     "video": "Videó",
@@ -501,6 +503,68 @@
       "queued": "Sorban álló kliensek",
       "users": "Különböző felhasználók",
       "sentSession": "Elküldve a munkamenetben"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatikus keresés",
+    "subtitle": "A kiszolgáló néhány percenként megismétli a keresést, és összegyűjt mindent, amit talál",
+    "backToSearch": "Vissza a kereséshez",
+    "howTitle": "Miért érdemes megismételni a keresést?",
+    "howDescription": "Egyetlen keresés csak az éppen elérhető kiszolgálókat és Kad-csomópontokat éri el. Az automatikus keresés 5 percenként újra lefut — a kiszolgálón, akkor is, ha minden böngésző be van zárva —, felváltva a kiválasztott hálózatokon, és duplikátumok nélkül fésüli össze a találatokat. A korábban offline gépek által megosztott fájlok menetről menetre folyamatosan előkerülnek.",
+    "networksLabel": "Hálózatok",
+    "durationLabel": "Keresés folytatása ennyi ideig",
+    "start": "Automatikus keresés indítása",
+    "formHelp": "Egy menet {minutes} percenként fut le, felváltva a kiválasztott hálózatokon. A saját kezűleg indított keresés mindig elsőbbséget élvez — az automatikus menet egyszerűen vár.",
+    "durations": {
+      "1h": "1 óra",
+      "1d": "1 nap",
+      "1w": "1 hét",
+      "1m": "1 hónap",
+      "forever": "Leállításig"
+    },
+    "listTitle": "Az Ön automatikus keresései",
+    "status": {
+      "active": "Aktív",
+      "stopped": "Leállítva",
+      "finished": "Befejezve"
+    },
+    "resultsSuffix": "összegyűjtött találat",
+    "passes": "{count} menet | {count} menet",
+    "newLastPass": "{count} új a legutóbbi menetben",
+    "nextPass": "következő menet {minutes} perc múlva",
+    "passRunning": "menet esedékes",
+    "until": "eddig fut: {time}",
+    "untilStopped": "leállításig fut",
+    "lastPassFailed": "A legutóbbi menet nem sikerült: {error}",
+    "emptyTitle": "Még nincs automatikus keresés",
+    "emptyDescription": "Indítson egyet fent; a kiszolgáló akkor is futtatja, ha ez az oldal be van zárva.",
+    "accumulatedSince": "összegyűjtve {time} óta, a duplikátumok a fájl hasítóértéke alapján összevonva",
+    "noResultsYetTitle": "Még nincs összegyűjtött találat",
+    "noResultsYetDescription": "Az első menet a keresés létrehozása után egy-két percen belül lefut. A találatok a menetek befejeztével jelennek meg itt.",
+    "created": "A(z) „{keyword}” automatikus keresése elindult",
+    "createFailed": "Az automatikus keresést nem sikerült létrehozni",
+    "stoppedToast": "Automatikus keresés leállítva",
+    "resumedToast": "Automatikus keresés folytatva",
+    "deletedToast": "A(z) „{keyword}” automatikus keresése eltávolítva"
+  },
+  "related": {
+    "title": "Kapcsolódó oldalak",
+    "descriptions": {
+      "dashboard": "A várólista összegzése, élő sebességek és kapcsolatállapot",
+      "downloads": "A várólista: előrehaladás, források, szüneteltetés és folytatás",
+      "uploads": "Ki tölt le Öntől éppen most",
+      "shared": "Minden megosztott fájlja, kérésekkel és arányokkal",
+      "search": "Egyszeri keresés a hálózatokon, most azonnal",
+      "searchAuto": "A kiszolgáló megismétli a keresést, és mindent összegyűjt",
+      "assistant": "Helyi AI, amely az aMule nevében válaszol, és vezérelni is tudja",
+      "servers": "Az eD2k-kiszolgálólista: csatlakozás, hozzáadás, eltávolítás",
+      "connection": "eD2k- és Kad-állapot, csatlakozás és bontás",
+      "statistics": "Sebességgrafikonok, összesítések és a teljes statisztikafa",
+      "statsSummary": "Ugyanazok a számok egy pillantásra",
+      "preferences": "A szolgáltatás saját korlátai, portjai és könyvtárai",
+      "logs": "Amit a szolgáltatás mostanában mondott",
+      "settings": "Ez a webalkalmazás: megjelenés, értesítések, diagnosztika",
+      "mcpServer": "Az MCP-végpont, amelyen keresztül AI-ügynökök vezérelhetik az aMule-t"
     }
   }
 }

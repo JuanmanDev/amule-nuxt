@@ -29,7 +29,8 @@
     "mcpServer": "MCP-server",
     "settings": "Indstillinger",
     "assistant": "Assistent",
-    "apiTest": "API-test"
+    "apiTest": "API-test",
+    "searchAuto": "Automatisk søgning"
   },
   "common": {
     "refresh": "Opdatér",
@@ -337,7 +338,8 @@
       "queued": "I køen",
       "here": "Allerede her"
     },
-    "noneInGroup": "Intet i denne gruppe. Alle resultater fra denne søgning ligger et andet sted."
+    "noneInGroup": "Intet i denne gruppe. Alle resultater fra denne søgning ligger et andet sted.",
+    "autoLink": "Automatisk søgning"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Klienter i kø",
       "users": "Forskellige brugere",
       "sentSession": "Sendt denne session"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatisk søgning",
+    "subtitle": "Serveren gentager en søgning for dig med få minutters mellemrum og samler alt, hvad den finder",
+    "backToSearch": "Tilbage til søgning",
+    "howTitle": "Hvorfor gentage en søgning?",
+    "howDescription": "En enkelt søgning når kun de servere og Kad-noder, der er online i det øjeblik. En automatisk søgning kører igen hvert 5. minut — på serveren, selv med alle browsere lukket — skifter mellem de valgte netværk og fletter resultaterne uden dubletter. Filer delt af maskiner, der var offline tidligere, bliver ved med at dukke op, gennemløb efter gennemløb.",
+    "networksLabel": "Netværk",
+    "durationLabel": "Bliv ved med at søge i",
+    "start": "Start automatisk søgning",
+    "formHelp": "Et gennemløb kører hvert {minutes}. minut og skifter mellem de valgte netværk. En søgning, du selv starter, har altid forrang — det automatiske gennemløb venter simpelthen.",
+    "durations": {
+      "1h": "1 time",
+      "1d": "1 dag",
+      "1w": "1 uge",
+      "1m": "1 måned",
+      "forever": "Indtil den stoppes"
+    },
+    "listTitle": "Dine automatiske søgninger",
+    "status": {
+      "active": "Aktiv",
+      "stopped": "Stoppet",
+      "finished": "Afsluttet"
+    },
+    "resultsSuffix": "resultater samlet",
+    "passes": "{count} gennemløb | {count} gennemløb",
+    "newLastPass": "{count} nye i seneste gennemløb",
+    "nextPass": "næste gennemløb om {minutes} min.",
+    "passRunning": "gennemløb starter nu",
+    "until": "kører indtil {time}",
+    "untilStopped": "kører indtil den stoppes",
+    "lastPassFailed": "Seneste gennemløb mislykkedes: {error}",
+    "emptyTitle": "Ingen automatiske søgninger endnu",
+    "emptyDescription": "Start en ovenfor; serveren holder den kørende, selv når denne side er lukket.",
+    "accumulatedSince": "samlet siden {time}, dubletter flettet efter filens hash",
+    "noResultsYetTitle": "Intet samlet endnu",
+    "noResultsYetDescription": "Det første gennemløb kører inden for et minut eller to, efter søgningen er oprettet. Resultaterne dukker op her, efterhånden som gennemløbene fuldføres.",
+    "created": "Automatisk søgning efter “{keyword}” startet",
+    "createFailed": "Den automatiske søgning kunne ikke oprettes",
+    "stoppedToast": "Automatisk søgning stoppet",
+    "resumedToast": "Automatisk søgning genoptaget",
+    "deletedToast": "Automatisk søgning efter “{keyword}” fjernet"
+  },
+  "related": {
+    "title": "Relaterede sider",
+    "descriptions": {
+      "dashboard": "Køoversigt, aktuelle hastigheder og forbindelsesstatus",
+      "downloads": "Køen: fremgang, kilder, pause og genoptag",
+      "uploads": "Hvem der henter fra dig lige nu",
+      "shared": "Hver fil du deler, med forespørgsler og delingsforhold",
+      "search": "Søg på netværkene én gang, lige nu",
+      "searchAuto": "Serveren gentager en søgning og samler alt, hvad den finder",
+      "assistant": "En lokal AI, der kan svare for og betjene aMule",
+      "servers": "eD2k-serverlisten: forbind, tilføj, fjern",
+      "connection": "eD2k- og Kad-status, forbind og afbryd",
+      "statistics": "Hastighedsgrafer, totaler og det fulde statistiktræ",
+      "statsSummary": "De samme tal i ét hurtigt overblik",
+      "preferences": "Dæmonens egne grænser, porte og mapper",
+      "logs": "Hvad dæmonen har haft at sige",
+      "settings": "Denne webapp: udseende, notifikationer, diagnostik",
+      "mcpServer": "MCP-endepunktet, som AI-agenter kan styre aMule igennem"
     }
   }
 }

@@ -29,7 +29,8 @@
     "mcpServer": "Server MCP",
     "settings": "Impostazioni",
     "assistant": "Assistente",
-    "apiTest": "Test API"
+    "apiTest": "Test API",
+    "searchAuto": "Ricerca automatica"
   },
   "common": {
     "refresh": "Aggiorna",
@@ -337,7 +338,8 @@
       "queued": "In coda",
       "here": "Già presenti"
     },
-    "noneInGroup": "Niente in questo gruppo. Tutti i risultati di questa ricerca sono altrove."
+    "noneInGroup": "Niente in questo gruppo. Tutti i risultati di questa ricerca sono altrove.",
+    "autoLink": "Ricerca automatica"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Client in coda",
       "users": "Utenti distinti",
       "sentSession": "Inviato in questa sessione"
+    }
+  },
+  "searchAuto": {
+    "title": "Ricerca automatica",
+    "subtitle": "Il server ripete una ricerca per te, ogni pochi minuti, e raccoglie tutto ciò che trova",
+    "backToSearch": "Torna alla ricerca",
+    "howTitle": "Perché ripetere una ricerca?",
+    "howDescription": "Una singola ricerca raggiunge solo i server e i nodi Kad online in quel momento. Una ricerca automatica viene rieseguita ogni 5 minuti — sul server, con tutti i browser chiusi — alternando le reti scelte e unendo i risultati senza duplicati. I file condivisi da macchine prima offline continuano a spuntare, passaggio dopo passaggio.",
+    "networksLabel": "Reti",
+    "durationLabel": "Continua a cercare per",
+    "start": "Avvia ricerca automatica",
+    "formHelp": "Un passaggio viene eseguito ogni {minutes} minuti, alternando le reti selezionate. Una ricerca avviata da te ha sempre la priorità — il passaggio automatico semplicemente attende.",
+    "durations": {
+      "1h": "1 ora",
+      "1d": "1 giorno",
+      "1w": "1 settimana",
+      "1m": "1 mese",
+      "forever": "Finché non viene fermata"
+    },
+    "listTitle": "Le tue ricerche automatiche",
+    "status": {
+      "active": "Attiva",
+      "stopped": "Ferma",
+      "finished": "Terminata"
+    },
+    "resultsSuffix": "risultati raccolti",
+    "passes": "{count} passaggio | {count} passaggi",
+    "newLastPass": "{count} nuovi nell'ultimo passaggio",
+    "nextPass": "prossimo passaggio tra {minutes} min",
+    "passRunning": "passaggio imminente",
+    "until": "attiva fino a {time}",
+    "untilStopped": "attiva finché non viene fermata",
+    "lastPassFailed": "L'ultimo passaggio non è riuscito: {error}",
+    "emptyTitle": "Ancora nessuna ricerca automatica",
+    "emptyDescription": "Avviane una qui sopra; il server la mantiene in esecuzione anche con questa pagina chiusa.",
+    "accumulatedSince": "raccolti da {time}, duplicati uniti in base all'hash del file",
+    "noResultsYetTitle": "Ancora nulla di raccolto",
+    "noResultsYetDescription": "Il primo passaggio viene eseguito entro un minuto o due dalla creazione della ricerca. I risultati compaiono qui man mano che i passaggi si completano.",
+    "created": "Ricerca automatica per «{keyword}» avviata",
+    "createFailed": "Impossibile creare la ricerca automatica",
+    "stoppedToast": "Ricerca automatica fermata",
+    "resumedToast": "Ricerca automatica ripresa",
+    "deletedToast": "Ricerca automatica per «{keyword}» rimossa"
+  },
+  "related": {
+    "title": "Pagine correlate",
+    "descriptions": {
+      "dashboard": "Riepilogo della coda, velocità in tempo reale e stato della connessione",
+      "downloads": "La coda: avanzamento, fonti, pausa e ripresa",
+      "uploads": "Chi sta scaricando da te in questo momento",
+      "shared": "Ogni file che condividi, con richieste e rapporti",
+      "search": "Cerca sulle reti una volta sola, adesso",
+      "searchAuto": "Il server ripete una ricerca e raccoglie tutto",
+      "assistant": "Un'IA locale che può rispondere per aMule e pilotarlo",
+      "servers": "L'elenco dei server eD2k: connetti, aggiungi, rimuovi",
+      "connection": "Stato eD2k e Kad, connessione e disconnessione",
+      "statistics": "Grafici delle velocità, totali e l'albero completo delle statistiche",
+      "statsSummary": "Gli stessi numeri a colpo d’occhio",
+      "preferences": "Limiti, porte e directory del demone stesso",
+      "logs": "Che cosa ha detto il demone di recente",
+      "settings": "Questa web app: aspetto, notifiche, diagnostica",
+      "mcpServer": "L'endpoint MCP tramite cui gli agenti IA possono pilotare aMule"
     }
   }
 }

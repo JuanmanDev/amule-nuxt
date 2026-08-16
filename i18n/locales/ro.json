@@ -29,7 +29,8 @@
     "mcpServer": "Server MCP",
     "settings": "Setări",
     "assistant": "Asistent",
-    "apiTest": "Test API"
+    "apiTest": "Test API",
+    "searchAuto": "Căutare automată"
   },
   "common": {
     "refresh": "Reîmprospătează",
@@ -337,7 +338,8 @@
       "queued": "În coadă",
       "here": "Deja aici"
     },
-    "noneInGroup": "Nimic în acest grup. Toate rezultatele acestei căutări sunt în altă parte."
+    "noneInGroup": "Nimic în acest grup. Toate rezultatele acestei căutări sunt în altă parte.",
+    "autoLink": "Căutare automată"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Clienți în coadă",
       "users": "Utilizatori diferiți",
       "sentSession": "Trimis în sesiune"
+    }
+  },
+  "searchAuto": {
+    "title": "Căutare automată",
+    "subtitle": "Serverul repetă o căutare pentru tine, la fiecare câteva minute, și adună tot ce găsește",
+    "backToSearch": "Înapoi la căutare",
+    "howTitle": "De ce să repeți o căutare?",
+    "howDescription": "O căutare simplă ajunge doar la serverele și nodurile Kad online în acel moment. O căutare automată rulează din nou la fiecare 5 minute — pe server, cu toate browserele închise — alternând între rețelele alese și îmbinând rezultatele fără duplicate. Fișierele partajate de mașini care mai devreme erau offline continuă să apară, trecere după trecere.",
+    "networksLabel": "Rețele",
+    "durationLabel": "Continuă căutarea timp de",
+    "start": "Pornește căutarea automată",
+    "formHelp": "O trecere rulează la fiecare {minutes} minute, alternând între rețelele selectate. O căutare pornită de tine are întotdeauna prioritate — trecerea automată pur și simplu așteaptă.",
+    "durations": {
+      "1h": "1 oră",
+      "1d": "1 zi",
+      "1w": "1 săptămână",
+      "1m": "1 lună",
+      "forever": "Până la oprire"
+    },
+    "listTitle": "Căutările tale automate",
+    "status": {
+      "active": "Activă",
+      "stopped": "Oprită",
+      "finished": "Încheiată"
+    },
+    "resultsSuffix": "rezultate adunate",
+    "passes": "{count} trecere | {count} treceri",
+    "newLastPass": "{count} noi la ultima trecere",
+    "nextPass": "următoarea trecere în {minutes} min",
+    "passRunning": "trecere programată acum",
+    "until": "rulează până la {time}",
+    "untilStopped": "rulează până la oprire",
+    "lastPassFailed": "Ultima trecere a eșuat: {error}",
+    "emptyTitle": "Nicio căutare automată încă",
+    "emptyDescription": "Pornește una mai sus; serverul o ține în funcțiune chiar și cu această pagină închisă.",
+    "accumulatedSince": "adunate din {time}, duplicatele îmbinate după hash-ul fișierului",
+    "noResultsYetTitle": "Nimic adunat încă",
+    "noResultsYetDescription": "Prima trecere rulează în unu-două minute de la crearea căutării. Rezultatele apar aici pe măsură ce trecerile se încheie.",
+    "created": "Căutarea automată pentru „{keyword}” a pornit",
+    "createFailed": "Nu s-a putut crea căutarea automată",
+    "stoppedToast": "Căutare automată oprită",
+    "resumedToast": "Căutare automată reluată",
+    "deletedToast": "Căutarea automată pentru „{keyword}” a fost eliminată"
+  },
+  "related": {
+    "title": "Pagini conexe",
+    "descriptions": {
+      "dashboard": "Rezumatul cozii, viteze în timp real și starea conexiunii",
+      "downloads": "Coada: progres, surse, pauză și reluare",
+      "uploads": "Cine descarcă de la tine chiar acum",
+      "shared": "Fiecare fișier partajat, cu cereri și rapoarte de partajare",
+      "search": "Caută în rețele o singură dată, chiar acum",
+      "searchAuto": "Serverul repetă o căutare și adună tot",
+      "assistant": "O IA locală care poate răspunde despre aMule și îl poate controla",
+      "servers": "Lista de servere eD2k: conectare, adăugare, ștergere",
+      "connection": "Starea eD2k și Kad, conectare și deconectare",
+      "statistics": "Grafice de viteză, totaluri și arborele complet de statistici",
+      "statsSummary": "Aceleași cifre dintr-o privire",
+      "preferences": "Limitele, porturile și directoarele daemonului",
+      "logs": "Ce a tot spus daemonul",
+      "settings": "Această aplicație web: aspect, notificări, diagnosticare",
+      "mcpServer": "Punctul final MCP prin care agenții IA pot controla aMule"
     }
   }
 }

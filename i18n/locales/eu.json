@@ -29,7 +29,8 @@
     "mcpServer": "MCP zerbitzaria",
     "settings": "Ezarpenak",
     "assistant": "Laguntzailea",
-    "apiTest": "API proba"
+    "apiTest": "API proba",
+    "searchAuto": "Bilaketa automatikoa"
   },
   "common": {
     "refresh": "Freskatu",
@@ -337,7 +338,8 @@
       "queued": "Ilaran",
       "here": "Jada hemen"
     },
-    "noneInGroup": "Ezer ez talde honetan. Bilaketa honen emaitza guztiak beste nonbait daude."
+    "noneInGroup": "Ezer ez talde honetan. Bilaketa honen emaitza guztiak beste nonbait daude.",
+    "autoLink": "Bilaketa automatikoa"
   },
   "fileKinds": {
     "video": "Bideoa",
@@ -501,6 +503,68 @@
       "queued": "Ilarako bezeroak",
       "users": "Erabiltzaile desberdinak",
       "sentSession": "Saio honetan bidalita"
+    }
+  },
+  "searchAuto": {
+    "title": "Bilaketa automatikoa",
+    "subtitle": "Zerbitzariak bilaketa bat errepikatzen du zuretzat, minutu gutxiro, eta aurkitzen duen guztia biltzen du",
+    "backToSearch": "Itzuli bilaketara",
+    "howTitle": "Zergatik errepikatu bilaketa bat?",
+    "howDescription": "Bilaketa bakar bat une horretan linean dauden zerbitzari eta Kad nodoetara baino ez da iristen. Bilaketa automatiko bat 5 minuturo exekutatzen da berriro — zerbitzarian, nabigatzaile guztiak itxita — aukeratutako sareak txandakatuz eta emaitzak bikoizketarik gabe bateratuz. Lehenago deskonektatuta zeuden makinek partekatutako fitxategiak agertzen jarraitzen dute, pasaldiz pasaldi.",
+    "networksLabel": "Sareak",
+    "durationLabel": "Jarraitu bilatzen",
+    "start": "Hasi bilaketa automatikoa",
+    "formHelp": "Pasaldi bat {minutes} minuturo exekutatzen da, hautatutako sareak txandakatuz. Zuk zeuk hasitako bilaketak beti du lehentasuna — pasaldi automatikoak itxaron besterik ez du egiten.",
+    "durations": {
+      "1h": "Ordu 1",
+      "1d": "Egun 1",
+      "1w": "Aste 1",
+      "1m": "Hilabete 1",
+      "forever": "Gelditu arte"
+    },
+    "listTitle": "Zure bilaketa automatikoak",
+    "status": {
+      "active": "Aktibo",
+      "stopped": "Geldituta",
+      "finished": "Amaituta"
+    },
+    "resultsSuffix": "emaitza bilduta",
+    "passes": "pasaldi {count} | {count} pasaldi",
+    "newLastPass": "{count} berri azken pasaldian",
+    "nextPass": "hurrengo pasaldia {minutes} minutu barru",
+    "passRunning": "pasaldia oraintxe egitekoa",
+    "until": "{time} arte exekutatzen da",
+    "untilStopped": "gelditu arte exekutatzen da",
+    "lastPassFailed": "Azken pasaldiak huts egin du: {error}",
+    "emptyTitle": "Oraindik ez dago bilaketa automatikorik",
+    "emptyDescription": "Hasi bat goian; zerbitzariak martxan mantentzen du orri hau itxita egonda ere.",
+    "accumulatedSince": "{time} geroztik bilduta, bikoiztuak fitxategiaren hash bidez bateratuta",
+    "noResultsYetTitle": "Oraindik ez da ezer bildu",
+    "noResultsYetDescription": "Lehen pasaldia bilaketa sortu eta minutu bat edo bira exekutatzen da. Emaitzak hemen agertzen dira pasaldiak osatu ahala.",
+    "created": "«{keyword}» bilaketa automatikoa hasi da",
+    "createFailed": "Ezin izan da bilaketa automatikoa sortu",
+    "stoppedToast": "Bilaketa automatikoa gelditu da",
+    "resumedToast": "Bilaketa automatikoari berrekin zaio",
+    "deletedToast": "«{keyword}» bilaketa automatikoa kendu da"
+  },
+  "related": {
+    "title": "Lotutako orriak",
+    "descriptions": {
+      "dashboard": "Ilararen laburpena, abiadurak zuzenean eta konexioaren egoera",
+      "downloads": "Ilara: aurrerapena, iturriak, pausatu eta berrekin",
+      "uploads": "Nor ari da zugandik deskargatzen une honetan",
+      "shared": "Partekatzen duzun fitxategi bakoitza, eskaerekin eta ratioekin",
+      "search": "Bilatu sareetan behin, oraintxe",
+      "searchAuto": "Zerbitzariak bilaketa bat errepikatzen du eta dena biltzen du",
+      "assistant": "aMule-ren ordez erantzun eta hura gida dezakeen AA lokal bat",
+      "servers": "eD2k zerbitzarien zerrenda: konektatu, gehitu, kendu",
+      "connection": "eD2k eta Kad egoera, konektatu eta deskonektatu",
+      "statistics": "Abiadura-grafikoak, guztizkoak eta estatistiken zuhaitz osoa",
+      "statsSummary": "Zenbaki berak begirada batean",
+      "preferences": "Zerbitzuaren berezko mugak, atakak eta direktorioak",
+      "logs": "Zerbitzuak esaten aritu dena",
+      "settings": "Web aplikazio hau: itxura, jakinarazpenak, diagnostikoak",
+      "mcpServer": "AA agenteek aMule gidatzeko erabil dezaketen MCP amaiera-puntua"
     }
   }
 }

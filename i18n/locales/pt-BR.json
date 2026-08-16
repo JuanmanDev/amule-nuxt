@@ -12,7 +12,8 @@
     "shared": "Arquivos compartilhados",
     "connection": "Conexão",
     "logs": "Logs",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "searchAuto": "Busca automática"
   },
   "common": {
     "save": "Salvar alterações",
@@ -156,7 +157,8 @@
       "failedToStart": "Não foi possível iniciar o download",
       "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online."
     },
-    "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão em outro."
+    "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão em outro.",
+    "autoLink": "Busca automática"
   },
   "fileKinds": {
     "archive": "Arquivo compactado"
@@ -256,6 +258,50 @@
       "shareRatio": "Taxa média de compartilhamento",
       "queued": "Clientes na fila",
       "users": "Usuários distintos"
+    }
+  },
+  "searchAuto": {
+    "title": "Busca automática",
+    "subtitle": "O servidor repete uma busca para você, a cada poucos minutos, e coleta tudo o que encontra",
+    "backToSearch": "Voltar à busca",
+    "howTitle": "Por que repetir uma busca?",
+    "howDescription": "Uma busca única só alcança os servidores e nós Kad online naquele momento. Uma busca automática roda de novo a cada 5 minutos — no servidor, com todos os navegadores fechados — alternando entre as redes escolhidas e mesclando os resultados sem duplicatas. Arquivos compartilhados por máquinas que antes estavam offline continuam aparecendo, passagem após passagem.",
+    "durationLabel": "Continuar buscando por",
+    "start": "Iniciar busca automática",
+    "formHelp": "Uma passagem roda a cada {minutes} minutos, alternando entre as redes selecionadas. Uma busca iniciada por você sempre tem prioridade — a passagem automática simplesmente espera.",
+    "durations": {
+      "forever": "Até ser interrompida"
+    },
+    "listTitle": "Suas buscas automáticas",
+    "resultsSuffix": "resultados coletados",
+    "passRunning": "passagem prevista para agora",
+    "untilStopped": "ativa até ser interrompida",
+    "emptyTitle": "Nenhuma busca automática ainda",
+    "emptyDescription": "Inicie uma acima; o servidor a mantém rodando mesmo com esta página fechada.",
+    "accumulatedSince": "coletados desde {time}, duplicatas mescladas pelo hash do arquivo",
+    "noResultsYetTitle": "Nada coletado ainda",
+    "noResultsYetDescription": "A primeira passagem roda um ou dois minutos depois de criar a busca. Os resultados aparecem aqui conforme as passagens terminam.",
+    "created": "Busca automática por “{keyword}” iniciada",
+    "createFailed": "Não foi possível criar a busca automática",
+    "stoppedToast": "Busca automática parada",
+    "resumedToast": "Busca automática retomada",
+    "deletedToast": "Busca automática por “{keyword}” removida"
+  },
+  "related": {
+    "descriptions": {
+      "dashboard": "Resumo da fila, velocidades ao vivo e estado da conexão",
+      "uploads": "Quem está baixando de você agora",
+      "shared": "Todos os arquivos que você compartilha, com pedidos e taxas",
+      "search": "Buscar nas redes uma vez, agora mesmo",
+      "searchAuto": "O servidor repete uma busca e coleta tudo",
+      "assistant": "Uma IA local que responde sobre o aMule e pode controlá-lo",
+      "servers": "A lista de servidores eD2k: conectar, adicionar, remover",
+      "connection": "Estado do eD2k e do Kad, conectar e desconectar",
+      "statistics": "Gráficos de taxa, totais e a árvore completa de estatísticas",
+      "statsSummary": "Os mesmos números em um relance",
+      "logs": "O que o daemon tem dito",
+      "settings": "Este app web: aparência, notificações, diagnóstico",
+      "mcpServer": "O endpoint MCP pelo qual agentes de IA podem controlar o aMule"
     }
   }
 }

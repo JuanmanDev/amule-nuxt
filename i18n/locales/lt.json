@@ -29,7 +29,8 @@
     "mcpServer": "MCP serveris",
     "settings": "Nustatymai",
     "assistant": "Asistentas",
-    "apiTest": "API bandymas"
+    "apiTest": "API bandymas",
+    "searchAuto": "Automatinė paieška"
   },
   "common": {
     "refresh": "Atnaujinti",
@@ -337,7 +338,8 @@
       "queued": "Eilėje",
       "here": "Jau turimi"
     },
-    "noneInGroup": "Šioje grupėje nieko nėra. Visi šios paieškos rezultatai yra kitur."
+    "noneInGroup": "Šioje grupėje nieko nėra. Visi šios paieškos rezultatai yra kitur.",
+    "autoLink": "Automatinė paieška"
   },
   "fileKinds": {
     "video": "Vaizdo įrašas",
@@ -501,6 +503,68 @@
       "queued": "Klientai eilėje",
       "users": "Skirtingi naudotojai",
       "sentSession": "Išsiųsta šiame seanse"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatinė paieška",
+    "subtitle": "Serveris kas kelias minutes pakartoja paiešką už jus ir surenka viską, ką randa",
+    "backToSearch": "Grįžti į paiešką",
+    "howTitle": "Kodėl kartoti paiešką?",
+    "howDescription": "Viena paieška pasiekia tik tuos serverius ir Kad mazgus, kurie tuo metu prisijungę. Automatinė paieška paleidžiama iš naujo kas 5 minutes — serveryje, net kai visos naršyklės uždarytos — pakaitomis eidama per pasirinktus tinklus ir sujungdama rezultatus be dublikatų. Failai, kuriuos bendrina anksčiau atsijungę kompiuteriai, vis iškyla — ciklas po ciklo.",
+    "networksLabel": "Tinklai",
+    "durationLabel": "Ieškoti dar",
+    "start": "Pradėti automatinę paiešką",
+    "formHelp": "Vienas ciklas vykdomas kas {minutes} min., pakaitomis po pasirinktus tinklus. Jūsų pačių pradėta paieška visada turi pirmenybę — automatinis ciklas tiesiog palaukia.",
+    "durations": {
+      "1h": "1 valanda",
+      "1d": "1 diena",
+      "1w": "1 savaitė",
+      "1m": "1 mėnuo",
+      "forever": "Kol bus sustabdyta"
+    },
+    "listTitle": "Jūsų automatinės paieškos",
+    "status": {
+      "active": "Aktyvi",
+      "stopped": "Sustabdyta",
+      "finished": "Baigta"
+    },
+    "resultsSuffix": "surinktų rezultatų",
+    "passes": "{count} ciklas | {count} ciklai | {count} ciklų",
+    "newLastPass": "{count} naujų per paskutinį ciklą",
+    "nextPass": "kitas ciklas po {minutes} min.",
+    "passRunning": "ciklas tuoj bus vykdomas",
+    "until": "vykdoma iki {time}",
+    "untilStopped": "vykdoma, kol bus sustabdyta",
+    "lastPassFailed": "Paskutinis ciklas nepavyko: {error}",
+    "emptyTitle": "Automatinių paieškų dar nėra",
+    "emptyDescription": "Pradėkite vieną aukščiau; serveris ją vykdo net uždarius šį puslapį.",
+    "accumulatedSince": "surinkta nuo {time}, dublikatai sujungti pagal failo maišą",
+    "noResultsYetTitle": "Kol kas nieko nesurinkta",
+    "noResultsYetDescription": "Pirmasis ciklas įvykdomas per minutę ar dvi nuo paieškos sukūrimo. Rezultatai čia atsiranda ciklams pasibaigus.",
+    "created": "Automatinė paieška „{keyword}“ pradėta",
+    "createFailed": "Nepavyko sukurti automatinės paieškos",
+    "stoppedToast": "Automatinė paieška sustabdyta",
+    "resumedToast": "Automatinė paieška pratęsta",
+    "deletedToast": "Automatinė paieška „{keyword}“ pašalinta"
+  },
+  "related": {
+    "title": "Susiję puslapiai",
+    "descriptions": {
+      "dashboard": "Eilės santrauka, tiesioginiai greičiai ir ryšio būsena",
+      "downloads": "Eilė: eiga, šaltiniai, pristabdymas ir pratęsimas",
+      "uploads": "Kas šiuo metu siunčiasi iš jūsų",
+      "shared": "Visi jūsų bendrinami failai su užklausomis ir santykiais",
+      "search": "Ieškokite tinkluose vieną kartą, dabar",
+      "searchAuto": "Serveris kartoja paiešką ir surenka viską",
+      "assistant": "Vietinis DI, galintis atsakyti už aMule ir jį valdyti",
+      "servers": "eD2k serverių sąrašas: prisijungti, pridėti, pašalinti",
+      "connection": "eD2k ir Kad būsena, prisijungimas ir atsijungimas",
+      "statistics": "Greičio grafikai, sumos ir visas statistikos medis",
+      "statsSummary": "Tie patys skaičiai vienu žvilgsniu",
+      "preferences": "Pačios tarnybos ribos, prievadai ir katalogai",
+      "logs": "Ką tarnyba pastaruoju metu rašė",
+      "settings": "Ši žiniatinklio programa: išvaizda, pranešimai, diagnostika",
+      "mcpServer": "MCP galinis taškas, per kurį DI agentai gali valdyti aMule"
     }
   }
 }

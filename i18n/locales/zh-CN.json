@@ -29,7 +29,8 @@
     "mcpServer": "MCP 服务器",
     "settings": "设置",
     "assistant": "助手",
-    "apiTest": "API 测试"
+    "apiTest": "API 测试",
+    "searchAuto": "自动搜索"
   },
   "common": {
     "refresh": "刷新",
@@ -337,7 +338,8 @@
       "queued": "在队列中",
       "here": "已经拥有"
     },
-    "noneInGroup": "这一组里没有内容。本次搜索的结果都在其他组中。"
+    "noneInGroup": "这一组里没有内容。本次搜索的结果都在其他组中。",
+    "autoLink": "自动搜索"
   },
   "fileKinds": {
     "video": "视频",
@@ -501,6 +503,68 @@
       "queued": "排队的客户端",
       "users": "不同用户数",
       "sentSession": "本次会话已发送"
+    }
+  },
+  "searchAuto": {
+    "title": "自动搜索",
+    "subtitle": "服务器每隔几分钟为您重复一次搜索，并收集找到的所有结果",
+    "backToSearch": "返回搜索",
+    "howTitle": "为什么要重复搜索？",
+    "howDescription": "单次搜索只能触及当时在线的服务器和 Kad 节点。自动搜索每 5 分钟重新运行一次——在服务器上进行，即使所有浏览器都已关闭——轮流使用所选网络，并合并结果、去除重复。之前离线的机器所共享的文件会一轮又一轮地不断出现。",
+    "networksLabel": "网络",
+    "durationLabel": "持续搜索时长",
+    "start": "开始自动搜索",
+    "formHelp": "每 {minutes} 分钟运行一轮，在所选网络之间交替。您自己发起的搜索始终优先——自动轮次会自行等待。",
+    "durations": {
+      "1h": "1 小时",
+      "1d": "1 天",
+      "1w": "1 周",
+      "1m": "1 个月",
+      "forever": "直到停止"
+    },
+    "listTitle": "您的自动搜索",
+    "status": {
+      "active": "进行中",
+      "stopped": "已停止",
+      "finished": "已完成"
+    },
+    "resultsSuffix": "个已收集的结果",
+    "passes": "{count} 轮",
+    "newLastPass": "上一轮新增 {count} 个",
+    "nextPass": "下一轮将在 {minutes} 分钟后开始",
+    "passRunning": "本轮即将开始",
+    "until": "运行至 {time}",
+    "untilStopped": "运行直到停止",
+    "lastPassFailed": "上一轮失败：{error}",
+    "emptyTitle": "还没有自动搜索",
+    "emptyDescription": "在上方开始一个；即使关闭此页面，服务器也会继续运行它。",
+    "accumulatedSince": "自 {time} 起收集，重复项按文件哈希合并",
+    "noResultsYetTitle": "尚未收集到任何结果",
+    "noResultsYetDescription": "创建搜索后一两分钟内即会运行第一轮。每轮完成后，结果会显示在这里。",
+    "created": "已开始对“{keyword}”的自动搜索",
+    "createFailed": "无法创建自动搜索",
+    "stoppedToast": "自动搜索已停止",
+    "resumedToast": "自动搜索已恢复",
+    "deletedToast": "已移除对“{keyword}”的自动搜索"
+  },
+  "related": {
+    "title": "相关页面",
+    "descriptions": {
+      "dashboard": "队列摘要、实时速度和连接状态",
+      "downloads": "下载队列：进度、来源、暂停与恢复",
+      "uploads": "现在谁在从您这里下载",
+      "shared": "您共享的每个文件，以及请求数和分享率",
+      "search": "立即在网络中搜索一次",
+      "searchAuto": "服务器重复搜索并收集所有结果",
+      "assistant": "可代表 aMule 回答并操控它的本地 AI",
+      "servers": "eD2k 服务器列表：连接、添加、移除",
+      "connection": "eD2k 和 Kad 状态，连接与断开",
+      "statistics": "速率图表、总计和完整的统计树",
+      "statsSummary": "同样的数字，一目了然",
+      "preferences": "守护进程自身的限制、端口和目录",
+      "logs": "守护进程都说了些什么",
+      "settings": "此 Web 应用：外观、通知、诊断",
+      "mcpServer": "AI 代理可用来操控 aMule 的 MCP 端点"
     }
   }
 }

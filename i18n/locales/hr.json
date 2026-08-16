@@ -29,7 +29,8 @@
     "mcpServer": "MCP poslužitelj",
     "settings": "Postavke",
     "assistant": "Pomoćnik",
-    "apiTest": "Test API-ja"
+    "apiTest": "Test API-ja",
+    "searchAuto": "Automatsko pretraživanje"
   },
   "common": {
     "refresh": "Osvježi",
@@ -337,7 +338,8 @@
       "queued": "U redu",
       "here": "Već ovdje"
     },
-    "noneInGroup": "Ništa u ovoj skupini. Svi rezultati ovog pretraživanja su drugdje."
+    "noneInGroup": "Ništa u ovoj skupini. Svi rezultati ovog pretraživanja su drugdje.",
+    "autoLink": "Automatsko pretraživanje"
   },
   "fileKinds": {
     "video": "Videozapis",
@@ -501,6 +503,68 @@
       "queued": "Klijenti u redu",
       "users": "Različiti korisnici",
       "sentSession": "Poslano u ovoj sesiji"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatsko pretraživanje",
+    "subtitle": "Poslužitelj ponavlja pretraživanje za vas, svakih nekoliko minuta, i prikuplja sve što pronađe",
+    "backToSearch": "Natrag na pretraživanje",
+    "howTitle": "Zašto ponavljati pretraživanje?",
+    "howDescription": "Jedno pretraživanje doseže samo poslužitelje i Kad čvorove koji su u tom trenutku na mreži. Automatsko pretraživanje pokreće se ponovno svakih 5 minuta — na poslužitelju, čak i kad su svi preglednici zatvoreni — izmjenjujući odabrane mreže i spajajući rezultate bez duplikata. Datoteke koje dijele računala koja su prije bila izvan mreže i dalje se pojavljuju, prolaz za prolazom.",
+    "networksLabel": "Mreže",
+    "durationLabel": "Nastavi pretraživati",
+    "start": "Pokreni automatsko pretraživanje",
+    "formHelp": "Jedan prolaz pokreće se svakih {minutes} minuta, naizmjence po odabranim mrežama. Pretraživanje koje sami pokrenete uvijek ima prednost — automatski prolaz jednostavno pričeka.",
+    "durations": {
+      "1h": "1 sat",
+      "1d": "1 dan",
+      "1w": "1 tjedan",
+      "1m": "1 mjesec",
+      "forever": "Dok se ne zaustavi"
+    },
+    "listTitle": "Vaša automatska pretraživanja",
+    "status": {
+      "active": "Aktivno",
+      "stopped": "Zaustavljeno",
+      "finished": "Završeno"
+    },
+    "resultsSuffix": "prikupljenih rezultata",
+    "passes": "{count} prolaz | {count} prolaza | {count} prolaza",
+    "newLastPass": "{count} novih u zadnjem prolazu",
+    "nextPass": "sljedeći prolaz za {minutes} min",
+    "passRunning": "prolaz je upravo na redu",
+    "until": "traje do {time}",
+    "untilStopped": "traje dok se ne zaustavi",
+    "lastPassFailed": "Zadnji prolaz nije uspio: {error}",
+    "emptyTitle": "Još nema automatskih pretraživanja",
+    "emptyDescription": "Pokrenite jedno iznad; poslužitelj ga izvodi i kad je ova stranica zatvorena.",
+    "accumulatedSince": "prikupljeno od {time}, duplikati spojeni prema hashu datoteke",
+    "noResultsYetTitle": "Još ništa nije prikupljeno",
+    "noResultsYetDescription": "Prvi prolaz pokreće se unutar minute-dvije od stvaranja pretraživanja. Rezultati se ovdje pojavljuju kako se prolazi dovršavaju.",
+    "created": "Automatsko pretraživanje za „{keyword}” je pokrenuto",
+    "createFailed": "Automatsko pretraživanje nije bilo moguće stvoriti",
+    "stoppedToast": "Automatsko pretraživanje zaustavljeno",
+    "resumedToast": "Automatsko pretraživanje nastavljeno",
+    "deletedToast": "Automatsko pretraživanje za „{keyword}” je uklonjeno"
+  },
+  "related": {
+    "title": "Povezane stranice",
+    "descriptions": {
+      "dashboard": "Sažetak reda, trenutačne brzine i stanje veze",
+      "downloads": "Red čekanja: napredak, izvori, pauza i nastavak",
+      "uploads": "Tko upravo preuzima od vas",
+      "shared": "Sve datoteke koje dijelite, sa zahtjevima i omjerima",
+      "search": "Pretražite mreže jednom, odmah",
+      "searchAuto": "Poslužitelj ponavlja pretraživanje i prikuplja sve",
+      "assistant": "Lokalni AI koji može odgovarati za aMule i upravljati njime",
+      "servers": "Popis eD2k poslužitelja: povezivanje, dodavanje, uklanjanje",
+      "connection": "Stanje eD2k i Kad mreže, povezivanje i odspajanje",
+      "statistics": "Grafovi brzina, ukupni iznosi i cijelo statističko stablo",
+      "statsSummary": "Isti brojevi na prvi pogled",
+      "preferences": "Vlastita ograničenja, portovi i mape samog servisa",
+      "logs": "Što servis govori u zadnje vrijeme",
+      "settings": "Ova web-aplikacija: izgled, obavijesti, dijagnostika",
+      "mcpServer": "MCP krajnja točka kroz koju AI agenti mogu upravljati aMuleom"
     }
   }
 }

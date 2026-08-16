@@ -29,7 +29,8 @@
     "mcpServer": "MCP-server",
     "settings": "Konfiguration",
     "assistant": "Assistent",
-    "apiTest": "API-test"
+    "apiTest": "API-test",
+    "searchAuto": "Automatisk sökning"
   },
   "common": {
     "refresh": "Uppdatera",
@@ -337,7 +338,8 @@
       "queued": "I kön",
       "here": "Finns redan"
     },
-    "noneInGroup": "Inget i den här gruppen. Alla resultat från sökningen finns någon annanstans."
+    "noneInGroup": "Inget i den här gruppen. Alla resultat från sökningen finns någon annanstans.",
+    "autoLink": "Automatisk sökning"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Klienter i kö",
       "users": "Olika användare",
       "sentSession": "Skickat denna session"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatisk sökning",
+    "subtitle": "Servern upprepar en sökning åt dig, med några minuters mellanrum, och samlar in allt den hittar",
+    "backToSearch": "Tillbaka till sökningen",
+    "howTitle": "Varför upprepa en sökning?",
+    "howDescription": "En enstaka sökning når bara de servrar och Kad-noder som är online just då. En automatisk sökning körs igen var femte minut — på servern, även med alla webbläsare stängda — växlar mellan de valda nätverken och slår ihop resultaten utan dubbletter. Filer som delas av maskiner som tidigare var offline fortsätter att dyka upp, pass efter pass.",
+    "networksLabel": "Nätverk",
+    "durationLabel": "Fortsätt söka i",
+    "start": "Starta automatisk sökning",
+    "formHelp": "Ett pass körs med {minutes} minuters mellanrum och växlar mellan de valda nätverken. En sökning du startar själv har alltid företräde — det automatiska passet väntar helt enkelt.",
+    "durations": {
+      "1h": "1 timme",
+      "1d": "1 dygn",
+      "1w": "1 vecka",
+      "1m": "1 månad",
+      "forever": "Tills den stoppas"
+    },
+    "listTitle": "Dina automatiska sökningar",
+    "status": {
+      "active": "Aktiv",
+      "stopped": "Stoppad",
+      "finished": "Avslutad"
+    },
+    "resultsSuffix": "insamlade resultat",
+    "passes": "{count} pass | {count} pass",
+    "newLastPass": "{count} ny i senaste passet | {count} nya i senaste passet",
+    "nextPass": "nästa pass om {minutes} min",
+    "passRunning": "dags för nästa pass",
+    "until": "kör till {time}",
+    "untilStopped": "kör tills den stoppas",
+    "lastPassFailed": "Senaste passet misslyckades: {error}",
+    "emptyTitle": "Inga automatiska sökningar ännu",
+    "emptyDescription": "Starta en ovan; servern håller den igång även när den här sidan är stängd.",
+    "accumulatedSince": "insamlat sedan {time}, dubbletter sammanslagna efter filsumma",
+    "noResultsYetTitle": "Inget insamlat ännu",
+    "noResultsYetDescription": "Det första passet körs inom någon minut efter att sökningen skapats. Resultat visas här allteftersom passen slutförs.",
+    "created": "Automatisk sökning efter ”{keyword}” startad",
+    "createFailed": "Kunde inte skapa den automatiska sökningen",
+    "stoppedToast": "Automatisk sökning stoppad",
+    "resumedToast": "Automatisk sökning återupptagen",
+    "deletedToast": "Automatisk sökning efter ”{keyword}” borttagen"
+  },
+  "related": {
+    "title": "Relaterade sidor",
+    "descriptions": {
+      "dashboard": "Kösammanfattning, aktuella hastigheter och anslutningsstatus",
+      "downloads": "Kön: förlopp, källor, paus och återupptagning",
+      "uploads": "Vem som laddar ner från dig just nu",
+      "shared": "Varje fil du delar, med förfrågningar och kvoter",
+      "search": "Sök på nätverken en gång, direkt",
+      "searchAuto": "Servern upprepar en sökning och samlar in allt",
+      "assistant": "En lokal AI som kan svara för och styra aMule",
+      "servers": "eD2k-serverlistan: anslut, lägg till, ta bort",
+      "connection": "eD2k- och Kad-status, anslut och koppla ner",
+      "statistics": "Hastighetsdiagram, totaler och hela statistikträdet",
+      "statsSummary": "Samma siffror i en snabb överblick",
+      "preferences": "aMule-tjänstens egna gränser, portar och kataloger",
+      "logs": "Vad aMule-tjänsten har haft att säga",
+      "settings": "Den här webbappen: utseende, aviseringar, diagnostik",
+      "mcpServer": "MCP-slutpunkten som AI-agenter kan styra aMule genom"
     }
   }
 }

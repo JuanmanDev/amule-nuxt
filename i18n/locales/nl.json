@@ -29,7 +29,8 @@
     "mcpServer": "MCP-server",
     "settings": "Instellingen",
     "assistant": "Assistent",
-    "apiTest": "API-test"
+    "apiTest": "API-test",
+    "searchAuto": "Automatisch zoeken"
   },
   "common": {
     "refresh": "Vernieuwen",
@@ -337,7 +338,8 @@
       "queued": "In de wachtrij",
       "here": "Al aanwezig"
     },
-    "noneInGroup": "Niets in deze groep. Alle resultaten van deze zoekopdracht staan ergens anders."
+    "noneInGroup": "Niets in deze groep. Alle resultaten van deze zoekopdracht staan ergens anders.",
+    "autoLink": "Automatisch zoeken"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Clients in wachtrij",
       "users": "Verschillende gebruikers",
       "sentSession": "Deze sessie verzonden"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatisch zoeken",
+    "subtitle": "De server herhaalt een zoekopdracht voor je, om de paar minuten, en verzamelt alles wat hij vindt",
+    "backToSearch": "Terug naar zoeken",
+    "howTitle": "Waarom een zoekopdracht herhalen?",
+    "howDescription": "Een enkele zoekopdracht bereikt alleen de servers en Kad-knooppunten die op dat moment online zijn. Een automatische zoekopdracht draait elke 5 minuten opnieuw — op de server, met alle browsers gesloten — wisselt tussen de gekozen netwerken en voegt de resultaten samen zonder duplicaten. Bestanden gedeeld door machines die eerder offline waren, blijven opduiken, ronde na ronde.",
+    "networksLabel": "Netwerken",
+    "durationLabel": "Blijven zoeken gedurende",
+    "start": "Automatisch zoeken starten",
+    "formHelp": "Elke {minutes} minuten draait er één ronde, afwisselend tussen de geselecteerde netwerken. Een zoekopdracht die je zelf start heeft altijd voorrang — de automatische ronde wacht gewoon.",
+    "durations": {
+      "1h": "1 uur",
+      "1d": "1 dag",
+      "1w": "1 week",
+      "1m": "1 maand",
+      "forever": "Tot het gestopt wordt"
+    },
+    "listTitle": "Je automatische zoekopdrachten",
+    "status": {
+      "active": "Actief",
+      "stopped": "Gestopt",
+      "finished": "Voltooid"
+    },
+    "resultsSuffix": "resultaten verzameld",
+    "passes": "{count} ronde | {count} rondes",
+    "newLastPass": "{count} nieuw in de laatste ronde",
+    "nextPass": "volgende ronde over {minutes} min",
+    "passRunning": "ronde staat nu gepland",
+    "until": "loopt tot {time}",
+    "untilStopped": "loopt tot het gestopt wordt",
+    "lastPassFailed": "De laatste ronde is mislukt: {error}",
+    "emptyTitle": "Nog geen automatische zoekopdrachten",
+    "emptyDescription": "Start er hierboven een; de server houdt hem draaiend, ook als deze pagina gesloten is.",
+    "accumulatedSince": "verzameld sinds {time}, duplicaten samengevoegd op bestandshash",
+    "noResultsYetTitle": "Nog niets verzameld",
+    "noResultsYetDescription": "De eerste ronde draait binnen een minuut of twee na het aanmaken van de zoekopdracht. Resultaten verschijnen hier zodra rondes voltooid zijn.",
+    "created": "Automatisch zoeken naar “{keyword}” gestart",
+    "createFailed": "Kon de automatische zoekopdracht niet aanmaken",
+    "stoppedToast": "Automatische zoekopdracht gestopt",
+    "resumedToast": "Automatische zoekopdracht hervat",
+    "deletedToast": "Automatisch zoeken naar “{keyword}” verwijderd"
+  },
+  "related": {
+    "title": "Gerelateerde pagina's",
+    "descriptions": {
+      "dashboard": "Wachtrijoverzicht, live snelheden en verbindingsstatus",
+      "downloads": "De wachtrij: voortgang, bronnen, pauzeren en hervatten",
+      "uploads": "Wie er op dit moment van jou downloadt",
+      "shared": "Elk bestand dat je deelt, met aanvragen en ratio's",
+      "search": "Doorzoek de netwerken één keer, nu meteen",
+      "searchAuto": "De server herhaalt een zoekopdracht en verzamelt alles",
+      "assistant": "Een lokale AI die vragen over aMule kan beantwoorden en het kan aansturen",
+      "servers": "De eD2k-serverlijst: verbinden, toevoegen, verwijderen",
+      "connection": "Status van eD2k en Kad, verbinden en verbreken",
+      "statistics": "Snelheidsgrafieken, totalen en de volledige statistiekenboom",
+      "statsSummary": "Dezelfde cijfers in één oogopslag",
+      "preferences": "De eigen limieten, poorten en mappen van de daemon",
+      "logs": "Wat de daemon te melden heeft gehad",
+      "settings": "Deze webapp: weergave, meldingen, diagnostiek",
+      "mcpServer": "Het MCP-eindpunt waarmee AI-agents aMule kunnen aansturen"
     }
   }
 }

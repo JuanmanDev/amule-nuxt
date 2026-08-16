@@ -29,7 +29,8 @@
     "mcpServer": "Server MCP",
     "settings": "Nastavení",
     "assistant": "Asistent",
-    "apiTest": "Test API"
+    "apiTest": "Test API",
+    "searchAuto": "Automatické hledání"
   },
   "common": {
     "refresh": "Obnovit",
@@ -337,7 +338,8 @@
       "queued": "Ve frontě",
       "here": "Už máte"
     },
-    "noneInGroup": "V této skupině nic není. Všechny výsledky tohoto hledání patří jinam."
+    "noneInGroup": "V této skupině nic není. Všechny výsledky tohoto hledání patří jinam.",
+    "autoLink": "Automatické hledání"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Klienti ve frontě",
       "users": "Různí uživatelé",
       "sentSession": "Odesláno v této relaci"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatické hledání",
+    "subtitle": "Server za vás každých pár minut opakuje hledání a shromažďuje vše, co najde",
+    "backToSearch": "Zpět na hledání",
+    "howTitle": "Proč hledání opakovat?",
+    "howDescription": "Jedno hledání dosáhne jen na servery a uzly Kad, které jsou online právě v tu chvíli. Automatické hledání se spouští znovu každých 5 minut — na serveru, i se všemi prohlížeči zavřenými — střídá zvolené sítě a slučuje výsledky bez duplicit. Soubory sdílené stroji, které byly dříve offline, se tak objevují průchod za průchodem.",
+    "networksLabel": "Sítě",
+    "durationLabel": "Hledat po dobu",
+    "start": "Spustit automatické hledání",
+    "formHelp": "Každých {minutes} minut proběhne jeden průchod, střídavě mezi vybranými sítěmi. Hledání, které spustíte sami, má vždy přednost — automatický průchod prostě počká.",
+    "durations": {
+      "1h": "1 hodina",
+      "1d": "1 den",
+      "1w": "1 týden",
+      "1m": "1 měsíc",
+      "forever": "Dokud ho nezastavíte"
+    },
+    "listTitle": "Vaše automatická hledání",
+    "status": {
+      "active": "Aktivní",
+      "stopped": "Zastavené",
+      "finished": "Dokončené"
+    },
+    "resultsSuffix": "shromážděných výsledků",
+    "passes": "{count} průchod | {count} průchodů",
+    "newLastPass": "{count} nových v posledním průchodu",
+    "nextPass": "další průchod za {minutes} min",
+    "passRunning": "průchod je právě na řadě",
+    "until": "běží do {time}",
+    "untilStopped": "běží až do zastavení",
+    "lastPassFailed": "Poslední průchod selhal: {error}",
+    "emptyTitle": "Zatím žádná automatická hledání",
+    "emptyDescription": "Spusťte jedno výše; server ho nechá běžet i se zavřenou stránkou.",
+    "accumulatedSince": "shromážděno od {time}, duplicity sloučeny podle otisku souboru",
+    "noResultsYetTitle": "Zatím nebylo nic shromážděno",
+    "noResultsYetDescription": "První průchod proběhne do minuty či dvou od vytvoření hledání. Výsledky se tu objevují s dokončováním průchodů.",
+    "created": "Automatické hledání „{keyword}“ spuštěno",
+    "createFailed": "Automatické hledání se nepodařilo vytvořit",
+    "stoppedToast": "Automatické hledání zastaveno",
+    "resumedToast": "Automatické hledání obnoveno",
+    "deletedToast": "Automatické hledání „{keyword}“ odstraněno"
+  },
+  "related": {
+    "title": "Související stránky",
+    "descriptions": {
+      "dashboard": "Souhrn fronty, aktuální rychlosti a stav připojení",
+      "downloads": "Fronta: průběh, zdroje, pozastavení a pokračování",
+      "uploads": "Kdo od vás právě stahuje",
+      "shared": "Každý soubor, který sdílíte, s požadavky a poměry",
+      "search": "Prohledejte sítě jednorázově, hned teď",
+      "searchAuto": "Server opakuje hledání a shromažďuje vše, co najde",
+      "assistant": "Místní AI, která umí za aMule odpovídat i ho obsluhovat",
+      "servers": "Seznam serverů eD2k: připojení, přidání, odebrání",
+      "connection": "Stav eD2k a Kad, připojení a odpojení",
+      "statistics": "Grafy rychlostí, souhrny a celý strom statistik",
+      "statsSummary": "Stejná čísla v rychlém přehledu",
+      "preferences": "Vlastní limity, porty a adresáře démona",
+      "logs": "Co démon v poslední době hlásí",
+      "settings": "Tato webová aplikace: vzhled, oznámení, diagnostika",
+      "mcpServer": "Koncový bod MCP, přes který mohou AI agenti obsluhovat aMule"
     }
   }
 }

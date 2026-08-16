@@ -29,7 +29,8 @@
     "mcpServer": "MCP server",
     "settings": "Settings",
     "assistant": "Assistant",
-    "apiTest": "API Test"
+    "apiTest": "API Test",
+    "searchAuto": "Auto search"
   },
   "common": {
     "refresh": "Refresh",
@@ -337,7 +338,8 @@
       "queued": "In the queue",
       "here": "Already here"
     },
-    "noneInGroup": "Nothing in this group. Every result of this search is somewhere else."
+    "noneInGroup": "Nothing in this group. Every result of this search is somewhere else.",
+    "autoLink": "Auto search"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Clients queued",
       "users": "Distinct users",
       "sentSession": "Sent this session"
+    }
+  },
+  "searchAuto": {
+    "title": "Auto search",
+    "subtitle": "The server repeats a search for you, every few minutes, and collects everything it finds",
+    "backToSearch": "Back to search",
+    "howTitle": "Why repeat a search?",
+    "howDescription": "A single search only reaches the servers and Kad nodes online at that moment. An automatic search runs again every 5 minutes — on the server, with every browser closed — cycling through the chosen networks and merging the results without duplicates. Files shared by machines that were offline earlier keep turning up, pass after pass.",
+    "networksLabel": "Networks",
+    "durationLabel": "Keep searching for",
+    "start": "Start auto search",
+    "formHelp": "One pass runs every {minutes} minutes, alternating between the selected networks. A search you start yourself always takes priority — the automatic pass simply waits.",
+    "durations": {
+      "1h": "1 hour",
+      "1d": "1 day",
+      "1w": "1 week",
+      "1m": "1 month",
+      "forever": "Until stopped"
+    },
+    "listTitle": "Your automatic searches",
+    "status": {
+      "active": "Active",
+      "stopped": "Stopped",
+      "finished": "Finished"
+    },
+    "resultsSuffix": "results collected",
+    "passes": "{count} pass | {count} passes",
+    "newLastPass": "{count} new on the last pass",
+    "nextPass": "next pass in {minutes} min",
+    "passRunning": "pass due now",
+    "until": "runs until {time}",
+    "untilStopped": "runs until stopped",
+    "lastPassFailed": "The last pass failed: {error}",
+    "emptyTitle": "No automatic searches yet",
+    "emptyDescription": "Start one above; the server keeps it running even with this page closed.",
+    "accumulatedSince": "collected since {time}, duplicates merged by file hash",
+    "noResultsYetTitle": "Nothing collected yet",
+    "noResultsYetDescription": "The first pass runs within a minute or two of creating the search. Results appear here as passes complete.",
+    "created": "Auto search for “{keyword}” started",
+    "createFailed": "Could not create the automatic search",
+    "stoppedToast": "Automatic search stopped",
+    "resumedToast": "Automatic search resumed",
+    "deletedToast": "Auto search for “{keyword}” removed"
+  },
+  "related": {
+    "title": "Related pages",
+    "descriptions": {
+      "dashboard": "Queue summary, live speeds and connection state",
+      "downloads": "The queue: progress, sources, pause and resume",
+      "uploads": "Who is downloading from you right now",
+      "shared": "Every file you share, with requests and ratios",
+      "search": "Search the networks once, right now",
+      "searchAuto": "The server repeats a search and collects everything",
+      "assistant": "A local AI that can answer for and drive aMule",
+      "servers": "The eD2k server list: connect, add, remove",
+      "connection": "eD2k and Kad state, connect and disconnect",
+      "statistics": "Rate charts, totals and the full statistics tree",
+      "statsSummary": "The same numbers at a glance",
+      "preferences": "The daemon’s own limits, ports and directories",
+      "logs": "What the daemon has been saying",
+      "settings": "This web app: appearance, notifications, diagnostics",
+      "mcpServer": "The MCP endpoint AI agents can drive aMule through"
     }
   }
 }

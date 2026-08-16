@@ -29,7 +29,8 @@
     "mcpServer": "Serwer MCP",
     "settings": "Ustawienia",
     "assistant": "Asystent",
-    "apiTest": "Test API"
+    "apiTest": "Test API",
+    "searchAuto": "Wyszukiwanie automatyczne"
   },
   "common": {
     "refresh": "Odśwież",
@@ -337,7 +338,8 @@
       "queued": "W kolejce",
       "here": "Już posiadane"
     },
-    "noneInGroup": "W tej grupie nic nie ma. Wszystkie wyniki tego wyszukiwania są w innych grupach."
+    "noneInGroup": "W tej grupie nic nie ma. Wszystkie wyniki tego wyszukiwania są w innych grupach.",
+    "autoLink": "Wyszukiwanie automatyczne"
   },
   "fileKinds": {
     "video": "Wideo",
@@ -501,6 +503,68 @@
       "queued": "Klienci w kolejce",
       "users": "Różni użytkownicy",
       "sentSession": "Wysłane w tej sesji"
+    }
+  },
+  "searchAuto": {
+    "title": "Wyszukiwanie automatyczne",
+    "subtitle": "Serwer co kilka minut powtarza wyszukiwanie za Ciebie i zbiera wszystko, co znajdzie",
+    "backToSearch": "Wróć do wyszukiwania",
+    "howTitle": "Po co powtarzać wyszukiwanie?",
+    "howDescription": "Pojedyncze wyszukiwanie dociera tylko do serwerów i węzłów Kad dostępnych w danej chwili. Wyszukiwanie automatyczne uruchamia się ponownie co 5 minut — na serwerze, przy zamkniętych przeglądarkach — naprzemiennie przeszukując wybrane sieci i scalając wyniki bez duplikatów. Pliki udostępniane przez maszyny, które wcześniej były offline, wciąż się pojawiają, przebieg po przebiegu.",
+    "networksLabel": "Sieci",
+    "durationLabel": "Szukaj przez",
+    "start": "Rozpocznij wyszukiwanie automatyczne",
+    "formHelp": "Jeden przebieg uruchamia się co {minutes} min, naprzemiennie w wybranych sieciach. Wyszukiwanie uruchomione ręcznie zawsze ma pierwszeństwo — przebieg automatyczny po prostu czeka.",
+    "durations": {
+      "1h": "1 godzina",
+      "1d": "1 dzień",
+      "1w": "1 tydzień",
+      "1m": "1 miesiąc",
+      "forever": "Do zatrzymania"
+    },
+    "listTitle": "Twoje wyszukiwania automatyczne",
+    "status": {
+      "active": "Aktywne",
+      "stopped": "Zatrzymane",
+      "finished": "Zakończone"
+    },
+    "resultsSuffix": "zebranych wyników",
+    "passes": "{count} przebieg | {count} przebiegi | {count} przebiegów",
+    "newLastPass": "{count} nowych w ostatnim przebiegu",
+    "nextPass": "następny przebieg za {minutes} min",
+    "passRunning": "pora na przebieg",
+    "until": "działa do {time}",
+    "untilStopped": "działa do zatrzymania",
+    "lastPassFailed": "Ostatni przebieg się nie powiódł: {error}",
+    "emptyTitle": "Nie ma jeszcze wyszukiwań automatycznych",
+    "emptyDescription": "Rozpocznij jedno powyżej; serwer będzie je wykonywał nawet przy zamkniętej stronie.",
+    "accumulatedSince": "zbierane od {time}, duplikaty scalone według hasha pliku",
+    "noResultsYetTitle": "Jeszcze niczego nie zebrano",
+    "noResultsYetDescription": "Pierwszy przebieg uruchamia się w ciągu minuty lub dwóch od utworzenia wyszukiwania. Wyniki pojawiają się tutaj w miarę kończenia kolejnych przebiegów.",
+    "created": "Rozpoczęto wyszukiwanie automatyczne dla „{keyword}”",
+    "createFailed": "Nie udało się utworzyć wyszukiwania automatycznego",
+    "stoppedToast": "Wyszukiwanie automatyczne zatrzymane",
+    "resumedToast": "Wyszukiwanie automatyczne wznowione",
+    "deletedToast": "Usunięto wyszukiwanie automatyczne dla „{keyword}”"
+  },
+  "related": {
+    "title": "Powiązane strony",
+    "descriptions": {
+      "dashboard": "Podsumowanie kolejki, bieżące prędkości i stan połączenia",
+      "downloads": "Kolejka: postęp, źródła, wstrzymywanie i wznawianie",
+      "uploads": "Kto w tej chwili pobiera od Ciebie",
+      "shared": "Każdy udostępniany plik, z żądaniami i współczynnikami",
+      "search": "Przeszukaj sieci jednorazowo, od razu",
+      "searchAuto": "Serwer powtarza wyszukiwanie i zbiera wszystko",
+      "assistant": "Lokalna SI, która odpowiada na pytania o aMule i nim steruje",
+      "servers": "Lista serwerów eD2k: łączenie, dodawanie, usuwanie",
+      "connection": "Stan eD2k i Kad, łączenie i rozłączanie",
+      "statistics": "Wykresy prędkości, sumy i pełne drzewo statystyk",
+      "statsSummary": "Te same liczby w skrócie",
+      "preferences": "Własne limity, porty i katalogi demona",
+      "logs": "Co ostatnio mówił demon",
+      "settings": "Ta aplikacja webowa: wygląd, powiadomienia, diagnostyka",
+      "mcpServer": "Punkt końcowy MCP, przez który agenty AI mogą sterować aMule"
     }
   }
 }

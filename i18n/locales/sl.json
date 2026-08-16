@@ -29,7 +29,8 @@
     "mcpServer": "Strežnik MCP",
     "settings": "Nastavitve",
     "assistant": "Pomočnik",
-    "apiTest": "Preizkus API-ja"
+    "apiTest": "Preizkus API-ja",
+    "searchAuto": "Samodejno iskanje"
   },
   "common": {
     "refresh": "Osveži",
@@ -337,7 +338,8 @@
       "queued": "V vrsti",
       "here": "Že tu"
     },
-    "noneInGroup": "V tej skupini ni ničesar. Vsi zadetki tega iskanja so drugje."
+    "noneInGroup": "V tej skupini ni ničesar. Vsi zadetki tega iskanja so drugje.",
+    "autoLink": "Samodejno iskanje"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Odjemalci v vrsti",
       "users": "Različni uporabniki",
       "sentSession": "Poslano v tej seji"
+    }
+  },
+  "searchAuto": {
+    "title": "Samodejno iskanje",
+    "subtitle": "Strežnik vsakih nekaj minut ponovi iskanje namesto vas in zbira vse, kar najde",
+    "backToSearch": "Nazaj na iskanje",
+    "howTitle": "Zakaj ponavljati iskanje?",
+    "howDescription": "Enkratno iskanje doseže le strežnike in vozlišča Kad, ki so takrat povezani. Samodejno iskanje se zažene znova vsakih 5 minut — na strežniku, tudi ko so vsi brskalniki zaprti — pri tem se izmenjuje med izbranimi omrežji in združuje rezultate brez podvojitev. Datoteke, ki jih delijo računalniki, ki so bili prej brez povezave, se tako pojavljajo prehod za prehodom.",
+    "networksLabel": "Omrežja",
+    "durationLabel": "Išči še",
+    "start": "Začni samodejno iskanje",
+    "formHelp": "En prehod se izvede vsakih {minutes} minut in se izmenjuje med izbranimi omrežji. Iskanje, ki ga zaženete sami, ima vedno prednost — samodejni prehod preprosto počaka.",
+    "durations": {
+      "1h": "1 ura",
+      "1d": "1 dan",
+      "1w": "1 teden",
+      "1m": "1 mesec",
+      "forever": "Do ustavitve"
+    },
+    "listTitle": "Vaša samodejna iskanja",
+    "status": {
+      "active": "Dejavno",
+      "stopped": "Ustavljeno",
+      "finished": "Končano"
+    },
+    "resultsSuffix": "zbranih rezultatov",
+    "passes": "{count} prehod | {count} prehoda | {count} prehodi | {count} prehodov",
+    "newLastPass": "{count} nov v zadnjem prehodu | {count} nova v zadnjem prehodu | {count} novi v zadnjem prehodu | {count} novih v zadnjem prehodu",
+    "nextPass": "naslednji prehod čez {minutes} min",
+    "passRunning": "prehod je na vrsti zdaj",
+    "until": "teče do {time}",
+    "untilStopped": "teče do ustavitve",
+    "lastPassFailed": "Zadnji prehod ni uspel: {error}",
+    "emptyTitle": "Ni še samodejnih iskanj",
+    "emptyDescription": "Začnite ga zgoraj; strežnik ga izvaja tudi, ko je ta stran zaprta.",
+    "accumulatedSince": "zbrano od {time}, podvojitve so združene po izvlečku datoteke",
+    "noResultsYetTitle": "Nič še ni zbrano",
+    "noResultsYetDescription": "Prvi prehod se izvede v minuti ali dveh po ustvarjenju iskanja. Rezultati se tukaj prikažejo, ko se prehodi zaključijo.",
+    "created": "Samodejno iskanje za »{keyword}« je začeto",
+    "createFailed": "Samodejnega iskanja ni bilo mogoče ustvariti",
+    "stoppedToast": "Samodejno iskanje je ustavljeno",
+    "resumedToast": "Samodejno iskanje se nadaljuje",
+    "deletedToast": "Samodejno iskanje za »{keyword}« je odstranjeno"
+  },
+  "related": {
+    "title": "Sorodne strani",
+    "descriptions": {
+      "dashboard": "Povzetek vrste, trenutne hitrosti in stanje povezave",
+      "downloads": "Vrsta: napredek, viri, premor in nadaljevanje",
+      "uploads": "Kdo trenutno prenaša od vas",
+      "shared": "Vse datoteke v souporabi, z zahtevami in razmerji",
+      "search": "Enkratno iskanje po omrežjih, takoj",
+      "searchAuto": "Strežnik ponavlja iskanje in zbira vse, kar najde",
+      "assistant": "Krajevna umetna inteligenca, ki odgovarja za aMule in ga upravlja",
+      "servers": "Seznam strežnikov eD2k: povezovanje, dodajanje, odstranjevanje",
+      "connection": "Stanje eD2k in Kad, povezava in prekinitev",
+      "statistics": "Grafi hitrosti, skupne vrednosti in celotno drevo statistike",
+      "statsSummary": "Iste številke na en pogled",
+      "preferences": "Omejitve, vrata in mape same storitve aMule",
+      "logs": "Kaj sporoča storitev aMule",
+      "settings": "Ta spletna aplikacija: videz, obvestila, diagnostika",
+      "mcpServer": "Končna točka MCP, prek katere lahko posredniki z umetno inteligenco upravljajo aMule"
     }
   }
 }

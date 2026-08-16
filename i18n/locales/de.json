@@ -29,7 +29,8 @@
     "mcpServer": "MCP-Server",
     "settings": "Konfiguration",
     "assistant": "Assistent",
-    "apiTest": "API-Test"
+    "apiTest": "API-Test",
+    "searchAuto": "Automatische Suche"
   },
   "common": {
     "refresh": "Aktualisieren",
@@ -337,7 +338,8 @@
       "queued": "In der Warteschlange",
       "here": "Schon vorhanden"
     },
-    "noneInGroup": "Nichts in dieser Gruppe. Jedes Ergebnis dieser Suche gehört zu einer anderen."
+    "noneInGroup": "Nichts in dieser Gruppe. Jedes Ergebnis dieser Suche gehört zu einer anderen.",
+    "autoLink": "Automatische Suche"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Wartende Clients",
       "users": "Verschiedene Benutzer",
       "sentSession": "Diese Sitzung gesendet"
+    }
+  },
+  "searchAuto": {
+    "title": "Automatische Suche",
+    "subtitle": "Der Server wiederholt eine Suche für dich, alle paar Minuten, und sammelt alles, was er findet",
+    "backToSearch": "Zurück zur Suche",
+    "howTitle": "Warum eine Suche wiederholen?",
+    "howDescription": "Eine einzelne Suche erreicht nur die Server und Kad-Knoten, die genau in diesem Moment online sind. Eine automatische Suche läuft alle 5 Minuten erneut — auf dem Server, auch wenn alle Browser geschlossen sind — wechselt dabei zwischen den gewählten Netzwerken und führt die Ergebnisse ohne Duplikate zusammen. Dateien von Rechnern, die vorher offline waren, tauchen so Durchlauf für Durchlauf weiter auf.",
+    "networksLabel": "Netzwerke",
+    "durationLabel": "Weitersuchen für",
+    "start": "Automatische Suche starten",
+    "formHelp": "Alle {minutes} Minuten läuft ein Durchlauf, abwechselnd über die ausgewählten Netzwerke. Eine Suche, die du selbst startest, hat immer Vorrang — der automatische Durchlauf wartet einfach.",
+    "durations": {
+      "1h": "1 Stunde",
+      "1d": "1 Tag",
+      "1w": "1 Woche",
+      "1m": "1 Monat",
+      "forever": "Bis zum Stopp"
+    },
+    "listTitle": "Deine automatischen Suchen",
+    "status": {
+      "active": "Aktiv",
+      "stopped": "Gestoppt",
+      "finished": "Beendet"
+    },
+    "resultsSuffix": "Ergebnisse gesammelt",
+    "passes": "{count} Durchlauf | {count} Durchläufe",
+    "newLastPass": "{count} neue im letzten Durchlauf",
+    "nextPass": "nächster Durchlauf in {minutes} Min.",
+    "passRunning": "Durchlauf steht jetzt an",
+    "until": "läuft bis {time}",
+    "untilStopped": "läuft bis zum Stopp",
+    "lastPassFailed": "Der letzte Durchlauf ist fehlgeschlagen: {error}",
+    "emptyTitle": "Noch keine automatischen Suchen",
+    "emptyDescription": "Starte oben eine; der Server hält sie am Laufen, auch wenn diese Seite geschlossen ist.",
+    "accumulatedSince": "gesammelt seit {time}, Duplikate nach Datei-Hash zusammengeführt",
+    "noResultsYetTitle": "Noch nichts gesammelt",
+    "noResultsYetDescription": "Der erste Durchlauf startet ein bis zwei Minuten nach dem Anlegen der Suche. Ergebnisse erscheinen hier, sobald Durchläufe abgeschlossen sind.",
+    "created": "Automatische Suche nach \"{keyword}\" gestartet",
+    "createFailed": "Die automatische Suche konnte nicht angelegt werden",
+    "stoppedToast": "Automatische Suche gestoppt",
+    "resumedToast": "Automatische Suche fortgesetzt",
+    "deletedToast": "Automatische Suche nach \"{keyword}\" entfernt"
+  },
+  "related": {
+    "title": "Verwandte Seiten",
+    "descriptions": {
+      "dashboard": "Warteschlangen-Überblick, aktuelle Geschwindigkeiten und Verbindungsstatus",
+      "downloads": "Die Warteschlange: Fortschritt, Quellen, Pausieren und Fortsetzen",
+      "uploads": "Wer gerade von dir herunterlädt",
+      "shared": "Jede Datei, die du teilst, mit Anfragen und Verhältnissen",
+      "search": "Durchsuche die Netzwerke einmalig, jetzt sofort",
+      "searchAuto": "Der Server wiederholt eine Suche und sammelt alles Gefundene",
+      "assistant": "Eine lokale KI, die für aMule antworten und es steuern kann",
+      "servers": "Die eD2k-Serverliste: verbinden, hinzufügen, entfernen",
+      "connection": "eD2k- und Kad-Status, verbinden und trennen",
+      "statistics": "Geschwindigkeitsdiagramme, Summen und der volle Statistikbaum",
+      "statsSummary": "Dieselben Zahlen auf einen Blick",
+      "preferences": "Die Limits, Ports und Verzeichnisse des Daemons selbst",
+      "logs": "Was der Daemon zuletzt gemeldet hat",
+      "settings": "Diese Web-App: Aussehen, Benachrichtigungen, Diagnose",
+      "mcpServer": "Der MCP-Endpunkt, über den KI-Agenten aMule steuern können"
     }
   }
 }

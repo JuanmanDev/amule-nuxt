@@ -29,7 +29,8 @@
     "mcpServer": "Shërbyes MCP",
     "settings": "Rregullime",
     "assistant": "Ndihmës",
-    "apiTest": "Provë API-je"
+    "apiTest": "Provë API-je",
+    "searchAuto": "Kërkim automatik"
   },
   "common": {
     "refresh": "Rifreskoje",
@@ -337,7 +338,8 @@
       "queued": "Në radhë",
       "here": "Tashmë këtu"
     },
-    "noneInGroup": "Asgjë në këtë grup. Krejt përfundimet e këtij kërkimi janë gjetiu."
+    "noneInGroup": "Asgjë në këtë grup. Krejt përfundimet e këtij kërkimi janë gjetiu.",
+    "autoLink": "Kërkim automatik"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Klientë në radhë",
       "users": "Përdorues të ndryshëm",
       "sentSession": "Dërguar këtë sesion"
+    }
+  },
+  "searchAuto": {
+    "title": "Kërkim automatik",
+    "subtitle": "Shërbyesi e përsërit kërkimin për ju çdo pak minuta dhe grumbullon gjithçka që gjen",
+    "backToSearch": "Kthehu te kërkimi",
+    "howTitle": "Pse të përsëritet një kërkim?",
+    "howDescription": "Një kërkim i vetëm arrin vetëm shërbyesit dhe nyjet Kad që janë në linjë në atë çast. Një kërkim automatik xhirohet sërish çdo 5 minuta — në shërbyes, edhe me çdo shfletues të mbyllur — duke u alternuar nëpër rrjetet e zgjedhura dhe duke i bashkuar përfundimet pa dublikata. Kartelat e ndara nga makina që më parë s’ishin në linjë vazhdojnë të shfaqen, kalim pas kalimi.",
+    "networksLabel": "Rrjete",
+    "durationLabel": "Vazhdo kërkimin për",
+    "start": "Nis kërkimin automatik",
+    "formHelp": "Një kalim xhirohet çdo {minutes} minuta, duke u alternuar mes rrjeteve të zgjedhura. Një kërkim që e nisni vetë ka gjithmonë përparësi — kalimi automatik thjesht pret.",
+    "durations": {
+      "1h": "1 orë",
+      "1d": "1 ditë",
+      "1w": "1 javë",
+      "1m": "1 muaj",
+      "forever": "Deri sa të ndalet"
+    },
+    "listTitle": "Kërkimet tuaja automatike",
+    "status": {
+      "active": "Aktiv",
+      "stopped": "I ndalur",
+      "finished": "I përfunduar"
+    },
+    "resultsSuffix": "përfundime të grumbulluara",
+    "passes": "{count} kalim | {count} kalime",
+    "newLastPass": "{count} i ri në kalimin e fundit | {count} të rinj në kalimin e fundit",
+    "nextPass": "kalimi tjetër pas {minutes} min",
+    "passRunning": "kalimi duhet të nisë tani",
+    "until": "xhiron deri më {time}",
+    "untilStopped": "xhiron deri sa të ndalet",
+    "lastPassFailed": "Kalimi i fundit dështoi: {error}",
+    "emptyTitle": "Ende pa kërkime automatike",
+    "emptyDescription": "Nisni një më sipër; shërbyesi e mban në punë edhe me këtë faqe të mbyllur.",
+    "accumulatedSince": "grumbulluar që prej {time}, dublikatat bashkohen sipas hash-it të kartelës",
+    "noResultsYetTitle": "Ende s’është grumbulluar gjë",
+    "noResultsYetDescription": "Kalimi i parë xhirohet brenda një a dy minutash pas krijimit të kërkimit. Përfundimet shfaqen këtu ndërsa kalimet përfundojnë.",
+    "created": "Kërkimi automatik për “{keyword}” nisi",
+    "createFailed": "S’u krijua dot kërkimi automatik",
+    "stoppedToast": "Kërkimi automatik u ndal",
+    "resumedToast": "Kërkimi automatik u rimor",
+    "deletedToast": "Kërkimi automatik për “{keyword}” u hoq"
+  },
+  "related": {
+    "title": "Faqe të afërta",
+    "descriptions": {
+      "dashboard": "Përmbledhje e radhës, shpejtësi të çastit dhe gjendja e lidhjes",
+      "downloads": "Radha: ecuri, burime, ndalje dhe vazhdim",
+      "uploads": "Kush po shkarkon prej jush tani",
+      "shared": "Çdo kartelë që ndani, me kërkesa dhe raporte",
+      "search": "Kërkoni në rrjete një herë, që tani",
+      "searchAuto": "Shërbyesi e përsërit kërkimin dhe grumbullon gjithçka",
+      "assistant": "Një IA vendore që mund të përgjigjet për aMule dhe ta drejtojë atë",
+      "servers": "Lista e shërbyesve eD2k: lidhje, shtim, heqje",
+      "connection": "Gjendja eD2k dhe Kad, lidhje dhe shkëputje",
+      "statistics": "Grafikë shpejtësish, totale dhe pema e plotë e statistikave",
+      "statsSummary": "Të njëjtat shifra me një vështrim",
+      "preferences": "Kufijtë, portat dhe drejtoritë e vetë shërbimit aMule",
+      "logs": "Ç’ka thënë shërbimi aMule",
+      "settings": "Ky aplikacion web: pamja, njoftimet, diagnostikimi",
+      "mcpServer": "Pika hyrëse MCP përmes së cilës agjentët e IA-së mund të drejtojnë aMule"
     }
   }
 }

@@ -29,7 +29,8 @@
     "mcpServer": "MCP サーバー",
     "settings": "設定",
     "assistant": "アシスタント",
-    "apiTest": "API テスト"
+    "apiTest": "API テスト",
+    "searchAuto": "自動検索"
   },
   "common": {
     "refresh": "更新",
@@ -337,7 +338,8 @@
       "queued": "待ち行列にある",
       "here": "すでにある"
     },
-    "noneInGroup": "このグループには何もありません。今回の検索結果はすべて別のグループにあります。"
+    "noneInGroup": "このグループには何もありません。今回の検索結果はすべて別のグループにあります。",
+    "autoLink": "自動検索"
   },
   "fileKinds": {
     "video": "動画",
@@ -501,6 +503,68 @@
       "queued": "待機中のクライアント",
       "users": "ユーザー数",
       "sentSession": "今回の送信量"
+    }
+  },
+  "searchAuto": {
+    "title": "自動検索",
+    "subtitle": "サーバーが数分おきに検索を繰り返し、見つかったものをすべて収集します",
+    "backToSearch": "検索に戻る",
+    "howTitle": "なぜ検索を繰り返すのか？",
+    "howDescription": "1回の検索では、その瞬間にオンラインのサーバーと Kad ノードにしか届きません。自動検索は5分ごとに再実行され — サーバー上で、すべてのブラウザーを閉じていても — 選択したネットワークを順に巡り、重複なしで結果を統合します。以前オフラインだったマシンが共有するファイルも、実行を重ねるたびに見つかり続けます。",
+    "networksLabel": "ネットワーク",
+    "durationLabel": "検索を続ける期間",
+    "start": "自動検索を開始",
+    "formHelp": "{minutes} 分ごとに1回実行され、選択したネットワークを交互に検索します。自分で開始した検索が常に優先され、自動実行はその間待機します。",
+    "durations": {
+      "1h": "1時間",
+      "1d": "1日",
+      "1w": "1週間",
+      "1m": "1か月",
+      "forever": "停止するまで"
+    },
+    "listTitle": "自動検索の一覧",
+    "status": {
+      "active": "実行中",
+      "stopped": "停止中",
+      "finished": "終了"
+    },
+    "resultsSuffix": "件の結果を収集済み",
+    "passes": "{count} 回実行",
+    "newLastPass": "前回の実行で {count} 件が新規",
+    "nextPass": "次の実行まで {minutes} 分",
+    "passRunning": "まもなく実行",
+    "until": "{time} まで実行",
+    "untilStopped": "停止するまで実行",
+    "lastPassFailed": "前回の実行が失敗しました: {error}",
+    "emptyTitle": "自動検索はまだありません",
+    "emptyDescription": "上のフォームから開始してください。このページを閉じてもサーバーが実行し続けます。",
+    "accumulatedSince": "{time} から収集、重複はファイルハッシュで統合",
+    "noResultsYetTitle": "まだ何も収集されていません",
+    "noResultsYetDescription": "最初の実行は検索の作成から1〜2分以内に行われます。実行が完了するたびに結果がここに表示されます。",
+    "created": "「{keyword}」の自動検索を開始しました",
+    "createFailed": "自動検索を作成できませんでした",
+    "stoppedToast": "自動検索を停止しました",
+    "resumedToast": "自動検索を再開しました",
+    "deletedToast": "「{keyword}」の自動検索を削除しました"
+  },
+  "related": {
+    "title": "関連ページ",
+    "descriptions": {
+      "dashboard": "キューの概要、リアルタイムの速度、接続状態",
+      "downloads": "ダウンロードキュー：進捗、ソース、一時停止と再開",
+      "uploads": "今あなたからダウンロードしている相手",
+      "shared": "共有中のすべてのファイル、リクエスト数と比率つき",
+      "search": "今すぐネットワークを1回だけ検索",
+      "searchAuto": "サーバーが検索を繰り返してすべて収集",
+      "assistant": "aMule の代わりに答え、操作もできるローカル AI",
+      "servers": "eD2k サーバー一覧：接続、追加、削除",
+      "connection": "eD2k と Kad の状態、接続と切断",
+      "statistics": "速度グラフ、累計、統計ツリー全体",
+      "statsSummary": "同じ数値をひと目で",
+      "preferences": "デーモン自体の制限、ポート、ディレクトリ",
+      "logs": "デーモンの最近の出力",
+      "settings": "この Web アプリ：外観、通知、診断",
+      "mcpServer": "AI エージェントが aMule を操作できる MCP エンドポイント"
     }
   }
 }

@@ -29,7 +29,8 @@
     "mcpServer": "MCP server",
     "settings": "Seaded",
     "assistant": "Abiline",
-    "apiTest": "API test"
+    "apiTest": "API test",
+    "searchAuto": "Automaatotsing"
   },
   "common": {
     "refresh": "Värskenda",
@@ -337,7 +338,8 @@
       "queued": "Järjekorras",
       "here": "Juba olemas"
     },
-    "noneInGroup": "Selles rühmas pole midagi. Kõik selle otsingu tulemused on mujal."
+    "noneInGroup": "Selles rühmas pole midagi. Kõik selle otsingu tulemused on mujal.",
+    "autoLink": "Automaatotsing"
   },
   "fileKinds": {
     "video": "Video",
@@ -501,6 +503,68 @@
       "queued": "Kliente järjekorras",
       "users": "Erinevaid kasutajaid",
       "sentSession": "Selle seansi jooksul saadetud"
+    }
+  },
+  "searchAuto": {
+    "title": "Automaatotsing",
+    "subtitle": "Server kordab otsingut sinu eest iga mõne minuti tagant ja kogub kokku kõik, mis leiab",
+    "backToSearch": "Tagasi otsingusse",
+    "howTitle": "Miks otsingut korrata?",
+    "howDescription": "Ühekordne otsing jõuab ainult nende serverite ja Kad-sõlmedeni, mis on sel hetkel võrgus. Automaatne otsing käivitub uuesti iga 5 minuti järel — serveris, kõigi brauserite suletuna — vaheldudes valitud võrkude vahel ja liites tulemused ilma duplikaatideta. Faile, mida jagavad varem võrgust väljas olnud masinad, tuleb käik käigu järel juurde.",
+    "networksLabel": "Võrgud",
+    "durationLabel": "Otsi edasi",
+    "start": "Alusta automaatotsingut",
+    "formHelp": "Üks käik toimub iga {minutes} minuti järel, vaheldudes valitud võrkude vahel. Sinu enda alustatud otsing on alati eelisjärjekorras — automaatne käik lihtsalt ootab.",
+    "durations": {
+      "1h": "1 tund",
+      "1d": "1 päev",
+      "1w": "1 nädal",
+      "1m": "1 kuu",
+      "forever": "Kuni peatamiseni"
+    },
+    "listTitle": "Sinu automaatotsingud",
+    "status": {
+      "active": "Aktiivne",
+      "stopped": "Peatatud",
+      "finished": "Lõppenud"
+    },
+    "resultsSuffix": "tulemust kogutud",
+    "passes": "{count} käik | {count} käiku",
+    "newLastPass": "{count} uut viimasel käigul",
+    "nextPass": "järgmine käik {minutes} min pärast",
+    "passRunning": "käik on kohe algamas",
+    "until": "töötab kuni {time}",
+    "untilStopped": "töötab kuni peatamiseni",
+    "lastPassFailed": "Viimane käik ebaõnnestus: {error}",
+    "emptyTitle": "Automaatotsinguid veel pole",
+    "emptyDescription": "Alusta ühte ülal; server hoiab seda käigus ka siis, kui see leht on suletud.",
+    "accumulatedSince": "kogutud alates {time}, duplikaadid liidetud faili räsi järgi",
+    "noResultsYetTitle": "Midagi pole veel kogutud",
+    "noResultsYetDescription": "Esimene käik toimub minuti-paari jooksul pärast otsingu loomist. Tulemused ilmuvad siia käikude lõppedes.",
+    "created": "Automaatotsing „{keyword}” alustatud",
+    "createFailed": "Automaatotsingut ei õnnestunud luua",
+    "stoppedToast": "Automaatotsing peatatud",
+    "resumedToast": "Automaatotsing jätkatud",
+    "deletedToast": "Automaatotsing „{keyword}” eemaldatud"
+  },
+  "related": {
+    "title": "Seotud lehed",
+    "descriptions": {
+      "dashboard": "Järjekorra kokkuvõte, reaalajas kiirused ja ühenduse olek",
+      "downloads": "Järjekord: edenemine, allikad, peatamine ja jätkamine",
+      "uploads": "Kes sinult praegu alla laadib",
+      "shared": "Kõik jagatavad failid koos päringute ja suhtarvudega",
+      "search": "Otsi võrkudest üks kord, kohe",
+      "searchAuto": "Server kordab otsingut ja kogub kõik kokku",
+      "assistant": "Kohalik tehisintellekt, mis vastab aMule'i eest ja saab seda juhtida",
+      "servers": "eD2k serverite loend: ühenda, lisa, eemalda",
+      "connection": "eD2k ja Kad olek, ühendamine ja lahtiühendamine",
+      "statistics": "Kiirusgraafikud, kogusummad ja täielik statistikapuu",
+      "statsSummary": "Samad numbrid ühe pilguga",
+      "preferences": "Teenuse enda piirangud, pordid ja kataloogid",
+      "logs": "Mida teenus on rääkinud",
+      "settings": "See veebirakendus: välimus, teavitused, diagnostika",
+      "mcpServer": "MCP otspunkt, mille kaudu AI-agendid saavad aMule't juhtida"
     }
   }
 }
