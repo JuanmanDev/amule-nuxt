@@ -1,8 +1,19 @@
 <template>
   <div class="space-y-6">
-    <div>
-      <h1 class="text-3xl font-bold mb-1">{{ $t('search.title') }}</h1>
-      <p class="text-gray-600 dark:text-gray-400">{{ $t('search.subtitle') }}</p>
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div>
+        <h1 class="text-3xl font-bold mb-1">{{ $t('search.title') }}</h1>
+        <p class="text-gray-600 dark:text-gray-400">{{ $t('search.subtitle') }}</p>
+      </div>
+      <!-- The sibling page: the same keywords, run by the server for hours -->
+      <UButton
+        to="/search-auto"
+        variant="outline"
+        color="neutral"
+        icon="i-heroicons-arrow-path-rounded-square"
+      >
+        {{ $t('search.autoLink') }}
+      </UButton>
     </div>
 
     <!-- One row from md up: network, keywords and the buttons that act on them.
@@ -288,6 +299,8 @@
       :search-label="active ? `${active.keyword} (${active.type})` : undefined"
       @download="addToDownloads"
     />
+
+    <RelatedPages :pages="['searchAuto', 'downloads', 'servers', 'shared']" />
   </div>
 </template>
 

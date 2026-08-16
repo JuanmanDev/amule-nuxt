@@ -194,6 +194,7 @@ const baseNavLinks = [
   { key: 'downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
   { key: 'uploads', icon: 'i-heroicons-arrow-up-tray', to: '/uploads' },
   { key: 'search', icon: 'i-heroicons-magnifying-glass', to: '/search' },
+  { key: 'searchAuto', icon: 'i-heroicons-arrow-path-rounded-square', to: '/search-auto' },
   { key: 'shared', icon: 'i-heroicons-folder-open', to: '/shared' },
   { key: 'assistant', icon: 'i-heroicons-sparkles', to: '/assistant' },
   { key: 'servers', icon: 'i-heroicons-server-stack', to: '/servers' },

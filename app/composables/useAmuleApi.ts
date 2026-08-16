@@ -11,6 +11,7 @@ import type {
     Download,
     DownloadPriority,
     SearchResult,
+    SearchType,
     Server,
     SharedFile,
     Statistics,
@@ -19,6 +20,8 @@ import type {
 } from '../../server/utils/amule-types';
 import type { StatsTreeNode } from '../../server/utils/amule-ec/statsTree';
 import type { SpeedHistoryResponse } from '../../server/api/amule/statistics/history.get';
+import type { AutoSearch, AutoSearchDuration } from '../../server/utils/autoSearchStore';
+import type { AutoSearchSummary } from '../../server/api/amule/search/auto/index.get';
 
 /**
  * Options the polled reads accept.
@@ -136,6 +139,42 @@ export const useAmuleApi = () => {
                 method: 'POST',
                 body: { hash }
             });
+        },
+
+        // ========== Automatic search ==========
+
+        /** The overview: every automatic search with counts, without its result list. */
+        async getAutoSearches(options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<{ searches: AutoSearchSummary[] }>>(apiUrl('/search/auto'), { signal: options.signal });
+        },
+
+        /** One automatic search with everything it has accumulated. */
+        async getAutoSearch(id: string, options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<{ search: AutoSearch }>>(apiUrl(`/search/auto/${encodeURIComponent(id)}`), { signal: options.signal });
+        },
+
+        async createAutoSearch(input: {
+            keyword: string;
+            networks: SearchType[];
+            duration: AutoSearchDuration;
+            intervalMs?: number;
+        }) {
+            return await $fetch<ApiResponse<{ search: AutoSearch }>>(apiUrl('/search/auto'), {
+                method: 'POST',
+                body: input
+            });
+        },
+
+        async stopAutoSearch(id: string) {
+            return await $fetch<ApiResponse<{ search: AutoSearch }>>(apiUrl(`/search/auto/${encodeURIComponent(id)}/stop`), { method: 'POST' });
+        },
+
+        async resumeAutoSearch(id: string) {
+            return await $fetch<ApiResponse<{ search: AutoSearch }>>(apiUrl(`/search/auto/${encodeURIComponent(id)}/resume`), { method: 'POST' });
+        },
+
+        async deleteAutoSearch(id: string) {
+            return await $fetch<ApiResponse>(apiUrl(`/search/auto/${encodeURIComponent(id)}`), { method: 'DELETE' });
         },
 
         // ========== Uploads & Servers ==========

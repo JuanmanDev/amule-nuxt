@@ -5,6 +5,7 @@
  */
 
 import type { ApiResponse } from '../../../../shared/types/api';
+import { noteManualSearch } from '../../../utils/searchActivity';
 
 export default defineEventHandler(async (event): Promise<ApiResponse> => {
     try {
@@ -31,6 +32,10 @@ export default defineEventHandler(async (event): Promise<ApiResponse> => {
                 error: `Invalid search type. Must be one of: ${validTypes.join(', ')}`
             };
         }
+
+        // The automatic runner shares the daemon's single search slot; telling
+        // it a person is searching makes it wait its turn.
+        noteManualSearch();
 
         const client = getAmuleClient();
         const result = await client.search(body.type, body.keyword);
