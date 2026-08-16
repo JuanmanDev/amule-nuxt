@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.7.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.6.0...v1.7.0) (2026-08-16)
+
+### Features
+
+* **mcp:** expose the automatic searches as MCP tools ([b54ce0e](https://github.com/JuanmanDev/amule-nuxt/commit/b54ce0e804efd5282a8ad7711578baadf3d0d28f))
+
 ## [1.6.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.5.0...v1.6.0) (2026-08-16)
 
 ### Features
