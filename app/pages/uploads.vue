@@ -261,74 +261,31 @@
       :links="selectionLinks"
     />
 
-    <!-- Everything known about one transfer, opened by clicking its row -->
-    <UModal v-model:open="detailsOpen" :ui="{ content: 'max-w-3xl' }" :title="$t('uploads.detailsTitle')">
-      <template #body>
-        <div v-if="selectedUpload" class="space-y-6">
-          <div class="space-y-2">
-            <p class="text-sm font-semibold break-all leading-snug">{{ selectedUpload.fileName }}</p>
-            <p
-              v-if="selectedUpload.remoteFileName && selectedUpload.remoteFileName !== selectedUpload.fileName"
-              class="text-xs text-gray-500 dark:text-gray-400 break-all"
-            >
-              {{ $t('uploads.requestedAs', { name: selectedUpload.remoteFileName }) }}
-            </p>
-          </div>
-
-          <dl class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-            <div v-for="fact in detailFacts" :key="fact.label" class="min-w-0">
-              <dt class="text-xs text-gray-500 dark:text-gray-400">{{ fact.label }}</dt>
-              <dd class="font-medium break-words">{{ fact.value }}</dd>
-            </div>
-          </dl>
-
-          <div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.fileHash') }}</div>
-            <div class="flex items-center gap-2">
-              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">{{ selectedUpload.fileHash || $t('common.unknown') }}</code>
-              <UButton
-                v-if="selectedUpload.fileHash"
-                size="xs"
-                variant="ghost"
-                color="neutral"
-                icon="i-heroicons-clipboard-document"
-                :aria-label="$t('downloads.copyHash')"
-                @click="copy(selectedUpload.fileHash, t('downloads.hashCopied'))"
-              />
-            </div>
-          </div>
-
-          <!-- The link comes from the shared list: an upload carries no size,
-               so its link cannot be built from the upload alone -->
-          <div v-if="selectedLink">
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.ed2kLink') }}</div>
-            <div class="flex items-start gap-2">
-              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1 max-h-24 overflow-y-auto">{{ selectedLink }}</code>
-              <UButton
-                size="xs"
-                variant="ghost"
-                color="neutral"
-                icon="i-heroicons-clipboard-document"
-                :aria-label="$t('downloads.copyLink')"
-                @click="copy(selectedLink, t('downloads.linkCopied'))"
-              />
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex justify-end w-full">
-          <UButton color="neutral" variant="ghost" @click="() => { detailsOpen = false }">{{ $t('common.close') }}</UButton>
-        </div>
-      </template>
-    </UModal>
+    <!-- Everything known about one transfer, in the same modal the shared page
+         uses; the eD2k link comes from the shared list, because an upload
+         carries no size of its own -->
+    <FileDetailsModal
+      v-if="selectedUpload"
+      v-model="detailsOpen"
+      :title="$t('uploads.detailsTitle')"
+      :file-name="selectedUpload.fileName"
+      :subtitle="selectedUpload.remoteFileName && selectedUpload.remoteFileName !== selectedUpload.fileName
+        ? $t('uploads.requestedAs', { name: selectedUpload.remoteFileName })
+        : undefined"
+      :facts="detailFacts"
+      :hash="selectedHash"
+      :ed2k-link="selectedLink"
+      :comment="selectedSharedFile?.comment"
+      :page-path="selectedHash ? `/shared?file=${selectedHash}` : undefined"
+      :share-link="selectedSharedFile && selectedHash ? `/shared?file=${selectedHash}` : undefined"
+    />
 
     <RelatedPages :pages="['shared', 'statistics', 'downloads']" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Upload } from '../../server/utils/amule-types';
+import type { SharedFile, Upload } from '../../server/utils/amule-types';
 import { formatBytes, formatSpeed } from '#shared/utils/format';
 import type { SortOption } from '#shared/utils/sorting';
 
@@ -340,9 +297,8 @@ useHead({ title: () => t('uploads.title') });
 const feed = useUploadsFeed();
 const { items: uploads, loading, error } = feed;
 
-// Read only to turn an upload's hash into a link; the shared list is kept warm
-// app-wide anyway
-const { items: sharedFiles } = useSharedFilesFeed();
+// The shared list stays warm through useFileStatus below, which is also where
+// an upload's hash resolves to the file itself (link, comment, the lot)
 const { copy } = useClipboard();
 
 const refreshing = ref(false);
@@ -403,7 +359,7 @@ const {
  * An upload has no id of its own: it is one peer transferring one file, so the
  * peer and the file together are the key. The same one the rows render with.
  */
-const keyOfUpload = (upload: Upload) => `${upload.fileHash}@${upload.userIp}:${upload.userPort}`;
+const keyOfUpload = (upload: Upload) => `${upload.fileHash || upload.fileEcId}@${upload.userIp}:${upload.userPort}`;
 
 const selection = useListSelection<Upload>({
   items: matching,
@@ -422,16 +378,32 @@ function openDetails(upload: Upload) {
   detailsOpen.value = true;
 }
 
-const selectedLink = computed(() => {
-  const hash = selectedUpload.value?.fileHash;
-  return hash ? sharedByHash.value.get(hash.toLowerCase()) ?? null : null;
-});
+/** The shared file behind the transfer: the same record the shared page shows. */
+const { sharedByHash: sharedFilesByHash, sharedByEcId: sharedFilesByEcId } = useFileStatus();
+const { factsOf: sharedFactsOf } = useSharedFileFacts();
+
+/**
+ * By hash when the daemon sent one, by its numeric file id otherwise - which
+ * is the normal case: an upload record names its file by ECID.
+ */
+function sharedFileOf(upload: Upload | null): SharedFile | null {
+  if (!upload) return null;
+  if (upload.fileHash) return sharedFilesByHash.value.get(upload.fileHash.toLowerCase()) ?? null;
+  return upload.fileEcId ? sharedFilesByEcId.value.get(upload.fileEcId) ?? null : null;
+}
+
+const selectedSharedFile = computed(() => sharedFileOf(selectedUpload.value));
+
+/** The hash shown and linked: the upload's own, or the shared file's. */
+const selectedHash = computed(() => selectedUpload.value?.fileHash || selectedSharedFile.value?.hash || '');
+
+const selectedLink = computed(() => selectedSharedFile.value?.ed2kLink ?? null);
 
 const detailFacts = computed(() => {
   const upload = selectedUpload.value;
   if (!upload) return [];
 
-  return [
+  const transferFacts = [
     { label: t('uploads.fields.user'), value: upload.user || t('common.unknown') },
     {
       label: t('uploads.fields.address'),
@@ -446,6 +418,11 @@ const detailFacts = computed(() => {
       value: `${upload.waitingPosition > 0 ? `#${upload.waitingPosition}` : t('uploads.uploadingNow')} / ${upload.score}`
     }
   ];
+
+  // The transfer first (it is what was clicked), then everything the shared
+  // page knows about the file itself
+  const file = selectedSharedFile.value;
+  return file ? [...transferFacts, ...sharedFactsOf(file)] : transferFacts;
 });
 
 /*
@@ -456,17 +433,9 @@ const detailFacts = computed(() => {
  * with a link already on it. Deduplicated, because ten peers pulling one file
  * is ten uploads of one link.
  */
-const sharedByHash = computed(() => {
-  const map = new Map<string, string>();
-  for (const file of sharedFiles.value) {
-    if (file.hash && file.ed2kLink) map.set(file.hash.toLowerCase(), file.ed2kLink);
-  }
-  return map;
-});
-
 const selectionLinks = computed(() => [...new Set(
   selection.items.value
-    .map(upload => sharedByHash.value.get((upload.fileHash || '').toLowerCase()))
+    .map(upload => sharedFileOf(upload)?.ed2kLink)
     .filter((link): link is string => Boolean(link))
 )]);
 
@@ -485,7 +454,7 @@ const selectionFacts = computed(() => {
   return [
     { label: t('uploads.clientsUploading'), value: picked.length.toLocaleString() },
     { label: t('selection.facts.users'), value: new Set(picked.map(upload => upload.userIp)).size.toLocaleString() },
-    { label: t('selection.facts.files'), value: new Set(picked.map(upload => upload.fileHash)).size.toLocaleString() },
+    { label: t('selection.facts.files'), value: new Set(picked.map(upload => upload.fileHash || upload.fileEcId)).size.toLocaleString() },
     { label: t('selection.facts.speed'), value: formatSpeed(totals.speed) },
     { label: t('selection.facts.sentSession'), value: formatBytes(totals.session) },
     { label: t('selection.facts.uploaded'), value: formatBytes(totals.total) },

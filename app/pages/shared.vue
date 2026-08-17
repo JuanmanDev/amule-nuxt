@@ -153,8 +153,10 @@
                   @click.stop
                 />
                 <p class="font-medium truncate" :title="file.fileName">{{ file.fileName }}</p>
-                <UBadge variant="subtle" size="sm" class="shrink-0" :color="file.onQueue > 0 ? 'info' : 'neutral'">
-                  {{ file.onQueue > 0 ? $t('shared.queued', { count: file.onQueue }) : formatBytes(file.size) }}
+                <!-- Only when something is happening: the size is already in the
+                     row below, and a badge repeating it was just noise -->
+                <UBadge v-if="file.onQueue > 0" variant="subtle" size="sm" class="shrink-0" color="info">
+                  {{ $t('shared.queued', { count: file.onQueue }) }}
                 </UBadge>
               </div>
               <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 text-xs text-gray-600 dark:text-gray-400">
@@ -227,66 +229,18 @@
     />
 
     <!-- Details -->
-    <UModal v-model:open="detailsOpen" :ui="{ content: 'max-w-3xl' }" :title="$t('shared.detailsTitle')">
-      <template #body>
-        <div v-if="selected" class="space-y-6">
-          <div class="space-y-2">
-            <p class="text-sm font-semibold break-all leading-snug">{{ selected.fileName }}</p>
-            <p v-if="selected.fullPath" class="text-xs text-gray-500 dark:text-gray-400 break-all">
-              {{ selected.fullPath }}
-            </p>
-          </div>
-
-          <dl class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-            <div v-for="fact in facts" :key="fact.label" class="min-w-0">
-              <dt class="text-xs text-gray-500 dark:text-gray-400">{{ fact.label }}</dt>
-              <dd class="font-medium break-words">{{ fact.value }}</dd>
-            </div>
-          </dl>
-
-          <div v-if="selected.comment">
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('shared.comment') }}</div>
-            <p class="text-sm break-words">{{ selected.comment }}</p>
-          </div>
-
-          <div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.fileHash') }}</div>
-            <div class="flex items-center gap-2">
-              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">{{ selected.hash || $t('common.unknown') }}</code>
-              <UButton
-                v-if="selected.hash"
-                size="xs"
-                variant="ghost"
-                color="neutral"
-                icon="i-heroicons-clipboard-document"
-                :aria-label="$t('downloads.copyHash')"
-                @click="copy(selected.hash, t('downloads.hashCopied'))"
-              />
-            </div>
-          </div>
-
-          <div v-if="selected.ed2kLink">
-            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.ed2kLink') }}</div>
-            <div class="flex items-start gap-2">
-              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1 max-h-24 overflow-y-auto">{{ selected.ed2kLink }}</code>
-              <UButton
-                size="xs"
-                variant="ghost"
-                color="neutral"
-                icon="i-heroicons-clipboard-document"
-                :aria-label="$t('downloads.copyLink')"
-                @click="copy(selected.ed2kLink, t('downloads.linkCopied'))"
-              />
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex justify-end w-full">
-          <UButton color="neutral" variant="ghost" @click="() => { detailsOpen = false }">{{ $t('common.close') }}</UButton>
-        </div>
-      </template>
-    </UModal>
+    <FileDetailsModal
+      v-if="selected"
+      v-model="detailsOpen"
+      :title="$t('shared.detailsTitle')"
+      :file-name="selected.fileName"
+      :subtitle="selected.fullPath"
+      :facts="facts"
+      :hash="selected.hash"
+      :ed2k-link="selected.ed2kLink"
+      :comment="selected.comment"
+      :page-path="selected.hash ? `/shared?file=${selected.hash}` : undefined"
+    />
 
     <RelatedPages :pages="['uploads', 'downloads', 'statistics']" />
   </div>
@@ -300,7 +254,6 @@ import type { SortOption } from '#shared/utils/sorting';
 const { copy } = useClipboard();
 
 const { t } = useI18n();
-const time = useLocalTime();
 useHead({ title: () => t('shared.title') });
 
 // Shared, prefetched feed: refreshed once a minute in the background, faster
@@ -443,35 +396,9 @@ function copySelectedLinks() {
   copy(selectionLinks.value.join('\n'), t('selection.linksCopied', { count }, count));
 }
 
-const facts = computed(() => {
-  const file = selected.value;
-  if (!file) return [];
-
-  return [
-    { label: t('shared.fields.size'), value: formatBytes(file.size) },
-    { label: t('shared.fields.uploadedAll'), value: formatBytes(file.transferredAll) },
-    { label: t('shared.fields.uploadedSession'), value: formatBytes(file.transferred) },
-    { label: t('shared.fields.shareRatio'), value: `${file.shareRatio.toFixed(2)}x` },
-    { label: t('shared.fields.requestsAll'), value: file.requestsAll.toLocaleString() },
-    { label: t('shared.fields.requestsSession'), value: file.requests.toLocaleString() },
-    { label: t('shared.fields.acceptedAll'), value: file.acceptsAll.toLocaleString() },
-    { label: t('shared.fields.acceptedSession'), value: file.accepts.toLocaleString() },
-    { label: t('shared.fields.clientsQueued'), value: file.onQueue.toLocaleString() },
-    { label: t('shared.fields.completeSources'), value: file.completeSources.toLocaleString() },
-    /*
-     * Always shown, even with nothing to show.
-     *
-     * These come from this app's own record of the download queue, not from
-     * aMule, which keeps no such timestamp - so a file shared before this app
-     * ever ran has neither. Hiding the field then made it look as though the
-     * information did not exist at all; saying "not recorded" explains why this
-     * particular file has none while others do.
-     */
-    { label: t('shared.fields.addedAt'), value: file.addedAt ? time.dateTime(file.addedAt) : t('shared.notRecorded') },
-    { label: t('shared.fields.completedAt'), value: file.completedAt ? time.dateTime(file.completedAt) : t('shared.notRecorded') },
-    { label: t('shared.fields.uploadPriority'), value: `${t('downloads.priorities.' + file.priority)}${file.autoPriority ? ' ' + t('downloads.priorities.autoSuffix') : ''}` }
-  ];
-});
+// The same facts the uploads page shows for a file being sent: one source
+const { factsOf } = useSharedFileFacts();
+const facts = computed(() => (selected.value ? factsOf(selected.value) : []));
 
 async function refresh() {
   refreshing.value = true;
@@ -482,7 +409,47 @@ async function refresh() {
 function openDetails(file: SharedFile) {
   selected.value = file;
   detailsOpen.value = true;
+
+  // The URL follows the modal, so the address bar is always a link to what is
+  // on screen and can be sent somewhere as-is
+  if (file.hash) {
+    router.replace({ query: { ...route.query, file: file.hash } });
+  }
 }
+
+// ========== Deep link: /shared?file=<hash> opens that file's details ==========
+
+const route = useRoute();
+const router = useRouter();
+
+/**
+ * Opens the file the URL names, once the list holds it.
+ *
+ * Watched rather than done once, because the hash usually arrives before the
+ * list does: on a cold load the feed answers seconds later.
+ */
+watch(
+  [() => route.query.file, files],
+  ([wanted]) => {
+    if (typeof wanted !== 'string' || !wanted) return;
+    if (detailsOpen.value && selected.value?.hash?.toLowerCase() === wanted.toLowerCase()) return;
+
+    const file = files.value.find(entry => entry.hash?.toLowerCase() === wanted.toLowerCase());
+    if (file) {
+      selected.value = file;
+      detailsOpen.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+// Closing the modal takes the file out of the URL again
+watch(detailsOpen, opened => {
+  if (!opened && route.query.file) {
+    const { file: _, ...rest } = route.query;
+    router.replace({ query: rest });
+  }
+});
 
 
 </script>

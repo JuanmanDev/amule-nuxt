@@ -109,7 +109,7 @@
           :icon="status.done ? 'i-heroicons-check-circle' : 'i-heroicons-arrow-down-tray'"
           :color="status.done ? 'success' : 'neutral'"
           variant="soft"
-          :to="status.state === 'shared' ? '/shared' : '/downloads'"
+          :to="status.state === 'shared' ? `/shared?file=${result.hash}` : '/downloads'"
           block
           class="sm:w-auto"
         >

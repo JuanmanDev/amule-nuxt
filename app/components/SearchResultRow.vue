@@ -79,7 +79,7 @@
           :color="status.done ? 'success' : 'neutral'"
           variant="soft"
           trailing-icon="i-heroicons-arrow-right"
-          :to="status.state === 'shared' ? '/shared' : '/downloads'"
+          :to="status.state === 'shared' ? `/shared?file=${result.hash}` : '/downloads'"
         >
           {{ $t('search.result.show') }}
         </UButton>
