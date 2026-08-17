@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.10.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.9.0...v1.10.0) (2026-08-17)
+
+### Features
+
+* **ui:** show the running version in the desktop footer ([d5c1eb8](https://github.com/JuanmanDev/amule-nuxt/commit/d5c1eb812ea5ece1f9e59fe03c1f30d5c2cbe597))
+
 ## [1.9.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.8.1...v1.9.0) (2026-08-17)
 
 ### Features
