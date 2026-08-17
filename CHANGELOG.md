@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.8.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.8.0...v1.8.1) (2026-08-17)
+
+### Bug fixes
+
+* **ui:** actually frameless cards, and wider related tiles ([10cfbe2](https://github.com/JuanmanDev/amule-nuxt/commit/10cfbe27f16fb9a72cf1d6ab0bd3074e19f8c5a9))
+
 ## [1.8.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.7.0...v1.8.0) (2026-08-17)
 
 ### Features
