@@ -6,30 +6,37 @@
  * panels. Doing it in the theme keeps every card consistent, rather than repeating
  * the classes on each page.
  *
- * No rings and no divider lines: a card is one translucent surface, and the
- * title reads as part of its content rather than a boxed-off bar. The header
- * keeps its own padding and the body drops the gap left by the divider, so the
- * two sit close enough to read as connected.
+ * Cards are frameless: no ring, no divider lines between header, body and
+ * footer, no background of their own and no side padding. A card is just the
+ * vertical rhythm of a section - its title close above its content - and the
+ * surfaces belong to the elements inside it (rows, tiles), which carry the
+ * translucent blur themselves.
+ *
+ * The classes below neutralise rather than replace: Nuxt UI *extends* the
+ * default theme with these strings (tailwind-variants), so `ring` from the
+ * default can only be beaten by an explicit `ring-0`, never by omission.
  */
 export default defineAppConfig({
     ui: {
         card: {
             slots: {
-                root: 'rounded-lg overflow-hidden backdrop-blur-md transition-shadow duration-300',
-                // The body's own top padding is all the separation the title needs
-                header: 'pb-0',
-                footer: 'pt-0'
+                root: 'ring-0 divide-y-0 bg-transparent overflow-visible transition-shadow duration-300',
+                // Sides flush with the page; the body's top padding is all the
+                // separation the title needs
+                header: 'px-0 sm:px-0 pb-0',
+                body: 'px-0 sm:px-0',
+                footer: 'px-0 sm:px-0 pt-0'
             },
             variants: {
                 variant: {
                     outline: {
-                        root: 'bg-default/70'
+                        root: 'ring-0 divide-y-0 bg-transparent'
                     },
                     subtle: {
-                        root: 'bg-elevated/60'
+                        root: 'ring-0 divide-y-0 bg-transparent'
                     },
                     soft: {
-                        root: 'bg-elevated/50'
+                        root: 'ring-0 divide-y-0 bg-transparent'
                     }
                 }
             }
