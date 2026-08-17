@@ -225,7 +225,8 @@
       "allTime": "누적",
       "queueScore": "대기열 / 점수"
     },
-    "uploadingNow": "업로드 중"
+    "uploadingNow": "업로드 중",
+    "detailsTitle": "업로드 상세 정보"
   },
   "shared": {
     "title": "공유 파일",
@@ -463,7 +464,7 @@
     "loading": "모델을 불러오는 중 ({percent}%)",
     "downloadNote": "모델은 한 번만 내려받아 브라우저가 캐시합니다. 입력한 내용은 이 기기를 벗어나지 않습니다.",
     "unsupportedTitle": "이 브라우저에서는 로컬 모델을 실행할 수 없습니다",
-    "unsupportedDescription": "WebGPU가 필요합니다. 데스크톱의 Chrome, Edge, Opera는 지원하며 Safari와 Firefox는 아직 추가하는 중입니다.",
+    "unsupportedDescription": "WebGPU가 필요하며, 페이지는 HTTPS(또는 localhost)로 제공되어야 합니다. 안전하지 않은 페이지에서는 브라우저가 WebGPU를 비활성화합니다. 데스크톱용 Chrome, Edge, Opera는 지원하며 Safari와 Firefox는 아직 추가 중입니다.",
     "ready": "준비됨",
     "thinking": "생각 중...",
     "toolsTitle": "사용 가능한 도구",

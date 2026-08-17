@@ -225,7 +225,8 @@
       "allTime": "Total",
       "queueScore": "Fila / pontuação"
     },
-    "uploadingNow": "a enviar"
+    "uploadingNow": "a enviar",
+    "detailsTitle": "Detalhes do envio"
   },
   "shared": {
     "title": "Ficheiros partilhados",
@@ -463,7 +464,7 @@
     "loading": "A carregar o modelo ({percent}%)",
     "downloadNote": "O modelo é transferido uma vez e fica em cache no navegador. Nada do que escrever sai deste dispositivo.",
     "unsupportedTitle": "Este navegador não consegue executar um modelo local",
-    "unsupportedDescription": "É necessário WebGPU. O Chrome, o Edge e o Opera têm-no no computador; o Safari e o Firefox ainda o estão a acrescentar.",
+    "unsupportedDescription": "É necessário WebGPU, e a página tem de ser servida por HTTPS (ou localhost): os navegadores desativam o WebGPU em páginas não seguras. O Chrome, o Edge e o Opera têm-no no computador; o Safari e o Firefox ainda o estão a adicionar.",
     "ready": "Pronto",
     "thinking": "A pensar...",
     "toolsTitle": "Ferramentas disponíveis",

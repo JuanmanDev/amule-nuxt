@@ -225,7 +225,8 @@
       "allTime": "Total",
       "queueScore": "Cua / puntuació"
     },
-    "uploadingNow": "pujant"
+    "uploadingNow": "pujant",
+    "detailsTitle": "Detalls de la pujada"
   },
   "shared": {
     "title": "Fitxers compartits",
@@ -463,7 +464,7 @@
     "loading": "S'està carregant el model ({percent}%)",
     "downloadNote": "El model es baixa un sol cop i el navegador el desa a la memòria cau. Res del que escriviu no surt d'aquest dispositiu.",
     "unsupportedTitle": "Aquest navegador no pot executar un model local",
-    "unsupportedDescription": "Cal WebGPU. El Chrome, l'Edge i l'Opera el tenen a l'escriptori; el Safari i el Firefox encara l'estan afegint.",
+    "unsupportedDescription": "Cal WebGPU, i la pàgina s'ha de servir per HTTPS (o localhost): els navegadors desactiven WebGPU a les pàgines no segures. Chrome, Edge i Opera el tenen a l'escriptori; Safari i Firefox encara l'estan afegint.",
     "ready": "A punt",
     "thinking": "Pensant...",
     "toolsTitle": "Eines disponibles",

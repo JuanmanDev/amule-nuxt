@@ -225,7 +225,8 @@
       "allTime": "Totalt",
       "queueScore": "Kö / poäng"
     },
-    "uploadingNow": "laddar upp"
+    "uploadingNow": "laddar upp",
+    "detailsTitle": "Detaljer om uppladdningen"
   },
   "shared": {
     "title": "Delade filer",
@@ -463,7 +464,7 @@
     "loading": "Läser in modellen ({percent} %)",
     "downloadNote": "Modellen laddas ner en gång och sparas av webbläsaren. Inget du skriver lämnar den här enheten.",
     "unsupportedTitle": "Den här webbläsaren kan inte köra en lokal modell",
-    "unsupportedDescription": "WebGPU krävs. Chrome, Edge och Opera har det på datorn; Safari och Firefox håller fortfarande på att lägga till det.",
+    "unsupportedDescription": "WebGPU krävs, och sidan måste levereras över HTTPS (eller localhost) — webbläsare stänger av WebGPU på osäkra sidor. Chrome, Edge och Opera har det på skrivbordet; Safari och Firefox håller fortfarande på att lägga till det.",
     "ready": "Klar",
     "thinking": "Tänker...",
     "toolsTitle": "Verktyg den kan använda",

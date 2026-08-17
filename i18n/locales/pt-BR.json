@@ -102,7 +102,8 @@
     "fields": {
       "user": "Usuário"
     },
-    "uploadingNow": "enviando"
+    "uploadingNow": "enviando",
+    "detailsTitle": "Detalhes do upload"
   },
   "shared": {
     "title": "Arquivos compartilhados",
@@ -234,7 +235,7 @@
     "placeholder": "Pergunte sobre seus downloads, ou diga o que fazer...",
     "loading": "Carregando o modelo ({percent}%)",
     "downloadNote": "O modelo é baixado uma vez e fica em cache no navegador. Nada do que você escrever sai deste dispositivo.",
-    "unsupportedDescription": "É necessário WebGPU. O Chrome, o Edge e o Opera já têm no computador; o Safari e o Firefox ainda estão adicionando.",
+    "unsupportedDescription": "É preciso WebGPU, e a página precisa ser servida por HTTPS (ou localhost): os navegadores desativam o WebGPU em páginas não seguras. Chrome, Edge e Opera já têm no desktop; Safari e Firefox ainda estão adicionando.",
     "thinking": "Pensando...",
     "emptyTitle": "Nada perguntado ainda",
     "emptyDescription": "Tente: “o que está baixando agora?” ou “pause tudo que não tem fontes”."

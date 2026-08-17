@@ -225,7 +225,8 @@
       "allTime": "Gjithsej",
       "queueScore": "Radhë / pikë"
     },
-    "uploadingNow": "po ngarkohet"
+    "uploadingNow": "po ngarkohet",
+    "detailsTitle": "Hollësitë e ngarkimit"
   },
   "shared": {
     "title": "Kartela të ndara",
@@ -463,7 +464,7 @@
     "loading": "Po ngarkohet modeli ({percent}%)",
     "downloadNote": "Modeli shkarkohet një herë dhe ruhet nga shfletuesi. Asgjë nga ç’shkruani s’largohet prej kësaj pajisjeje.",
     "unsupportedTitle": "Ky shfletues s’mund të xhirojë një model vendor",
-    "unsupportedDescription": "Lypset WebGPU. Chrome-i, Edge-i dhe Opera e kanë në desktop; Safari dhe Firefox-i po e shtojnë ende.",
+    "unsupportedDescription": "Kërkohet WebGPU dhe faqja duhet të shërbehet përmes HTTPS (ose localhost) — shfletuesit e çaktivizojnë WebGPU-në në faqe të pasigurta. Chrome, Edge dhe Opera e kanë në desktop; Safari dhe Firefox ende po e shtojnë.",
     "ready": "Gati",
     "thinking": "Po mendon...",
     "toolsTitle": "Mjete të passhme",

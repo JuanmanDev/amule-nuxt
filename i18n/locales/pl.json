@@ -225,7 +225,8 @@
       "allTime": "Łącznie",
       "queueScore": "Kolejka / punkty"
     },
-    "uploadingNow": "wysyła"
+    "uploadingNow": "wysyła",
+    "detailsTitle": "Szczegóły wysyłania"
   },
   "shared": {
     "title": "Pliki udostępnione",
@@ -463,7 +464,7 @@
     "loading": "Wczytywanie modelu ({percent}%)",
     "downloadNote": "Model pobiera się raz i jest zapamiętywany przez przeglądarkę. Nic z tego, co piszesz, nie opuszcza tego urządzenia.",
     "unsupportedTitle": "Ta przeglądarka nie uruchomi lokalnego modelu",
-    "unsupportedDescription": "Wymagane jest WebGPU. Chrome, Edge i Opera mają je na komputerach; Safari i Firefox wciąż je dodają.",
+    "unsupportedDescription": "Wymagane jest WebGPU, a strona musi być serwowana przez HTTPS (lub localhost) — przeglądarki wyłączają WebGPU na niezabezpieczonych stronach. Chrome, Edge i Opera mają je na komputerze; Safari i Firefox wciąż je dodają.",
     "ready": "Gotowy",
     "thinking": "Myśli...",
     "toolsTitle": "Dostępne narzędzia",

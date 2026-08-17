@@ -225,7 +225,8 @@
       "allTime": "Toplam",
       "queueScore": "Kuyruk / puan"
     },
-    "uploadingNow": "gönderiyor"
+    "uploadingNow": "gönderiyor",
+    "detailsTitle": "Gönderim ayrıntıları"
   },
   "shared": {
     "title": "Paylaşılan dosyalar",
@@ -463,7 +464,7 @@
     "loading": "Model yükleniyor (%{percent})",
     "downloadNote": "Model bir kez indirilir ve tarayıcı tarafından önbelleğe alınır. Yazdığınız hiçbir şey bu aygıttan çıkmaz.",
     "unsupportedTitle": "Bu tarayıcı yerel bir model çalıştıramaz",
-    "unsupportedDescription": "WebGPU gerekir. Masaüstünde Chrome, Edge ve Opera'da vardır; Safari ve Firefox hâlâ ekliyor.",
+    "unsupportedDescription": "WebGPU gerekir ve sayfanın HTTPS (veya localhost) üzerinden sunulması şarttır — tarayıcılar güvenli olmayan sayfalarda WebGPU'yu devre dışı bırakır. Chrome, Edge ve Opera masaüstünde destekler; Safari ve Firefox hâlâ eklemektedir.",
     "ready": "Hazır",
     "thinking": "Düşünüyor...",
     "toolsTitle": "Kullanabileceği araçlar",

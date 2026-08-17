@@ -225,7 +225,8 @@
       "allTime": "Общо",
       "queueScore": "Опашка / точки"
     },
-    "uploadingNow": "се качва"
+    "uploadingNow": "се качва",
+    "detailsTitle": "Подробности за качването"
   },
   "shared": {
     "title": "Споделени файлове",
@@ -463,7 +464,7 @@
     "loading": "Зареждане на модела ({percent}%)",
     "downloadNote": "Моделът се изтегля веднъж и се пази от браузъра. Нищо от написаното от вас не напуска това устройство.",
     "unsupportedTitle": "Този браузър не може да изпълни локален модел",
-    "unsupportedDescription": "Необходим е WebGPU. Chrome, Edge и Opera го имат на настолен компютър; Safari и Firefox още го добавят.",
+    "unsupportedDescription": "Изисква се WebGPU и страницата трябва да се обслужва през HTTPS (или localhost) — браузърите изключват WebGPU на незащитени страници. Chrome, Edge и Opera го имат на компютър; Safari и Firefox все още го добавят.",
     "ready": "Готово",
     "thinking": "Мисли...",
     "toolsTitle": "Налични инструменти",

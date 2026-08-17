@@ -225,7 +225,8 @@
       "allTime": "Загалом",
       "queueScore": "Черга / бали"
     },
-    "uploadingNow": "віддається"
+    "uploadingNow": "віддається",
+    "detailsTitle": "Деталі віддавання"
   },
   "shared": {
     "title": "Спільні файли",
@@ -463,7 +464,7 @@
     "loading": "Завантаження моделі ({percent}%)",
     "downloadNote": "Модель звантажується один раз і кешується браузером. Нічого з написаного вами не залишає цей пристрій.",
     "unsupportedTitle": "Цей браузер не може запустити локальну модель",
-    "unsupportedDescription": "Потрібен WebGPU. У Chrome, Edge та Opera на комп'ютері він є; Safari та Firefox його ще додають.",
+    "unsupportedDescription": "Потрібен WebGPU, і сторінка має відкриватися через HTTPS (або localhost) — на незахищених сторінках браузери вимикають WebGPU. Chrome, Edge та Opera мають його на комп'ютері; Safari та Firefox ще додають його.",
     "ready": "Готово",
     "thinking": "Думає...",
     "toolsTitle": "Доступні інструменти",

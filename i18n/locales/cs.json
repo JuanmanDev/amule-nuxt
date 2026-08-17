@@ -225,7 +225,8 @@
       "allTime": "Celkem",
       "queueScore": "Fronta / skóre"
     },
-    "uploadingNow": "odesílá"
+    "uploadingNow": "odesílá",
+    "detailsTitle": "Podrobnosti odesílání"
   },
   "shared": {
     "title": "Sdílené soubory",
@@ -463,7 +464,7 @@
     "loading": "Načítání modelu ({percent} %)",
     "downloadNote": "Model se stáhne jednou a prohlížeč si jej uloží do mezipaměti. Nic z toho, co napíšete, toto zařízení neopustí.",
     "unsupportedTitle": "Tento prohlížeč neumí spustit místní model",
-    "unsupportedDescription": "Je potřeba WebGPU. Chrome, Edge a Opera je na počítači mají; Safari a Firefox je teprve doplňují.",
+    "unsupportedDescription": "Je vyžadováno WebGPU a stránka musí být podávána přes HTTPS (nebo localhost) — na nezabezpečených stránkách prohlížeče WebGPU vypínají. Chrome, Edge a Opera ho mají na počítači; Safari a Firefox ho teprve přidávají.",
     "ready": "Připraven",
     "thinking": "Přemýšlí...",
     "toolsTitle": "Dostupné nástroje",

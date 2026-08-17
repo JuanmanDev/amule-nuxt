@@ -225,7 +225,8 @@
       "allTime": "Total",
       "queueScore": "Cola / puntuación"
     },
-    "uploadingNow": "xubiendo"
+    "uploadingNow": "xubiendo",
+    "detailsTitle": "Detalles de la xuba"
   },
   "shared": {
     "title": "Ficheros compartíos",
@@ -463,7 +464,7 @@
     "loading": "Cargando'l modelu ({percent}%)",
     "downloadNote": "El modelu descárgase una sola vez y el restolador guárdalu na caché. Nada de lo qu'escribes sal d'esti preséu.",
     "unsupportedTitle": "Esti restolador nun pue executar un modelu llocal",
-    "unsupportedDescription": "Fai falta WebGPU. Chrome, Edge y Opera tiénenlu nel escritoriu; Safari y Firefox entá tán amestándolu.",
+    "unsupportedDescription": "Fai falta WebGPU, y la páxina tien de sirvise per HTTPS (o localhost): los restoladores desactiven WebGPU nes páxines non segures. Chrome, Edge y Opera tienenlu nel escritoriu; Safari y Firefox tán amestándolu entá.",
     "ready": "Preparáu",
     "thinking": "Pensando...",
     "toolsTitle": "Ferramientes disponibles",

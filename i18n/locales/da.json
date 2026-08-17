@@ -225,7 +225,8 @@
       "allTime": "I alt",
       "queueScore": "Kø / point"
     },
-    "uploadingNow": "sender"
+    "uploadingNow": "sender",
+    "detailsTitle": "Detaljer om uploaden"
   },
   "shared": {
     "title": "Delte filer",
@@ -463,7 +464,7 @@
     "loading": "Indlæser modellen ({percent}%)",
     "downloadNote": "Modellen hentes én gang og gemmes af browseren. Intet af det du skriver forlader denne enhed.",
     "unsupportedTitle": "Denne browser kan ikke køre en lokal model",
-    "unsupportedDescription": "WebGPU er påkrævet. Chrome, Edge og Opera har det på computer; Safari og Firefox er stadig i gang med at tilføje det.",
+    "unsupportedDescription": "WebGPU kræves, og siden skal leveres over HTTPS (eller localhost) — browsere slår WebGPU fra på usikre sider. Chrome, Edge og Opera har det på computeren; Safari og Firefox er stadig ved at tilføje det.",
     "ready": "Klar",
     "thinking": "Tænker...",
     "toolsTitle": "Tilgængelige værktøjer",

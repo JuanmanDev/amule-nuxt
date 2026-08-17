@@ -225,7 +225,8 @@
       "allTime": "Totaal",
       "queueScore": "Wachtrij / score"
     },
-    "uploadingNow": "uploadt"
+    "uploadingNow": "uploadt",
+    "detailsTitle": "Details van de upload"
   },
   "shared": {
     "title": "Gedeelde bestanden",
@@ -463,7 +464,7 @@
     "loading": "Model wordt geladen ({percent}%)",
     "downloadNote": "Het model wordt één keer gedownload en door de browser bewaard. Niets van wat je typt verlaat dit apparaat.",
     "unsupportedTitle": "Deze browser kan geen lokaal model draaien",
-    "unsupportedDescription": "WebGPU is vereist. Chrome, Edge en Opera hebben het op de desktop; Safari en Firefox werken er nog aan.",
+    "unsupportedDescription": "WebGPU is vereist, en de pagina moet via HTTPS (of localhost) worden geserveerd — browsers schakelen WebGPU uit op onveilige pagina's. Chrome, Edge en Opera hebben het op desktop; Safari en Firefox zijn er nog mee bezig.",
     "ready": "Klaar",
     "thinking": "Aan het denken...",
     "toolsTitle": "Beschikbare hulpmiddelen",

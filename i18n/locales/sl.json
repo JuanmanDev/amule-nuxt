@@ -225,7 +225,8 @@
       "allTime": "Skupaj",
       "queueScore": "Vrsta / točke"
     },
-    "uploadingNow": "se pošilja"
+    "uploadingNow": "se pošilja",
+    "detailsTitle": "Podrobnosti pošiljanja"
   },
   "shared": {
     "title": "Datoteke v souporabi",
@@ -463,7 +464,7 @@
     "loading": "Nalaganje modela ({percent} %)",
     "downloadNote": "Model se prenese enkrat in ga brskalnik shrani v predpomnilnik. Nič od tega, kar napišete, ne zapusti te naprave.",
     "unsupportedTitle": "Ta brskalnik ne more poganjati krajevnega modela",
-    "unsupportedDescription": "Potreben je WebGPU. Chrome, Edge in Opera ga imajo na namizju; Safari in Firefox ga še dodajata.",
+    "unsupportedDescription": "Potreben je WebGPU, stran pa mora biti postrežena prek HTTPS (ali localhost) — brskalniki na nezavarovanih straneh WebGPU onemogočijo. Chrome, Edge in Opera ga imajo na namizju; Safari in Firefox ga še dodajata.",
     "ready": "Pripravljen",
     "thinking": "Razmišlja ...",
     "toolsTitle": "Razpoložljiva orodja",

@@ -225,7 +225,8 @@
       "allTime": "סך הכול",
       "queueScore": "תור / ניקוד"
     },
-    "uploadingNow": "בהעלאה"
+    "uploadingNow": "בהעלאה",
+    "detailsTitle": "פרטי ההעלאה"
   },
   "shared": {
     "title": "קבצים משותפים",
@@ -463,7 +464,7 @@
     "loading": "המודל נטען ({percent}%)",
     "downloadNote": "המודל יורד פעם אחת והדפדפן שומר אותו במטמון. דבר ממה שתכתבו אינו עוזב את המכשיר הזה.",
     "unsupportedTitle": "הדפדפן הזה אינו יכול להריץ מודל מקומי",
-    "unsupportedDescription": "נדרש WebGPU. ל־Chrome, ל־Edge ול־Opera יש אותו במחשב; Safari ו־Firefox עדיין מוסיפים אותו.",
+    "unsupportedDescription": "נדרש WebGPU, והדף חייב להיות מוגש דרך HTTPS (או localhost) — דפדפנים מנטרלים את WebGPU בדפים לא מאובטחים. ‏Chrome‏, Edge ו‑Opera תומכים בו במחשב; Safari ו‑Firefox עדיין מוסיפים אותו.",
     "ready": "מוכן",
     "thinking": "חושב...",
     "toolsTitle": "כלים זמינים",

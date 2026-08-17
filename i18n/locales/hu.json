@@ -225,7 +225,8 @@
       "allTime": "Összesen",
       "queueScore": "Sor / pontszám"
     },
-    "uploadingNow": "feltöltés alatt"
+    "uploadingNow": "feltöltés alatt",
+    "detailsTitle": "A feltöltés részletei"
   },
   "shared": {
     "title": "Megosztott fájlok",
@@ -463,7 +464,7 @@
     "loading": "A modell betöltése ({percent}%)",
     "downloadNote": "A modell egyszer töltődik le, és a böngésző gyorsítótárazza. Semmi nem hagyja el ezt az eszközt abból, amit ír.",
     "unsupportedTitle": "Ez a böngésző nem tud helyi modellt futtatni",
-    "unsupportedDescription": "WebGPU szükséges. A Chrome, az Edge és az Opera asztali változatában elérhető; a Safari és a Firefox még dolgozik rajta.",
+    "unsupportedDescription": "WebGPU szükséges, és az oldalt HTTPS-en (vagy localhoston) keresztül kell kiszolgálni — a böngészők nem biztonságos oldalakon letiltják a WebGPU-t. A Chrome, az Edge és az Opera asztali gépen már tudja; a Safari és a Firefox még dolgozik rajta.",
     "ready": "Kész",
     "thinking": "Gondolkodik...",
     "toolsTitle": "Elérhető eszközök",

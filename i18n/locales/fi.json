@@ -225,7 +225,8 @@
       "allTime": "Yhteensä",
       "queueScore": "Jono / pisteet"
     },
-    "uploadingNow": "lähettää"
+    "uploadingNow": "lähettää",
+    "detailsTitle": "Lähetyksen tiedot"
   },
   "shared": {
     "title": "Jaetut tiedostot",
@@ -463,7 +464,7 @@
     "loading": "Ladataan mallia ({percent}%)",
     "downloadNote": "Malli ladataan kerran ja selain tallentaa sen välimuistiin. Mikään kirjoittamasi ei poistu tältä laitteelta.",
     "unsupportedTitle": "Tämä selain ei voi ajaa paikallista mallia",
-    "unsupportedDescription": "WebGPU vaaditaan. Chromessa, Edgessä ja Operassa se on työpöydällä; Safari ja Firefox lisäävät sitä yhä.",
+    "unsupportedDescription": "WebGPU vaaditaan, ja sivun on tultava HTTPS:n (tai localhostin) kautta — selaimet poistavat WebGPU:n käytöstä suojaamattomilla sivuilla. Chrome, Edge ja Opera tukevat sitä työpöydällä; Safari ja Firefox lisäävät sitä yhä.",
     "ready": "Valmis",
     "thinking": "Ajattelee...",
     "toolsTitle": "Käytettävissä olevat työkalut",

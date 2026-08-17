@@ -225,7 +225,8 @@
       "allTime": "Ukupno",
       "queueScore": "Red / bodovi"
     },
-    "uploadingNow": "šalje se"
+    "uploadingNow": "šalje se",
+    "detailsTitle": "Pojedinosti slanja"
   },
   "shared": {
     "title": "Dijeljene datoteke",
@@ -463,7 +464,7 @@
     "loading": "Učitavanje modela ({percent}%)",
     "downloadNote": "Model se preuzima jednom i preglednik ga sprema u međuspremnik. Ništa od onoga što napišete ne napušta ovaj uređaj.",
     "unsupportedTitle": "Ovaj preglednik ne može izvoditi lokalni model",
-    "unsupportedDescription": "Potreban je WebGPU. Chrome, Edge i Opera ga imaju na stolnom računalu; Safari i Firefox ga još dodaju.",
+    "unsupportedDescription": "Potreban je WebGPU, a stranica se mora posluživati preko HTTPS-a (ili localhosta) — preglednici isključuju WebGPU na nesigurnim stranicama. Chrome, Edge i Opera imaju ga na računalu; Safari i Firefox ga još dodaju.",
     "ready": "Spremno",
     "thinking": "Razmišlja...",
     "toolsTitle": "Dostupni alati",

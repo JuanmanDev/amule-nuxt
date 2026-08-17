@@ -225,7 +225,8 @@
       "allTime": "Total",
       "queueScore": "Coadă / punctaj"
     },
-    "uploadingNow": "se încarcă"
+    "uploadingNow": "se încarcă",
+    "detailsTitle": "Detaliile încărcării"
   },
   "shared": {
     "title": "Fișiere partajate",
@@ -463,7 +464,7 @@
     "loading": "Se încarcă modelul ({percent}%)",
     "downloadNote": "Modelul se descarcă o singură dată și este păstrat în cache de browser. Nimic din ce scrieți nu părăsește acest dispozitiv.",
     "unsupportedTitle": "Acest browser nu poate rula un model local",
-    "unsupportedDescription": "Este necesar WebGPU. Chrome, Edge și Opera îl au pe desktop; Safari și Firefox încă îl adaugă.",
+    "unsupportedDescription": "Este necesar WebGPU, iar pagina trebuie servită prin HTTPS (sau localhost) — browserele dezactivează WebGPU pe paginile nesecurizate. Chrome, Edge și Opera îl au pe desktop; Safari și Firefox încă îl adaugă.",
     "ready": "Gata",
     "thinking": "Se gândește...",
     "toolsTitle": "Unelte disponibile",

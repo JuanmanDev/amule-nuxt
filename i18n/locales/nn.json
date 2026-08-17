@@ -225,7 +225,8 @@
       "allTime": "Totalt",
       "queueScore": "Kø / poeng"
     },
-    "uploadingNow": "lastar opp"
+    "uploadingNow": "lastar opp",
+    "detailsTitle": "Detaljar om opplastinga"
   },
   "shared": {
     "title": "Delte filer",
@@ -463,7 +464,7 @@
     "loading": "Lastar modellen ({percent}%)",
     "downloadNote": "Modellen blir lasta ned éin gong og lagra av nettlesaren. Ingenting av det du skriv forlèt denne eininga.",
     "unsupportedTitle": "Denne nettlesaren kan ikkje køyra ein lokal modell",
-    "unsupportedDescription": "WebGPU er påkravd. Chrome, Edge og Opera har det på datamaskin; Safari og Firefox held framleis på med å leggja det til.",
+    "unsupportedDescription": "WebGPU trengst, og sida må leverast over HTTPS (eller localhost) — nettlesarar slår av WebGPU på usikre sider. Chrome, Edge og Opera har det på datamaskina; Safari og Firefox held framleis på å leggje det til.",
     "ready": "Klar",
     "thinking": "Tenkjer...",
     "toolsTitle": "Tilgjengelege verktøy",

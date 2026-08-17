@@ -225,7 +225,8 @@
       "allTime": "Iš viso",
       "queueScore": "Eilė / taškai"
     },
-    "uploadingNow": "siunčiama"
+    "uploadingNow": "siunčiama",
+    "detailsTitle": "Siuntimo išsami informacija"
   },
   "shared": {
     "title": "Bendrinami failai",
@@ -463,7 +464,7 @@
     "loading": "Įkeliamas modelis ({percent}%)",
     "downloadNote": "Modelis atsiunčiamas vieną kartą ir naršyklė jį įsimena. Niekas iš to, ką rašote, nepalieka šio įrenginio.",
     "unsupportedTitle": "Ši naršyklė negali paleisti vietinio modelio",
-    "unsupportedDescription": "Reikia WebGPU. Chrome, Edge ir Opera jį turi kompiuteryje; Safari ir Firefox jį dar diegia.",
+    "unsupportedDescription": "Reikia WebGPU, o puslapis turi būti pasiekiamas per HTTPS (arba localhost) — nesaugiuose puslapiuose naršyklės išjungia WebGPU. Chrome, Edge ir Opera jį turi darbalaukyje; Safari ir Firefox jį dar diegia.",
     "ready": "Parengta",
     "thinking": "Mąsto...",
     "toolsTitle": "Prieinami įrankiai",

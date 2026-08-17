@@ -225,7 +225,8 @@
       "allTime": "Guztira",
       "queueScore": "Ilara / puntuazioa"
     },
-    "uploadingNow": "igotzen"
+    "uploadingNow": "igotzen",
+    "detailsTitle": "Igoeraren xehetasunak"
   },
   "shared": {
     "title": "Partekatutako fitxategiak",
@@ -463,7 +464,7 @@
     "loading": "Eredua kargatzen ({percent}%)",
     "downloadNote": "Eredua behin deskargatzen da eta nabigatzaileak cachean gordetzen du. Idazten duzunetik ezer ez da gailu honetatik ateratzen.",
     "unsupportedTitle": "Nabigatzaile honek ezin du eredu lokalik exekutatu",
-    "unsupportedDescription": "WebGPU behar da. Chrome, Edge eta Operak badute mahaigainean; Safarik eta Firefoxek gehitzen ari dira oraindik.",
+    "unsupportedDescription": "WebGPU behar da, eta orria HTTPS bidez (edo localhost) zerbitzatu behar da — nabigatzaileek WebGPU desgaitzen dute orri ez-seguruetan. Chrome, Edge eta Operak badute mahaigainean; Safari eta Firefox oraindik gehitzen ari dira.",
     "ready": "Prest",
     "thinking": "Pentsatzen...",
     "toolsTitle": "Tresna erabilgarriak",

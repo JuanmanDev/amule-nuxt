@@ -225,7 +225,8 @@
       "allTime": "All time",
       "queueScore": "Queue / score"
     },
-    "uploadingNow": "uploading"
+    "uploadingNow": "uploading",
+    "detailsTitle": "Upload details"
   },
   "shared": {
     "title": "Shared files",
@@ -463,7 +464,7 @@
     "loading": "Loading the model ({percent}%)",
     "downloadNote": "The model is downloaded once and cached by the browser. Nothing you type ever leaves this device.",
     "unsupportedTitle": "This browser cannot run a local model",
-    "unsupportedDescription": "WebGPU is required. Chrome, Edge and Opera have it on desktop; Safari and Firefox are still adding it.",
+    "unsupportedDescription": "WebGPU is required, and the page must be served over HTTPS (or localhost) — browsers disable WebGPU on insecure pages. Chrome, Edge and Opera have it on desktop; Safari and Firefox are still adding it.",
     "ready": "Ready",
     "thinking": "Thinking...",
     "toolsTitle": "Tools it can use",

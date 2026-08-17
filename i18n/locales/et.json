@@ -225,7 +225,8 @@
       "allTime": "Kokku",
       "queueScore": "Järjekord / punktid"
     },
-    "uploadingNow": "laaditakse üles"
+    "uploadingNow": "laaditakse üles",
+    "detailsTitle": "Üleslaadimise üksikasjad"
   },
   "shared": {
     "title": "Jagatud failid",
@@ -463,7 +464,7 @@
     "loading": "Mudeli laadimine ({percent}%)",
     "downloadNote": "Mudel laaditakse alla ühe korra ja brauser hoiab seda vahemälus. Miski kirjutatust ei lahku sellest seadmest.",
     "unsupportedTitle": "See brauser ei saa kohalikku mudelit käivitada",
-    "unsupportedDescription": "Vaja on WebGPU-d. Chrome'il, Edge'il ja Operal on see lauaarvutis olemas; Safari ja Firefox alles lisavad seda.",
+    "unsupportedDescription": "Vaja on WebGPU-d ja leht peab olema serveeritud üle HTTPS-i (või localhosti) — ebaturvalistel lehtedel lülitavad brauserid WebGPU välja. Chrome'il, Edge'il ja Operal on see töölaual olemas; Safari ja Firefox alles lisavad seda.",
     "ready": "Valmis",
     "thinking": "Mõtleb...",
     "toolsTitle": "Saadaolevad tööriistad",

@@ -225,7 +225,8 @@
       "allTime": "累計",
       "queueScore": "佇列／分數"
     },
-    "uploadingNow": "上傳中"
+    "uploadingNow": "上傳中",
+    "detailsTitle": "上傳詳細資訊"
   },
   "shared": {
     "title": "分享的檔案",
@@ -463,7 +464,7 @@
     "loading": "正在載入模型（{percent}%）",
     "downloadNote": "模型只會下載一次，並由瀏覽器快取。你輸入的任何內容都不會離開這台裝置。",
     "unsupportedTitle": "這個瀏覽器無法執行本機模型",
-    "unsupportedDescription": "需要 WebGPU。桌面版的 Chrome、Edge 與 Opera 已支援；Safari 與 Firefox 仍在加入中。",
+    "unsupportedDescription": "需要 WebGPU,而且頁面必須透過 HTTPS(或 localhost)存取——瀏覽器會在不安全的頁面上停用 WebGPU。桌面版 Chrome、Edge 與 Opera 已支援;Safari 與 Firefox 仍在加入中。",
     "ready": "就緒",
     "thinking": "思考中...",
     "toolsTitle": "可用的工具",

@@ -225,7 +225,8 @@
       "allTime": "الإجمالي",
       "queueScore": "الطابور / النقاط"
     },
-    "uploadingNow": "قيد الرفع"
+    "uploadingNow": "قيد الرفع",
+    "detailsTitle": "تفاصيل الرفع"
   },
   "shared": {
     "title": "الملفات المشتركة",
@@ -463,7 +464,7 @@
     "loading": "جارٍ تحميل النموذج ({percent}%)",
     "downloadNote": "يُنزَّل النموذج مرة واحدة ويحفظه المتصفح. لا يغادر شيء مما تكتبه هذا الجهاز.",
     "unsupportedTitle": "لا يستطيع هذا المتصفح تشغيل نموذج محلي",
-    "unsupportedDescription": "يلزم WebGPU. يتوفّر في Chrome وEdge وOpera على الحاسوب؛ أما Safari وFirefox فما زالا يضيفانه.",
+    "unsupportedDescription": "‏WebGPU مطلوب، ويجب أن تُقدَّم الصفحة عبر HTTPS (أو localhost) — تعطّل المتصفحات WebGPU في الصفحات غير الآمنة. ‏Chrome وEdge وOpera تدعمه على سطح المكتب؛ وما زال Safari وFirefox يضيفانه.",
     "ready": "جاهز",
     "thinking": "يفكّر...",
     "toolsTitle": "الأدوات المتاحة",

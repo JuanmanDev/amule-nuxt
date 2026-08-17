@@ -225,7 +225,8 @@
       "allTime": "За всё время",
       "queueScore": "Очередь / рейтинг"
     },
-    "uploadingNow": "отдаётся"
+    "uploadingNow": "отдаётся",
+    "detailsTitle": "Сведения об отдаче"
   },
   "shared": {
     "title": "Общие файлы",
@@ -463,7 +464,7 @@
     "loading": "Загрузка модели ({percent}%)",
     "downloadNote": "Модель скачивается один раз и кешируется браузером. Ничего из написанного вами не покидает это устройство.",
     "unsupportedTitle": "Этот браузер не может запустить локальную модель",
-    "unsupportedDescription": "Требуется WebGPU. В Chrome, Edge и Opera на компьютере он есть; Safari и Firefox ещё добавляют его.",
+    "unsupportedDescription": "Требуется WebGPU, и страница должна открываться по HTTPS (или localhost) — на незащищённых страницах браузеры отключают WebGPU. В Chrome, Edge и Opera он есть на компьютере; Safari и Firefox ещё добавляют его.",
     "ready": "Готово",
     "thinking": "Думает...",
     "toolsTitle": "Доступные инструменты",
