@@ -270,7 +270,8 @@
       "completedAt": "Pobrano dnia",
       "addedAt": "Dodano do kolejki"
     },
-    "notRecorded": "Nie zapisano"
+    "notRecorded": "Nie zapisano",
+    "pageLink": "Łącze do tego pliku"
   },
   "search": {
     "title": "Wyszukiwanie",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asystent",
-    "subtitle": "Model językowy działający w całości w tej przeglądarce, potrafiący obsługiwać aMule",
+    "subtitle": "Model językowy, który potrafi obsługiwać aMule — działający w tej przeglądarce albo przez Ollamę czy dowolne API zgodne z OpenAI",
     "open": "Otwórz asystenta",
     "placeholder": "Zapytaj o swoje pobierania albo powiedz, co zrobić...",
     "send": "Wyślij",
@@ -471,7 +472,25 @@
     "toolCall": "Użyto: {tool}",
     "emptyTitle": "Jeszcze o nic nie zapytano",
     "emptyDescription": "Spróbuj: „co się teraz pobiera?” albo „wstrzymaj wszystko bez źródeł”.",
-    "failed": "Model nie zdołał odpowiedzieć"
+    "failed": "Model nie zdołał odpowiedzieć",
+    "providerLabel": "Gdzie działa model",
+    "providers": {
+      "webllm": "W tej przeglądarce (WebGPU)",
+      "api": "Ollama lub punkt końcowy API"
+    },
+    "changeModel": "Zmień model",
+    "api": {
+      "baseUrlLabel": "Adres URL punktu końcowego",
+      "baseUrlHelp": "Ollama udostępnia go pod adresem http://localhost:11434/v1; zadziała dowolny punkt końcowy zgodny z OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Klucz API",
+      "keyPlaceholder": "Puste dla Ollamy",
+      "keyHelp": "Przechowywany tylko w tej przeglądarce i wysyłany z każdym żądaniem przez serwer tej aplikacji.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "np. llama3.2 lub gpt-4o-mini",
+      "listModels": "Pobierz listę modeli",
+      "connect": "Połącz",
+      "note": "W przeciwieństwie do modelu w przeglądarce rozmowa jest wysyłana do tego punktu końcowego."
+    }
   },
   "selection": {
     "select": "Zaznacz",

@@ -270,7 +270,8 @@
       "completedAt": "نُزّل في",
       "addedAt": "أُضيف إلى الطابور في"
     },
-    "notRecorded": "غير مسجَّل"
+    "notRecorded": "غير مسجَّل",
+    "pageLink": "رابط إلى هذا الملف"
   },
   "search": {
     "title": "البحث",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "المساعد",
-    "subtitle": "نموذج لغوي يعمل بالكامل داخل هذا المتصفح ويستطيع تشغيل aMule نيابةً عنك",
+    "subtitle": "نموذج لغوي يستطيع تشغيل aMule نيابةً عنك — يعمل في هذا المتصفح، أو عبر Ollama أو أي API متوافق مع OpenAI",
     "open": "فتح المساعد",
     "placeholder": "اسأل عن تنزيلاتك، أو أخبِره بما يفعل...",
     "send": "إرسال",
@@ -471,7 +472,25 @@
     "toolCall": "استخدم {tool}",
     "emptyTitle": "لم يُسأل شيء بعد",
     "emptyDescription": "جرّب: «ما الذي يُنزَّل الآن؟» أو «أوقِف مؤقّتًا كل ما لا مصادر له».",
-    "failed": "تعذّر على النموذج الإجابة"
+    "failed": "تعذّر على النموذج الإجابة",
+    "providerLabel": "مكان تشغيل النموذج",
+    "providers": {
+      "webllm": "في هذا المتصفح (WebGPU)",
+      "api": "‏Ollama أو نقطة نهاية API"
+    },
+    "changeModel": "تغيير النموذج",
+    "api": {
+      "baseUrlLabel": "عنوان URL لنقطة النهاية",
+      "baseUrlHelp": "يوفّرها Ollama على http://localhost:11434/v1؛ وتعمل أي نقطة نهاية متوافقة مع OpenAI (منها OpenAI وOpenRouter وGroq وMistral...).",
+      "keyLabel": "مفتاح API",
+      "keyPlaceholder": "اتركه فارغًا مع Ollama",
+      "keyHelp": "يُحفَظ في هذا المتصفح فقط، ويُرسَل مع كل طلب عبر خادم هذا التطبيق.",
+      "modelLabel": "النموذج",
+      "modelPlaceholder": "مثل llama3.2 أو gpt-4o-mini",
+      "listModels": "عرض النماذج",
+      "connect": "اتصال",
+      "note": "بخلاف النموذج الذي يعمل داخل المتصفح، تُرسَل المحادثة إلى نقطة النهاية تلك."
+    }
   },
   "selection": {
     "select": "تحديد",

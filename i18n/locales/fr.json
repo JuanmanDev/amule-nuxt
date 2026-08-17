@@ -270,7 +270,8 @@
       "completedAt": "Téléchargé le",
       "addedAt": "Ajouté à la file"
     },
-    "notRecorded": "Non enregistré"
+    "notRecorded": "Non enregistré",
+    "pageLink": "Lien vers ce fichier"
   },
   "search": {
     "title": "Recherche",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistant",
-    "subtitle": "Un modèle de langage qui s'exécute entièrement dans ce navigateur et peut piloter aMule pour vous",
+    "subtitle": "Un modèle de langage qui peut piloter aMule pour vous — exécuté dans ce navigateur, ou via Ollama ou toute API compatible OpenAI",
     "open": "Ouvrir l'assistant",
     "placeholder": "Posez une question sur vos téléchargements, ou dites quoi faire...",
     "send": "Envoyer",
@@ -471,7 +472,25 @@
     "toolCall": "A utilisé {tool}",
     "emptyTitle": "Aucune question pour l'instant",
     "emptyDescription": "Essayez : « qu'est-ce qui se télécharge en ce moment ? » ou « mets en pause tout ce qui n'a pas de source ».",
-    "failed": "Le modèle n'a pas pu répondre"
+    "failed": "Le modèle n'a pas pu répondre",
+    "providerLabel": "Où s'exécute le modèle",
+    "providers": {
+      "webllm": "Dans ce navigateur (WebGPU)",
+      "api": "Ollama ou point d'accès API"
+    },
+    "changeModel": "Changer de modèle",
+    "api": {
+      "baseUrlLabel": "URL du point d'accès",
+      "baseUrlHelp": "Ollama l'expose à l'adresse http://localhost:11434/v1 ; tout point d'accès compatible OpenAI fonctionne (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Clé API",
+      "keyPlaceholder": "Vide pour Ollama",
+      "keyHelp": "Conservée uniquement dans ce navigateur, et envoyée avec chaque requête via le serveur de cette application.",
+      "modelLabel": "Modèle",
+      "modelPlaceholder": "ex. llama3.2 ou gpt-4o-mini",
+      "listModels": "Lister les modèles",
+      "connect": "Se connecter",
+      "note": "Contrairement au modèle dans le navigateur, la conversation est envoyée à ce point d'accès."
+    }
   },
   "selection": {
     "select": "Sélectionner",

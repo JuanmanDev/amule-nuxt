@@ -270,7 +270,8 @@
       "completedAt": "İndirilme tarihi",
       "addedAt": "Kuyruğa eklenme"
     },
-    "notRecorded": "Kaydedilmemiş"
+    "notRecorded": "Kaydedilmemiş",
+    "pageLink": "Bu dosyaya bağlantı"
   },
   "search": {
     "title": "Arama",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistan",
-    "subtitle": "Tamamen bu tarayıcıda çalışan ve aMule'u sizin için kullanabilen bir dil modeli",
+    "subtitle": "aMule'u sizin için kullanabilen bir dil modeli — bu tarayıcıda ya da Ollama veya OpenAI uyumlu herhangi bir API üzerinden çalışır",
     "open": "Asistanı aç",
     "placeholder": "İndirmelerinizi sorun ya da ne yapılacağını söyleyin...",
     "send": "Gönder",
@@ -471,7 +472,25 @@
     "toolCall": "{tool} kullanıldı",
     "emptyTitle": "Henüz bir şey sorulmadı",
     "emptyDescription": "Deneyin: “şu anda ne iniyor?” ya da “kaynağı olmayan her şeyi duraklat”.",
-    "failed": "Model yanıt veremedi"
+    "failed": "Model yanıt veremedi",
+    "providerLabel": "Modelin çalıştığı yer",
+    "providers": {
+      "webllm": "Bu tarayıcıda (WebGPU)",
+      "api": "Ollama veya API uç noktası"
+    },
+    "changeModel": "Modeli değiştir",
+    "api": {
+      "baseUrlLabel": "Uç nokta URL'si",
+      "baseUrlHelp": "Ollama bunu http://localhost:11434/v1 adresinde sunar; OpenAI uyumlu herhangi bir uç nokta çalışır (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API anahtarı",
+      "keyPlaceholder": "Ollama için boş bırakın",
+      "keyHelp": "Yalnızca bu tarayıcıda tutulur ve her istekle birlikte bu uygulamanın sunucusu üzerinden gönderilir.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "örn. llama3.2 veya gpt-4o-mini",
+      "listModels": "Modelleri listele",
+      "connect": "Bağlan",
+      "note": "Tarayıcıdaki modelin aksine, konuşma o uç noktaya gönderilir."
+    }
   },
   "selection": {
     "select": "Seç",

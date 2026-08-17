@@ -270,7 +270,8 @@
       "completedAt": "Ladattu",
       "addedAt": "Lisätty jonoon"
     },
-    "notRecorded": "Ei kirjattu"
+    "notRecorded": "Ei kirjattu",
+    "pageLink": "Linkki tähän tiedostoon"
   },
   "search": {
     "title": "Haku",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Avustaja",
-    "subtitle": "Kielimalli, joka toimii kokonaan tässä selaimessa ja osaa käyttää aMulea puolestasi",
+    "subtitle": "Kielimalli, joka osaa käyttää aMulea puolestasi — toimii tässä selaimessa tai Ollaman tai minkä tahansa OpenAI-yhteensopivan API:n kautta",
     "open": "Avaa avustaja",
     "placeholder": "Kysy latauksistasi tai kerro, mitä tehdä...",
     "send": "Lähetä",
@@ -471,7 +472,25 @@
     "toolCall": "Käytti työkalua {tool}",
     "emptyTitle": "Mitään ei ole vielä kysytty",
     "emptyDescription": "Kokeile: ”mitä latautuu juuri nyt?” tai ”keskeytä kaikki ilman lähteitä”.",
-    "failed": "Malli ei pystynyt vastaamaan"
+    "failed": "Malli ei pystynyt vastaamaan",
+    "providerLabel": "Missä malli toimii",
+    "providers": {
+      "webllm": "Tässä selaimessa (WebGPU)",
+      "api": "Ollama tai API-päätepiste"
+    },
+    "changeModel": "Vaihda mallia",
+    "api": {
+      "baseUrlLabel": "Päätepisteen URL",
+      "baseUrlHelp": "Ollama tarjoaa sen osoitteessa http://localhost:11434/v1; mikä tahansa OpenAI-yhteensopiva päätepiste käy (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API-avain",
+      "keyPlaceholder": "Tyhjä Ollamalle",
+      "keyHelp": "Säilytetään vain tässä selaimessa ja lähetetään jokaisen pyynnön mukana tämän sovelluksen palvelimen kautta.",
+      "modelLabel": "Malli",
+      "modelPlaceholder": "esim. llama3.2 tai gpt-4o-mini",
+      "listModels": "Listaa mallit",
+      "connect": "Yhdistä",
+      "note": "Toisin kuin selaimessa toimiva malli, keskustelu lähetetään kyseiseen päätepisteeseen."
+    }
   },
   "selection": {
     "select": "Valitse",

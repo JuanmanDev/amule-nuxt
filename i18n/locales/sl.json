@@ -270,7 +270,8 @@
       "completedAt": "Preneseno",
       "addedAt": "Uvrščeno v vrsto"
     },
-    "notRecorded": "Ni zabeleženo"
+    "notRecorded": "Ni zabeleženo",
+    "pageLink": "Povezava do te datoteke"
   },
   "search": {
     "title": "Iskanje",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Pomočnik",
-    "subtitle": "Jezikovni model, ki teče v celoti v tem brskalniku in lahko namesto vas upravlja aMule",
+    "subtitle": "Jezikovni model, ki lahko namesto vas upravlja aMule — teče v tem brskalniku ali prek Ollama oziroma katere koli končne točke API, združljive z OpenAI",
     "open": "Odpri pomočnika",
     "placeholder": "Vprašajte o svojih prenosih ali mu povejte, kaj naj stori ...",
     "send": "Pošlji",
@@ -471,7 +472,25 @@
     "toolCall": "Uporabil {tool}",
     "emptyTitle": "Vprašanj še ni bilo",
     "emptyDescription": "Poskusite: »kaj se zdaj prenaša?« ali »ustavi vse brez virov«.",
-    "failed": "Model ni mogel odgovoriti"
+    "failed": "Model ni mogel odgovoriti",
+    "providerLabel": "Kje teče model",
+    "providers": {
+      "webllm": "V tem brskalniku (WebGPU)",
+      "api": "Ollama ali končna točka API"
+    },
+    "changeModel": "Zamenjaj model",
+    "api": {
+      "baseUrlLabel": "URL končne točke",
+      "baseUrlHelp": "Ollama to streže na http://localhost:11434/v1; deluje katera koli končna točka, združljiva z OpenAI (OpenAI, OpenRouter, Groq, Mistral ...).",
+      "keyLabel": "Ključ API",
+      "keyPlaceholder": "Prazno za Ollama",
+      "keyHelp": "Shranjen le v tem brskalniku in poslan z vsako zahtevo prek strežnika te aplikacije.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "npr. llama3.2 ali gpt-4o-mini",
+      "listModels": "Izpiši modele",
+      "connect": "Poveži",
+      "note": "Za razliko od modela v brskalniku se pogovor pošlje tej končni točki."
+    }
   },
   "selection": {
     "select": "Izberi",

@@ -270,7 +270,8 @@
       "completedAt": "Letöltve",
       "addedAt": "Sorba állítva"
     },
-    "notRecorded": "Nincs rögzítve"
+    "notRecorded": "Nincs rögzítve",
+    "pageLink": "Hivatkozás erre a fájlra"
   },
   "search": {
     "title": "Keresés",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asszisztens",
-    "subtitle": "Nyelvi modell, amely teljes egészében ebben a böngészőben fut, és képes kezelni az aMule-t",
+    "subtitle": "Nyelvi modell, amely képes kezelni az aMule-t — ebben a böngészőben futva, vagy Ollamán, illetve bármilyen OpenAI-kompatibilis API-n keresztül",
     "open": "Asszisztens megnyitása",
     "placeholder": "Kérdezzen a letöltéseiről, vagy mondja meg, mit tegyen...",
     "send": "Küldés",
@@ -471,7 +472,25 @@
     "toolCall": "Használta: {tool}",
     "emptyTitle": "Még nincs kérdés",
     "emptyDescription": "Próbálja ezt: „mi töltődik most?” vagy „szüneteltess mindent, aminek nincs forrása”.",
-    "failed": "A modell nem tudott válaszolni"
+    "failed": "A modell nem tudott válaszolni",
+    "providerLabel": "Hol fut a modell",
+    "providers": {
+      "webllm": "Ebben a böngészőben (WebGPU)",
+      "api": "Ollama vagy API-végpont"
+    },
+    "changeModel": "Modell váltása",
+    "api": {
+      "baseUrlLabel": "Végpont URL-je",
+      "baseUrlHelp": "Az Ollama a http://localhost:11434/v1 címen szolgálja ki; bármilyen OpenAI-kompatibilis végpont működik (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API-kulcs",
+      "keyPlaceholder": "Ollamához üresen hagyható",
+      "keyHelp": "Csak ebben a böngészőben tárolódik, és minden kéréssel együtt az alkalmazás szerverén keresztül küldődik el.",
+      "modelLabel": "Modell",
+      "modelPlaceholder": "pl. llama3.2 vagy gpt-4o-mini",
+      "listModels": "Modellek listázása",
+      "connect": "Csatlakozás",
+      "note": "A böngészőbeli modellel ellentétben a beszélgetés elküldésre kerül arra a végpontra."
+    }
   },
   "selection": {
     "select": "Kijelölés",

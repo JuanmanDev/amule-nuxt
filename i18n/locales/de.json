@@ -270,7 +270,8 @@
       "completedAt": "Heruntergeladen am",
       "addedAt": "Zur Warteschlange hinzugefügt"
     },
-    "notRecorded": "Nicht erfasst"
+    "notRecorded": "Nicht erfasst",
+    "pageLink": "Link zu dieser Datei"
   },
   "search": {
     "title": "Suche",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistent",
-    "subtitle": "Ein Sprachmodell, das vollständig in diesem Browser läuft und aMule für dich bedienen kann",
+    "subtitle": "Ein Sprachmodell, das aMule für dich bedienen kann – in diesem Browser, oder über Ollama oder jede OpenAI-kompatible API",
     "open": "Assistenten öffnen",
     "placeholder": "Frag nach deinen Downloads, oder sag, was zu tun ist...",
     "send": "Senden",
@@ -471,7 +472,25 @@
     "toolCall": "{tool} verwendet",
     "emptyTitle": "Noch nichts gefragt",
     "emptyDescription": "Versuche: \"was lädt gerade?\" oder \"pausiere alles ohne Quellen\".",
-    "failed": "Das Modell konnte nicht antworten"
+    "failed": "Das Modell konnte nicht antworten",
+    "providerLabel": "Wo das Modell läuft",
+    "providers": {
+      "webllm": "In diesem Browser (WebGPU)",
+      "api": "Ollama oder API-Endpunkt"
+    },
+    "changeModel": "Modell wechseln",
+    "api": {
+      "baseUrlLabel": "Endpunkt-URL",
+      "baseUrlHelp": "Ollama stellt sie unter http://localhost:11434/v1 bereit; jeder OpenAI-kompatible Endpunkt funktioniert (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API-Schlüssel",
+      "keyPlaceholder": "Leer für Ollama",
+      "keyHelp": "Wird nur in diesem Browser gespeichert und mit jeder Anfrage über den Server dieser App gesendet.",
+      "modelLabel": "Modell",
+      "modelPlaceholder": "z. B. llama3.2 oder gpt-4o-mini",
+      "listModels": "Modelle auflisten",
+      "connect": "Verbinden",
+      "note": "Anders als beim Modell im Browser wird die Unterhaltung an diesen Endpunkt gesendet."
+    }
   },
   "selection": {
     "select": "Auswählen",

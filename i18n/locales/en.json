@@ -270,7 +270,8 @@
       "completedAt": "Downloaded on",
       "addedAt": "Added to the queue"
     },
-    "notRecorded": "Not recorded"
+    "notRecorded": "Not recorded",
+    "pageLink": "Link to this file"
   },
   "search": {
     "title": "Search",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistant",
-    "subtitle": "A language model that runs entirely in this browser and can operate aMule for you",
+    "subtitle": "A language model that can operate aMule for you — running in this browser, or through Ollama or any OpenAI-compatible API",
     "open": "Open the assistant",
     "placeholder": "Ask about your downloads, or tell it what to do...",
     "send": "Send",
@@ -471,7 +472,25 @@
     "toolCall": "Used {tool}",
     "emptyTitle": "Nothing asked yet",
     "emptyDescription": "Try: \"what is downloading right now?\" or \"pause everything that has no sources\".",
-    "failed": "The model could not answer"
+    "failed": "The model could not answer",
+    "providerLabel": "Where the model runs",
+    "providers": {
+      "webllm": "In this browser (WebGPU)",
+      "api": "Ollama or API endpoint"
+    },
+    "changeModel": "Change model",
+    "api": {
+      "baseUrlLabel": "Endpoint URL",
+      "baseUrlHelp": "Ollama serves this at http://localhost:11434/v1; any OpenAI-compatible endpoint works (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API key",
+      "keyPlaceholder": "Empty for Ollama",
+      "keyHelp": "Kept in this browser only, and sent with each request through this app’s server.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "e.g. llama3.2 or gpt-4o-mini",
+      "listModels": "List models",
+      "connect": "Connect",
+      "note": "Unlike the in-browser model, the conversation is sent to that endpoint."
+    }
   },
   "selection": {
     "select": "Select",

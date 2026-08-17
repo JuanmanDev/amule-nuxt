@@ -270,7 +270,8 @@
       "completedAt": "Descărcat",
       "addedAt": "Pus în coadă"
     },
-    "notRecorded": "Neînregistrat"
+    "notRecorded": "Neînregistrat",
+    "pageLink": "Legătură către acest fișier"
   },
   "search": {
     "title": "Căutare",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistent",
-    "subtitle": "Un model de limbaj care rulează în întregime în acest browser și poate opera aMule în locul dumneavoastră",
+    "subtitle": "Un model de limbaj care poate opera aMule în locul dumneavoastră — rulând în acest browser, sau prin Ollama ori orice API compatibil OpenAI",
     "open": "Deschide asistentul",
     "placeholder": "Întrebați despre descărcările dumneavoastră sau spuneți-i ce să facă...",
     "send": "Trimite",
@@ -471,7 +472,25 @@
     "toolCall": "A folosit {tool}",
     "emptyTitle": "Nicio întrebare încă",
     "emptyDescription": "Încercați: „ce se descarcă acum?” sau „suspendă tot ce nu are surse”.",
-    "failed": "Modelul nu a putut răspunde"
+    "failed": "Modelul nu a putut răspunde",
+    "providerLabel": "Unde rulează modelul",
+    "providers": {
+      "webllm": "În acest browser (WebGPU)",
+      "api": "Ollama sau un punct final de API"
+    },
+    "changeModel": "Schimbă modelul",
+    "api": {
+      "baseUrlLabel": "URL-ul punctului final",
+      "baseUrlHelp": "Ollama îl servește la http://localhost:11434/v1; funcționează orice punct final compatibil OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Cheie API",
+      "keyPlaceholder": "Gol pentru Ollama",
+      "keyHelp": "Păstrată doar în acest browser și trimisă cu fiecare cerere prin serverul acestei aplicații.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "de ex. llama3.2 sau gpt-4o-mini",
+      "listModels": "Listează modelele",
+      "connect": "Conectează",
+      "note": "Spre deosebire de modelul din browser, conversația este trimisă către acel punct final."
+    }
   },
   "selection": {
     "select": "Selectează",

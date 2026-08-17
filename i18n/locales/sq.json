@@ -270,7 +270,8 @@
       "completedAt": "Shkarkuar më",
       "addedAt": "Vënë në radhë më"
     },
-    "notRecorded": "S’u regjistrua"
+    "notRecorded": "S’u regjistrua",
+    "pageLink": "Lidhje te ky skedar"
   },
   "search": {
     "title": "Kërkim",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Ndihmës",
-    "subtitle": "Një model gjuhësor që xhiron krejtësisht në këtë shfletues dhe mund ta përdorë aMule-n për ju",
+    "subtitle": "Një model gjuhësor që mund ta përdorë aMule-n për ju — duke xhiruar në këtë shfletues, ose përmes Ollama-s a çfarëdo API-je të përputhshme me OpenAI-n",
     "open": "Hape ndihmësin",
     "placeholder": "Pyetni për shkarkimet tuaja, ose thojini ç’të bëjë...",
     "send": "Dërgoje",
@@ -471,7 +472,25 @@
     "toolCall": "Përdori {tool}",
     "emptyTitle": "S’është pyetur ende gjë",
     "emptyDescription": "Provoni: “ç’po shkarkohet tani?” ose “ndali krejt ato pa burime”.",
-    "failed": "Modeli s’u përgjigj dot"
+    "failed": "Modeli s’u përgjigj dot",
+    "providerLabel": "Ku xhiron modeli",
+    "providers": {
+      "webllm": "Në këtë shfletues (WebGPU)",
+      "api": "Ollama ose një pikëmbarim API"
+    },
+    "changeModel": "Ndërro modelin",
+    "api": {
+      "baseUrlLabel": "URL e pikëmbarimit",
+      "baseUrlHelp": "Ollama e shërben këtë te http://localhost:11434/v1; funksionon çdo pikëmbarim i përputhshëm me OpenAI-n (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Kyç API",
+      "keyPlaceholder": "Bosh për Ollama-n",
+      "keyHelp": "Mbahet vetëm në këtë shfletues dhe dërgohet me çdo kërkesë përmes shërbyesit të këtij aplikacioni.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "p.sh. llama3.2 ose gpt-4o-mini",
+      "listModels": "Listo modelet",
+      "connect": "Lidhu",
+      "note": "Ndryshe nga modeli në shfletues, biseda dërgohet te ai pikëmbarim."
+    }
   },
   "selection": {
     "select": "Përzgjidhni",

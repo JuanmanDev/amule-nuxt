@@ -270,7 +270,8 @@
       "completedAt": "Descargóse",
       "addedAt": "Metióse na cola"
     },
-    "notRecorded": "Nun se rexistró"
+    "notRecorded": "Nun se rexistró",
+    "pageLink": "Enllaz a esti ficheru"
   },
   "search": {
     "title": "Guetar",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistente",
-    "subtitle": "Un modelu de llinguaxe que se executa dafechu nesti restolador y pue manexar aMule por ti",
+    "subtitle": "Un modelu de llinguaxe que pue manexar aMule por ti — executándose nesti restolador, o per Ollama o per cualquier API compatible con OpenAI",
     "open": "Abrir l'asistente",
     "placeholder": "Entruga poles tos descargues, o dí-y qué facer...",
     "send": "Unviar",
@@ -471,7 +472,25 @@
     "toolCall": "Usó {tool}",
     "emptyTitle": "Entá nun entrugasti nada",
     "emptyDescription": "Prueba: «¿qué toi descargando agora?» o «posa too lo que nun tenga fontes».",
-    "failed": "El modelu nun pudo responder"
+    "failed": "El modelu nun pudo responder",
+    "providerLabel": "Onde s'executa'l modelu",
+    "providers": {
+      "webllm": "Nesti restolador (WebGPU)",
+      "api": "Ollama o un endpoint d'API"
+    },
+    "changeModel": "Camudar de modelu",
+    "api": {
+      "baseUrlLabel": "URL del endpoint",
+      "baseUrlHelp": "Ollama sírvelu en http://localhost:11434/v1; val cualquier endpoint compatible con OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Clave d'API",
+      "keyPlaceholder": "Balera pa Ollama",
+      "keyHelp": "Guárdase namái nesti restolador y unvíase con cada solicitú al traviés del sirvidor d'esta aplicación.",
+      "modelLabel": "Modelu",
+      "modelPlaceholder": "p. ex. llama3.2 o gpt-4o-mini",
+      "listModels": "Llistar los modelos",
+      "connect": "Coneutar",
+      "note": "A diferencia del modelu nel restolador, la conversación unvíase a esi endpoint."
+    }
   },
   "selection": {
     "select": "Esbillar",

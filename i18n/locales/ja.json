@@ -270,7 +270,8 @@
       "completedAt": "ダウンロード完了日時",
       "addedAt": "待ち行列に追加された日時"
     },
-    "notRecorded": "記録なし"
+    "notRecorded": "記録なし",
+    "pageLink": "このファイルへのリンク"
   },
   "search": {
     "title": "検索",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "アシスタント",
-    "subtitle": "このブラウザー内だけで動き、aMule を操作できる言語モデル",
+    "subtitle": "aMule を操作できる言語モデル — このブラウザー内で動かすことも、Ollama や OpenAI 互換の API を通して使うこともできます",
     "open": "アシスタントを開く",
     "placeholder": "ダウンロードについて尋ねるか、してほしいことを伝えてください…",
     "send": "送信",
@@ -471,7 +472,25 @@
     "toolCall": "{tool} を使用しました",
     "emptyTitle": "まだ質問はありません",
     "emptyDescription": "例:「今なにをダウンロードしている？」「ソースのないものを全部一時停止して」",
-    "failed": "モデルが応答できませんでした"
+    "failed": "モデルが応答できませんでした",
+    "providerLabel": "モデルの実行場所",
+    "providers": {
+      "webllm": "このブラウザー内（WebGPU）",
+      "api": "Ollama または API エンドポイント"
+    },
+    "changeModel": "モデルを変更",
+    "api": {
+      "baseUrlLabel": "エンドポイント URL",
+      "baseUrlHelp": "Ollama は http://localhost:11434/v1 でこれを提供します。OpenAI 互換のエンドポイントならどれでも使えます（OpenAI、OpenRouter、Groq、Mistral など）。",
+      "keyLabel": "API キー",
+      "keyPlaceholder": "Ollama の場合は空欄",
+      "keyHelp": "このブラウザーにのみ保存され、リクエストごとにこのアプリのサーバーを経由して送信されます。",
+      "modelLabel": "モデル",
+      "modelPlaceholder": "例: llama3.2 や gpt-4o-mini",
+      "listModels": "モデル一覧を取得",
+      "connect": "接続",
+      "note": "ブラウザー内モデルとは異なり、会話はそのエンドポイントに送信されます。"
+    }
   },
   "selection": {
     "select": "選択",

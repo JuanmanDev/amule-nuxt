@@ -270,7 +270,8 @@
       "completedAt": "Baixat",
       "addedAt": "Posat a la cua"
     },
-    "notRecorded": "No registrat"
+    "notRecorded": "No registrat",
+    "pageLink": "Enllaç a aquest fitxer"
   },
   "search": {
     "title": "Cerca",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistent",
-    "subtitle": "Un model de llenguatge que s'executa del tot en aquest navegador i que pot fer anar l'aMule per vosaltres",
+    "subtitle": "Un model de llenguatge que pot fer anar l'aMule per vosaltres — executant-se en aquest navegador, o a través d'Ollama o de qualsevol API compatible amb OpenAI",
     "open": "Obre l'assistent",
     "placeholder": "Pregunteu per les vostres baixades, o digueu-li què ha de fer...",
     "send": "Envia",
@@ -471,7 +472,25 @@
     "toolCall": "Ha fet servir {tool}",
     "emptyTitle": "Encara no heu preguntat res",
     "emptyDescription": "Proveu: «què estic baixant ara?» o «posa en pausa tot el que no tingui fonts».",
-    "failed": "El model no ha pogut respondre"
+    "failed": "El model no ha pogut respondre",
+    "providerLabel": "On s'executa el model",
+    "providers": {
+      "webllm": "En aquest navegador (WebGPU)",
+      "api": "Ollama o un punt final d'API"
+    },
+    "changeModel": "Canvia de model",
+    "api": {
+      "baseUrlLabel": "URL del punt final",
+      "baseUrlHelp": "L'Ollama el serveix a http://localhost:11434/v1; funciona qualsevol punt final compatible amb OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Clau d'API",
+      "keyPlaceholder": "Buida per a l'Ollama",
+      "keyHelp": "Es desa només en aquest navegador i s'envia amb cada petició a través del servidor d'aquesta aplicació.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "p. ex. llama3.2 o gpt-4o-mini",
+      "listModels": "Llista els models",
+      "connect": "Connecta",
+      "note": "A diferència del model al navegador, la conversa s'envia a aquest punt final."
+    }
   },
   "selection": {
     "select": "Selecciona",

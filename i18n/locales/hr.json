@@ -270,7 +270,8 @@
       "completedAt": "Preuzeto",
       "addedAt": "Stavljeno u red"
     },
-    "notRecorded": "Nije zabilježeno"
+    "notRecorded": "Nije zabilježeno",
+    "pageLink": "Poveznica na ovu datoteku"
   },
   "search": {
     "title": "Pretraživanje",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Pomoćnik",
-    "subtitle": "Jezični model koji se izvodi u cijelosti u ovom pregledniku i može upravljati aMuleom umjesto vas",
+    "subtitle": "Jezični model koji može upravljati aMuleom umjesto vas — izvodi se u ovom pregledniku, ili preko Ollame ili bilo kojeg API-ja kompatibilnog s OpenAI-jem",
     "open": "Otvori pomoćnika",
     "placeholder": "Pitajte o svojim preuzimanjima ili mu recite što da učini...",
     "send": "Pošalji",
@@ -471,7 +472,25 @@
     "toolCall": "Upotrijebio {tool}",
     "emptyTitle": "Još ništa nije upitano",
     "emptyDescription": "Pokušajte: „što se sad preuzima?” ili „pauziraj sve bez izvora”.",
-    "failed": "Model nije uspio odgovoriti"
+    "failed": "Model nije uspio odgovoriti",
+    "providerLabel": "Gdje se model izvodi",
+    "providers": {
+      "webllm": "U ovom pregledniku (WebGPU)",
+      "api": "Ollama ili krajnja točka API-ja"
+    },
+    "changeModel": "Promijeni model",
+    "api": {
+      "baseUrlLabel": "URL krajnje točke",
+      "baseUrlHelp": "Ollama to poslužuje na http://localhost:11434/v1; radi bilo koja krajnja točka kompatibilna s OpenAI-jem (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API ključ",
+      "keyPlaceholder": "Prazno za Ollamu",
+      "keyHelp": "Čuva se samo u ovom pregledniku i šalje se sa svakim zahtjevom kroz poslužitelj ove aplikacije.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "npr. llama3.2 ili gpt-4o-mini",
+      "listModels": "Popis modela",
+      "connect": "Poveži se",
+      "note": "Za razliku od modela u pregledniku, razgovor se šalje toj krajnjoj točki."
+    }
   },
   "selection": {
     "select": "Odaberi",

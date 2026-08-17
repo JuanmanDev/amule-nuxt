@@ -270,7 +270,8 @@
       "completedAt": "Staženo dne",
       "addedAt": "Přidáno do fronty"
     },
-    "notRecorded": "Nezaznamenáno"
+    "notRecorded": "Nezaznamenáno",
+    "pageLink": "Odkaz na tento soubor"
   },
   "search": {
     "title": "Hledání",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistent",
-    "subtitle": "Jazykový model, který běží celý v tomto prohlížeči a umí za vás obsluhovat aMule",
+    "subtitle": "Jazykový model, který za vás umí obsluhovat aMule — běží v tomto prohlížeči, nebo přes Ollama či libovolné API kompatibilní s OpenAI",
     "open": "Otevřít asistenta",
     "placeholder": "Zeptejte se na svá stahování, nebo řekněte, co má udělat...",
     "send": "Odeslat",
@@ -471,7 +472,25 @@
     "toolCall": "Použil {tool}",
     "emptyTitle": "Zatím žádný dotaz",
     "emptyDescription": "Zkuste: „co se právě stahuje?“ nebo „pozastav vše bez zdrojů“.",
-    "failed": "Model nedokázal odpovědět"
+    "failed": "Model nedokázal odpovědět",
+    "providerLabel": "Kde model běží",
+    "providers": {
+      "webllm": "V tomto prohlížeči (WebGPU)",
+      "api": "Ollama nebo koncový bod API"
+    },
+    "changeModel": "Změnit model",
+    "api": {
+      "baseUrlLabel": "URL koncového bodu",
+      "baseUrlHelp": "Ollama jej poskytuje na adrese http://localhost:11434/v1; funguje jakýkoli koncový bod kompatibilní s OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API klíč",
+      "keyPlaceholder": "Pro Ollama nechte prázdné",
+      "keyHelp": "Ukládá se pouze v tomto prohlížeči a odesílá se s každým požadavkem přes server této aplikace.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "např. llama3.2 nebo gpt-4o-mini",
+      "listModels": "Vypsat modely",
+      "connect": "Připojit",
+      "note": "Na rozdíl od modelu v prohlížeči se konverzace odesílá na tento koncový bod."
+    }
   },
   "selection": {
     "select": "Vybrat",

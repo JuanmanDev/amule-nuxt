@@ -270,7 +270,8 @@
       "completedAt": "Lasta ned",
       "addedAt": "Lagd i kø"
     },
-    "notRecorded": "Ikkje registrert"
+    "notRecorded": "Ikkje registrert",
+    "pageLink": "Lenkje til denne fila"
   },
   "search": {
     "title": "Søk",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistent",
-    "subtitle": "Ein språkmodell som køyrer heilt i denne nettlesaren og kan styra aMule for deg",
+    "subtitle": "Ein språkmodell som kan styra aMule for deg — køyrande i denne nettlesaren, eller via Ollama eller eit vilkårleg OpenAI-kompatibelt API",
     "open": "Opna assistenten",
     "placeholder": "Spør om nedlastingane dine, eller be han gjera noko...",
     "send": "Send",
@@ -471,7 +472,25 @@
     "toolCall": "Brukte {tool}",
     "emptyTitle": "Ingenting spurt om enno",
     "emptyDescription": "Prøv: «kva lastar eg ned no?» eller «pausa alt utan kjelder».",
-    "failed": "Modellen klarte ikkje å svara"
+    "failed": "Modellen klarte ikkje å svara",
+    "providerLabel": "Kvar modellen køyrer",
+    "providers": {
+      "webllm": "I denne nettlesaren (WebGPU)",
+      "api": "Ollama eller API-endepunkt"
+    },
+    "changeModel": "Byt modell",
+    "api": {
+      "baseUrlLabel": "Endepunkt-URL",
+      "baseUrlHelp": "Ollama serverer dette på http://localhost:11434/v1; alle OpenAI-kompatible endepunkt fungerer (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API-nøkkel",
+      "keyPlaceholder": "Tom for Ollama",
+      "keyHelp": "Blir berre lagra i denne nettlesaren, og sendt med kvar førespurnad gjennom tenaren til denne appen.",
+      "modelLabel": "Modell",
+      "modelPlaceholder": "t.d. llama3.2 eller gpt-4o-mini",
+      "listModels": "List opp modellar",
+      "connect": "Kopla til",
+      "note": "I motsetnad til modellen i nettlesaren blir samtalen sendt til det endepunktet."
+    }
   },
   "selection": {
     "select": "Vel",

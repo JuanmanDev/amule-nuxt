@@ -270,7 +270,8 @@
       "completedAt": "Deskargatua",
       "addedAt": "Ilaran jarrita"
     },
-    "notRecorded": "Ez da erregistratu"
+    "notRecorded": "Ez da erregistratu",
+    "pageLink": "Fitxategi honetarako esteka"
   },
   "search": {
     "title": "Bilatu",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Laguntzailea",
-    "subtitle": "Nabigatzaile honetan bertan osorik exekutatzen den hizkuntza-eredu bat, aMule zure ordez erabil dezakeena",
+    "subtitle": "Hizkuntza-eredu bat, aMule zure ordez erabil dezakeena — nabigatzaile honetan exekutatuta, edo Ollama edo OpenAI-rekin bateragarria den edozein APIren bidez",
     "open": "Ireki laguntzailea",
     "placeholder": "Galdetu zure deskargei buruz, edo esan zer egin...",
     "send": "Bidali",
@@ -471,7 +472,25 @@
     "toolCall": "{tool} erabili du",
     "emptyTitle": "Oraindik ez da ezer galdetu",
     "emptyDescription": "Saiatu: «zer ari naiz deskargatzen orain?» edo «pausatu iturbururik ez duten guztiak».",
-    "failed": "Ereduak ezin izan du erantzun"
+    "failed": "Ereduak ezin izan du erantzun",
+    "providerLabel": "Non exekutatzen den eredua",
+    "providers": {
+      "webllm": "Nabigatzaile honetan (WebGPU)",
+      "api": "Ollama edo API amaiera-puntu bat"
+    },
+    "changeModel": "Aldatu eredua",
+    "api": {
+      "baseUrlLabel": "Amaiera-puntuaren URLa",
+      "baseUrlHelp": "Ollamak http://localhost:11434/v1 helbidean zerbitzatzen du; OpenAI-rekin bateragarria den edozein amaiera-puntuk balio du (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API gakoa",
+      "keyPlaceholder": "Hutsik Ollamarentzat",
+      "keyHelp": "Nabigatzaile honetan bakarrik gordetzen da, eta eskaera bakoitzarekin aplikazio honen zerbitzariaren bidez bidaltzen da.",
+      "modelLabel": "Eredua",
+      "modelPlaceholder": "adib. llama3.2 edo gpt-4o-mini",
+      "listModels": "Zerrendatu ereduak",
+      "connect": "Konektatu",
+      "note": "Nabigatzaileko ereduarekin ez bezala, elkarrizketa amaiera-puntu horretara bidaltzen da."
+    }
   },
   "selection": {
     "select": "Hautatu",

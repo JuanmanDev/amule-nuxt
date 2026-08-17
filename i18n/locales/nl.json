@@ -270,7 +270,8 @@
       "completedAt": "Gedownload op",
       "addedAt": "Toegevoegd aan de wachtrij"
     },
-    "notRecorded": "Niet vastgelegd"
+    "notRecorded": "Niet vastgelegd",
+    "pageLink": "Link naar dit bestand"
   },
   "search": {
     "title": "Zoeken",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Assistent",
-    "subtitle": "Een taalmodel dat volledig in deze browser draait en aMule voor je kan bedienen",
+    "subtitle": "Een taalmodel dat aMule voor je kan bedienen — draaiend in deze browser, of via Ollama of een willekeurige OpenAI-compatibele API",
     "open": "Assistent openen",
     "placeholder": "Vraag naar je downloads, of zeg wat er moet gebeuren...",
     "send": "Versturen",
@@ -471,7 +472,25 @@
     "toolCall": "{tool} gebruikt",
     "emptyTitle": "Nog niets gevraagd",
     "emptyDescription": "Probeer: \"wat wordt er nu gedownload?\" of \"pauzeer alles zonder bronnen\".",
-    "failed": "Het model kon niet antwoorden"
+    "failed": "Het model kon niet antwoorden",
+    "providerLabel": "Waar het model draait",
+    "providers": {
+      "webllm": "In deze browser (WebGPU)",
+      "api": "Ollama of API-eindpunt"
+    },
+    "changeModel": "Model wijzigen",
+    "api": {
+      "baseUrlLabel": "Eindpunt-URL",
+      "baseUrlHelp": "Ollama serveert dit op http://localhost:11434/v1; elk OpenAI-compatibel eindpunt werkt (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API-sleutel",
+      "keyPlaceholder": "Leeg voor Ollama",
+      "keyHelp": "Wordt alleen in deze browser bewaard, en bij elk verzoek via de server van deze app meegestuurd.",
+      "modelLabel": "Model",
+      "modelPlaceholder": "bijv. llama3.2 of gpt-4o-mini",
+      "listModels": "Modellen ophalen",
+      "connect": "Verbinden",
+      "note": "Anders dan bij het model in de browser wordt het gesprek naar dat eindpunt gestuurd."
+    }
   },
   "selection": {
     "select": "Selecteren",

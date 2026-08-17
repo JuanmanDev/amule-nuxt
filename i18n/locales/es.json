@@ -270,7 +270,8 @@
       "completedAt": "Descargado el",
       "addedAt": "Añadido a la cola"
     },
-    "notRecorded": "Sin registrar"
+    "notRecorded": "Sin registrar",
+    "pageLink": "Enlace a este archivo"
   },
   "search": {
     "title": "Buscar",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistente",
-    "subtitle": "Un modelo de lenguaje que se ejecuta por completo en este navegador y puede manejar aMule por ti",
+    "subtitle": "Un modelo de lenguaje que puede manejar aMule por ti — ejecutándose en este navegador, o a través de Ollama o de cualquier API compatible con OpenAI",
     "open": "Abrir el asistente",
     "placeholder": "Pregunta por tus descargas, o dile qué hacer...",
     "send": "Enviar",
@@ -471,7 +472,25 @@
     "toolCall": "Ha usado {tool}",
     "emptyTitle": "Aún no has preguntado nada",
     "emptyDescription": "Prueba con: \"¿qué se está descargando ahora?\" o \"pausa todo lo que no tenga fuentes\".",
-    "failed": "El modelo no ha podido responder"
+    "failed": "El modelo no ha podido responder",
+    "providerLabel": "Dónde se ejecuta el modelo",
+    "providers": {
+      "webllm": "En este navegador (WebGPU)",
+      "api": "Ollama o un endpoint de API"
+    },
+    "changeModel": "Cambiar de modelo",
+    "api": {
+      "baseUrlLabel": "URL del endpoint",
+      "baseUrlHelp": "Ollama lo sirve en http://localhost:11434/v1; funciona cualquier endpoint compatible con OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "Clave de API",
+      "keyPlaceholder": "Vacía para Ollama",
+      "keyHelp": "Se guarda solo en este navegador y se envía con cada petición a través del servidor de esta aplicación.",
+      "modelLabel": "Modelo",
+      "modelPlaceholder": "p. ej. llama3.2 o gpt-4o-mini",
+      "listModels": "Listar modelos",
+      "connect": "Conectar",
+      "note": "A diferencia del modelo en el navegador, la conversación se envía a ese endpoint."
+    }
   },
   "selection": {
     "select": "Seleccionar",

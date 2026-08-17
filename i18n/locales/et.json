@@ -270,7 +270,8 @@
       "completedAt": "Alla laaditud",
       "addedAt": "Järjekorda lisatud"
     },
-    "notRecorded": "Pole salvestatud"
+    "notRecorded": "Pole salvestatud",
+    "pageLink": "Link sellele failile"
   },
   "search": {
     "title": "Otsing",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Abiline",
-    "subtitle": "Keelemudel, mis töötab täielikult selles brauseris ja oskab aMule'i sinu eest juhtida",
+    "subtitle": "Keelemudel, mis oskab aMule'i sinu eest juhtida — töötab selles brauseris või Ollama või mis tahes OpenAI-ga ühilduva API kaudu",
     "open": "Ava abiline",
     "placeholder": "Küsi oma allalaadimiste kohta või ütle, mida teha...",
     "send": "Saada",
@@ -471,7 +472,25 @@
     "toolCall": "Kasutas: {tool}",
     "emptyTitle": "Veel pole midagi küsitud",
     "emptyDescription": "Proovi: „mida praegu alla laaditakse?“ või „peata kõik, millel pole allikaid“.",
-    "failed": "Mudel ei suutnud vastata"
+    "failed": "Mudel ei suutnud vastata",
+    "providerLabel": "Kus mudel töötab",
+    "providers": {
+      "webllm": "Selles brauseris (WebGPU)",
+      "api": "Ollama või API otspunkt"
+    },
+    "changeModel": "Vaheta mudelit",
+    "api": {
+      "baseUrlLabel": "Otspunkti URL",
+      "baseUrlHelp": "Ollama pakub seda aadressil http://localhost:11434/v1; sobib iga OpenAI-ga ühilduv otspunkt (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API võti",
+      "keyPlaceholder": "Ollama puhul jäta tühjaks",
+      "keyHelp": "Hoitakse ainult selles brauseris ja saadetakse iga päringuga läbi selle rakenduse serveri.",
+      "modelLabel": "Mudel",
+      "modelPlaceholder": "nt llama3.2 või gpt-4o-mini",
+      "listModels": "Loetle mudelid",
+      "connect": "Ühenda",
+      "note": "Erinevalt brauseris töötavast mudelist saadetakse vestlus sellesse otspunkti."
+    }
   },
   "selection": {
     "select": "Vali",

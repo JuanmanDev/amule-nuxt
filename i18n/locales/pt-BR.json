@@ -135,7 +135,8 @@
       "uploadPriority": "Prioridade de upload",
       "completedAt": "Baixado em"
     },
-    "notRecorded": "Não registrado"
+    "notRecorded": "Não registrado",
+    "pageLink": "Link para este arquivo"
   },
   "search": {
     "subtitle": "Procure arquivos nas redes eD2k e Kad",
@@ -231,14 +232,28 @@
     }
   },
   "assistant": {
-    "subtitle": "Um modelo de linguagem que roda inteiramente neste navegador e pode operar o aMule para você",
+    "subtitle": "Um modelo de linguagem que pode operar o aMule para você — rodando neste navegador, ou via Ollama ou qualquer API compatível com a OpenAI",
     "placeholder": "Pergunte sobre seus downloads, ou diga o que fazer...",
     "loading": "Carregando o modelo ({percent}%)",
     "downloadNote": "O modelo é baixado uma vez e fica em cache no navegador. Nada do que você escrever sai deste dispositivo.",
     "unsupportedDescription": "É preciso WebGPU, e a página precisa ser servida por HTTPS (ou localhost): os navegadores desativam o WebGPU em páginas não seguras. Chrome, Edge e Opera já têm no desktop; Safari e Firefox ainda estão adicionando.",
     "thinking": "Pensando...",
     "emptyTitle": "Nada perguntado ainda",
-    "emptyDescription": "Tente: “o que está baixando agora?” ou “pause tudo que não tem fontes”."
+    "emptyDescription": "Tente: “o que está baixando agora?” ou “pause tudo que não tem fontes”.",
+    "providerLabel": "Onde o modelo roda",
+    "providers": {
+      "api": "Ollama ou endpoint de API"
+    },
+    "changeModel": "Trocar de modelo",
+    "api": {
+      "baseUrlLabel": "URL do endpoint",
+      "baseUrlHelp": "O Ollama expõe isso em http://localhost:11434/v1; funciona qualquer endpoint compatível com a OpenAI (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyPlaceholder": "Deixe em branco para o Ollama",
+      "keyHelp": "Fica guardada só neste navegador e é enviada a cada requisição pelo servidor deste aplicativo.",
+      "modelPlaceholder": "ex.: llama3.2 ou gpt-4o-mini",
+      "connect": "Conectar",
+      "note": "Diferente do modelo no navegador, a conversa é enviada para esse endpoint."
+    }
   },
   "selection": {
     "selectAll": "Selecionar tudo que corresponde ao filtro",

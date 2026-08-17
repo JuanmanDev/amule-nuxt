@@ -270,7 +270,8 @@
       "completedAt": "הורד",
       "addedAt": "נכנס לתור"
     },
-    "notRecorded": "לא נרשם"
+    "notRecorded": "לא נרשם",
+    "pageLink": "קישור לקובץ הזה"
   },
   "search": {
     "title": "חיפוש",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "עוזר",
-    "subtitle": "מודל שפה שפועל כולו בדפדפן הזה ויכול להפעיל את aMule עבורכם",
+    "subtitle": "מודל שפה שיכול להפעיל את aMule עבורכם — פועל בדפדפן הזה, או דרך Ollama או כל API תואם OpenAI",
     "open": "פתיחת העוזר",
     "placeholder": "שאלו על ההורדות שלכם, או אמרו לו מה לעשות...",
     "send": "שליחה",
@@ -471,7 +472,25 @@
     "toolCall": "השתמש ב־{tool}",
     "emptyTitle": "עדיין לא נשאל דבר",
     "emptyDescription": "נסו: „מה יורד עכשיו?” או „השהה את כל מה שאין לו מקורות”.",
-    "failed": "המודל לא הצליח לענות"
+    "failed": "המודל לא הצליח לענות",
+    "providerLabel": "היכן המודל פועל",
+    "providers": {
+      "webllm": "בדפדפן הזה (WebGPU)",
+      "api": "Ollama או נקודת קצה של API"
+    },
+    "changeModel": "החלפת מודל",
+    "api": {
+      "baseUrlLabel": "כתובת נקודת הקצה",
+      "baseUrlHelp": "Ollama מגיש זאת בכתובת http://localhost:11434/v1; כל נקודת קצה תואמת OpenAI תעבוד (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "מפתח API",
+      "keyPlaceholder": "ריק עבור Ollama",
+      "keyHelp": "נשמר בדפדפן הזה בלבד, ונשלח עם כל בקשה דרך השרת של היישום הזה.",
+      "modelLabel": "מודל",
+      "modelPlaceholder": "למשל llama3.2 או gpt-4o-mini",
+      "listModels": "הצגת המודלים",
+      "connect": "התחברות",
+      "note": "בשונה מהמודל שבדפדפן, השיחה נשלחת אל נקודת הקצה הזו."
+    }
   },
   "selection": {
     "select": "בחירה",

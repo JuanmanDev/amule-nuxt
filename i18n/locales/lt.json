@@ -270,7 +270,8 @@
       "completedAt": "Atsiųsta",
       "addedAt": "Įtraukta į eilę"
     },
-    "notRecorded": "Neužfiksuota"
+    "notRecorded": "Neužfiksuota",
+    "pageLink": "Nuoroda į šį failą"
   },
   "search": {
     "title": "Paieška",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "Asistentas",
-    "subtitle": "Kalbos modelis, veikiantis visiškai šioje naršyklėje ir galintis valdyti aMule už jus",
+    "subtitle": "Kalbos modelis, galintis valdyti aMule už jus — veikiantis šioje naršyklėje arba per Ollama ar bet kurią su OpenAI suderinamą API",
     "open": "Atverti asistentą",
     "placeholder": "Klauskite apie savo atsiuntimus arba pasakykite, ką daryti...",
     "send": "Siųsti",
@@ -471,7 +472,25 @@
     "toolCall": "Naudojo {tool}",
     "emptyTitle": "Dar nieko neklausta",
     "emptyDescription": "Pabandykite: „ką dabar siunčiuosi?“ arba „pristabdyk viską be šaltinių“.",
-    "failed": "Modeliui nepavyko atsakyti"
+    "failed": "Modeliui nepavyko atsakyti",
+    "providerLabel": "Kur veikia modelis",
+    "providers": {
+      "webllm": "Šioje naršyklėje (WebGPU)",
+      "api": "Ollama arba API galinis taškas"
+    },
+    "changeModel": "Keisti modelį",
+    "api": {
+      "baseUrlLabel": "Galinio taško URL",
+      "baseUrlHelp": "Ollama tai pateikia adresu http://localhost:11434/v1; tinka bet kuris su OpenAI suderinamas galinis taškas (OpenAI, OpenRouter, Groq, Mistral...).",
+      "keyLabel": "API raktas",
+      "keyPlaceholder": "Ollama atveju palikite tuščią",
+      "keyHelp": "Saugomas tik šioje naršyklėje ir su kiekviena užklausa siunčiamas per šios programos serverį.",
+      "modelLabel": "Modelis",
+      "modelPlaceholder": "pvz., llama3.2 arba gpt-4o-mini",
+      "listModels": "Gauti modelių sąrašą",
+      "connect": "Prisijungti",
+      "note": "Skirtingai nuo naršyklėje veikiančio modelio, pokalbis siunčiamas į tą galinį tašką."
+    }
   },
   "selection": {
     "select": "Žymėti",

@@ -270,7 +270,8 @@
       "completedAt": "下載完成於",
       "addedAt": "加入佇列於"
     },
-    "notRecorded": "未記錄"
+    "notRecorded": "未記錄",
+    "pageLink": "指向此檔案的連結"
   },
   "search": {
     "title": "搜尋",
@@ -453,7 +454,7 @@
   },
   "assistant": {
     "title": "助理",
-    "subtitle": "完全在這個瀏覽器中執行的語言模型，可以代你操作 aMule",
+    "subtitle": "可以代你操作 aMule 的語言模型——在這個瀏覽器中執行，或透過 Ollama 及任何相容 OpenAI 的 API",
     "open": "開啟助理",
     "placeholder": "詢問你的下載狀況，或告訴它要做什麼...",
     "send": "送出",
@@ -471,7 +472,25 @@
     "toolCall": "使用了 {tool}",
     "emptyTitle": "還沒有提問",
     "emptyDescription": "試試看：「我現在在下載什麼？」或「把沒有來源的都暫停」。",
-    "failed": "模型無法回覆"
+    "failed": "模型無法回覆",
+    "providerLabel": "模型執行的位置",
+    "providers": {
+      "webllm": "在這個瀏覽器中（WebGPU）",
+      "api": "Ollama 或 API 端點"
+    },
+    "changeModel": "更換模型",
+    "api": {
+      "baseUrlLabel": "端點 URL",
+      "baseUrlHelp": "Ollama 會在 http://localhost:11434/v1 提供此服務；任何相容 OpenAI 的端點都可以使用（OpenAI、OpenRouter、Groq、Mistral 等）。",
+      "keyLabel": "API 金鑰",
+      "keyPlaceholder": "使用 Ollama 時留空",
+      "keyHelp": "只保存在這個瀏覽器中，並隨每次請求經由本應用程式的伺服器傳送。",
+      "modelLabel": "模型",
+      "modelPlaceholder": "例如 llama3.2 或 gpt-4o-mini",
+      "listModels": "列出模型",
+      "connect": "連線",
+      "note": "與瀏覽器內的模型不同，對話會被傳送到該端點。"
+    }
   },
   "selection": {
     "select": "選取",
