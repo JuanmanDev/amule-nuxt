@@ -131,11 +131,11 @@
                 <div
                   v-for="upload in visibleUploads"
                   :key="keyOfUpload(upload)"
-                  class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors"
+                  class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors cursor-pointer"
                   :class="selection.active.value
-                    ? ['cursor-pointer', selection.has(keyOfUpload(upload)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : 'hover:bg-elevated/60']
-                    : []"
-                  @click="selection.active.value && selection.toggle(keyOfUpload(upload))"
+                    ? [selection.has(keyOfUpload(upload)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : 'hover:bg-elevated/60']
+                    : ['hover:bg-elevated/60']"
+                  @click="selection.active.value ? selection.toggle(keyOfUpload(upload)) : openDetails(upload)"
                 >
                   <div class="min-w-0 space-y-2">
                     <div class="flex items-start justify-between gap-2">
@@ -261,6 +261,68 @@
       :links="selectionLinks"
     />
 
+    <!-- Everything known about one transfer, opened by clicking its row -->
+    <UModal v-model:open="detailsOpen" :ui="{ content: 'max-w-3xl' }" :title="$t('uploads.detailsTitle')">
+      <template #body>
+        <div v-if="selectedUpload" class="space-y-6">
+          <div class="space-y-2">
+            <p class="text-sm font-semibold break-all leading-snug">{{ selectedUpload.fileName }}</p>
+            <p
+              v-if="selectedUpload.remoteFileName && selectedUpload.remoteFileName !== selectedUpload.fileName"
+              class="text-xs text-gray-500 dark:text-gray-400 break-all"
+            >
+              {{ $t('uploads.requestedAs', { name: selectedUpload.remoteFileName }) }}
+            </p>
+          </div>
+
+          <dl class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div v-for="fact in detailFacts" :key="fact.label" class="min-w-0">
+              <dt class="text-xs text-gray-500 dark:text-gray-400">{{ fact.label }}</dt>
+              <dd class="font-medium break-words">{{ fact.value }}</dd>
+            </div>
+          </dl>
+
+          <div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.fileHash') }}</div>
+            <div class="flex items-center gap-2">
+              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">{{ selectedUpload.fileHash || $t('common.unknown') }}</code>
+              <UButton
+                v-if="selectedUpload.fileHash"
+                size="xs"
+                variant="ghost"
+                color="neutral"
+                icon="i-heroicons-clipboard-document"
+                :aria-label="$t('downloads.copyHash')"
+                @click="copy(selectedUpload.fileHash, t('downloads.hashCopied'))"
+              />
+            </div>
+          </div>
+
+          <!-- The link comes from the shared list: an upload carries no size,
+               so its link cannot be built from the upload alone -->
+          <div v-if="selectedLink">
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $t('downloads.ed2kLink') }}</div>
+            <div class="flex items-start gap-2">
+              <code class="text-xs font-mono break-all bg-gray-100 dark:bg-gray-800 rounded px-2 py-1 max-h-24 overflow-y-auto">{{ selectedLink }}</code>
+              <UButton
+                size="xs"
+                variant="ghost"
+                color="neutral"
+                icon="i-heroicons-clipboard-document"
+                :aria-label="$t('downloads.copyLink')"
+                @click="copy(selectedLink, t('downloads.linkCopied'))"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end w-full">
+          <UButton color="neutral" variant="ghost" @click="() => { detailsOpen = false }">{{ $t('common.close') }}</UButton>
+        </div>
+      </template>
+    </UModal>
+
     <RelatedPages :pages="['shared', 'statistics', 'downloads']" />
   </div>
 </template>
@@ -349,6 +411,42 @@ const selection = useListSelection<Upload>({
 });
 
 const totalsOpen = ref(false);
+
+// ========== Details of one transfer ==========
+
+const detailsOpen = ref(false);
+const selectedUpload = ref<Upload | null>(null);
+
+function openDetails(upload: Upload) {
+  selectedUpload.value = upload;
+  detailsOpen.value = true;
+}
+
+const selectedLink = computed(() => {
+  const hash = selectedUpload.value?.fileHash;
+  return hash ? sharedByHash.value.get(hash.toLowerCase()) ?? null : null;
+});
+
+const detailFacts = computed(() => {
+  const upload = selectedUpload.value;
+  if (!upload) return [];
+
+  return [
+    { label: t('uploads.fields.user'), value: upload.user || t('common.unknown') },
+    {
+      label: t('uploads.fields.address'),
+      value: upload.userIp ? `${upload.userIp}${upload.userPort ? `:${upload.userPort}` : ''}` : '-'
+    },
+    { label: t('uploads.fields.client'), value: upload.clientSoftware || t('common.unknown') },
+    { label: t('sort.speed'), value: upload.speed > 0 ? formatSpeed(upload.speed) : t('uploads.idle') },
+    { label: t('uploads.fields.session'), value: formatBytes(upload.transferred) },
+    { label: t('uploads.fields.allTime'), value: formatBytes(upload.transferredTotal) },
+    {
+      label: t('uploads.fields.queueScore'),
+      value: `${upload.waitingPosition > 0 ? `#${upload.waitingPosition}` : t('uploads.uploadingNow')} / ${upload.score}`
+    }
+  ];
+});
 
 /*
  * Links for the selected uploads, resolved through the shared files.

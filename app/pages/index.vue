@@ -244,41 +244,7 @@
       </div>
     </UCard>
 
-    <!-- Quick Actions -->
-    <UCard>
-      <template #header>
-        <h2 class="text-xl font-semibold">Quick Actions</h2>
-      </template>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <NuxtLink to="/downloads">
-          <UButton block size="lg" variant="outline">
-            <template #leading>
-              <UIcon name="i-heroicons-arrow-down-tray" class="w-5 h-5" />
-            </template>
-            Manage Downloads
-          </UButton>
-        </NuxtLink>
-
-        <NuxtLink to="/search">
-          <UButton block size="lg" variant="outline">
-            <template #leading>
-              <UIcon name="i-heroicons-magnifying-glass" class="w-5 h-5" />
-            </template>
-            Search Files
-          </UButton>
-        </NuxtLink>
-
-        <NuxtLink to="/settings">
-          <UButton block size="lg" variant="outline">
-            <template #leading>
-              <UIcon name="i-heroicons-cog-6-tooth" class="w-5 h-5" />
-            </template>
-            Settings
-          </UButton>
-        </NuxtLink>
-      </div>
-    </UCard>
+    <RelatedPages :pages="['downloads', 'search', 'searchAuto', 'shared', 'statistics', 'settings']" />
   </div>
 </template>
 

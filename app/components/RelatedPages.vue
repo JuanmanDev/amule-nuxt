@@ -6,12 +6,16 @@
       </h2>
     </template>
 
-    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- auto-fit rather than breakpoints: as many tiles as the width takes,
+         at least four side by side on a desktop, two on a tablet, one on a
+         phone - and a row of three collapses the same way without its own
+         rules. Same translucent blurred surface as the stat tiles elsewhere. -->
+    <div class="grid gap-2 grid-cols-[repeat(auto-fit,minmax(13rem,1fr))]">
       <NuxtLink
         v-for="page in resolved"
         :key="page.to"
         :to="page.to"
-        class="flex items-start gap-3 rounded-lg border border-gray-200 dark:border-gray-800 p-3 hover:bg-elevated/60 transition-colors"
+        class="flex items-start gap-3 rounded-lg p-3 bg-elevated/40 backdrop-blur-sm hover:bg-elevated/70 hover:shadow-md transition-all"
       >
         <UIcon :name="page.icon" class="w-5 h-5 mt-0.5 shrink-0 text-primary-500" />
         <span class="min-w-0">
