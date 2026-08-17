@@ -2,6 +2,16 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.8.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.7.0...v1.8.0) (2026-08-17)
+
+### Features
+
+* **ui:** borderless cards, blurred related tiles and upload details ([6c88eec](https://github.com/JuanmanDev/amule-nuxt/commit/6c88eec875aa3f7a343d2215295e2af5ab422d12))
+
+### Bug fixes
+
+* **i18n:** say WebGPU also needs HTTPS, and name the upload details ([05ba26f](https://github.com/JuanmanDev/amule-nuxt/commit/05ba26f627270640dee26744612fb0c2b59da263))
+
 ## [1.7.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.6.0...v1.7.0) (2026-08-16)
 
 ### Features
