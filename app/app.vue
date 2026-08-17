@@ -55,6 +55,12 @@
         <div class="flex items-center justify-between h-16">
           <p class="text-sm text-gray-500 dark:text-gray-400">
             {{ $t('app.footer', { year: new Date().getFullYear() }) }} Juanma was here.
+            <!-- The running version, linked to what changed in it -->
+            <a
+              href="https://github.com/JuanmanDev/amule-nuxt/releases"
+              target="_blank"
+              class="hover:underline"
+            >aMule Nuxt v{{ runtimeConfig.public.appVersion }}</a>
           </p>
           <div class="flex items-center gap-2">
             <LanguageSwitcher />
