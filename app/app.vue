@@ -40,10 +40,12 @@
       </UContainer>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Content. The column stretches to the viewport so a short page can
+         push its related-pages section to the bottom (mt-auto in RelatedPages);
+         a tall page simply flows past the minimum. -->
     <UMain class="pb-32 lg:pb-0">
-      <UContainer class="py-8">
-        <NuxtPage />
+      <UContainer class="py-8 flex flex-col min-h-[calc(100vh-8rem)]">
+        <NuxtPage class="flex-1 flex flex-col" />
       </UContainer>
     </UMain>
 

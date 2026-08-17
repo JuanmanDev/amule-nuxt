@@ -1,5 +1,8 @@
 <template>
-  <UCard>
+  <!-- mt-auto: on a page shorter than the viewport this sits at the bottom;
+       on a tall page the auto margin collapses and pt-6 keeps the breathing
+       room above it either way -->
+  <UCard class="mt-auto pt-6">
     <template #header>
       <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
         {{ $t('related.title') }}
