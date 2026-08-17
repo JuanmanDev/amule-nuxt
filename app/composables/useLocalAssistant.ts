@@ -1,10 +1,17 @@
 /**
- * A language model that runs entirely in this browser, and can operate aMule.
+ * A language model that can operate aMule - run in this browser, or reached
+ * over an API.
  *
- * Nothing typed here is sent anywhere: WebLLM compiles the model to WebGPU and
- * runs it on the local machine, and the only network traffic is the one-off
- * model download (cached by the browser afterwards) and the tool calls, which go
- * to this app's own MCP endpoint on the same origin.
+ * Two providers behind one seam (`complete()`):
+ *
+ *  * **webllm** - the model runs entirely in this browser. Nothing typed here
+ *    is sent anywhere: WebLLM compiles the model to WebGPU and runs it locally,
+ *    and the only network traffic is the one-off model download and the tool
+ *    calls to this app's own MCP endpoint.
+ *  * **api** - Ollama (local or remote) or any OpenAI-compatible cloud API,
+ *    with an optional key. Relayed through this app's server, because Ollama
+ *    and most cloud APIs refuse requests coming straight from a browser. The
+ *    key lives in this browser's storage and travels only with each request.
  *
  * ## How the tools work
  *
@@ -59,6 +66,18 @@ const MAX_TOOL_ROUNDS = 5;
 const MAX_HISTORY_MESSAGES = 24;
 
 const STORAGE_KEY = 'amule.assistant.model';
+const PROVIDER_KEY = 'amule.assistant.provider';
+const API_KEY = 'amule.assistant.api';
+
+export type AssistantProvider = 'webllm' | 'api';
+
+export interface ApiSettings {
+    /** OpenAI-compatible base, e.g. http://localhost:11434/v1 for Ollama. */
+    baseUrl: string;
+    /** Empty for Ollama; a bearer token for cloud endpoints. */
+    apiKey: string;
+    model: string;
+}
 
 function systemPrompt(tools: AssistantTool[]): string {
     const catalogue = tools.map(tool => {
@@ -140,7 +159,29 @@ export const useLocalAssistant = () => {
     // reactive state, or Vue proxies every internal it touches.
     const engineRef = useState<{ engine: any } | null>('assistant-engine', () => null);
 
+    const provider = useState<AssistantProvider>('assistant-provider', () => 'webllm');
+    const api = useState<ApiSettings>('assistant-api', () => ({ baseUrl: '', apiKey: '', model: '' }));
+    /** What the endpoint said it offers, once asked. */
+    const apiModels = useState<string[]>('assistant-api-models', () => []);
+
     let cancelled = false;
+    let apiAbort: AbortController | null = null;
+
+    // Switching provider is a choice worth remembering by itself, before any
+    // connect. One watcher app-wide: the flag lives in useState.
+    const watching = useState<boolean>('assistant-persist-watch', () => false);
+    if (import.meta.client && !watching.value) {
+        watching.value = true;
+        watch(provider, () => persistApiSettings());
+    }
+
+    function persistApiSettings(): void {
+        if (import.meta.server) return;
+        window.localStorage.setItem(PROVIDER_KEY, provider.value);
+        // The key too: this is a self-hosted app on the user's own machines,
+        // and re-typing a key on every visit is how keys end up in notepads
+        window.localStorage.setItem(API_KEY, JSON.stringify(api.value));
+    }
 
     /**
      * WebGPU is the whole requirement. It is absent in Safari and Firefox at the
@@ -148,6 +189,22 @@ export const useLocalAssistant = () => {
      */
     async function detect(): Promise<void> {
         if (import.meta.server) return;
+
+        // Settings first, so the page opens on the provider used last time
+        const storedProvider = window.localStorage.getItem(PROVIDER_KEY);
+        if (storedProvider === 'api' || storedProvider === 'webllm') provider.value = storedProvider;
+        try {
+            const storedApi = JSON.parse(window.localStorage.getItem(API_KEY) || '');
+            if (storedApi && typeof storedApi === 'object') {
+                api.value = {
+                    baseUrl: typeof storedApi.baseUrl === 'string' ? storedApi.baseUrl : '',
+                    apiKey: typeof storedApi.apiKey === 'string' ? storedApi.apiKey : '',
+                    model: typeof storedApi.model === 'string' ? storedApi.model : ''
+                };
+            }
+        } catch {
+            // No stored settings, or unreadable ones: the form starts empty
+        }
 
         const gpu = (navigator as any).gpu;
         if (!gpu) {
@@ -192,8 +249,75 @@ export const useLocalAssistant = () => {
             || '';
     }
 
+    /** Asks the endpoint what it offers, to fill the model picker. */
+    async function listApiModels(): Promise<void> {
+        if (!api.value.baseUrl.trim()) return;
+
+        try {
+            const response = await $fetch<{ success: boolean; data?: { models: string[] }; error?: string }>(
+                '/api/assistant/models',
+                { method: 'POST', body: { baseUrl: api.value.baseUrl, apiKey: api.value.apiKey } }
+            );
+
+            if (!response.success) {
+                error.value = response.error || 'Could not list the models';
+                return;
+            }
+
+            apiModels.value = response.data?.models ?? [];
+            error.value = null;
+            // A model the endpoint offers beats an empty box
+            if (!api.value.model && apiModels.value.length > 0) {
+                api.value = { ...api.value, model: apiModels.value[0]! };
+            }
+        } catch (e: any) {
+            error.value = e?.message || 'Could not list the models';
+        }
+    }
+
+    /** Checks the endpoint answers, then treats the assistant as ready. */
+    async function connectApi(): Promise<void> {
+        if (status.value === 'loading') return;
+
+        status.value = 'loading';
+        error.value = null;
+
+        try {
+            // One tiny round trip proves the URL, the key and the model name
+            // together, which is what "connect" should mean
+            const response = await $fetch<{ success: boolean; error?: string }>('/api/assistant/chat', {
+                method: 'POST',
+                body: {
+                    baseUrl: api.value.baseUrl,
+                    apiKey: api.value.apiKey,
+                    model: api.value.model,
+                    messages: [{ role: 'user', content: 'Reply with the single word: ok' }],
+                    maxTokens: 10
+                }
+            });
+
+            if (!response.success) {
+                error.value = response.error || 'The endpoint could not be reached';
+                status.value = 'idle';
+                return;
+            }
+
+            persistApiSettings();
+            await mcp.refresh();
+            status.value = 'ready';
+        } catch (e: any) {
+            error.value = e?.message || 'The endpoint could not be reached';
+            status.value = 'idle';
+        }
+    }
+
     /** Downloads (once) and compiles the chosen model. */
     async function load(): Promise<void> {
+        if (provider.value === 'api') {
+            await connectApi();
+            return;
+        }
+
         if (!modelId.value || status.value === 'loading') return;
 
         status.value = 'loading';
@@ -255,16 +379,40 @@ export const useLocalAssistant = () => {
     }
 
     async function complete(): Promise<string> {
+        const conversation = [
+            { role: 'system', content: systemPrompt(mcp.tools.value) },
+            ...transcript()
+        ];
+
+        if (provider.value === 'api') {
+            apiAbort = new AbortController();
+            const response = await $fetch<{ success: boolean; data?: { content: string }; error?: string }>(
+                '/api/assistant/chat',
+                {
+                    method: 'POST',
+                    signal: apiAbort.signal,
+                    body: {
+                        baseUrl: api.value.baseUrl,
+                        apiKey: api.value.apiKey,
+                        model: api.value.model,
+                        messages: conversation,
+                        // Low, because the job here is following a protocol and
+                        // reporting numbers, not writing prose
+                        temperature: 0.2,
+                        maxTokens: 800
+                    }
+                }
+            );
+
+            if (!response.success) throw new Error(response.error || 'The endpoint could not answer');
+            return response.data?.content ?? '';
+        }
+
         const engine = engineRef.value?.engine;
         if (!engine) throw new Error('No model is loaded');
 
         const response = await engine.chat.completions.create({
-            messages: [
-                { role: 'system', content: systemPrompt(mcp.tools.value) },
-                ...transcript()
-            ],
-            // Low, because the job here is following a protocol and reporting
-            // numbers, not writing prose
+            messages: conversation,
             temperature: 0.2,
             max_tokens: 800
         });
@@ -320,12 +468,23 @@ export const useLocalAssistant = () => {
     /** Abandons the current turn. The engine finishes its token either way. */
     function stop(): void {
         cancelled = true;
-        status.value = engineRef.value ? 'ready' : 'idle';
+        status.value = engineRef.value || provider.value === 'api' ? 'ready' : 'idle';
+        apiAbort?.abort();
+        apiAbort = null;
         try {
             engineRef.value?.engine?.interruptGenerate?.();
         } catch {
             // Interrupting is best effort
         }
+    }
+
+    /** Back to the picker: unload the browser engine, or just leave the API. */
+    function disconnect(): void {
+        if (provider.value === 'api') {
+            status.value = 'idle';
+            return;
+        }
+        void unload();
     }
 
     function clear(): void {
@@ -337,6 +496,11 @@ export const useLocalAssistant = () => {
         messages,
         models,
         modelId,
+        provider,
+        api,
+        apiModels,
+        listApiModels,
+        disconnect,
         status,
         progress,
         progressText,

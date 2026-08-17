@@ -16,10 +16,11 @@
       </UButton>
     </div>
 
-    <!-- Nothing is claimed until the browser has actually been asked -->
+    <!-- Nothing is claimed until the browser has actually been asked, and only
+         the in-browser provider needs WebGPU at all -->
     <SmoothSwap>
       <UAlert
-        v-if="checked && !supported"
+        v-if="checked && !supported && provider === 'webllm'"
         key="unsupported"
         color="warning"
         variant="subtle"
@@ -30,42 +31,127 @@
     </SmoothSwap>
 
     <!-- Model picker: only until one is running -->
-    <UCard v-if="supported && status !== 'ready' && status !== 'thinking'">
+    <UCard v-if="status !== 'ready' && status !== 'thinking'">
       <div class="space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-end gap-3">
-          <UFormField :label="$t('assistant.model')" name="model" class="flex-1 min-w-0">
-            <USelect
-              v-model="modelId"
-              :items="modelItems"
-              value-key="value"
-              label-key="label"
+        <!-- Where the model runs: in this browser, or behind an endpoint -->
+        <UFormField :label="$t('assistant.providerLabel')">
+          <div class="flex items-center gap-1">
+            <UButton
+              v-for="option in providerOptions"
+              :key="option.value"
+              :color="provider === option.value ? 'primary' : 'neutral'"
+              :variant="provider === option.value ? 'soft' : 'outline'"
+              :aria-pressed="provider === option.value"
+              @click="provider = option.value"
+            >
+              {{ option.label }}
+            </UButton>
+          </div>
+        </UFormField>
+
+        <template v-if="provider === 'webllm'">
+          <div class="flex flex-col sm:flex-row sm:items-end gap-3">
+            <UFormField :label="$t('assistant.model')" name="model" class="flex-1 min-w-0">
+              <USelect
+                v-model="modelId"
+                :items="modelItems"
+                value-key="value"
+                label-key="label"
+                size="lg"
+                class="w-full"
+                :disabled="status === 'loading' || !supported"
+              />
+            </UFormField>
+            <UButton
               size="lg"
-              class="w-full"
-              :disabled="status === 'loading'"
-            />
-          </UFormField>
-          <UButton
-            size="lg"
-            icon="i-heroicons-sparkles"
-            :loading="status === 'loading'"
-            :disabled="!modelId"
-            @click="load"
-          >
-            {{ $t('assistant.loadModel') }}
-          </UButton>
-        </div>
+              icon="i-heroicons-sparkles"
+              :loading="status === 'loading'"
+              :disabled="!modelId || !supported"
+              @click="load"
+            >
+              {{ $t('assistant.loadModel') }}
+            </UButton>
+          </div>
 
-        <div v-if="status === 'loading'" class="space-y-2">
-          <UProgress :model-value="progress" :min="0" :max="100" />
+          <div v-if="status === 'loading'" class="space-y-2">
+            <UProgress :model-value="progress" :min="0" :max="100" />
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              {{ $t('assistant.loading', { percent: progress }) }}
+              <span v-if="progressText"> · {{ progressText }}</span>
+            </p>
+          </div>
+
           <p class="text-xs text-gray-500 dark:text-gray-400">
-            {{ $t('assistant.loading', { percent: progress }) }}
-            <span v-if="progressText"> · {{ progressText }}</span>
+            {{ $t('assistant.downloadNote') }}
           </p>
-        </div>
+        </template>
 
-        <p class="text-xs text-gray-500 dark:text-gray-400">
-          {{ $t('assistant.downloadNote') }}
-        </p>
+        <template v-else>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <UFormField :label="$t('assistant.api.baseUrlLabel')" :help="$t('assistant.api.baseUrlHelp')">
+              <UInput
+                v-model="api.baseUrl"
+                size="lg"
+                class="w-full"
+                placeholder="http://localhost:11434/v1"
+                spellcheck="false"
+              />
+            </UFormField>
+            <UFormField :label="$t('assistant.api.keyLabel')" :help="$t('assistant.api.keyHelp')">
+              <UInput
+                v-model="api.apiKey"
+                size="lg"
+                class="w-full"
+                type="password"
+                autocomplete="off"
+                :placeholder="$t('assistant.api.keyPlaceholder')"
+              />
+            </UFormField>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-end gap-3">
+            <UFormField :label="$t('assistant.api.modelLabel')" class="flex-1 min-w-0">
+              <USelect
+                v-if="apiModels.length > 0"
+                v-model="api.model"
+                :items="apiModels"
+                size="lg"
+                class="w-full"
+              />
+              <UInput
+                v-else
+                v-model="api.model"
+                size="lg"
+                class="w-full"
+                :placeholder="$t('assistant.api.modelPlaceholder')"
+                spellcheck="false"
+              />
+            </UFormField>
+            <UButton
+              size="lg"
+              variant="outline"
+              color="neutral"
+              icon="i-heroicons-list-bullet"
+              :disabled="!api.baseUrl.trim()"
+              @click="listApiModels"
+            >
+              {{ $t('assistant.api.listModels') }}
+            </UButton>
+            <UButton
+              size="lg"
+              icon="i-heroicons-bolt"
+              :loading="status === 'loading'"
+              :disabled="!api.baseUrl.trim() || !api.model.trim()"
+              @click="load"
+            >
+              {{ $t('assistant.api.connect') }}
+            </UButton>
+          </div>
+
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            {{ $t('assistant.api.note') }}
+          </p>
+        </template>
 
         <UAlert
           v-if="error"
@@ -85,7 +171,18 @@
             <UBadge :color="status === 'thinking' ? 'info' : 'success'" variant="subtle">
               {{ status === 'thinking' ? $t('assistant.thinking') : $t('assistant.ready') }}
             </UBadge>
-            <span class="text-xs text-gray-500 dark:text-gray-400 truncate font-mono">{{ modelId }}</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400 truncate font-mono">{{ activeModelLabel }}</span>
+            <UButton
+              v-if="status === 'ready'"
+              variant="ghost"
+              color="neutral"
+              size="xs"
+              icon="i-heroicons-arrow-uturn-left"
+              :aria-label="$t('assistant.changeModel')"
+              @click="disconnect"
+            >
+              <span class="hidden sm:inline">{{ $t('assistant.changeModel') }}</span>
+            </UButton>
           </div>
           <UPopover v-if="tools.length > 0">
             <UButton variant="ghost" color="neutral" size="xs" icon="i-heroicons-wrench-screwdriver">
@@ -197,6 +294,11 @@ const {
   messages,
   models,
   modelId,
+  provider,
+  api,
+  apiModels,
+  listApiModels,
+  disconnect,
   status,
   progress,
   progressText,
@@ -210,6 +312,21 @@ const {
   stop,
   clear
 } = useLocalAssistant();
+
+const providerOptions = computed(() => [
+  { label: t('assistant.providers.webllm'), value: 'webllm' as const },
+  { label: t('assistant.providers.api'), value: 'api' as const }
+]);
+
+/** What the header names: the browser model, or the endpoint's model and host. */
+const activeModelLabel = computed(() => {
+  if (provider.value !== 'api') return modelId.value;
+  try {
+    return `${api.value.model} @ ${new URL(api.value.baseUrl).host}`;
+  } catch {
+    return api.value.model;
+  }
+});
 
 const draft = ref('');
 const transcriptEl = ref<HTMLElement | null>(null);

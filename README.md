@@ -26,7 +26,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 - **Complete daemon control** — downloads, uploads, shared files, search, servers, Kad, preferences
 - **Autonomous search** — the server re-runs your keywords every 5 minutes for an hour, a day, a week, a month or until stopped, cycling Kad and eD2k and merging every pass into one deduplicated list — so files on machines that were offline earlier keep turning up
 - **MCP server built in** — 19 tools on `/mcp`, so an AI agent can drive aMule exactly as the UI does
-- **A local AI assistant** — a language model that runs *in the browser* on WebGPU and drives aMule through those same MCP tools; the conversation never leaves the machine
+- **A local AI assistant** — a language model that runs *in the browser* on WebGPU and drives aMule through those same MCP tools; the conversation never leaves the machine. Or point it at **Ollama** (local or remote) or any **OpenAI-compatible API** with a key — relayed through the app's server, so CORS never gets in the way
 - **Speaks 38 languages** — the 37 aMule itself ships, plus English, chosen per device and rendered server-side
 - **Tells you when downloads start and finish** — in the page, as an OS notification, and over Web Push with no tab open at all
 - **Paged lists** — 100 rows at a time by default with a per-page selector, so a queue of thousands stays as fast as a queue of ten
@@ -48,7 +48,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 | `/shared` | Every shared file with requests, accepted requests, bytes sent, share ratio, queued clients, details modal |
 | `/search` | Kad / eD2k / local search on one row, searches kept in tabs for a week, results split by what you already have, and a details view per result |
 | `/search-auto` | Autonomous search: the server repeats a search every 5 minutes for a chosen time span (or until stopped), alternating networks and accumulating deduplicated results — no browser needed |
-| `/assistant` | A language model running entirely in this browser that can answer questions about the daemon and operate it |
+| `/assistant` | A language model that can answer questions about the daemon and operate it — in this browser (WebGPU), or via Ollama / any OpenAI-compatible API |
 | `/servers` | Server list with connect, add, remove, plus server-list preferences and "update from URL" |
 | `/connection` | eD2k and Kad state, connect/disconnect, Kad start/stop/bootstrap/nodes.dat, server message of the day |
 | `/statistics` | Animated rate chart with server-side history, session **and** all-time totals, and aMule's full statistics tree |
