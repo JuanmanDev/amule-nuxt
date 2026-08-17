@@ -57,7 +57,7 @@ export const FEED_DEFINITIONS: Record<FeedName, FeedDefinition> = {
         focusMs: 3000,
         idleMs: 10_000,
         label: 'uploads',
-        keyOf: (item: Upload) => `${item.fileHash}@${item.userIp}:${item.userPort}`
+        keyOf: (item: Upload) => `${item.fileHash || item.fileEcId}@${item.userIp}:${item.userPort}`
     },
     shared: {
         focusMs: 15_000,

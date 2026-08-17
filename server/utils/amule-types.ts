@@ -116,13 +116,22 @@ export interface Upload {
     score: number;
     /** Name the remote client requested, when it differs from the shared name. */
     remoteFileName: string;
+    /**
+     * Hash of the file being sent, when the daemon reported one. Older daemons
+     * send only the numeric id below, and the hash is resolved through the
+     * shared list instead.
+     */
     fileHash: string;
+    /** The daemon's numeric id (ECID) of the file being sent, 0 when unknown. */
+    fileEcId: number;
 }
 
 export interface SharedFile {
     fileName: string;
     fullPath: string;
     hash: string;
+    /** The daemon's numeric id (ECID) for this file; upload records point at it. */
+    ecId: number;
     size: number;
     /** Bytes sent for this file in the current session / over all sessions. */
     transferred: number;

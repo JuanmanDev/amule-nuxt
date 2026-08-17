@@ -52,6 +52,15 @@ export const useFileStatus = () => {
         return map;
     });
 
+    // Upload records name their file by the daemon's numeric id, not by hash
+    const sharedByEcId = computed(() => {
+        const map = new Map<number, SharedFile>();
+        for (const file of shared.items.value) {
+            if (file.ecId) map.set(file.ecId, file);
+        }
+        return map;
+    });
+
     /**
      * The queue wins over the shared list.
      *
@@ -90,5 +99,5 @@ export const useFileStatus = () => {
         return UNKNOWN;
     }
 
-    return { statusOf, downloadsByHash, sharedByHash };
+    return { statusOf, downloadsByHash, sharedByHash, sharedByEcId };
 };

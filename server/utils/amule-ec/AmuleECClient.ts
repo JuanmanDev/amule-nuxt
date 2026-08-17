@@ -333,6 +333,9 @@ export class AmuleECClient {
                     fileName: fileName,
                     fullPath: fullPath,
                     hash: typeof f.partfile_hash === 'string' ? f.partfile_hash.toLowerCase() : '',
+                    // The record's own value is the file's ECID, which is what
+                    // an upload names when it says which file it is sending
+                    ecId: Number(f.value || 0),
                     transferredAll,
                     requestsAll: Number(f.knownfile_req_count_all || 0),
                     accepts: Number(f.knownfile_accept_count || 0),
@@ -379,7 +382,12 @@ export class AmuleECClient {
                 waitingPosition: Number(c.client_waiting_position || 0),
                 score: Number(c.client_score || 0),
                 remoteFileName: c.client_remote_filename || '',
-                fileHash: typeof c.partfile_hash === 'string' ? c.partfile_hash.toLowerCase() : ''
+                // No hash on a client record: EC_TAG_CLIENT_UPLOAD_FILE carries
+                // the file's numeric ECID (verified against a live daemon), and
+                // EC_TAG_CLIENT_HASH is the *peer's* user hash. The file hash is
+                // resolved through the shared list by that id.
+                fileHash: typeof c.partfile_hash === 'string' ? c.partfile_hash.toLowerCase() : '',
+                fileEcId: Number(c.client_upload_file || 0)
             }));
         } catch (error) {
             logRequestFailure(error);
