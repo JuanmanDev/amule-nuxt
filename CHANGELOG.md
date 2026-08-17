@@ -2,6 +2,19 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.9.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.8.1...v1.9.0) (2026-08-17)
+
+### Features
+
+* **assistant:** Ollama and OpenAI-compatible API providers ([137ca1f](https://github.com/JuanmanDev/amule-nuxt/commit/137ca1f0d18532d0cde53560b16e3d846142cdb3))
+* **i18n:** translate the assistant providers and the file link ([b7fcfb9](https://github.com/JuanmanDev/amule-nuxt/commit/b7fcfb9605fc2f9016d96eb543a6a21b9a5900dc))
+* **shared:** file deep links and one details modal everywhere ([69622be](https://github.com/JuanmanDev/amule-nuxt/commit/69622be25e250558ad54bf95ebde8b92bacf4d1d))
+* **ui:** related pages sit at the foot of the viewport ([ca77d74](https://github.com/JuanmanDev/amule-nuxt/commit/ca77d74f2d5cdf57ed578dab3354d83a5a9704f4))
+
+### Bug fixes
+
+* **ec:** an upload names its file by ECID, not by hash ([f92e5d6](https://github.com/JuanmanDev/amule-nuxt/commit/f92e5d64f9df5edc375d0a4f2fed988b1b95218c))
+
 ## [1.8.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.8.0...v1.8.1) (2026-08-17)
 
 ### Bug fixes
