@@ -166,113 +166,32 @@
         :actions="[{ label: $t('search.tryAgain'), color: 'error', variant: 'outline', onClick: () => searches.rerun(active!) }]"
       />
 
-      <UCard v-else-if="active && active.results.length > 0" key="results">
-        <template #header>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="min-w-0">
-              <h2 class="text-xl font-semibold truncate">
-                {{ active.keyword }}
-                <span class="text-base font-normal text-gray-500 dark:text-gray-400">
-                  ({{ matched.toLocaleString() }})
-                </span>
-              </h2>
-              <!-- An older tab is a snapshot: say when it was taken rather than
-                   letting numbers that stopped moving look live -->
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ active.type }} ·
-                <template v-if="activeIsCurrent">{{ $t('search.readAt', { time: updatedLabel }) }}</template>
-                <template v-else>{{ $t('search.snapshotAt', { time: updatedLabel }) }}</template>
-              </p>
-            </div>
-            <ListControls
-              v-model:search="filter"
-              v-model:sort-by="sortBy"
-              v-model:direction="direction"
-              :options="sortOptions"
-              :placeholder="$t('search.filterPlaceholder')"
-              class="sm:max-w-md"
-            />
-          </div>
-
-          <!--
-            Split by what the daemon already knows about each hash.
-
-            A search for something you have been collecting comes back mostly
-            full of files you already have, and the one thing worth doing with
-            that list is hiding them. Each group carries its count, so the split
-            is visible before it is used - and a group with nothing in it is
-            disabled rather than hidden, so the row does not reflow as downloads
-            start.
-          -->
-          <div class="flex flex-wrap items-center gap-1 mt-3">
-            <UButton
-              v-for="group in stateGroups"
-              :key="group.value"
-              :color="stateFilter === group.value ? 'primary' : 'neutral'"
-              :variant="stateFilter === group.value ? 'soft' : 'ghost'"
-              :disabled="group.count === 0 && group.value !== 'all'"
-              size="xs"
-              data-testid="result-group"
-              :aria-pressed="stateFilter === group.value"
-              @click="stateFilter = group.value"
-            >
-              {{ group.label }}
-              <UBadge
-                :color="stateFilter === group.value ? 'primary' : 'neutral'"
-                variant="subtle"
-                size="sm"
-              >
-                {{ group.count.toLocaleString() }}
-              </UBadge>
-            </UButton>
-          </div>
+      <SearchResultList
+        v-else-if="active && active.results.length > 0"
+        key="results"
+        :results="active.results"
+        storage-key="search"
+        :downloading-hash="downloadingHash || undefined"
+        :list-id="activeId"
+        @open="openDetails"
+        @download="addToDownloads"
+      >
+        <template #title="{ matched }">
+          <h2 class="text-xl font-semibold truncate">
+            {{ active.keyword }}
+            <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+              ({{ matched.toLocaleString() }})
+            </span>
+          </h2>
+          <!-- An older tab is a snapshot: say when it was taken rather than
+               letting numbers that stopped moving look live -->
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            {{ active.type }} ·
+            <template v-if="activeIsCurrent">{{ $t('search.readAt', { time: updatedLabel }) }}</template>
+            <template v-else>{{ $t('search.snapshotAt', { time: updatedLabel }) }}</template>
+          </p>
         </template>
-
-        <SmoothSwap>
-          <!-- Two different empties: nothing matched what you typed, or the
-               group you are looking at is empty. Saying "no result matches ''"
-               when the filter box is untouched helps nobody. -->
-          <UEmpty
-            v-if="visibleResults.length === 0"
-            key="no-matches"
-            icon="i-heroicons-magnifying-glass"
-            :title="$t('common.noMatches')"
-            :description="filter
-              ? $t('search.noMatchesDescription', { query: filter })
-              : $t('search.noneInGroup')"
-            :actions="stateFilter === 'all' ? [] : [{
-              label: $t('search.filters.all'),
-              color: 'neutral',
-              variant: 'outline',
-              onClick: () => { stateFilter = 'all' }
-            }]"
-          />
-
-          <AnimatedList v-else key="rows" gap="0.75rem" :reset-key="listKey">
-            <SearchResultRow
-              v-for="result in visibleResults"
-              :key="result.hash || `#${result.resultNumber}`"
-              :result="result"
-              :status="statusOf(result.hash)"
-              :busy="downloadingHash === result.hash"
-              @open="openDetails"
-              @download="addToDownloads"
-            />
-          </AnimatedList>
-        </SmoothSwap>
-
-        <ListPagination
-          v-model:page="page"
-          v-model:page-size="pageSize"
-          :page-count="pageCount"
-          :matched="matched"
-          :total="total"
-          :first-on-page="firstOnPage"
-          :last-on-page="lastOnPage"
-          label="results"
-          class="mt-4"
-        />
-      </UCard>
+      </SearchResultList>
 
       <UEmpty
         v-else-if="active && active.status !== 'running'"
@@ -348,91 +267,6 @@ const detailsOpen = ref(false);
 const selected = ref<SearchResult | null>(null);
 const downloadingHash = ref<string | null>(null);
 
-const sortOptions = computed<SortOption[]>(() => [
-  { label: t('sort.sources'), value: 'sources', defaultDirection: 'desc' },
-  { label: t('sort.size'), value: 'size', defaultDirection: 'desc' },
-  { label: t('sort.kind'), value: 'kind', defaultDirection: 'asc' },
-  { label: t('sort.name'), value: 'name', defaultDirection: 'asc' }
-]);
-
-const sortAccessors = {
-  sources: (result: SearchResult) => result.sources,
-  size: (result: SearchResult) => result.size,
-  kind: (result: SearchResult) => fileKind(result.fileName),
-  name: (result: SearchResult) => result.fileName
-};
-
-/**
- * Which group a result belongs to, from what the daemon already knows about its
- * hash.
- *
- * Three, not six: the states matter individually on the download page, but here
- * the only question is "do I need to do anything about this one?".
- */
-type ResultGroup = 'all' | 'new' | 'queued' | 'here';
-
-const activeResults = computed(() => active.value?.results ?? []);
-
-function groupOf(result: SearchResult): Exclude<ResultGroup, 'all'> {
-  const status = statusOf(result.hash);
-
-  if (status.state === 'unknown') return 'new';
-  return status.done ? 'here' : 'queued';
-}
-
-const stateFilter = ref<ResultGroup>('all');
-
-const stateGroups = computed(() => {
-  const counts = { new: 0, queued: 0, here: 0 };
-  for (const result of activeResults.value) counts[groupOf(result)] += 1;
-
-  return [
-    { value: 'all' as const, label: t('search.filters.all'), count: activeResults.value.length },
-    { value: 'new' as const, label: t('search.filters.new'), count: counts.new },
-    { value: 'queued' as const, label: t('search.filters.queued'), count: counts.queued },
-    { value: 'here' as const, label: t('search.filters.here'), count: counts.here }
-  ];
-});
-
-/**
- * What the list is built from. Applied before the text filter and the paging, so
- * the counts and the page numbers are about the group being looked at.
- */
-const groupedResults = computed(() => (
-  stateFilter.value === 'all'
-    ? activeResults.value
-    : activeResults.value.filter(result => groupOf(result) === stateFilter.value)
-));
-
-const {
-  search: filter,
-  sortBy,
-  direction,
-  page,
-  pageSize,
-  pageKey,
-  visible: visibleResults,
-  matched,
-  total,
-  pageCount,
-  firstOnPage,
-  lastOnPage
-} = usePaginatedList<SearchResult>({
-  items: groupedResults,
-  fields: result => [result.fileName, result.hash, result.extension],
-  accessors: sortAccessors,
-  sortBy: 'sources',
-  direction: 'desc',
-  storageKey: 'search'
-});
-
-/** Switching tab, group or page all replace every row at once. */
-const listKey = computed(() => `${activeId.value}:${stateFilter.value}:${pageKey.value}`);
-
-// Switching to another search should not keep the previous one's page number,
-// and neither should narrowing to a group with fewer results
-watch([activeId, stateFilter], () => { page.value = 1; });
-
 const updatedLabel = computed(() => {
   const at = active.value?.updatedAt;
   if (!at) return t('search.notYet');
@@ -442,12 +276,8 @@ const updatedLabel = computed(() => {
 
 async function startSearch() {
   starting.value = true;
-  const started = await searches.start(form.type, form.keyword);
+  await searches.start(form.type, form.keyword);
   starting.value = false;
-
-  // The keywords stay in the box: refining a search is the common next step, and
-  // the results of the previous attempt are still one tab away.
-  if (started) filter.value = '';
 }
 
 async function refreshResults() {

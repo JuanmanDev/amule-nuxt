@@ -563,6 +563,9 @@
     "noResultsYetDescription": "The first pass runs within a minute or two of creating the search. Results appear here as passes complete.",
     "created": "Auto search for “{keyword}” started",
     "createFailed": "Could not create the automatic search",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
     "stoppedToast": "Automatic search stopped",
     "resumedToast": "Automatic search resumed",
     "deletedToast": "Auto search for “{keyword}” removed"

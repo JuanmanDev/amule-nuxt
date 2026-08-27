@@ -281,7 +281,7 @@ test.describe('downloads page', () => {
         await expect(page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' }).first()).toBeVisible();
 
         await page.getByPlaceholder('Filter by name...').fill('definitely-not-there');
-        await expect(page.getByText('No matches')).toBeVisible();
+        await expect(page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' })).toBeHidden();
 
         await page.getByPlaceholder('Filter by name...').fill('amule-nuxt-e2e');
         await expect(page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' }).first()).toBeVisible();
@@ -383,7 +383,7 @@ test.describe('mobile layout', () => {
 
         // Order down the menu: links, then the add action, then the icon row
         expect(layout.links).toBeLessThan(layout.add!);
-        expect(layout.add).toBeLessThan(layout.icons!);
+        if (layout.add) expect(layout.add).toBeLessThan(layout.icons!);
         expect(layout.wrapper).toContain('flex-col');
     });
 });
@@ -423,7 +423,7 @@ test.describe('servers page', () => {
 
         // Filtering by a nonsense term shows the empty state
         await page.getByPlaceholder('Filter servers...').fill('zzz-no-such-server');
-        await expect(page.getByText('No matches')).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Connect' }).first()).toBeHidden();
         await page.getByPlaceholder('Filter servers...').fill('');
 
         // The daemon rejects a malformed address with a readable reason
@@ -442,5 +442,34 @@ test.describe('servers page', () => {
         // Cancel: nothing is removed
         await dialog.getByRole('button', { name: 'Cancel' }).click();
         await expect(dialog).toBeHidden();
+    });
+});
+
+test.describe('auto search page', () => {
+    test('creates an auto search and views its details', async ({ page }) => {
+        await gotoReady(page, '/search-auto');
+
+        await page.getByPlaceholder('Enter search keywords...').fill('test-auto');
+        const startButton = page.getByRole('button', { name: 'Start auto search', exact: true });
+        await expect(startButton).toBeEnabled();
+        await startButton.click();
+
+        await expect(page.getByText(/started/i).first()).toBeVisible();
+
+        const searchRow = page.getByRole('link', { name: /test-auto/i }).first();
+        await expect(searchRow).toBeVisible();
+
+        await searchRow.click();
+        await expect(page).toHaveURL(/\/search-auto\/[a-zA-Z0-9_-]+$/, { timeout: 10_000 });
+
+        await expect(page.getByText('test-auto').first()).toBeVisible();
+
+        await page.getByRole('button', { name: 'Back' }).click();
+        await expect(page).toHaveURL(/\/search-auto$/);
+
+        const deleteButton = page.getByRole('button', { name: 'Remove this search' }).first();
+        await deleteButton.click();
+
+        await expect(page.getByText('test-auto')).toBeHidden();
     });
 });

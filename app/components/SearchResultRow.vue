@@ -8,7 +8,7 @@
 -->
 <template>
   <div
-    class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm cursor-pointer hover:bg-elevated/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+    class="p-3 sm:p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm cursor-pointer hover:bg-elevated/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     role="button"
     tabindex="0"
     :aria-label="$t('search.result.showDetailsFor', { name: result.fileName })"
@@ -17,47 +17,46 @@
     @keydown.space.prevent="emit('open', result)"
   >
     <div class="flex items-start gap-3">
-      <UIcon :name="kindIcon" class="w-5 h-5 mt-0.5 shrink-0 text-gray-400" :aria-hidden="true" />
+      <UIcon :name="kindIcon" class="w-5 h-5 mt-0.5 shrink-0 text-gray-400 hidden sm:block" :aria-hidden="true" />
 
-      <div class="flex-1 min-w-0 space-y-2">
-        <div class="flex items-start gap-2">
-          <h3 class="font-semibold truncate min-w-0 flex-1" :title="result.fileName">{{ result.fileName }}</h3>
-          <UBadge v-if="status.state !== 'unknown'" :color="status.color" variant="subtle" size="sm" class="shrink-0">
+      <div class="flex-1 min-w-0 space-y-1.5 sm:space-y-2">
+        <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+          <h3 class="font-semibold truncate min-w-0 flex-1 text-sm sm:text-base leading-tight" :title="result.fileName">{{ result.fileName }}</h3>
+          <UBadge v-if="status.state !== 'unknown'" :color="status.color" variant="subtle" size="sm" class="shrink-0 self-start">
             {{ $t(`status.${status.state}`) }}
           </UBadge>
         </div>
 
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
+        <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           <span class="flex items-center gap-1">
-            <UIcon name="i-heroicons-document" class="w-4 h-4" />
+            <UIcon name="i-heroicons-document" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {{ formatBytes(result.size) }}
           </span>
 
-          <!-- How many sources reported the file. Nothing here claims how many
-               hold it in full: the daemon does not say, for a search result. -->
+          <!-- How many sources reported the file. -->
           <span class="flex items-center gap-1" :class="sourceTone">
-            <UIcon name="i-heroicons-user-group" class="w-4 h-4" />
+            <UIcon name="i-heroicons-user-group" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {{ sourcesLabel }}
           </span>
 
-          <UBadge v-if="result.extension" color="neutral" variant="subtle" size="sm">
+          <UBadge v-if="result.extension" color="neutral" variant="subtle" size="xs" class="hidden sm:inline-flex">
             {{ result.extension.toUpperCase() }}
           </UBadge>
-          <span class="text-xs">{{ kindLabel }}</span>
+          <span class="hidden sm:inline">{{ kindLabel }}</span>
         </div>
 
         <!-- Only for a file that is actually on its way here -->
-        <div v-if="status.download && !status.done" class="space-y-1">
-          <UProgress :model-value="status.percent" :min="0" :max="100" size="sm" />
-          <div class="flex flex-wrap gap-x-3 text-xs text-gray-500 dark:text-gray-400">
+        <div v-if="status.download && !status.done" class="space-y-1 mt-2">
+          <UProgress :model-value="status.percent" :min="0" :max="100" size="xs" class="sm:h-2" />
+          <div class="flex flex-wrap gap-x-2 sm:gap-x-3 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
             <span>{{ formatPercent(status.percent) }}</span>
             <span>{{ formatSpeed(status.download.speed) }}</span>
-            <span>{{ formatBytes(status.download.sizeDone) }} of {{ formatBytes(status.download.size) }}</span>
+            <span class="hidden sm:inline">{{ formatBytes(status.download.sizeDone) }} of {{ formatBytes(status.download.size) }}</span>
           </div>
         </div>
       </div>
 
-      <div class="shrink-0" @click.stop>
+      <div class="shrink-0 ml-1" @click.stop>
         <UButton
           v-if="status.state === 'unknown'"
           :loading="busy"
@@ -66,13 +65,9 @@
           icon="i-heroicons-arrow-down-tray"
           @click="emit('download', result)"
         >
-          {{ $t('search.result.download') }}
+          <span class="hidden sm:inline">{{ $t('search.result.download') }}</span>
         </UButton>
 
-        <!-- The badge above already says what state this is in; repeating it on
-             the button said "Completed" twice on one row. So the button carries
-             the action instead: go and look at it. It stays in the same place
-             either way, so the list does not re-flow when a download starts. -->
         <UButton
           v-else
           size="sm"
@@ -81,7 +76,7 @@
           trailing-icon="i-heroicons-arrow-right"
           :to="status.state === 'shared' ? `/shared?file=${result.hash}` : '/downloads'"
         >
-          {{ $t('search.result.show') }}
+          <span class="hidden sm:inline">{{ $t('search.result.show') }}</span>
         </UButton>
       </div>
     </div>

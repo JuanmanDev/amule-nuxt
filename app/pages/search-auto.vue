@@ -100,35 +100,38 @@
             : 'border-gray-200 dark:border-gray-800'"
         >
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <button
-              type="button"
-              class="flex items-center gap-2 min-w-0 text-left"
-              @click="select(search.id)"
+            <NuxtLink
+              :to="`/search-auto/${search.id}`"
+              class="flex flex-1 items-center gap-2 min-w-0 text-left justify-between hover:text-primary-500 transition-colors"
             >
-              <UIcon
-                v-if="search.status === 'active'"
-                name="i-heroicons-arrow-path"
-                class="w-4 h-4 shrink-0 text-primary-500"
-                :class="{ 'animate-spin': runningNow(search) }"
-              />
-              <UIcon
-                v-else-if="search.status === 'finished'"
-                name="i-heroicons-check-circle"
-                class="w-4 h-4 shrink-0 text-green-500"
-              />
-              <UIcon
-                v-else
-                name="i-heroicons-pause-circle"
-                class="w-4 h-4 shrink-0 text-gray-400"
-              />
-              <span class="font-medium truncate max-w-[16rem]">{{ search.keyword }}</span>
-              <UBadge color="neutral" variant="subtle" size="sm">
-                {{ search.networks.join(' · ') }}
-              </UBadge>
-              <UBadge :color="statusColor(search.status)" variant="subtle" size="sm">
-                {{ $t(`searchAuto.status.${search.status}`) }}
-              </UBadge>
-            </button>
+              <div class="flex items-center gap-2 min-w-0">
+                <UIcon
+                  v-if="search.status === 'active'"
+                  name="i-heroicons-arrow-path"
+                  class="w-4 h-4 shrink-0 text-primary-500"
+                  :class="{ 'animate-spin': runningNow(search) }"
+                />
+                <UIcon
+                  v-else-if="search.status === 'finished'"
+                  name="i-heroicons-check-circle"
+                  class="w-4 h-4 shrink-0 text-green-500"
+                />
+                <UIcon
+                  v-else
+                  name="i-heroicons-pause-circle"
+                  class="w-4 h-4 shrink-0 text-gray-400"
+                />
+                <span class="font-medium truncate max-w-[16rem]">{{ search.keyword }}</span>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <UBadge color="neutral" variant="subtle" size="sm" class="hidden sm:inline-flex">
+                  {{ search.networks.join(' · ') }}
+                </UBadge>
+                <UBadge :color="statusColor(search.status)" variant="subtle" size="sm">
+                  {{ $t(`searchAuto.status.${search.status}`) }}
+                </UBadge>
+              </div>
+            </NuxtLink>
 
             <div class="flex items-center gap-1 shrink-0">
               <UButton
@@ -190,82 +193,7 @@
       :description="$t('searchAuto.emptyDescription')"
     />
 
-    <!-- Accumulated results of the selected search -->
-    <UCard v-if="selected && selected.results.length > 0">
-      <template #header>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div class="min-w-0">
-            <h2 class="text-xl font-semibold truncate">
-              {{ selected.keyword }}
-              <span class="text-base font-normal text-gray-500 dark:text-gray-400">
-                ({{ matched.toLocaleString() }})
-              </span>
-            </h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              {{ $t('searchAuto.accumulatedSince', { time: time.dateTime(selected.createdAt) }) }}
-            </p>
-          </div>
-          <ListControls
-            v-model:search="filter"
-            v-model:sort-by="sortBy"
-            v-model:direction="direction"
-            :options="sortOptions"
-            :placeholder="$t('search.filterPlaceholder')"
-            class="sm:max-w-md"
-          />
-        </div>
-      </template>
 
-      <SmoothSwap>
-        <UEmpty
-          v-if="visibleResults.length === 0"
-          key="no-matches"
-          icon="i-heroicons-magnifying-glass"
-          :title="$t('common.noMatches')"
-          :description="$t('search.noMatchesDescription', { query: filter })"
-        />
-
-        <AnimatedList v-else key="rows" gap="0.75rem" :reset-key="listKey">
-          <SearchResultRow
-            v-for="result in visibleResults"
-            :key="result.hash || `#${result.resultNumber}`"
-            :result="result"
-            :status="statusOf(result.hash)"
-            :busy="downloadingHash === result.hash"
-            @open="openDetails"
-            @download="addToDownloads"
-          />
-        </AnimatedList>
-      </SmoothSwap>
-
-      <ListPagination
-        v-model:page="page"
-        v-model:page-size="pageSize"
-        :page-count="pageCount"
-        :matched="matched"
-        :total="total"
-        :first-on-page="firstOnPage"
-        :last-on-page="lastOnPage"
-        label="results"
-        class="mt-4"
-      />
-    </UCard>
-
-    <UEmpty
-      v-else-if="selected"
-      icon="i-heroicons-clock"
-      :title="$t('searchAuto.noResultsYetTitle')"
-      :description="$t('searchAuto.noResultsYetDescription')"
-    />
-
-    <SearchResultModal
-      v-model="detailsOpen"
-      :result="selectedResult"
-      :status="statusOf(selectedResult?.hash)"
-      :busy="downloadingHash === selectedResult?.hash"
-      :search-label="selected ? `${selected.keyword} (${$t('searchAuto.title')})` : undefined"
-      @download="addToDownloads"
-    />
 
     <RelatedPages :pages="['search', 'downloads', 'servers', 'connection']" />
   </div>
@@ -477,78 +405,5 @@ function statusColor(status: AutoSearchSummary['status']) {
   return 'neutral' as const;
 }
 
-// ========== The accumulated results ==========
-
-const sortOptions = computed<SortOption[]>(() => [
-  { label: t('sort.sources'), value: 'sources', defaultDirection: 'desc' },
-  { label: t('sort.size'), value: 'size', defaultDirection: 'desc' },
-  { label: t('sort.kind'), value: 'kind', defaultDirection: 'asc' },
-  { label: t('sort.name'), value: 'name', defaultDirection: 'asc' }
-]);
-
-const sortAccessors = {
-  sources: (result: SearchResult) => result.sources,
-  size: (result: SearchResult) => result.size,
-  kind: (result: SearchResult) => fileKind(result.fileName),
-  name: (result: SearchResult) => result.fileName
-};
-
-const selectedResults = computed(() => selected.value?.results ?? []);
-
-const {
-  search: filter,
-  sortBy,
-  direction,
-  page,
-  pageSize,
-  pageKey,
-  visible: visibleResults,
-  matched,
-  total,
-  pageCount,
-  firstOnPage,
-  lastOnPage
-} = usePaginatedList<SearchResult>({
-  items: selectedResults,
-  fields: result => [result.fileName, result.hash, result.extension],
-  accessors: sortAccessors,
-  sortBy: 'sources',
-  direction: 'desc',
-  storageKey: 'search-auto'
-});
-
-const listKey = computed(() => `${selectedId.value}:${pageKey.value}`);
-
-watch(selectedId, () => { page.value = 1; });
-
-// ========== Downloading a result ==========
-
-const detailsOpen = ref(false);
-const selectedResult = ref<SearchResult | null>(null);
-const downloadingHash = ref<string | null>(null);
-
-function openDetails(result: SearchResult) {
-  selectedResult.value = result;
-  detailsOpen.value = true;
-}
-
-/**
- * Always by eD2k link: the daemon's result numbers belong to whatever search it
- * ran last, while the link is built from the file itself and cannot go stale.
- */
-async function addToDownloads(result: SearchResult) {
-  if (!result.ed2kLink) {
-    toast.add({ title: t('search.result.cannotDownload'), description: t('search.result.noHash'), color: 'error' });
-    return;
-  }
-
-  downloadingHash.value = result.hash;
-  try {
-    await addLinks(result.ed2kLink);
-  } catch (e: any) {
-    toast.add({ title: t('common.error'), description: e?.message, color: 'error' });
-  } finally {
-    downloadingHash.value = null;
-  }
-}
 </script>
+

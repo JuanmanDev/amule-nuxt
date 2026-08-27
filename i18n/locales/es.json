@@ -563,6 +563,9 @@
     "noResultsYetDescription": "La primera pasada se ejecuta uno o dos minutos después de crear la búsqueda. Los resultados aparecen aquí a medida que se completan las pasadas.",
     "created": "Búsqueda automática de «{keyword}» iniciada",
     "createFailed": "No se pudo crear la búsqueda automática",
+    "stopOne": "Detener esta búsqueda",
+    "resumeOne": "Reanudar esta búsqueda",
+    "deleteOne": "Eliminar esta búsqueda",
     "stoppedToast": "Búsqueda automática detenida",
     "resumedToast": "Búsqueda automática reanudada",
     "deletedToast": "Búsqueda automática de «{keyword}» eliminada"

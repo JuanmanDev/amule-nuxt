@@ -262,19 +262,72 @@ html {
  * Page transitions
  *
  * nuxt.config declares `pageTransition: { name: 'page', mode: 'out-in' }`; these
- * are the classes it expects. Short and mostly opacity, so moving between pages
- * reads as a crossfade rather than an animation to sit through.
+ * are the classes it expects.
+ *
+ * The pages travel sideways in the direction of the navigation: going down the
+ * menu, the old page leaves to the left and the new one arrives from the right;
+ * coming back up, both go the other way. `data-nav-dir` on <html> is what says
+ * which, and plugins/nav-direction.client.ts sets it from the position of the two
+ * routes in the menu.
+ *
+ * `out-in` on purpose, and it was measured rather than assumed: with the two
+ * pages overlapping, a heading and forty rows sit on top of the tiles they are
+ * replacing, and a text-dense page crossing another one reads as a rendering
+ * fault rather than as motion. Sequential also means neither page has to leave
+ * the flow, so nothing jumps by the difference in their heights.
+ *
+ * The two halves are not symmetrical. Leaving is quick and eases *in*, so the
+ * old page accelerates away and the click feels answered at once; arriving is
+ * slower and eases *out*, so the new page carries the movement and is the part
+ * that gets noticed. Equal halves read as a flicker, because the eye spends the
+ * first half watching something disappear.
+ *
+ * The travel is a variable so it can be flipped once for right-to-left locales -
+ * in Arabic and Hebrew the menu reads the other way, so "forward" is the other
+ * direction too. The container clips it (overflow-x-clip in app.vue), which is
+ * what allows a trip long enough to be seen on a phone as well.
  * ------------------------------------------------------------------------- */
 
-.page-enter-active,
-.page-leave-active {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+:root {
+    --page-travel: 2rem;
 }
 
-.page-enter-from,
-.page-leave-to {
+[dir="rtl"] {
+    --page-travel: -2rem;
+}
+
+.page-leave-active {
+    transition:
+        opacity 0.13s ease-in,
+        transform 0.15s ease-in;
+}
+
+.page-enter-active {
+    transition:
+        opacity 0.2s ease-out,
+        transform 0.3s cubic-bezier(0.16, 0.84, 0.36, 1);
+}
+
+/* Forward is the default: the very first navigation of a session happens before
+   the plugin has stamped anything, and an unknown route counts as forward. */
+:root:not([data-nav-dir="back"]) .page-enter-from {
     opacity: 0;
-    transform: translateY(0.5rem);
+    transform: translateX(var(--page-travel));
+}
+
+:root:not([data-nav-dir="back"]) .page-leave-to {
+    opacity: 0;
+    transform: translateX(calc(var(--page-travel) * -1));
+}
+
+[data-nav-dir="back"] .page-enter-from {
+    opacity: 0;
+    transform: translateX(calc(var(--page-travel) * -1));
+}
+
+[data-nav-dir="back"] .page-leave-to {
+    opacity: 0;
+    transform: translateX(var(--page-travel));
 }
 
 /* A block whose content changes size on its own (a card that gains a row, a
@@ -284,6 +337,13 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
+    /* Killing the transition alone is not enough for the page slide: the classes
+       still apply, so the incoming page would be offset for the one frame before
+       Vue removes them. No travel means nothing to see. */
+    :root {
+        --page-travel: 0px;
+    }
 
     .list-enter-active,
     .list-leave-active,

@@ -1,5 +1,9 @@
 <template>
-  <UModal v-model:open="isOpen" :title="$t('app.addEd2kLink')">
+  <UModal
+    v-model:open="isOpen"
+    :title="$t('app.addEd2kLink')"
+    :ui="{ content: 'w-full max-w-[95%] sm:max-w-[1000px]', wrapper: 'z-[100]' }"
+  >
     <template #body>
       <!-- After submitting, show what happened to each link -->
       <div v-if="results.length > 0" class="space-y-4">
@@ -45,7 +49,7 @@
         >
           <UTextarea
             v-model="linksText"
-            :rows="5"
+            :rows="12"
             :placeholder="$t('addLinks.placeholder')"
             autoresize
             class="w-full"
@@ -143,8 +147,7 @@ async function submit() {
     const outcome = await addLinks(links);
     results.value = outcome.results;
 
-    // Nothing to review for a clean single add: go straight to the queue
-    if (outcome.ok && links.length === 1 && outcome.summary.anyAdded) {
+    if (outcome.ok && outcome.summary.anyAdded) {
       reset();
       closeAndRedirect();
     }

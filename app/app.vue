@@ -42,9 +42,16 @@
 
     <!-- Main Content. The column stretches to the viewport so a short page can
          push its related-pages section to the bottom (mt-auto in RelatedPages);
-         a tall page simply flows past the minimum. -->
+         a tall page simply flows past the minimum.
+
+         `overflow-x-clip` is for the page transition: the pages slide sideways,
+         and on a narrow screen that travel is wider than the container's padding,
+         so without it the animation would flash a horizontal scrollbar. `clip`
+         rather than `hidden` because it does not create a scroll container, which
+         is what keeps the sticky header and the fixed selection bar where they
+         are. -->
     <UMain class="pb-32 lg:pb-0">
-      <UContainer class="py-8 flex flex-col min-h-[calc(100vh-8rem)]">
+      <UContainer class="py-8 flex flex-col min-h-[calc(100vh-8rem)] overflow-x-clip">
         <NuxtPage class="flex-1 flex flex-col" />
       </UContainer>
     </UMain>
@@ -176,6 +183,7 @@
 
 <script setup lang="ts">
 import { formatSpeed } from '#shared/utils/format'
+import { NAV_ITEMS, DEV_NAV_ITEM, PRIMARY_ROUTES } from '~/utils/nav'
 
 const { t } = useI18n()
 
@@ -194,38 +202,15 @@ const activeDownloadFiles = computed(
 const runtimeConfig = useRuntimeConfig()
 const isDev = computed(() => process.dev || runtimeConfig.public.isDev)
 
-// Navigation links for desktop and mobile menu. Labels are resolved through a
-// computed rather than built once, so switching language relabels the menu
-// without a reload.
-const baseNavLinks = [
-  { key: 'dashboard', icon: 'i-heroicons-home', to: '/' },
-  { key: 'downloads', icon: 'i-heroicons-arrow-down-tray', to: '/downloads' },
-  { key: 'uploads', icon: 'i-heroicons-arrow-up-tray', to: '/uploads' },
-  { key: 'search', icon: 'i-heroicons-magnifying-glass', to: '/search' },
-  { key: 'searchAuto', icon: 'i-heroicons-arrow-path-rounded-square', to: '/search-auto' },
-  { key: 'shared', icon: 'i-heroicons-folder-open', to: '/shared' },
-  { key: 'assistant', icon: 'i-heroicons-sparkles', to: '/assistant' },
-  { key: 'servers', icon: 'i-heroicons-server-stack', to: '/servers' },
-  { key: 'connection', icon: 'i-heroicons-signal', to: '/connection' },
-  { key: 'statistics', icon: 'i-heroicons-chart-bar', to: '/statistics' },
-  { key: 'statsSummary', icon: 'i-heroicons-presentation-chart-line', to: '/stats' },
-  { key: 'preferences', icon: 'i-heroicons-adjustments-horizontal', to: '/preferences' },
-  { key: 'logs', icon: 'i-heroicons-document-text', to: '/logs' },
-  { key: 'mcpServer', icon: 'i-heroicons-cpu-chip', to: '/mcp-server' },
-  { key: 'settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
-]
-
-// Add API Test link only in development
+// Navigation links for desktop and mobile menu. The list and its order live in
+// utils/nav.ts, because the page transition reads the same order to work out
+// which way it travels. Labels are resolved through a computed rather than built
+// once, so switching language relabels the menu without a reload.
 const navLinks = computed(() => {
-  const links = [...baseNavLinks]
-  if (isDev.value) {
-    links.push({ key: 'apiTest', icon: 'i-heroicons-code-bracket', to: '/api-test' })
-  }
+  // The API test page is a development tool, not part of the app
+  const links = isDev.value ? [...NAV_ITEMS, DEV_NAV_ITEM] : NAV_ITEMS
   return links.map(link => ({ ...link, label: t(`nav.${link.key}`) }))
 })
-
-/** Links shown directly in the desktop bar; the rest go into the "More" menu. */
-const PRIMARY_ROUTES = ['/', '/downloads', '/uploads', '/search', '/shared']
 
 const primaryNavLinks = computed(() => navLinks.value.filter(link => PRIMARY_ROUTES.includes(link.to)))
 
