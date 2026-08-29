@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.16.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.15.0...v1.16.0) (2026-08-29)
+
+### Features
+
+* row-to-modal transitions for search results ([17cedad](https://github.com/JuanmanDev/amule-nuxt/commit/17cedad62d8098d00c8585280b1fc8e27e1e3e75))
+
 ## [1.15.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.14.0...v1.15.0) (2026-08-29)
 
 ### Features
