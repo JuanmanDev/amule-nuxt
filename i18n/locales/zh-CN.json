@@ -29,7 +29,6 @@
     "mcpServer": "MCP 服务器",
     "settings": "设置",
     "assistant": "助手",
-    "apiTest": "API 测试",
     "searchAuto": "自动搜索"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "此 Web 应用：外观、通知、诊断",
       "mcpServer": "AI 代理可用来操控 aMule 的 MCP 端点"
     }
+  },
+  "demo": {
+    "banner": "演示 — 这里的一切都在您的浏览器中模拟。不会下载任何内容，也不会连接任何真实网络。",
+    "reset": "重置演示",
+    "mcpUnavailableTitle": "演示中无法使用 MCP",
+    "mcpUnavailable": "MCP 端点和助手的工具需要 aMule Nuxt 服务器。此演示是静态页面，因此 AI 代理无法操控它。请自行运行应用以使用 MCP。",
+    "pushUnavailableTitle": "演示中无法使用 Web Push",
+    "pushUnavailable": "推送通知需要 aMule Nuxt 服务器。此演示是静态页面；页面内通知仍然可用。"
   }
 }

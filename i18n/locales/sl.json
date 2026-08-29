@@ -29,7 +29,6 @@
     "mcpServer": "Strežnik MCP",
     "settings": "Nastavitve",
     "assistant": "Pomočnik",
-    "apiTest": "Preizkus API-ja",
     "searchAuto": "Samodejno iskanje"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Ta spletna aplikacija: videz, obvestila, diagnostika",
       "mcpServer": "Končna točka MCP, prek katere lahko posredniki z umetno inteligenco upravljajo aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo – vse tukaj se simulira v vašem brskalniku. Nič se ne prenaša in ni povezave z nobenim pravim omrežjem.",
+    "reset": "Ponastavi demo",
+    "mcpUnavailableTitle": "MCP v demu ne deluje",
+    "mcpUnavailable": "Končna točka MCP in orodja pomočnika potrebujejo strežnik aMule Nuxt. Ta demo je statična stran, zato ga agent UI ne more upravljati. Za uporabo MCP zaženite aplikacijo sami.",
+    "pushUnavailableTitle": "Web Push v demu ne deluje",
+    "pushUnavailable": "Potisna obvestila potrebujejo strežnik aMule Nuxt. Ta demo je statična stran; obvestila znotraj strani delujejo."
   }
 }

@@ -29,7 +29,6 @@
     "mcpServer": "Server MCP",
     "settings": "Impostazioni",
     "assistant": "Assistente",
-    "apiTest": "Test API",
     "searchAuto": "Ricerca automatica"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Questa web app: aspetto, notifiche, diagnostica",
       "mcpServer": "L'endpoint MCP tramite cui gli agenti IA possono pilotare aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo: tutto ciò che vedi è simulato nel tuo browser. Non viene scaricato nulla e non viene contattata nessuna rete reale.",
+    "reset": "Reimposta la demo",
+    "mcpUnavailableTitle": "MCP non funziona nella demo",
+    "mcpUnavailable": "L'endpoint MCP e gli strumenti dell'assistente richiedono il server di aMule Nuxt. Questa demo è una pagina statica, quindi un agente IA non può controllarla. Esegui l'app tu stesso per usare MCP.",
+    "pushUnavailableTitle": "Web Push non funziona nella demo",
+    "pushUnavailable": "Le notifiche push richiedono il server di aMule Nuxt. Questa demo è una pagina statica; le notifiche all'interno della pagina funzionano."
   }
 }

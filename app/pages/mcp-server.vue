@@ -19,8 +19,18 @@
       </UButton>
     </div>
 
+    <!-- The static demo has no server, hence no MCP endpoint to describe -->
+    <UAlert
+      v-if="isDemo"
+      color="info"
+      variant="subtle"
+      icon="i-heroicons-beaker"
+      :title="$t('demo.mcpUnavailableTitle')"
+      :description="$t('demo.mcpUnavailable')"
+    />
+
     <!-- Loading is the default state until the endpoint answered -->
-    <div v-if="loading" class="space-y-4">
+    <div v-else-if="loading" class="space-y-4">
       <USkeleton class="h-28 w-full" />
       <USkeleton v-for="n in 4" :key="n" class="h-16 w-full" />
     </div>
@@ -249,7 +259,13 @@ const clientTabs = computed(() => {
   ];
 });
 
+const isDemo = Boolean(useRuntimeConfig().public.demo);
+
 async function fetchInfo({ silent = false }: { silent?: boolean } = {}) {
+  if (isDemo) {
+    loading.value = false;
+    return;
+  }
   if (!silent) loading.value = !info.value;
   error.value = null;
 

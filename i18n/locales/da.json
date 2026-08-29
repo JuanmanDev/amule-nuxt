@@ -29,7 +29,6 @@
     "mcpServer": "MCP-server",
     "settings": "Indstillinger",
     "assistant": "Assistent",
-    "apiTest": "API-test",
     "searchAuto": "Automatisk søgning"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Denne webapp: udseende, notifikationer, diagnostik",
       "mcpServer": "MCP-endepunktet, som AI-agenter kan styre aMule igennem"
     }
+  },
+  "demo": {
+    "banner": "Demo – alt her simuleres i din browser. Intet downloades, og der kontaktes ingen rigtige netværk.",
+    "reset": "Nulstil demo",
+    "mcpUnavailableTitle": "MCP virker ikke i demoen",
+    "mcpUnavailable": "MCP-endepunktet og assistentens værktøjer kræver aMule Nuxt-serveren. Denne demo er en statisk side, så en AI-agent kan ikke styre den. Kør selv appen for at bruge MCP.",
+    "pushUnavailableTitle": "Web Push virker ikke i demoen",
+    "pushUnavailable": "Push-notifikationer kræver aMule Nuxt-serveren. Denne demo er en statisk side; notifikationer inde på siden virker stadig."
   }
 }

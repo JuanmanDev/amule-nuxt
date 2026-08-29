@@ -1,0 +1,60 @@
+name: Demo site
+
+# Publishes the static demo to GitHub Pages: the app built with NUXT_DEMO=1,
+# where an in-browser simulator plays the daemon (see app/utils/demo). Rebuilt
+# on every push to master so the demo always shows the current interface.
+#
+# One-time setup in the repository settings: Pages -> Source -> "GitHub Actions".
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build the static demo
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate
+        env:
+          NUXT_DEMO: '1'
+          # Project sites live under /<repository name>/
+          NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
+          APP_VERSION: demo-${{ github.sha }}
+        run: npx nuxt generate
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .output/public
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

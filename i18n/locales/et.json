@@ -29,7 +29,6 @@
     "mcpServer": "MCP server",
     "settings": "Seaded",
     "assistant": "Abiline",
-    "apiTest": "API test",
     "searchAuto": "Automaatotsing"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "See veebirakendus: välimus, teavitused, diagnostika",
       "mcpServer": "MCP otspunkt, mille kaudu AI-agendid saavad aMule't juhtida"
     }
+  },
+  "demo": {
+    "banner": "Demo – kõik siin on simuleeritud sinu brauseris. Midagi ei laadita alla ega võeta ühendust ühegi päris võrguga.",
+    "reset": "Lähtesta demo",
+    "mcpUnavailableTitle": "MCP ei tööta demos",
+    "mcpUnavailable": "MCP lõpp-punkt ja assistendi tööriistad vajavad aMule Nuxti serverit. See demo on staatiline leht, nii et AI-agent ei saa seda juhtida. MCP kasutamiseks käivita rakendus ise.",
+    "pushUnavailableTitle": "Web Push ei tööta demos",
+    "pushUnavailable": "Push-teavitused vajavad aMule Nuxti serverit. See demo on staatiline leht; lehe sees kuvatavad teavitused töötavad."
   }
 }

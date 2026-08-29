@@ -29,7 +29,6 @@
     "mcpServer": "MCP-tenar",
     "settings": "Innstillingar",
     "assistant": "Assistent",
-    "apiTest": "API-test",
     "searchAuto": "Automatisk søk"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Denne vevappen: utsjånad, varsel, diagnostikk",
       "mcpServer": "MCP-endepunktet KI-agentar kan styre aMule gjennom"
     }
+  },
+  "demo": {
+    "banner": "Demo – alt her vert simulert i nettlesaren din. Ingenting vert lasta ned, og ingen ekte nettverk vert kontakta.",
+    "reset": "Nullstill demoen",
+    "mcpUnavailableTitle": "MCP fungerer ikkje i demoen",
+    "mcpUnavailable": "MCP-endepunktet og verktøya til assistenten treng aMule Nuxt-tenaren. Denne demoen er ei statisk side, så ein KI-agent kan ikkje styre han. Køyr appen sjølv for å bruke MCP.",
+    "pushUnavailableTitle": "Web Push fungerer ikkje i demoen",
+    "pushUnavailable": "Push-varsel treng aMule Nuxt-tenaren. Denne demoen er ei statisk side; varsel inne på sida fungerer."
   }
 }

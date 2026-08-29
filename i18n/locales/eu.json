@@ -29,7 +29,6 @@
     "mcpServer": "MCP zerbitzaria",
     "settings": "Ezarpenak",
     "assistant": "Laguntzailea",
-    "apiTest": "API proba",
     "searchAuto": "Bilaketa automatikoa"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Web aplikazio hau: itxura, jakinarazpenak, diagnostikoak",
       "mcpServer": "AA agenteek aMule gidatzeko erabil dezaketen MCP amaiera-puntua"
     }
+  },
+  "demo": {
+    "banner": "Demoa: hemen ikusten duzun guztia zure nabigatzailean simulatzen da. Ez da ezer deskargatzen eta ez da benetako sare batekin konektatzen.",
+    "reset": "Berrezarri demoa",
+    "mcpUnavailableTitle": "MCP ez dabil demoan",
+    "mcpUnavailable": "MCP amaiera-puntuak eta laguntzailearen tresnek aMule Nuxt zerbitzaria behar dute. Demo hau orri estatikoa da, beraz AA agente batek ezin du kudeatu. Exekutatu aplikazioa zuk zeuk MCP erabiltzeko.",
+    "pushUnavailableTitle": "Web Push ez dabil demoan",
+    "pushUnavailable": "Push jakinarazpenek aMule Nuxt zerbitzaria behar dute. Demo hau orri estatikoa da; orriaren barruko jakinarazpenek bai funtzionatzen dute."
   }
 }

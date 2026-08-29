@@ -1,3 +1,5 @@
+<p align="center"><img src="images/icon.png" width="128" height="128" alt="aMule Nuxt icon"></p>
+
 # aMule Nuxt
 
 [![Latest release](https://img.shields.io/github/v/release/JuanmanDev/amule-nuxt?logo=github&label=release)](https://github.com/JuanmanDev/amule-nuxt/releases/latest)
@@ -9,6 +11,8 @@
 ![Node >= 24](https://img.shields.io/badge/node-%E2%89%A5%2024-339933?logo=node.js&logoColor=white)
 
 ![aMule Nuxt dashboard](images/home2.png)
+
+> **[Try the live demo](https://juanmandev.github.io/amule-nuxt/)** — the whole interface running against a simulated daemon in your browser: a queue of Linux ISOs, Wikipedia dumps and open movies that actually progresses, searches that return results, servers to connect to. Nothing is downloaded and no network is contacted. See [The demo](#the-demo) for what is and is not simulated.
 
 A modern web interface **and MCP server** for an [aMule](https://amule.org) daemon, built with **Nuxt 4**, **Nuxt UI 4** and **TypeScript**.
 
@@ -107,6 +111,24 @@ Because aMule's protocol reports neither, this app also records **when each down
 It operates aMule through this app's own MCP endpoint — the same 19 tools external agents get — so anything the interface can do, it can do, and a tool added there appears in the assistant with no further work. Tools published by the page through the draft WebMCP API (`navigator.modelContext`) are picked up as well when a browser supports it. Every tool call is shown in the transcript and can be expanded to see exactly what was sent and what came back.
 
 WebGPU is required: Chrome, Edge and Opera have it on the desktop today. Elsewhere the page says so instead of failing.
+
+### The demo
+
+[juanmandev.github.io/amule-nuxt](https://juanmandev.github.io/amule-nuxt/) is this app built with `NUXT_DEMO=1` and published to GitHub Pages by `.github/workflows/pages.yml` on every push to `master`. There is no server behind it: a simulator in the browser (`app/utils/demo/`) plays the daemon, and a plugin (`app/plugins/demo.client.ts`) answers the same `/api/...` calls the pages make against a real server. The pages are not changed for the demo, so what you see there is what you get.
+
+What the simulator does:
+
+- a queue that moves — files download at a plausible shared rate, get paused, resumed, reprioritised and removed, and finish into the shared list with the same *added / completed* events the real server emits, so the notifications fire too;
+- peers uploading from the shared files, coming and going, with a queue behind them;
+- searches on Kad, eD2k and local, with results arriving over time as they do on a real network, from a catalogue of freely redistributable files (Linux distributions, Kiwix Wikipedia dumps, Project Gutenberg books, Blender open movies, OpenStreetMap extracts) plus a few made-up files named after whatever you searched for, so a search never comes back empty;
+- search tabs kept for a week and automatic searches that accumulate results pass by pass, as the server does;
+- servers to connect to and disconnect from, Kad to start and stop, logs, statistics, the statistics tree, speed history and preferences.
+
+Everything is remembered in `localStorage` — reload and the queue is where you left it — and the **Reset demo** button in the banner throws it away. File hashes are synthetic: pasting a demo link into a real aMule resolves to nothing.
+
+What it cannot do, and says so in every language: the **MCP endpoint** (an AI agent cannot drive the demo, and the assistant's tools have nothing to call), **Web Push** (the in-page notifications still work), and relaying the assistant to Ollama or an OpenAI-compatible API. The in-browser WebLLM model itself runs.
+
+To build it yourself: `npm run generate:demo`, then serve `.output/public` from `/amule-nuxt/` — or set `NUXT_APP_BASE_URL=/` for the root of a host.
 
 ---
 

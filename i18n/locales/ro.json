@@ -29,7 +29,6 @@
     "mcpServer": "Server MCP",
     "settings": "Setări",
     "assistant": "Asistent",
-    "apiTest": "Test API",
     "searchAuto": "Căutare automată"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Această aplicație web: aspect, notificări, diagnosticare",
       "mcpServer": "Punctul final MCP prin care agenții IA pot controla aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo – tot ce vezi aici este simulat în browserul tău. Nu se descarcă nimic și nu se contactează nicio rețea reală.",
+    "reset": "Resetează demo-ul",
+    "mcpUnavailableTitle": "MCP nu funcționează în demo",
+    "mcpUnavailable": "Endpoint-ul MCP și instrumentele asistentului au nevoie de serverul aMule Nuxt. Acest demo este o pagină statică, așa că un agent AI nu îl poate controla. Rulează aplicația tu însuți pentru a folosi MCP.",
+    "pushUnavailableTitle": "Web Push nu funcționează în demo",
+    "pushUnavailable": "Notificările push au nevoie de serverul aMule Nuxt. Acest demo este o pagină statică; notificările din pagină funcționează."
   }
 }

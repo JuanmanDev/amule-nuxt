@@ -29,7 +29,6 @@
     "mcpServer": "MCP-server",
     "settings": "Konfiguration",
     "assistant": "Assistent",
-    "apiTest": "API-test",
     "searchAuto": "Automatisk sökning"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Den här webbappen: utseende, aviseringar, diagnostik",
       "mcpServer": "MCP-slutpunkten som AI-agenter kan styra aMule genom"
     }
+  },
+  "demo": {
+    "banner": "Demo – allt här simuleras i din webbläsare. Ingenting laddas ner och inget riktigt nätverk kontaktas.",
+    "reset": "Återställ demon",
+    "mcpUnavailableTitle": "MCP fungerar inte i demon",
+    "mcpUnavailable": "MCP-ändpunkten och assistentens verktyg kräver aMule Nuxt-servern. Den här demon är en statisk sida, så en AI-agent kan inte styra den. Kör appen själv för att använda MCP.",
+    "pushUnavailableTitle": "Web Push fungerar inte i demon",
+    "pushUnavailable": "Push-notiser kräver aMule Nuxt-servern. Den här demon är en statisk sida; notiser inne på sidan fungerar."
   }
 }

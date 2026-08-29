@@ -29,7 +29,6 @@
     "mcpServer": "MCP serveris",
     "settings": "Nustatymai",
     "assistant": "Asistentas",
-    "apiTest": "API bandymas",
     "searchAuto": "Automatinė paieška"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Ši žiniatinklio programa: išvaizda, pranešimai, diagnostika",
       "mcpServer": "MCP galinis taškas, per kurį DI agentai gali valdyti aMule"
     }
+  },
+  "demo": {
+    "banner": "Demonstracija – viskas čia imituojama jūsų naršyklėje. Nieko neatsisiunčiama ir nesijungiama prie jokio tikro tinklo.",
+    "reset": "Atstatyti demonstraciją",
+    "mcpUnavailableTitle": "MCP demonstracijoje neveikia",
+    "mcpUnavailable": "MCP galiniam taškui ir asistento įrankiams reikia aMule Nuxt serverio. Ši demonstracija yra statinis puslapis, todėl DI agentas negali jos valdyti. Norėdami naudoti MCP, paleiskite programą patys.",
+    "pushUnavailableTitle": "Web Push demonstracijoje neveikia",
+    "pushUnavailable": "Push pranešimams reikia aMule Nuxt serverio. Ši demonstracija yra statinis puslapis; pranešimai puslapio viduje veikia."
   }
 }

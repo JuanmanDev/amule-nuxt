@@ -29,7 +29,6 @@
     "mcpServer": "MCP-palvelin",
     "settings": "Asetukset",
     "assistant": "Avustaja",
-    "apiTest": "API-testi",
     "searchAuto": "Automaattihaku"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Tämä verkkosovellus: ulkoasu, ilmoitukset, diagnostiikka",
       "mcpServer": "MCP-päätepiste, jonka kautta tekoälyagentit voivat ohjata aMulea"
     }
+  },
+  "demo": {
+    "banner": "Demo – kaikki tässä simuloidaan selaimessasi. Mitään ei ladata eikä mihinkään oikeaan verkkoon oteta yhteyttä.",
+    "reset": "Palauta demo",
+    "mcpUnavailableTitle": "MCP ei toimi demossa",
+    "mcpUnavailable": "MCP-päätepiste ja avustajan työkalut tarvitsevat aMule Nuxt -palvelimen. Tämä demo on staattinen sivu, joten tekoälyagentti ei voi ohjata sitä. Käytä MCP:tä ajamalla sovellus itse.",
+    "pushUnavailableTitle": "Web Push ei toimi demossa",
+    "pushUnavailable": "Push-ilmoitukset tarvitsevat aMule Nuxt -palvelimen. Tämä demo on staattinen sivu; sivun sisäiset ilmoitukset toimivat."
   }
 }

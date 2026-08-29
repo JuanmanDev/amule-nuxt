@@ -29,7 +29,6 @@
     "mcpServer": "Server MCP",
     "settings": "Nastavení",
     "assistant": "Asistent",
-    "apiTest": "Test API",
     "searchAuto": "Automatické hledání"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Tato webová aplikace: vzhled, oznámení, diagnostika",
       "mcpServer": "Koncový bod MCP, přes který mohou AI agenti obsluhovat aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo – vše, co vidíte, se simuluje ve vašem prohlížeči. Nic se nestahuje a nekontaktuje se žádná skutečná síť.",
+    "reset": "Obnovit demo",
+    "mcpUnavailableTitle": "MCP v demu nefunguje",
+    "mcpUnavailable": "Koncový bod MCP a nástroje asistenta vyžadují server aMule Nuxt. Toto demo je statická stránka, takže ji AI agent nemůže ovládat. Pro použití MCP si aplikaci spusťte sami.",
+    "pushUnavailableTitle": "Web Push v demu nefunguje",
+    "pushUnavailable": "Push oznámení vyžadují server aMule Nuxt. Toto demo je statická stránka; oznámení uvnitř stránky fungují."
   }
 }

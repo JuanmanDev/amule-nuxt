@@ -29,7 +29,6 @@
     "mcpServer": "Shërbyes MCP",
     "settings": "Rregullime",
     "assistant": "Ndihmës",
-    "apiTest": "Provë API-je",
     "searchAuto": "Kërkim automatik"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Ky aplikacion web: pamja, njoftimet, diagnostikimi",
       "mcpServer": "Pika hyrëse MCP përmes së cilës agjentët e IA-së mund të drejtojnë aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo – gjithçka këtu simulohet në shfletuesin tuaj. Asgjë nuk shkarkohet dhe nuk kontaktohet asnjë rrjet i vërtetë.",
+    "reset": "Rivendos demon",
+    "mcpUnavailableTitle": "MCP nuk funksionon në demo",
+    "mcpUnavailable": "Pika e fundit MCP dhe mjetet e asistentit kërkojnë serverin aMule Nuxt. Kjo demo është një faqe statike, kështu që një agjent IA nuk mund ta drejtojë. Ekzekutoni aplikacionin vetë për të përdorur MCP.",
+    "pushUnavailableTitle": "Web Push nuk funksionon në demo",
+    "pushUnavailable": "Njoftimet push kërkojnë serverin aMule Nuxt. Kjo demo është një faqe statike; njoftimet brenda faqes funksionojnë."
   }
 }

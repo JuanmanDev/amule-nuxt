@@ -29,7 +29,6 @@
     "mcpServer": "Sirvidor MCP",
     "settings": "Axustes",
     "assistant": "Asistente",
-    "apiTest": "Prueba de la API",
     "searchAuto": "Gueta automática"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Esta aplicación web: aspeutu, avisos, diagnósticos",
       "mcpServer": "El puntu de conexón MCP pel que los axentes d’IA puen manexar aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo: tolo que ves simúlase nel to restolador. Nun se descarga nada nin se contauta con denguna rede real.",
+    "reset": "Reaniciar la demo",
+    "mcpUnavailableTitle": "MCP nun funciona na demo",
+    "mcpUnavailable": "El puntu final MCP y les ferramientes del asistente necesiten el sirvidor d'aMule Nuxt. Esta demo ye una páxina estática, asina qu'un axente d'IA nun pue manexala. Executa l'aplicación tu mesmu pa usar MCP.",
+    "pushUnavailableTitle": "Web Push nun funciona na demo",
+    "pushUnavailable": "Les notificaciones push necesiten el sirvidor d'aMule Nuxt. Esta demo ye una páxina estática; les notificaciones dientro de la páxina sí funcionen."
   }
 }

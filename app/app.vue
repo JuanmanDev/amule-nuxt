@@ -7,6 +7,17 @@
       :upload-files="status?.queuedClients ?? 0"
       :download-files="activeDownloadFiles"
     />
+    <!-- The public demo: nothing here is real, and the visitor should know -->
+    <UBanner
+      v-if="isDemo"
+      color="info"
+      icon="i-heroicons-beaker"
+      :title="$t('demo.banner')"
+      :actions="[
+        { label: $t('demo.reset'), color: 'neutral', variant: 'outline', size: 'xs', onClick: resetDemo },
+        { label: 'GitHub', color: 'neutral', variant: 'outline', size: 'xs', to: 'https://github.com/JuanmanDev/amule-nuxt', target: '_blank' }
+      ]"
+    />
     <UBanner
       v-if="!connectionState.connected"
       color="error"
@@ -183,7 +194,8 @@
 
 <script setup lang="ts">
 import { formatSpeed } from '#shared/utils/format'
-import { NAV_ITEMS, DEV_NAV_ITEM, PRIMARY_ROUTES } from '~/utils/nav'
+import { NAV_ITEMS, PRIMARY_ROUTES } from '~/utils/nav'
+import { useDemoDaemon } from '~/plugins/demo.client'
 
 const { t } = useI18n()
 
@@ -200,16 +212,20 @@ const activeDownloadFiles = computed(
   () => queuedDownloads.value.filter(download => (download.speed ?? 0) > 0).length
 )
 const runtimeConfig = useRuntimeConfig()
-const isDev = computed(() => process.dev || runtimeConfig.public.isDev)
+const isDemo = computed(() => Boolean(runtimeConfig.public.demo))
+
+/** Back to the opening scene: the simulator forgets what the visitor did. */
+function resetDemo() {
+  useDemoDaemon()?.reset()
+  window.location.reload()
+}
 
 // Navigation links for desktop and mobile menu. The list and its order live in
 // utils/nav.ts, because the page transition reads the same order to work out
 // which way it travels. Labels are resolved through a computed rather than built
 // once, so switching language relabels the menu without a reload.
 const navLinks = computed(() => {
-  // The API test page is a development tool, not part of the app
-  const links = isDev.value ? [...NAV_ITEMS, DEV_NAV_ITEM] : NAV_ITEMS
-  return links.map(link => ({ ...link, label: t(`nav.${link.key}`) }))
+  return NAV_ITEMS.map(link => ({ ...link, label: t(`nav.${link.key}`) }))
 })
 
 const primaryNavLinks = computed(() => navLinks.value.filter(link => PRIMARY_ROUTES.includes(link.to)))

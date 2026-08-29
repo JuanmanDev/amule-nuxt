@@ -185,7 +185,16 @@
               <USkeleton class="h-10 w-72" />
             </template>
 
-          <SmoothSwap v-if="pushNotice">
+          <UAlert
+            v-if="isDemo"
+            color="info"
+            variant="subtle"
+            icon="i-heroicons-beaker"
+            :title="$t('demo.pushUnavailableTitle')"
+            :description="$t('demo.pushUnavailable')"
+          />
+
+          <SmoothSwap v-if="pushNotice && !isDemo">
             <UAlert
               v-if="pushNotice === 'unsupported'"
               key="unsupported"
@@ -389,6 +398,8 @@ function preference(key: 'added' | 'completed' | 'system') {
 }
 
 /** Which warning, if any, applies to background notifications on this browser. */
+const isDemo = Boolean(useRuntimeConfig().public.demo);
+
 const pushNotice = computed<'unsupported' | 'denied' | null>(() => {
   if (notifications.checked.value && !notifications.pushSupported.value) return 'unsupported';
   if (notifications.permission.value === 'denied') return 'denied';

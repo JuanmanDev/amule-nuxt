@@ -14,6 +14,7 @@
 
 import type { Download } from '../../server/utils/amule-types';
 import type { DownloadEvent } from '../../server/utils/downloadEvents';
+import { useDemoDaemon } from '~/plugins/demo.client';
 
 export interface WebSocketStatus {
     connected: boolean;
@@ -46,6 +47,8 @@ let reconnectDelay = RECONNECT_MIN_MS;
  * so writing to shared state (`useState`) has to be wrapped in its context.
  */
 let host: ReturnType<typeof useNuxtApp> | null = null;
+/** Demo build only: undoes the subscription to the in-browser daemon. */
+let demoDetach: (() => void) | null = null;
 /** The wake listeners are attached once per tab, not once per caller. */
 let wakeListenersAttached = false;
 
@@ -86,6 +89,19 @@ function applyFrame(message: any) {
 
 function connect() {
     if (socket) return;
+
+    // The static demo has no push server: the in-browser daemon is the feed
+    if (useRuntimeConfig().public.demo) {
+        if (demoDetach) return;
+        const daemon = useDemoDaemon();
+        if (!daemon) return;
+        const stopFrames = daemon.onFrame(frame => applyFrame({ type: 'status_update', data: frame }));
+        const stopEvents = daemon.onDownloadEvents(events => applyFrame({ type: 'download_events', data: { events } }));
+        demoDetach = () => { stopFrames(); stopEvents(); };
+        applyFrame({ type: 'status_update', data: daemon.latestFrame() });
+        wsStatus.value = { connected: true, error: null };
+        return;
+    }
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const hostname = window.location.hostname;
@@ -179,6 +195,10 @@ export function openAmuleSocket(): void {
 
 /** Only used to stop a dev-server reload leaving the previous socket behind. */
 export function closeAmuleSocket(): void {
+    if (demoDetach) {
+        demoDetach();
+        demoDetach = null;
+    }
     if (wakeListenersAttached) {
         wakeListenersAttached = false;
         document.removeEventListener('visibilitychange', reconnectNow);

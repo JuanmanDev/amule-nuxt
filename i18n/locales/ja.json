@@ -29,7 +29,6 @@
     "mcpServer": "MCP サーバー",
     "settings": "設定",
     "assistant": "アシスタント",
-    "apiTest": "API テスト",
     "searchAuto": "自動検索"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "この Web アプリ：外観、通知、診断",
       "mcpServer": "AI エージェントが aMule を操作できる MCP エンドポイント"
     }
+  },
+  "demo": {
+    "banner": "デモ — ここにあるものはすべてブラウザー内でシミュレートされています。何もダウンロードされず、実際のネットワークにも接続しません。",
+    "reset": "デモをリセット",
+    "mcpUnavailableTitle": "デモでは MCP は利用できません",
+    "mcpUnavailable": "MCP エンドポイントとアシスタントのツールには aMule Nuxt サーバーが必要です。このデモは静的ページなので、AI エージェントから操作することはできません。MCP を使うにはアプリをご自身で実行してください。",
+    "pushUnavailableTitle": "デモでは Web Push は利用できません",
+    "pushUnavailable": "プッシュ通知には aMule Nuxt サーバーが必要です。このデモは静的ページですが、ページ内の通知は動作します。"
   }
 }

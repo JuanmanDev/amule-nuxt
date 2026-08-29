@@ -9,6 +9,34 @@ const { version: packageVersion } = JSON.parse(
 ) as { version: string }
 const appVersion = process.env.APP_VERSION || packageVersion
 
+/*
+ * NUXT_DEMO=1 builds the public demo: a static site (`nuxt generate`) with no
+ * server behind it, where an in-browser simulator plays the daemon - see
+ * app/plugins/demo.client.ts. Rendering has to happen in the browser, because
+ * the simulator lives there, and the site is served from a sub-path on GitHub
+ * Pages, which is what NUXT_APP_BASE_URL is for.
+ */
+const demo = process.env.NUXT_DEMO === '1'
+const demoBaseURL = process.env.NUXT_APP_BASE_URL || '/amule-nuxt/'
+const publicBase = demo ? demoBaseURL : '/'
+
+/*
+ * @mlc-ai/web-llm ships a 6.5 MB bundle whose JSDoc mentions
+ * `new URL('./worker.ts', import.meta.url)`. That comment alone makes Vite's
+ * asset-import-meta-url plugin scan the whole file with a regex, which blows
+ * the stack when the app is built for a sub-path (the demo on GitHub Pages).
+ * Renaming the token in the comment before that plugin looks is enough; the
+ * library's code has no real `import.meta.url`.
+ */
+const webLlmCommentFix = {
+  name: 'amule:web-llm-comment-fix',
+  enforce: 'pre' as const,
+  transform(code: string, id: string) {
+    if (!id.includes('@mlc-ai/web-llm') || !code.includes('import.meta.url')) return
+    return { code: code.replaceAll('import.meta.url', 'import.meta-url'), map: null }
+  }
+}
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -147,12 +175,13 @@ export default defineNuxtConfig({
     amuleEcPassword: process.env.AMULE_EC_PASSWORD || '',
     amuleEcHost: process.env.AMULE_EC_HOST || 'localhost',
     amuleEcPort: process.env.AMULE_EC_PORT || '4712',
-    amuleCmdPath: process.env.AMULE_CMD_PATH || 'amulecmd',
 
     public: {
       // Client-side environment variables (never secrets)
       appName: 'aMule Nuxt',
       appVersion,
+      /** True in the static demo build, where the daemon is simulated in the browser. */
+      demo,
       amuleEcHost: process.env.AMULE_EC_HOST || 'localhost',
       amuleEcPort: process.env.AMULE_EC_PORT || '4712',
       // Port of the live-update WebSocket server (see server/plugins/websocket.ts)
@@ -165,20 +194,42 @@ export default defineNuxtConfig({
     typeCheck: false // Set to true after installing vue-tsc: npm i -D vue-tsc
   },
 
-  ssr: true,
+  ssr: !demo,
+
+  vite: {
+    worker: {
+      plugins: () => [webLlmCommentFix]
+    },
+    plugins: [webLlmCommentFix]
+  },
+
+  nitro: demo
+    ? {
+        // Every page gets its own index.html, so a deep link into the demo works
+        // without a server-side rewrite (GitHub Pages has none).
+        prerender: { crawlLinks: true, routes: ['/'] }
+      }
+    : {},
 
   app: {
+    baseURL: demo ? demoBaseURL : '/',
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: 'aMule Web Manager',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Modern web-based management interface for aMule daemon' }
+        { name: 'description', content: 'Modern web-based management interface for aMule daemon' },
+        { name: 'theme-color', content: '#00dc82' }
       ],
+      // Paths carry the base URL explicitly: the demo lives under a sub-path, and
+      // absolute `/favicon.svg` would point at the host's root there.
       link: [
+        { rel: 'icon', href: `${publicBase}favicon.svg`, type: 'image/svg+xml' },
+        { rel: 'icon', href: `${publicBase}favicon.ico`, sizes: '32x32' },
+        { rel: 'apple-touch-icon', href: `${publicBase}apple-touch-icon.png` },
         // Declares the ed2k / magnet protocol handlers when installed as an app
-        { rel: 'manifest', href: '/manifest.webmanifest' }
+        { rel: 'manifest', href: `${publicBase}manifest.webmanifest` }
       ]
     }
   },

@@ -29,7 +29,6 @@
     "mcpServer": "MCP-kiszolgáló",
     "settings": "Beállítások",
     "assistant": "Asszisztens",
-    "apiTest": "API-teszt",
     "searchAuto": "Automatikus keresés"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Ez a webalkalmazás: megjelenés, értesítések, diagnosztika",
       "mcpServer": "Az MCP-végpont, amelyen keresztül AI-ügynökök vezérelhetik az aMule-t"
     }
+  },
+  "demo": {
+    "banner": "Demó – itt minden a böngésződben van szimulálva. Semmi nem töltődik le, és valódi hálózattal nem jön létre kapcsolat.",
+    "reset": "Demó visszaállítása",
+    "mcpUnavailableTitle": "Az MCP nem működik a demóban",
+    "mcpUnavailable": "Az MCP-végpont és az asszisztens eszközei az aMule Nuxt szerverét igénylik. Ez a demó egy statikus oldal, így AI-ügynök nem tudja vezérelni. Az MCP használatához futtasd magad az alkalmazást.",
+    "pushUnavailableTitle": "A Web Push nem működik a demóban",
+    "pushUnavailable": "A push-értesítések az aMule Nuxt szerverét igénylik. Ez a demó egy statikus oldal; az oldalon belüli értesítések működnek."
   }
 }

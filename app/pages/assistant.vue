@@ -18,6 +18,17 @@
 
     <!-- Nothing is claimed until the browser has actually been asked, and only
          the in-browser provider needs WebGPU at all -->
+    <!-- In the static demo the model can run, but the tools it would call live
+         on the server this demo does not have -->
+    <UAlert
+      v-if="isDemo"
+      color="info"
+      variant="subtle"
+      icon="i-heroicons-beaker"
+      :title="$t('demo.mcpUnavailableTitle')"
+      :description="$t('demo.mcpUnavailable')"
+    />
+
     <SmoothSwap>
       <UAlert
         v-if="checked && !supported && provider === 'webllm'"
@@ -289,6 +300,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 useHead({ title: () => t('assistant.title') });
+const isDemo = Boolean(useRuntimeConfig().public.demo);
 
 const {
   messages,

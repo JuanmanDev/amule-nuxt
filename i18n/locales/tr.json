@@ -29,7 +29,6 @@
     "mcpServer": "MCP sunucusu",
     "settings": "Ayarlar",
     "assistant": "Asistan",
-    "apiTest": "API testi",
     "searchAuto": "Otomatik arama"
   },
   "common": {
@@ -591,5 +590,13 @@
       "settings": "Bu web uygulaması: görünüm, bildirimler, tanılama",
       "mcpServer": "Yapay zeka aracılarının aMule'yi yönetebildiği MCP uç noktası"
     }
+  },
+  "demo": {
+    "banner": "Demo – buradaki her şey tarayıcınızda simüle edilir. Hiçbir şey indirilmez ve gerçek bir ağa bağlanılmaz.",
+    "reset": "Demoyu sıfırla",
+    "mcpUnavailableTitle": "MCP demoda çalışmaz",
+    "mcpUnavailable": "MCP uç noktası ve asistanın araçları aMule Nuxt sunucusunu gerektirir. Bu demo statik bir sayfadır, bu yüzden bir yapay zekâ ajanı onu yönetemez. MCP kullanmak için uygulamayı kendiniz çalıştırın.",
+    "pushUnavailableTitle": "Web Push demoda çalışmaz",
+    "pushUnavailable": "Push bildirimleri aMule Nuxt sunucusunu gerektirir. Bu demo statik bir sayfadır; sayfa içi bildirimler çalışır."
   }
 }
