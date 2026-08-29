@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.14.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.13.0...v1.14.0) (2026-08-29)
+
+### Features
+
+* shared-element transitions for the queue and its details modal ([039d677](https://github.com/JuanmanDev/amule-nuxt/commit/039d6778178ff3ed333e3a8288b263d576601dbe))
+
 ## [1.13.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.12.0...v1.13.0) (2026-08-29)
 
 ### Features
