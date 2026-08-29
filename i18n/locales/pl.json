@@ -63,7 +63,8 @@
     "clearFilter": "Wyczyść filtr",
     "filter": "Filtruj...",
     "noMatches": "Brak dopasowań",
-    "goToDownloads": "Przejdź do pobierań"
+    "goToDownloads": "Przejdź do pobierań",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Na stronę",
@@ -565,7 +566,11 @@
     "createFailed": "Nie udało się utworzyć wyszukiwania automatycznego",
     "stoppedToast": "Wyszukiwanie automatyczne zatrzymane",
     "resumedToast": "Wyszukiwanie automatyczne wznowione",
-    "deletedToast": "Usunięto wyszukiwanie automatyczne dla „{keyword}”"
+    "deletedToast": "Usunięto wyszukiwanie automatyczne dla „{keyword}”",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Powiązane strony",

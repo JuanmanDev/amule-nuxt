@@ -63,7 +63,8 @@
     "clearFilter": "Filter wissen",
     "filter": "Filteren...",
     "noMatches": "Geen resultaten",
-    "goToDownloads": "Naar downloads"
+    "goToDownloads": "Naar downloads",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Per pagina",
@@ -565,7 +566,11 @@
     "createFailed": "Kon de automatische zoekopdracht niet aanmaken",
     "stoppedToast": "Automatische zoekopdracht gestopt",
     "resumedToast": "Automatische zoekopdracht hervat",
-    "deletedToast": "Automatisch zoeken naar “{keyword}” verwijderd"
+    "deletedToast": "Automatisch zoeken naar “{keyword}” verwijderd",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Gerelateerde pagina's",

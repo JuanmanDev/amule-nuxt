@@ -91,89 +91,57 @@
       </template>
 
       <div class="space-y-3">
-        <div
+        <NuxtLink
           v-for="search in summaries"
           :key="search.id"
-          class="rounded-lg border p-3 transition-colors"
+          :to="`/search-auto/${search.id}`"
+          class="block rounded-lg border p-3 transition-colors hover:border-primary-500"
           :class="search.id === selectedId
             ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/40'
             : 'border-gray-200 dark:border-gray-800'"
         >
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <NuxtLink
-              :to="`/search-auto/${search.id}`"
-              class="flex flex-1 items-center gap-2 min-w-0 text-left justify-between hover:text-primary-500 transition-colors"
-            >
-              <div class="flex items-center gap-2 min-w-0">
-                <UIcon
-                  v-if="search.status === 'active'"
-                  name="i-heroicons-arrow-path"
-                  class="w-4 h-4 shrink-0 text-primary-500"
-                  :class="{ 'animate-spin': runningNow(search) }"
-                />
-                <UIcon
-                  v-else-if="search.status === 'finished'"
-                  name="i-heroicons-check-circle"
-                  class="w-4 h-4 shrink-0 text-green-500"
-                />
-                <UIcon
-                  v-else
-                  name="i-heroicons-pause-circle"
-                  class="w-4 h-4 shrink-0 text-gray-400"
-                />
-                <span class="font-medium truncate max-w-[16rem]">{{ search.keyword }}</span>
-              </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <UBadge color="neutral" variant="subtle" size="sm" class="hidden sm:inline-flex">
-                  {{ search.networks.join(' · ') }}
-                </UBadge>
+            <div class="flex flex-1 items-center gap-2 min-w-0 text-left justify-between transition-colors">
+              <div class="font-medium truncate flex items-center gap-2">
+                {{ search.keyword }}
                 <UBadge :color="statusColor(search.status)" variant="subtle" size="sm">
-                  {{ $t(`searchAuto.status.${search.status}`) }}
+                  {{ search.status }}
                 </UBadge>
               </div>
-            </NuxtLink>
+            </div>
 
-            <div class="flex items-center gap-1 shrink-0">
+            <div class="flex items-center gap-1">
               <UButton
-                v-if="search.status === 'active'"
-                icon="i-heroicons-stop"
-                variant="ghost"
-                color="neutral"
-                size="sm"
-                :aria-label="$t('searchAuto.stopOne')"
-                @click="stopOne(search.id)"
-              >
-                <span class="hidden sm:inline">{{ $t('searchAuto.stopOne') }}</span>
-              </UButton>
-              <UButton
-                v-else
+                v-if="search.status === 'finished' || search.status === 'stopped'"
                 icon="i-heroicons-play"
                 variant="ghost"
                 color="neutral"
                 size="sm"
-                :aria-label="$t('searchAuto.resumeOne')"
-                @click="resumeOne(search.id)"
-              >
-                <span class="hidden sm:inline">{{ $t('searchAuto.resumeOne') }}</span>
-              </UButton>
+                :title="$t('searchAuto.resumeOne')"
+                @click.prevent.stop="resumeOne(search.id)"
+              />
+              <UButton
+                v-if="search.status === 'active' || search.status === 'waiting'"
+                icon="i-heroicons-stop"
+                variant="ghost"
+                color="neutral"
+                size="sm"
+                :title="$t('searchAuto.stopOne')"
+                @click.prevent.stop="stopOne(search.id)"
+              />
               <UButton
                 icon="i-heroicons-trash"
                 variant="ghost"
-                color="error"
+                color="red"
                 size="sm"
-                :aria-label="$t('searchAuto.deleteOne')"
-                @click="removeOne(search)"
+                :title="$t('searchAuto.deleteOne')"
+                @click.prevent.stop="removeOne(search)"
               />
             </div>
           </div>
 
-          <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
-            <span>
-              <AnimatedValue :model-value="search.resultCount" />
-              {{ $t('searchAuto.resultsSuffix') }}
-            </span>
-            <span>{{ $t('searchAuto.passes', { count: search.runs }) }}</span>
-            <span v-if="search.runs > 0">{{ $t('searchAuto.newLastPass', { count: search.newLastRun }) }}</span>
+          <div class="mt-2 text-sm text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-4 gap-y-1">
+            <span>{{ $t('searchAuto.networks', { count: search.networks.length, list: search.networks.join(', ') }) }}</span>
             <span v-if="search.status === 'active'">{{ nextPassLabel(search) }}</span>
             <span v-if="search.endsAt">{{ $t('searchAuto.until', { time: time.dateTime(search.endsAt) }) }}</span>
             <span v-else>{{ $t('searchAuto.untilStopped') }}</span>
@@ -182,7 +150,7 @@
           <p v-if="search.lastError" class="mt-1 text-sm text-red-500">
             {{ $t('searchAuto.lastPassFailed', { error: search.lastError }) }}
           </p>
-        </div>
+        </NuxtLink>
       </div>
     </UCard>
 

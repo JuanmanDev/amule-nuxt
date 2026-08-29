@@ -63,7 +63,8 @@
     "clearFilter": "Garbitu iragazkia",
     "filter": "Iragazi...",
     "noMatches": "Bat datorrenik ez",
-    "goToDownloads": "Joan deskargetara"
+    "goToDownloads": "Joan deskargetara",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Orriko",
@@ -565,7 +566,11 @@
     "createFailed": "Ezin izan da bilaketa automatikoa sortu",
     "stoppedToast": "Bilaketa automatikoa gelditu da",
     "resumedToast": "Bilaketa automatikoari berrekin zaio",
-    "deletedToast": "«{keyword}» bilaketa automatikoa kendu da"
+    "deletedToast": "«{keyword}» bilaketa automatikoa kendu da",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Lotutako orriak",

@@ -63,7 +63,8 @@
     "clearFilter": "Borrar filtro",
     "filter": "Filtrar...",
     "noMatches": "Sin coincidencias",
-    "goToDownloads": "Ir a descargas"
+    "goToDownloads": "Ir a descargas",
+    "back": "Volver"
   },
   "pagination": {
     "perPage": "Por página",
@@ -568,7 +569,8 @@
     "deleteOne": "Eliminar esta búsqueda",
     "stoppedToast": "Búsqueda automática detenida",
     "resumedToast": "Búsqueda automática reanudada",
-    "deletedToast": "Búsqueda automática de «{keyword}» eliminada"
+    "deletedToast": "Búsqueda automática de «{keyword}» eliminada",
+    "networks": "{count} redes: {list}"
   },
   "related": {
     "title": "Páginas relacionadas",

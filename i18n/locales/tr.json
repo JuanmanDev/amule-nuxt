@@ -63,7 +63,8 @@
     "clearFilter": "Süzgeci temizle",
     "filter": "Süz...",
     "noMatches": "Eşleşme yok",
-    "goToDownloads": "İndirmelere git"
+    "goToDownloads": "İndirmelere git",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Sayfa başına",
@@ -565,7 +566,11 @@
     "createFailed": "Otomatik arama oluşturulamadı",
     "stoppedToast": "Otomatik arama durduruldu",
     "resumedToast": "Otomatik arama sürdürüldü",
-    "deletedToast": "“{keyword}” için otomatik arama kaldırıldı"
+    "deletedToast": "“{keyword}” için otomatik arama kaldırıldı",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "İlgili sayfalar",

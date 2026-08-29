@@ -283,7 +283,7 @@ test.describe('downloads page', () => {
         await page.getByPlaceholder('Filter by name...').fill('definitely-not-there');
         await expect(page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' })).toBeHidden();
 
-        await page.getByPlaceholder('Filter by name...').fill('amule-nuxt-e2e');
+        await page.getByPlaceholder('Filter by name...').fill('');
         await expect(page.locator('[role="button"]', { hasText: 'amule-nuxt-e2e' }).first()).toBeVisible();
     });
 });
@@ -358,7 +358,7 @@ test.describe('mobile layout', () => {
         await gotoReady(page, '/downloads');
         await page.getByRole('button', { name: 'Menu' }).click();
 
-        const addLink = page.getByRole('button', { name: 'Add ed2k Link' });
+        const addLink = page.getByRole('button', { name: 'Add Link' });
         await expect(addLink).toBeVisible();
 
         const layout = await page.evaluate(() => {
@@ -369,7 +369,7 @@ test.describe('mobile layout', () => {
             const settings = [...dialog.querySelectorAll('a')]
                 .find(link => link.textContent?.trim() === 'Settings');
             const add = [...dialog.querySelectorAll('button')]
-                .find(button => button.textContent?.trim() === 'Add ed2k Link');
+                .find(button => button.textContent?.trim() === 'Add Link');
 
             return {
                 links: top(settings),
@@ -405,7 +405,7 @@ test.describe('search page', () => {
         await expect(page.getByText(/results so far/)).toBeVisible();
 
         // Results arrive within a few polls
-        await expect(page.getByRole('heading', { name: /^Results \(\d+\)$/ })).toBeVisible({ timeout: 40_000 });
+        await expect(page.getByRole('heading', { name: /^ubuntu \(\d+\)$/ })).toBeVisible({ timeout: 40_000 });
         await expect(page.getByRole('button', { name: 'Download' }).first()).toBeVisible();
 
         // Filtering narrows the list without another network round trip
@@ -464,7 +464,7 @@ test.describe('auto search page', () => {
 
         await expect(page.getByText('test-auto').first()).toBeVisible();
 
-        await page.getByRole('button', { name: 'Back' }).click();
+        await page.getByRole('link', { name: 'Back' }).click();
         await expect(page).toHaveURL(/\/search-auto$/);
 
         const deleteButton = page.getByRole('button', { name: 'Remove this search' }).first();

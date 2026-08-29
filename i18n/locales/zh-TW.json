@@ -63,7 +63,8 @@
     "clearFilter": "清除篩選",
     "filter": "篩選...",
     "noMatches": "沒有符合的項目",
-    "goToDownloads": "前往下載頁"
+    "goToDownloads": "前往下載頁",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "每頁",
@@ -565,7 +566,11 @@
     "createFailed": "無法建立自動搜尋",
     "stoppedToast": "自動搜尋已停止",
     "resumedToast": "自動搜尋已恢復",
-    "deletedToast": "已移除「{keyword}」的自動搜尋"
+    "deletedToast": "已移除「{keyword}」的自動搜尋",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "相關頁面",

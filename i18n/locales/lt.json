@@ -63,7 +63,8 @@
     "clearFilter": "Išvalyti filtrą",
     "filter": "Filtruoti...",
     "noMatches": "Atitikmenų nėra",
-    "goToDownloads": "Eiti į atsiuntimus"
+    "goToDownloads": "Eiti į atsiuntimus",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Puslapyje",
@@ -565,7 +566,11 @@
     "createFailed": "Nepavyko sukurti automatinės paieškos",
     "stoppedToast": "Automatinė paieška sustabdyta",
     "resumedToast": "Automatinė paieška pratęsta",
-    "deletedToast": "Automatinė paieška „{keyword}“ pašalinta"
+    "deletedToast": "Automatinė paieška „{keyword}“ pašalinta",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Susiję puslapiai",

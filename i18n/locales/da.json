@@ -63,7 +63,8 @@
     "clearFilter": "Ryd filter",
     "filter": "Filtrér...",
     "noMatches": "Ingen træffere",
-    "goToDownloads": "Gå til overførsler"
+    "goToDownloads": "Gå til overførsler",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Pr. side",
@@ -565,7 +566,11 @@
     "createFailed": "Den automatiske søgning kunne ikke oprettes",
     "stoppedToast": "Automatisk søgning stoppet",
     "resumedToast": "Automatisk søgning genoptaget",
-    "deletedToast": "Automatisk søgning efter “{keyword}” fjernet"
+    "deletedToast": "Automatisk søgning efter “{keyword}” fjernet",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Relaterede sider",

@@ -63,7 +63,8 @@
     "clearFilter": "Pastroje filtrin",
     "filter": "Filtroni...",
     "noMatches": "Asnjë përputhje",
-    "goToDownloads": "Kalo te shkarkimet"
+    "goToDownloads": "Kalo te shkarkimet",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Për faqe",
@@ -565,7 +566,11 @@
     "createFailed": "S’u krijua dot kërkimi automatik",
     "stoppedToast": "Kërkimi automatik u ndal",
     "resumedToast": "Kërkimi automatik u rimor",
-    "deletedToast": "Kërkimi automatik për “{keyword}” u hoq"
+    "deletedToast": "Kërkimi automatik për “{keyword}” u hoq",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Faqe të afërta",

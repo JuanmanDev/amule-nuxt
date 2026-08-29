@@ -63,7 +63,8 @@
     "clearFilter": "Καθαρισμός φίλτρου",
     "filter": "Φιλτράρισμα...",
     "noMatches": "Καμία αντιστοιχία",
-    "goToDownloads": "Μετάβαση στις λήψεις"
+    "goToDownloads": "Μετάβαση στις λήψεις",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Ανά σελίδα",
@@ -565,7 +566,11 @@
     "createFailed": "Δεν ήταν δυνατή η δημιουργία της αυτόματης αναζήτησης",
     "stoppedToast": "Η αυτόματη αναζήτηση σταμάτησε",
     "resumedToast": "Η αυτόματη αναζήτηση συνεχίστηκε",
-    "deletedToast": "Η αυτόματη αναζήτηση για «{keyword}» αφαιρέθηκε"
+    "deletedToast": "Η αυτόματη αναζήτηση για «{keyword}» αφαιρέθηκε",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Σχετικές σελίδες",

@@ -4,7 +4,14 @@
     "addEd2kLink": "Adicionar link ed2k",
     "daemonUnreachable": "Não foi possível contatar o daemon do aMule: {reason}",
     "daemonUnreachableFallback": "verifique o host, a porta e a senha",
-    "openSettings": "Abrir configurações"
+    "openSettings": "Abrir configurações",
+    "name": "aMule Nuxt",
+    "titleTemplate": "{page} - aMule Nuxt",
+    "more": "More",
+    "menu": "Menu",
+    "footer": "© {year} aMule Nuxt. All rights reserved.",
+    "github": "GitHub repository",
+    "language": "Language"
   },
   "nav": {
     "downloads": "Downloads",
@@ -13,21 +20,66 @@
     "connection": "Conexão",
     "logs": "Logs",
     "settings": "Configurações",
-    "searchAuto": "Busca automática"
+    "searchAuto": "Busca automática",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "search": "Search",
+    "servers": "Servers",
+    "statistics": "Statistics",
+    "statsSummary": "Stats summary",
+    "preferences": "Preferences",
+    "mcpServer": "MCP server",
+    "assistant": "Assistant",
+    "apiTest": "API Test"
   },
   "common": {
     "save": "Salvar alterações",
     "reset": "Redefinir",
     "loading": "Carregando...",
     "live": "Ao vivo",
-    "goToDownloads": "Ir para os downloads"
+    "goToDownloads": "Ir para os downloads",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "close": "Close",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "add": "Add",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Could not copy to the clipboard",
+    "details": "Details",
+    "actions": "Actions",
+    "error": "Error",
+    "never": "Never",
+    "unknown": "Unknown",
+    "none": "none",
+    "yes": "Yes",
+    "no": "No",
+    "of": "of",
+    "sortBy": "Sort by {field}",
+    "ascending": "Ascending, switch to descending",
+    "descending": "Descending, switch to ascending",
+    "ascendingShort": "Ascending",
+    "descendingShort": "Descending",
+    "clearFilter": "Clear filter",
+    "filter": "Filter...",
+    "noMatches": "No matches",
+    "back": "Back"
   },
   "pagination": {
     "showing": "Mostrando {from}-{to} de {count} {label}",
     "labels": {
       "downloads": "downloads",
-      "files": "arquivos"
-    }
+      "files": "arquivos",
+      "transfers": "transfers",
+      "results": "results",
+      "servers": "servers",
+      "lines": "lines"
+    },
+    "perPage": "Per page",
+    "all": "All",
+    "filteredFrom": "(filtered from {total})",
+    "empty": "No {label}"
   },
   "sort": {
     "fileName": "Nome do arquivo",
@@ -35,7 +87,22 @@
     "shareRatio": "Taxa de compartilhamento",
     "queuedClients": "Clientes na fila",
     "users": "Usuários",
-    "files": "Arquivos"
+    "files": "Arquivos",
+    "progress": "Progress",
+    "speed": "Speed",
+    "size": "Size",
+    "sources": "Sources",
+    "name": "Name",
+    "status": "Status",
+    "kind": "Kind",
+    "sentSession": "Sent this session",
+    "sentAllTime": "Sent all time",
+    "queuePosition": "Queue position",
+    "uploaded": "Uploaded",
+    "requests": "Requests",
+    "ping": "Ping",
+    "failedConnects": "Failed connects",
+    "time": "Time"
   },
   "downloads": {
     "title": "Downloads",
@@ -60,13 +127,51 @@
       "transferring": "Baixando de",
       "addedAt": "Iniciado",
       "completedAt": "Concluído",
-      "runningFor": "Em andamento há"
+      "runningFor": "Em andamento há",
+      "size": "Size",
+      "speed": "Speed",
+      "eta": "ETA",
+      "sources": "Sources",
+      "priority": "Priority",
+      "status": "Status",
+      "a4afSources": "A4AF sources",
+      "availableParts": "Available parts",
+      "lastReceived": "Last data received",
+      "lastSeenComplete": "Last seen complete",
+      "seenSince": "In the queue since",
+      "tookTime": "Took"
     },
     "startNotRecorded": "Este download já estava na fila quando este aplicativo olhou pela primeira vez, então o horário de início não é conhecido.",
     "bulk": {
       "pauseDone": "{count} download pausado | {count} downloads pausados",
       "resumeDone": "{count} download retomado | {count} downloads retomados",
-      "removeDone": "{count} download removido | {count} downloads removidos"
+      "removeDone": "{count} download removido | {count} downloads removidos",
+      "someFailed": "{count} could not be changed"
+    },
+    "staleTitle": "Showing the last queue that could be read",
+    "filterPlaceholder": "Filter by name...",
+    "inQueue": "in queue",
+    "searchingForSources": "searching for sources",
+    "showRateOverTime": "Show the transfer rate over time",
+    "keepIt": "Keep it",
+    "showDetailsFor": "Show details for {name}",
+    "copyName": "Copy name",
+    "hashCopied": "Hash copied",
+    "copyHash": "Copy hash",
+    "pause": "Pause",
+    "resume": "Resume",
+    "priority": "Priority",
+    "actionUnavailable": "Action unavailable",
+    "failedToPause": "Failed to pause",
+    "failedToResume": "Failed to resume",
+    "failedToRemove": "Failed to remove",
+    "failedToSetPriority": "Failed to set priority",
+    "priorities": {
+      "Auto": "Auto",
+      "High": "High",
+      "Normal": "Normal",
+      "Low": "Low",
+      "autoSuffix": "(auto)"
     }
   },
   "health": {
@@ -77,13 +182,23 @@
     "errorReason": "O aMule marcou este arquivo como incorreto.",
     "searchingReason": "Procurando fontes. O aMule pergunta aos servidores eD2k e ao Kad, o que normalmente leva segundos, mas pode levar alguns minutos com um arquivo raro. Se continuar assim: confira se o tamanho e o hash de 32 caracteres do link são exatamente os publicados (um hash errado cria um download que nunca poderá começar), conecte-se a mais servidores e ao Kad, e considere que talvez ninguém mais esteja compartilhando o arquivo.",
     "stalledReason": "Todas as fontes deste arquivo ficaram offline. O download recomeça sozinho assim que uma voltar.",
-    "waitingReason": "Na fila em {count} fonte, aguardando uma vaga de upload livre. | Na fila em {count} fontes, aguardando uma vaga de upload livre."
+    "waitingReason": "Na fila em {count} fonte, aguardando uma vaga de upload livre. | Na fila em {count} fontes, aguardando uma vaga de upload livre.",
+    "waiting": "Waiting",
+    "searching": "Searching",
+    "noSources": "No sources",
+    "hashing": "Hashing",
+    "error": "Error"
   },
   "addLinks": {
     "label": "Adicionar downloads (links eD2k ou magnet)",
     "help": "Um link ed2k:// ou magnet: por linha. Cole quantos quiser, de uma vez ou aos poucos.",
     "enterLink": "Digite um link",
-    "modalLabel": "Links ed2k ou magnet (um por linha)"
+    "modalLabel": "Links ed2k ou magnet (um por linha)",
+    "placeholder": "ed2k://{'|'}file{'|'}name{'|'}size{'|'}hash{'|'}/ or magnet:?xt=...",
+    "paste": "Paste",
+    "nothingToAdd": "Nothing to add",
+    "clipboardEmpty": "The clipboard is empty",
+    "addMore": "Add more"
   },
   "uploads": {
     "title": "Uploads",
@@ -100,10 +215,19 @@
     "waitingInQueue": "Aguardando na fila",
     "requestedAs": "Solicitado como: {name}",
     "fields": {
-      "user": "Usuário"
+      "user": "Usuário",
+      "address": "Address",
+      "client": "Client",
+      "session": "Session",
+      "allTime": "All time",
+      "queueScore": "Queue / score"
     },
     "uploadingNow": "enviando",
-    "detailsTitle": "Detalhes do upload"
+    "detailsTitle": "Detalhes do upload",
+    "autoRefresh": "Auto refresh",
+    "transfers": "Transfers ({count})",
+    "sentThisSession": "Sent this session",
+    "idle": "Idle"
   },
   "shared": {
     "title": "Arquivos compartilhados",
@@ -123,7 +247,9 @@
     "row": {
       "requests": "Solicitações",
       "accepted": "Aceitas",
-      "ratio": "Taxa"
+      "ratio": "Taxa",
+      "size": "Size",
+      "sent": "Sent"
     },
     "fields": {
       "shareRatio": "Taxa de compartilhamento",
@@ -133,10 +259,20 @@
       "acceptedSession": "Aceitas (sessão)",
       "clientsQueued": "Clientes na fila",
       "uploadPriority": "Prioridade de upload",
-      "completedAt": "Baixado em"
+      "completedAt": "Baixado em",
+      "size": "Size",
+      "uploadedAll": "Uploaded (all time)",
+      "uploadedSession": "Uploaded (session)",
+      "completeSources": "Complete sources",
+      "addedAt": "Added to the queue"
     },
     "notRecorded": "Não registrado",
-    "pageLink": "Link para este arquivo"
+    "pageLink": "Link para este arquivo",
+    "staleTitle": "Showing the last list that could be read",
+    "totalSize": "Total size",
+    "uploadedAllTime": "Uploaded all time",
+    "queued": "{count} queued",
+    "comment": "Comment"
   },
   "search": {
     "subtitle": "Procure arquivos nas redes eD2k e Kad",
@@ -157,25 +293,89 @@
       "noHash": "O aMule não informou um hash para este resultado.",
       "downloadAdded": "Download adicionado",
       "failedToStart": "Não foi possível iniciar o download",
-      "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online."
+      "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online.",
+      "title": "Search result",
+      "showDetailsFor": "Show details for {name}",
+      "sources": "{count} source | {count} sources",
+      "fields": {
+        "size": "Size",
+        "sizeBytes": "Size in bytes",
+        "kind": "Kind",
+        "extension": "Extension",
+        "sources": "Sources",
+        "foundBy": "Found by",
+        "queueStatus": "Queue status",
+        "queueSources": "Queue sources"
+      },
+      "show": "Show"
     },
     "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão em outro.",
-    "autoLink": "Busca automática"
+    "autoLink": "Busca automática",
+    "title": "Search",
+    "networks": {
+      "kad": "Kad network",
+      "global": "Global (eD2k)",
+      "local": "Local (connected server)"
+    },
+    "networkLabel": "Network to search",
+    "keywordsLabel": "Search keywords",
+    "start": "Search",
+    "stop": "Stop",
+    "refreshResults": "Refresh results",
+    "runAgain": "Run again",
+    "resultsSoFar": "results so far",
+    "found": "Found {count} results",
+    "failedTitle": "Search failed",
+    "tryAgain": "Try again",
+    "readAt": "read {time}",
+    "snapshotAt": "snapshot from {time}, run it again for fresh sources",
+    "notYet": "not yet",
+    "filterPlaceholder": "Filter results...",
+    "noResultsTitle": "No results found",
+    "idleTitle": "Nothing searched yet",
+    "started": "Search started",
+    "stopped": "Search stopped",
+    "couldNotStop": "Could not stop the search",
+    "couldNotRead": "Could not read the results",
+    "filters": {
+      "all": "All",
+      "new": "Not added yet",
+      "queued": "In the queue",
+      "here": "Already here"
+    }
   },
   "fileKinds": {
-    "archive": "Arquivo compactado"
+    "archive": "Arquivo compactado",
+    "video": "Video",
+    "audio": "Audio",
+    "image": "Image",
+    "document": "Document",
+    "program": "Program",
+    "disc": "Disc image",
+    "other": "Other"
   },
   "status": {
     "downloading": "Baixando",
     "paused": "Pausado",
     "completed": "Concluído",
-    "shared": "Já compartilhado"
+    "shared": "Já compartilhado",
+    "queued": "In queue"
   },
   "servers": {
     "loading": "Carregando os servidores...",
     "emptyDescription": "A lista de servidores do aMule está vazia. Adicione um servidor ou atualize a lista a partir de uma URL.",
     "noMatchesDescription": "Nenhum servidor corresponde a “{query}”.",
-    "connected": "Conectado"
+    "connected": "Conectado",
+    "title": "Servers",
+    "listTitle": "Server list ({count})",
+    "filterPlaceholder": "Filter servers...",
+    "loadFailed": "Failed to load servers",
+    "emptyTitle": "No servers found",
+    "removeTitle": "Remove server",
+    "removeQuestion": "Remove {name} ({address}) from the server list?",
+    "addressLabel": "Address",
+    "addressHelp": "Format: ip:port",
+    "nameLabel": "Name (optional)"
   },
   "logs": {
     "title": "Logs do aMule",
@@ -184,7 +384,9 @@
     "loadFailed": "Não foi possível carregar os logs",
     "emptyTitle": "Nenhum log disponível",
     "emptyDescription": "O daemon do aMule ainda não registrou nada.",
-    "noMatchesDescription": "Nenhuma linha do log corresponde a “{query}”."
+    "noMatchesDescription": "Nenhuma linha do log corresponde a “{query}”.",
+    "subtitle": "View daemon activity logs",
+    "noMatchesTitle": "No matching lines"
   },
   "settings": {
     "title": "Configurações",
@@ -192,13 +394,17 @@
     "bandwidth": {
       "title": "Limites de banda",
       "download": "Limite de download (KB/s)",
-      "upload": "Limite de upload (KB/s)"
+      "upload": "Limite de upload (KB/s)",
+      "unlimitedHelp": "Set to 0 for unlimited"
     },
     "appearance": {
       "title": "Aparência e desempenho",
       "glassHelp": "Os cartões e as linhas desfocam o que está atrás. Ao desligar, continuam translúcidos mas sem o desfoque, que é a maior economia numa GPU fraca ou com listas longas.",
       "storedNote": "Guardado num cookie neste dispositivo, para que a página chegue ao navegador já desenhada do jeito certo. O movimento é desligado sozinho quando o sistema pede menos animação.",
-      "languageHelp": "Os mesmos idiomas para os quais o próprio aMule é traduzido. Lembrado neste dispositivo."
+      "languageHelp": "Os mesmos idiomas para os quais o próprio aMule é traduzido. Lembrado neste dispositivo.",
+      "background": "Activity background",
+      "glass": "Frosted glass panels",
+      "language": "Language"
     },
     "notifications": {
       "title": "Notificações de download",
@@ -213,14 +419,28 @@
       "deniedDescription": "Autorize-as nas configurações do site no navegador e ative novamente aqui.",
       "subscribed": "Este navegador está inscrito",
       "downloadAdded": "Download adicionado",
-      "downloadCompleted": "Download concluído"
+      "downloadCompleted": "Download concluído",
+      "addedHelp": "Anything joining the queue, wherever it came from.",
+      "system": "Also notify outside the page",
+      "insecureTitle": "Needs a secure origin",
+      "deniedTitle": "Notifications are blocked for this site",
+      "enable": "Enable background notifications",
+      "turnOff": "Turn off",
+      "sendTest": "Send a test",
+      "enabled": "Background notifications are on",
+      "enableFailed": "Could not enable notifications",
+      "disabled": "This browser will no longer be notified in the background",
+      "testSent": "Test notification sent",
+      "testNothing": "Nothing was sent"
     },
     "links": {
       "title": "Abrir links com este aplicativo",
       "intro": "Registre esta página como manipuladora dos links eD2k e magnet, para que clicar num link desses neste dispositivo o abra aqui e ofereça adicioná-lo à fila.",
       "insecureDescription": "Os navegadores só permitem isso por https, ou por http em localhost. Abra o aplicativo desse jeito para poder ativar.",
       "scheme": "Links {scheme}:",
-      "note": "O navegador pede confirmação na primeira vez. Instalado como aplicativo (PWA), os mesmos manipuladores são declarados no manifesto, o que cobre também o sistema operacional."
+      "note": "O navegador pede confirmação na primeira vez. Instalado como aplicativo (PWA), os mesmos manipuladores são declarados no manifesto, o que cobre também o sistema operacional.",
+      "insecureTitle": "Needs a secure origin",
+      "forget": "Forget"
     },
     "connection": {
       "title": "Informações da conexão",
@@ -228,7 +448,9 @@
       "port": "Porta da conexão externa",
       "appVersion": "Versão do aplicativo",
       "logLevel": "Nível de log",
-      "configDescription": "As configurações de conexão são definidas por variáveis de ambiente. Veja o .env.example para mais detalhes."
+      "configDescription": "As configurações de conexão são definidas por variáveis de ambiente. Veja o .env.example para mais detalhes.",
+      "serverMode": "Server mode",
+      "configTitle": "Configuration"
     }
   },
   "assistant": {
@@ -242,7 +464,8 @@
     "emptyDescription": "Tente: “o que está baixando agora?” ou “pause tudo que não tem fontes”.",
     "providerLabel": "Onde o modelo roda",
     "providers": {
-      "api": "Ollama ou endpoint de API"
+      "api": "Ollama ou endpoint de API",
+      "webllm": "In this browser (WebGPU)"
     },
     "changeModel": "Trocar de modelo",
     "api": {
@@ -252,8 +475,23 @@
       "keyHelp": "Fica guardada só neste navegador e é enviada a cada requisição pelo servidor deste aplicativo.",
       "modelPlaceholder": "ex.: llama3.2 ou gpt-4o-mini",
       "connect": "Conectar",
-      "note": "Diferente do modelo no navegador, a conversa é enviada para esse endpoint."
-    }
+      "note": "Diferente do modelo no navegador, a conversa é enviada para esse endpoint.",
+      "keyLabel": "API key",
+      "modelLabel": "Model",
+      "listModels": "List models"
+    },
+    "title": "Assistant",
+    "open": "Open the assistant",
+    "send": "Send",
+    "stop": "Stop",
+    "clear": "Clear the conversation",
+    "model": "Model",
+    "loadModel": "Load model",
+    "unsupportedTitle": "This browser cannot run a local model",
+    "ready": "Ready",
+    "toolsTitle": "Tools it can use",
+    "toolCall": "Used {tool}",
+    "failed": "The model could not answer"
   },
   "selection": {
     "selectAll": "Selecionar tudo que corresponde ao filtro",
@@ -273,8 +511,20 @@
       "completed": "Já concluídos",
       "shareRatio": "Taxa média de compartilhamento",
       "queued": "Clientes na fila",
-      "users": "Usuários distintos"
-    }
+      "users": "Usuários distintos",
+      "totalSize": "Total size",
+      "progress": "Progress",
+      "speed": "Combined speed",
+      "sources": "Sources",
+      "uploaded": "Uploaded all time",
+      "requests": "Requests all time",
+      "sentSession": "Sent this session"
+    },
+    "select": "Select",
+    "selectRow": "Select {name}",
+    "count": "{count} of {total} selected",
+    "done": "Done",
+    "totals": "Totals"
   },
   "searchAuto": {
     "title": "Busca automática",
@@ -286,7 +536,11 @@
     "start": "Iniciar busca automática",
     "formHelp": "Uma passagem roda a cada {minutes} minutos, alternando entre as redes selecionadas. Uma busca iniciada por você sempre tem prioridade — a passagem automática simplesmente espera.",
     "durations": {
-      "forever": "Até ser interrompida"
+      "forever": "Até ser interrompida",
+      "1h": "1 hour",
+      "1d": "1 day",
+      "1w": "1 week",
+      "1m": "1 month"
     },
     "listTitle": "Suas buscas automáticas",
     "resultsSuffix": "resultados coletados",
@@ -301,7 +555,22 @@
     "createFailed": "Não foi possível criar a busca automática",
     "stoppedToast": "Busca automática parada",
     "resumedToast": "Busca automática retomada",
-    "deletedToast": "Busca automática por “{keyword}” removida"
+    "deletedToast": "Busca automática por “{keyword}” removida",
+    "networksLabel": "Networks",
+    "status": {
+      "active": "Active",
+      "stopped": "Stopped",
+      "finished": "Finished"
+    },
+    "passes": "{count} pass | {count} passes",
+    "newLastPass": "{count} new on the last pass",
+    "nextPass": "next pass in {minutes} min",
+    "until": "runs until {time}",
+    "lastPassFailed": "The last pass failed: {error}",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "descriptions": {
@@ -317,7 +586,10 @@
       "statsSummary": "Os mesmos números em um relance",
       "logs": "O que o daemon tem dito",
       "settings": "Este app web: aparência, notificações, diagnóstico",
-      "mcpServer": "O endpoint MCP pelo qual agentes de IA podem controlar o aMule"
-    }
+      "mcpServer": "O endpoint MCP pelo qual agentes de IA podem controlar o aMule",
+      "downloads": "The queue: progress, sources, pause and resume",
+      "preferences": "The daemon’s own limits, ports and directories"
+    },
+    "title": "Related pages"
   }
 }

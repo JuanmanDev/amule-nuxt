@@ -63,7 +63,8 @@
     "clearFilter": "Clear filter",
     "filter": "Filter...",
     "noMatches": "No matches",
-    "goToDownloads": "Go to downloads"
+    "goToDownloads": "Go to downloads",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Per page",
@@ -568,7 +569,8 @@
     "deleteOne": "Remove this search",
     "stoppedToast": "Automatic search stopped",
     "resumedToast": "Automatic search resumed",
-    "deletedToast": "Auto search for “{keyword}” removed"
+    "deletedToast": "Auto search for “{keyword}” removed",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Related pages",

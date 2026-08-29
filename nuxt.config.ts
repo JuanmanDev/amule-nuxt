@@ -29,6 +29,7 @@ export default defineNuxtConfig({
    * server render the right language on the first paint.
    */
   i18n: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3003',
     defaultLocale: 'en',
     strategy: 'no_prefix',
     langDir: 'locales',

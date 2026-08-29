@@ -63,7 +63,8 @@
     "clearFilter": "Tøm filter",
     "filter": "Filtrer...",
     "noMatches": "Ingen treff",
-    "goToDownloads": "Gå til nedlastingar"
+    "goToDownloads": "Gå til nedlastingar",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Per side",
@@ -565,7 +566,11 @@
     "createFailed": "Klarte ikkje å opprette det automatiske søket",
     "stoppedToast": "Automatisk søk stoppa",
     "resumedToast": "Automatisk søk teke opp att",
-    "deletedToast": "Automatisk søk etter «{keyword}» fjerna"
+    "deletedToast": "Automatisk søk etter «{keyword}» fjerna",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Relaterte sider",

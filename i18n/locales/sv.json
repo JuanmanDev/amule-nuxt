@@ -63,7 +63,8 @@
     "clearFilter": "Rensa filtret",
     "filter": "Filtrera...",
     "noMatches": "Inga träffar",
-    "goToDownloads": "Gå till nedladdningar"
+    "goToDownloads": "Gå till nedladdningar",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Per sida",
@@ -565,7 +566,11 @@
     "createFailed": "Kunde inte skapa den automatiska sökningen",
     "stoppedToast": "Automatisk sökning stoppad",
     "resumedToast": "Automatisk sökning återupptagen",
-    "deletedToast": "Automatisk sökning efter ”{keyword}” borttagen"
+    "deletedToast": "Automatisk sökning efter ”{keyword}” borttagen",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Relaterade sidor",

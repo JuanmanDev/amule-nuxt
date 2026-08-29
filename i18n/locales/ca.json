@@ -63,7 +63,8 @@
     "clearFilter": "Neteja el filtre",
     "filter": "Filtra...",
     "noMatches": "Cap coincidència",
-    "goToDownloads": "Ves a les baixades"
+    "goToDownloads": "Ves a les baixades",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Per pàgina",
@@ -565,7 +566,11 @@
     "createFailed": "No s’ha pogut crear la cerca automàtica",
     "stoppedToast": "S’ha aturat la cerca automàtica",
     "resumedToast": "S’ha reprès la cerca automàtica",
-    "deletedToast": "S’ha suprimit la cerca automàtica de «{keyword}»"
+    "deletedToast": "S’ha suprimit la cerca automàtica de «{keyword}»",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Pàgines relacionades",

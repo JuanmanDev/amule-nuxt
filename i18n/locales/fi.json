@@ -63,7 +63,8 @@
     "clearFilter": "Tyhjennä suodatin",
     "filter": "Suodata...",
     "noMatches": "Ei osumia",
-    "goToDownloads": "Siirry latauksiin"
+    "goToDownloads": "Siirry latauksiin",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Sivulla",
@@ -565,7 +566,11 @@
     "createFailed": "Automaattihakua ei voitu luoda",
     "stoppedToast": "Automaattihaku pysäytetty",
     "resumedToast": "Automaattihakua jatkettu",
-    "deletedToast": "Automaattihaku ”{keyword}” poistettu"
+    "deletedToast": "Automaattihaku ”{keyword}” poistettu",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Aiheeseen liittyvät sivut",

@@ -63,7 +63,8 @@
     "clearFilter": "Szűrő törlése",
     "filter": "Szűrés...",
     "noMatches": "Nincs találat",
-    "goToDownloads": "Ugrás a letöltésekhez"
+    "goToDownloads": "Ugrás a letöltésekhez",
+    "back": "Back"
   },
   "pagination": {
     "perPage": "Oldalanként",
@@ -565,7 +566,11 @@
     "createFailed": "Az automatikus keresést nem sikerült létrehozni",
     "stoppedToast": "Automatikus keresés leállítva",
     "resumedToast": "Automatikus keresés folytatva",
-    "deletedToast": "A(z) „{keyword}” automatikus keresése eltávolítva"
+    "deletedToast": "A(z) „{keyword}” automatikus keresése eltávolítva",
+    "stopOne": "Stop this search",
+    "resumeOne": "Resume this search",
+    "deleteOne": "Remove this search",
+    "networks": "{count} networks: {list}"
   },
   "related": {
     "title": "Kapcsolódó oldalak",
