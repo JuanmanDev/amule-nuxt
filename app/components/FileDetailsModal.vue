@@ -1,9 +1,10 @@
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="title">
+  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="title" :transition="!shared">
     <template #body>
       <div class="space-y-6">
         <div class="space-y-2">
-          <p class="text-sm font-semibold break-all leading-snug">{{ fileName }}</p>
+          <!-- The row's title travels here (see useDetailsTransition) -->
+          <p class="text-sm font-semibold break-all leading-snug" :style="{ viewTransitionName: shared ? ACTIVE_TRANSITION_NAME : 'none' }">{{ fileName }}</p>
           <p v-if="subtitle" class="text-xs text-gray-500 dark:text-gray-400 break-all">
             {{ subtitle }}
           </p>
@@ -105,6 +106,12 @@ const open = defineModel<boolean>({ default: false });
 const props = defineProps<{
   title: string;
   fileName: string;
+  /**
+   * True while a view transition carries a row into this modal: the title
+   * takes the shared name and the modal's own enter animation is switched off,
+   * so the browser snapshots it in its final place.
+   */
+  shared?: boolean;
   /** A second line under the name: the full path, or "requested as ...". */
   subtitle?: string;
   facts: Array<{ label: string; value: string }>;

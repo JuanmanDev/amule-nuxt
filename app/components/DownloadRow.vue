@@ -5,7 +5,7 @@
     tabindex="0"
     data-testid="download-row"
     :data-hash="download.hash"
-    :style="{ viewTransitionName: transitionName ?? downloadTransitionName(download.hash) }"
+    :style="{ viewTransitionName: transitionName ?? transitionNameFor('dl', download.hash) }"
     :class="selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''"
     :aria-label="$t('downloads.showDetailsFor', { name: download.name })"
     @click="onRowClick"

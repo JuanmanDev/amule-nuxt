@@ -132,6 +132,7 @@
                   v-for="upload in visibleUploads"
                   :key="keyOfUpload(upload)"
                   class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors cursor-pointer"
+                  :style="{ viewTransitionName: details.rowName(keyOfUpload(upload), 'ul') }"
                   :class="selection.active.value
                     ? [selection.has(keyOfUpload(upload)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : 'hover:bg-elevated/60']
                     : ['hover:bg-elevated/60']"
@@ -266,8 +267,10 @@
          carries no size of its own -->
     <FileDetailsModal
       v-if="selectedUpload"
-      v-model="detailsOpen"
+      :model-value="detailsOpen"
+      :shared="details.shared.value"
       :title="$t('uploads.detailsTitle')"
+      @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
       :file-name="selectedUpload.fileName"
       :subtitle="selectedUpload.remoteFileName && selectedUpload.remoteFileName !== selectedUpload.fileName
         ? $t('uploads.requestedAs', { name: selectedUpload.remoteFileName })
@@ -372,10 +375,19 @@ const totalsOpen = ref(false);
 
 const detailsOpen = ref(false);
 const selectedUpload = ref<Upload | null>(null);
+// The clicked row turns into the modal's title (see useDetailsTransition)
+const details = useDetailsTransition();
 
 function openDetails(upload: Upload) {
-  selectedUpload.value = upload;
-  detailsOpen.value = true;
+  return details.open(keyOfUpload(upload), () => {
+    selectedUpload.value = upload;
+    detailsOpen.value = true;
+  });
+}
+
+function closeDetails() {
+  if (!detailsOpen.value) return;
+  return details.close(() => { detailsOpen.value = false; });
 }
 
 /** The shared file behind the transfer: the same record the shared page shows. */

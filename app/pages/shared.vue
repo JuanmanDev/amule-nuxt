@@ -132,6 +132,7 @@
             v-for="file in visibleFiles"
             :key="file.hash || file.fileName"
             class="p-3 border border-gray-200 dark:border-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+            :style="{ viewTransitionName: details.rowName(keyOfFile(file), 'sh') }"
             :class="selection.active.value && selection.has(keyOfFile(file)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''"
             role="button"
             tabindex="0"
@@ -231,8 +232,10 @@
     <!-- Details -->
     <FileDetailsModal
       v-if="selected"
-      v-model="detailsOpen"
+      :model-value="detailsOpen"
+      :shared="details.shared.value"
       :title="$t('shared.detailsTitle')"
+      @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
       :file-name="selected.fileName"
       :subtitle="selected.fullPath"
       :facts="facts"
@@ -406,15 +409,25 @@ async function refresh() {
   refreshing.value = false;
 }
 
-function openDetails(file: SharedFile) {
-  selected.value = file;
-  detailsOpen.value = true;
+// The clicked row turns into the modal's title (see useDetailsTransition)
+const details = useDetailsTransition();
+
+async function openDetails(file: SharedFile) {
+  await details.open(keyOfFile(file), () => {
+    selected.value = file;
+    detailsOpen.value = true;
+  });
 
   // The URL follows the modal, so the address bar is always a link to what is
   // on screen and can be sent somewhere as-is
   if (file.hash) {
     router.replace({ query: { ...route.query, file: file.hash } });
   }
+}
+
+function closeDetails() {
+  if (!detailsOpen.value) return;
+  return details.close(() => { detailsOpen.value = false; });
 }
 
 // ========== Deep link: /shared?file=<hash> opens that file's details ==========

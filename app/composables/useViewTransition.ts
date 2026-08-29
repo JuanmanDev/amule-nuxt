@@ -48,10 +48,66 @@ export async function withViewTransition(kind: ViewTransitionKind, update: () =>
     }
 }
 
-/** The name a download's row carries on every page that lists it. */
-export function downloadTransitionName(hash: string): string {
-    return `dl-${hash}`;
-}
-
 /** The one name shared by a row and the modal title it turns into. */
 export const ACTIVE_TRANSITION_NAME = 'dl-active';
+
+/**
+ * A safe `view-transition-name` for any key: the API wants a CSS identifier,
+ * and an upload's key is `hash@ip:port`.
+ */
+export function transitionNameFor(prefix: string, key: string): string {
+    return `${prefix}-${key.replace(/[^A-Za-z0-9_-]/g, '_')}`;
+}
+
+/**
+ * The row-becomes-modal choreography, shared by the download, upload and
+ * shared-file pages.
+ *
+ * Before the transition the clicked row carries the modal title's name; after
+ * it the title does and the row is unnamed, so nothing is left fading where the
+ * row still stands. `rowName` is what each row should render, `shared` is what
+ * the modal's `shared` prop wants, and `open`/`close` wrap the state changes.
+ */
+export function useDetailsTransition() {
+    const sharedKey = ref<string | null>(null);
+    const modalHolds = ref(false);
+    const shared = computed(() => sharedKey.value !== null);
+
+    function rowName(key: string, prefix: string): string {
+        if (key !== sharedKey.value) return transitionNameFor(prefix, key);
+        return modalHolds.value ? 'none' : ACTIVE_TRANSITION_NAME;
+    }
+
+    async function open(key: string, apply: () => void): Promise<void> {
+        if (!supportsViewTransition()) {
+            apply();
+            return;
+        }
+        sharedKey.value = key;
+        await nextTick();
+        await withViewTransition('modal', () => {
+            apply();
+            modalHolds.value = true;
+        });
+    }
+
+    async function close(apply: () => void): Promise<void> {
+        if (sharedKey.value === null) {
+            apply();
+            return;
+        }
+        await withViewTransition('modal', () => {
+            apply();
+            modalHolds.value = false;
+        });
+        sharedKey.value = null;
+    }
+
+    /** For a modal closed by something other than the user: the row vanished. */
+    function reset(): void {
+        sharedKey.value = null;
+        modalHolds.value = false;
+    }
+
+    return { shared, rowName, open, close, reset };
+}

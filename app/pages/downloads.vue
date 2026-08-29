@@ -160,7 +160,7 @@
             :busy="busyHash === download.hash"
             :selectable="selection.active.value"
             :selected="selection.has(download.hash)"
-            :transition-name="rowTransitionName(download.hash)"
+            :transition-name="details.rowName(download.hash, 'dl')"
             @open="openDetails"
             @remove="askRemove"
             @pause="pause"
@@ -271,7 +271,7 @@
     <DownloadDetailsModal
       :model-value="detailsOpen"
       :download="selected"
-      :shared="sharedHash !== null"
+      :shared="details.shared.value"
       @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
       @remove="askRemove"
     />
@@ -464,50 +464,23 @@ watch(items, list => {
   selected.value = fresh ?? null;
   if (!fresh) {
     detailsOpen.value = false;
-    sharedHash.value = null;
-    modalHolds.value = false;
+    details.reset();
   }
 });
 
-/*
- * The clicked row turns into the modal's title. Before the transition the row
- * carries the shared name; after it the modal title does and the row is
- * unnamed, so nothing is left fading where the row still stands.
- */
-const sharedHash = ref<string | null>(null);
-const modalHolds = ref(false);
+// The clicked row turns into the modal's title (see useDetailsTransition)
+const details = useDetailsTransition();
 
-function rowTransitionName(hash: string): string | undefined {
-  if (hash !== sharedHash.value) return undefined;
-  return modalHolds.value ? 'none' : ACTIVE_TRANSITION_NAME;
-}
-
-async function openDetails(download: Download) {
-  if (!supportsViewTransition()) {
+function openDetails(download: Download) {
+  return details.open(download.hash, () => {
     selected.value = download;
     detailsOpen.value = true;
-    return;
-  }
-  sharedHash.value = download.hash;
-  await nextTick();
-  await withViewTransition('modal', () => {
-    selected.value = download;
-    detailsOpen.value = true;
-    modalHolds.value = true;
   });
 }
 
-async function closeDetails() {
+function closeDetails() {
   if (!detailsOpen.value) return;
-  if (sharedHash.value === null) {
-    detailsOpen.value = false;
-    return;
-  }
-  await withViewTransition('modal', () => {
-    detailsOpen.value = false;
-    modalHolds.value = false;
-  });
-  sharedHash.value = null;
+  return details.close(() => { detailsOpen.value = false; });
 }
 
 function askRemove(download: Download) {
@@ -525,8 +498,7 @@ async function confirmRemove() {
 
   if (removed && selected.value?.hash === download.hash) {
     detailsOpen.value = false;
-    sharedHash.value = null;
-    modalHolds.value = false;
+    details.reset();
     selected.value = null;
   }
 }

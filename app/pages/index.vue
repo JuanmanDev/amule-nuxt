@@ -69,7 +69,7 @@
           :key="download.hash"
           to="/downloads"
           class="block rounded-lg p-2 -mx-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-          :style="{ viewTransitionName: downloadTransitionName(download.hash) }"
+          :style="{ viewTransitionName: transitionNameFor('dl', download.hash) }"
         >
           <div class="flex items-center justify-between gap-2 mb-1">
             <span class="text-sm font-medium truncate" :title="download.name">{{ download.name }}</span>
