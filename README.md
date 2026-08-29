@@ -2,6 +2,16 @@
 
 # aMule Nuxt
 
+<br>
+
+## 💖 Support this project
+If you found this project helpful, please consider supporting it!
+
+[![GitHub Sponsor](https://img.shields.io/badge/Sponsor-JuanmanDev-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/JuanmanDev) [![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/juanmandev) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/juanmandev)
+
+<br>
+
+
 [![Latest release](https://img.shields.io/github/v/release/JuanmanDev/amule-nuxt?logo=github&label=release)](https://github.com/JuanmanDev/amule-nuxt/releases/latest)
 [![CI](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/ci.yml)
 [![Release](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/release.yml/badge.svg)](https://github.com/JuanmanDev/amule-nuxt/actions/workflows/release.yml)
@@ -625,3 +635,13 @@ MIT
 | Dashboard | Downloads | Download details | Navigation |
 |---|---|---|---|
 | ![Dashboard on a phone](images/home_mobile.png) | ![Downloads on a phone](images/downloads_mobile.png) | ![Download details on a phone](images/download_detail_mobile.png) | ![Navigation menu on a phone](images/menu_mobile.png) |
+
+
+<br>
+
+## 💖 Support this project
+If you found this project helpful, please consider supporting it!
+
+[![GitHub Sponsor](https://img.shields.io/badge/Sponsor-JuanmanDev-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/JuanmanDev) [![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/juanmandev) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/juanmandev)
+
+<br>
