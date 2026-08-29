@@ -2,6 +2,19 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.11.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.10.0...v1.11.0) (2026-08-29)
+
+### Features
+
+* add SearchResultList and auto search subpage ([f18fbe9](https://github.com/JuanmanDev/amule-nuxt/commit/f18fbe9373ef0a44a949deea41af6adedceeecb6))
+* app icon, favicon set and PWA manifest icons ([673edce](https://github.com/JuanmanDev/amule-nuxt/commit/673edce61f625ba060b8e4f5bc688eeaf2e5075a))
+* static demo with an in-browser simulated daemon ([ce4f1a6](https://github.com/JuanmanDev/amule-nuxt/commit/ce4f1a691ccef42630c0a848fcec11be0027019f))
+
+### Bug fixes
+
+* translations, baseUrl and nuxt layout rendering ([bef64de](https://github.com/JuanmanDev/amule-nuxt/commit/bef64de0ddc055d5af6879439e662d135530796f))
+* typecheck, locale variants, stale e2e locator and unserved public files ([966f3eb](https://github.com/JuanmanDev/amule-nuxt/commit/966f3eb66885bebb9101b24416dd979087a01895))
+
 ## [1.10.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.9.0...v1.10.0) (2026-08-17)
 
 ### Features
