@@ -2,6 +2,16 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.11.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.11.0...v1.11.1) (2026-08-29)
+
+### Bug fixes
+
+* **i18n:** drop English placeholders from pt-BR and it-CH ([6660fde](https://github.com/JuanmanDev/amule-nuxt/commit/6660fdeffcdabae5e669cecc7f5655eaad9b0cb8))
+
+### Documentation
+
+* MIT license, repository metadata and demo badge ([e48a8c4](https://github.com/JuanmanDev/amule-nuxt/commit/e48a8c454d744c56adc757965ccb3110cc05dfbe))
+
 ## [1.11.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.10.0...v1.11.0) (2026-08-29)
 
 ### Features
