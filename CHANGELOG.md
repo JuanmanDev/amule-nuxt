@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.16.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.16.0...v1.16.1) (2026-08-29)
+
+### Bug fixes
+
+* layer the details modal above the list during its transition ([f023a4a](https://github.com/JuanmanDev/amule-nuxt/commit/f023a4a503c7f6c09d646f5c54ea01e7359e4a49))
+
 ## [1.16.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.15.0...v1.16.0) (2026-08-29)
 
 ### Features
