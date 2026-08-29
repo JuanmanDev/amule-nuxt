@@ -63,7 +63,7 @@
     "filter": "Фільтр...",
     "noMatches": "Збігів немає",
     "goToDownloads": "Перейти до завантажень",
-    "back": "Back"
+    "back": "Назад"
   },
   "pagination": {
     "perPage": "На сторінці",
@@ -566,10 +566,10 @@
     "stoppedToast": "Автоматичний пошук зупинено",
     "resumedToast": "Автоматичний пошук відновлено",
     "deletedToast": "Автоматичний пошук «{keyword}» вилучено",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Зупинити цей пошук",
+    "resumeOne": "Відновити цей пошук",
+    "deleteOne": "Видалити цей пошук",
+    "networks": "Мереж: {count}: {list}"
   },
   "related": {
     "title": "Пов'язані сторінки",

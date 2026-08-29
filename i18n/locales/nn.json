@@ -63,7 +63,7 @@
     "filter": "Filtrer...",
     "noMatches": "Ingen treff",
     "goToDownloads": "Gå til nedlastingar",
-    "back": "Back"
+    "back": "Tilbake"
   },
   "pagination": {
     "perPage": "Per side",
@@ -566,10 +566,10 @@
     "stoppedToast": "Automatisk søk stoppa",
     "resumedToast": "Automatisk søk teke opp att",
     "deletedToast": "Automatisk søk etter «{keyword}» fjerna",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Stopp dette søket",
+    "resumeOne": "Hald fram med dette søket",
+    "deleteOne": "Fjern dette søket",
+    "networks": "{count} nettverk: {list}"
   },
   "related": {
     "title": "Relaterte sider",

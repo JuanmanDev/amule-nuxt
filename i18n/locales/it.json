@@ -63,7 +63,7 @@
     "filter": "Filtra...",
     "noMatches": "Nessuna corrispondenza",
     "goToDownloads": "Vai ai download",
-    "back": "Back"
+    "back": "Indietro"
   },
   "pagination": {
     "perPage": "Per pagina",
@@ -566,10 +566,10 @@
     "stoppedToast": "Ricerca automatica fermata",
     "resumedToast": "Ricerca automatica ripresa",
     "deletedToast": "Ricerca automatica per «{keyword}» rimossa",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Ferma questa ricerca",
+    "resumeOne": "Riprendi questa ricerca",
+    "deleteOne": "Rimuovi questa ricerca",
+    "networks": "{count} reti: {list}"
   },
   "related": {
     "title": "Pagine correlate",

@@ -63,7 +63,7 @@
     "filter": "Filtrar...",
     "noMatches": "Sen coincidencias",
     "goToDownloads": "Ir ás descargas",
-    "back": "Back"
+    "back": "Atrás"
   },
   "pagination": {
     "perPage": "Por páxina",
@@ -566,10 +566,10 @@
     "stoppedToast": "Busca automática detida",
     "resumedToast": "Busca automática retomada",
     "deletedToast": "Busca automática de «{keyword}» eliminada",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Deter esta procura",
+    "resumeOne": "Retomar esta procura",
+    "deleteOne": "Eliminar esta procura",
+    "networks": "{count} redes: {list}"
   },
   "related": {
     "title": "Páxinas relacionadas",

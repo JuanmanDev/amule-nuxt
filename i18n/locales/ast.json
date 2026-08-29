@@ -63,7 +63,7 @@
     "filter": "Peñerar...",
     "noMatches": "Nun hai coincidencies",
     "goToDownloads": "Dir a les descargues",
-    "back": "Back"
+    "back": "Atrás"
   },
   "pagination": {
     "perPage": "Per páxina",
@@ -566,10 +566,10 @@
     "stoppedToast": "Parose la gueta automática",
     "resumedToast": "Siguió la gueta automática",
     "deletedToast": "Desanicióse la gueta automática de «{keyword}»",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Parar esta gueta",
+    "resumeOne": "Siguir con esta gueta",
+    "deleteOne": "Desaniciar esta gueta",
+    "networks": "{count} redes: {list}"
   },
   "related": {
     "title": "Páxines rellacionaes",

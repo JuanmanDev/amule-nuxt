@@ -63,7 +63,7 @@
     "filter": "Suodata...",
     "noMatches": "Ei osumia",
     "goToDownloads": "Siirry latauksiin",
-    "back": "Back"
+    "back": "Takaisin"
   },
   "pagination": {
     "perPage": "Sivulla",
@@ -566,10 +566,10 @@
     "stoppedToast": "Automaattihaku pysäytetty",
     "resumedToast": "Automaattihakua jatkettu",
     "deletedToast": "Automaattihaku ”{keyword}” poistettu",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Pysäytä tämä haku",
+    "resumeOne": "Jatka tätä hakua",
+    "deleteOne": "Poista tämä haku",
+    "networks": "{count} verkkoa: {list}"
   },
   "related": {
     "title": "Aiheeseen liittyvät sivut",

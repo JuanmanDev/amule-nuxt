@@ -63,7 +63,7 @@
     "filter": "Filtrar...",
     "noMatches": "Sem correspondências",
     "goToDownloads": "Ir para as transferências",
-    "back": "Back"
+    "back": "Voltar"
   },
   "pagination": {
     "perPage": "Por página",
@@ -563,13 +563,13 @@
     "noResultsYetDescription": "A primeira passagem executa-se um ou dois minutos depois de criar a pesquisa. Os resultados aparecem aqui à medida que as passagens terminam.",
     "created": "Pesquisa automática por “{keyword}” iniciada",
     "createFailed": "Não foi possível criar a pesquisa automática",
+    "stopOne": "Parar esta pesquisa",
+    "resumeOne": "Retomar esta pesquisa",
+    "deleteOne": "Remover esta pesquisa",
     "stoppedToast": "Pesquisa automática parada",
     "resumedToast": "Pesquisa automática retomada",
     "deletedToast": "Pesquisa automática por “{keyword}” removida",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "networks": "{count} redes: {list}"
   },
   "related": {
     "title": "Páginas relacionadas",

@@ -63,7 +63,7 @@
     "filter": "Filtrovat...",
     "noMatches": "Žádné shody",
     "goToDownloads": "Přejít na stahování",
-    "back": "Back"
+    "back": "Zpět"
   },
   "pagination": {
     "perPage": "Na stránku",
@@ -566,10 +566,10 @@
     "stoppedToast": "Automatické hledání zastaveno",
     "resumedToast": "Automatické hledání obnoveno",
     "deletedToast": "Automatické hledání „{keyword}“ odstraněno",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Zastavit toto hledání",
+    "resumeOne": "Pokračovat v tomto hledání",
+    "deleteOne": "Odstranit toto hledání",
+    "networks": "{count} sítě: {list}"
   },
   "related": {
     "title": "Související stránky",

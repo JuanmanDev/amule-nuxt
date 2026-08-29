@@ -63,7 +63,7 @@
     "filter": "Filtrează...",
     "noMatches": "Nicio potrivire",
     "goToDownloads": "Mergi la descărcări",
-    "back": "Back"
+    "back": "Înapoi"
   },
   "pagination": {
     "perPage": "Pe pagină",
@@ -566,10 +566,10 @@
     "stoppedToast": "Căutare automată oprită",
     "resumedToast": "Căutare automată reluată",
     "deletedToast": "Căutarea automată pentru „{keyword}” a fost eliminată",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Oprește această căutare",
+    "resumeOne": "Reia această căutare",
+    "deleteOne": "Elimină această căutare",
+    "networks": "{count} rețele: {list}"
   },
   "related": {
     "title": "Pagini conexe",

@@ -63,7 +63,7 @@
     "filter": "סינון...",
     "noMatches": "אין התאמות",
     "goToDownloads": "מעבר להורדות",
-    "back": "Back"
+    "back": "חזרה"
   },
   "pagination": {
     "perPage": "בכל עמוד",
@@ -566,10 +566,10 @@
     "stoppedToast": "החיפוש האוטומטי הופסק",
     "resumedToast": "החיפוש האוטומטי חודש",
     "deletedToast": "חיפוש אוטומטי עבור „{keyword}” הוסר",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "עצירת החיפוש הזה",
+    "resumeOne": "המשך החיפוש הזה",
+    "deleteOne": "הסרת החיפוש הזה",
+    "networks": "{count} רשתות: {list}"
   },
   "related": {
     "title": "דפים קשורים",

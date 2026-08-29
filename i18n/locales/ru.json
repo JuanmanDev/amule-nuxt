@@ -63,7 +63,7 @@
     "filter": "Фильтр...",
     "noMatches": "Совпадений нет",
     "goToDownloads": "Перейти к загрузкам",
-    "back": "Back"
+    "back": "Назад"
   },
   "pagination": {
     "perPage": "На странице",
@@ -566,10 +566,10 @@
     "stoppedToast": "Автоматический поиск остановлен",
     "resumedToast": "Автоматический поиск возобновлён",
     "deletedToast": "Автопоиск «{keyword}» удалён",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Остановить этот поиск",
+    "resumeOne": "Возобновить этот поиск",
+    "deleteOne": "Удалить этот поиск",
+    "networks": "Сетей: {count}: {list}"
   },
   "related": {
     "title": "Связанные страницы",

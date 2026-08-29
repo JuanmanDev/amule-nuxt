@@ -63,7 +63,7 @@
     "filter": "Филтриране...",
     "noMatches": "Няма съвпадения",
     "goToDownloads": "Към изтеглянията",
-    "back": "Back"
+    "back": "Назад"
   },
   "pagination": {
     "perPage": "На страница",
@@ -566,10 +566,10 @@
     "stoppedToast": "Автоматичното търсене е спряно",
     "resumedToast": "Автоматичното търсене е възобновено",
     "deletedToast": "Автоматичното търсене за „{keyword}“ е премахнато",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Спиране на това търсене",
+    "resumeOne": "Продължаване на това търсене",
+    "deleteOne": "Премахване на това търсене",
+    "networks": "{count} мрежи: {list}"
   },
   "related": {
     "title": "Свързани страници",

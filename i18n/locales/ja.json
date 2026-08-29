@@ -63,7 +63,7 @@
     "filter": "絞り込み…",
     "noMatches": "一致するものがありません",
     "goToDownloads": "ダウンロードへ",
-    "back": "Back"
+    "back": "戻る"
   },
   "pagination": {
     "perPage": "1ページの件数",
@@ -566,10 +566,10 @@
     "stoppedToast": "自動検索を停止しました",
     "resumedToast": "自動検索を再開しました",
     "deletedToast": "「{keyword}」の自動検索を削除しました",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "この検索を停止",
+    "resumeOne": "この検索を再開",
+    "deleteOne": "この検索を削除",
+    "networks": "{count} 個のネットワーク: {list}"
   },
   "related": {
     "title": "関連ページ",

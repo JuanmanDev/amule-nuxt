@@ -2,73 +2,107 @@
   "app": {
     "addLink": "Adicionar link",
     "addEd2kLink": "Adicionar link ed2k",
+    "github": "Repositório no GitHub",
     "daemonUnreachable": "Não foi possível contatar o daemon do aMule: {reason}",
     "daemonUnreachableFallback": "verifique o host, a porta e a senha",
     "openSettings": "Abrir configurações"
   },
   "nav": {
+    "downloads": "Downloads",
+    "uploads": "Uploads",
+    "search": "Busca",
     "shared": "Arquivos compartilhados",
     "connection": "Conexão",
+    "logs": "Logs",
     "settings": "Configurações",
     "searchAuto": "Busca automática"
   },
   "common": {
+    "retry": "Tentar de novo",
     "save": "Salvar alterações",
     "reset": "Redefinir",
     "loading": "Carregando...",
     "live": "Ao vivo",
+    "none": "nenhum",
+    "ascending": "Crescente, mudar para decrescente",
+    "descending": "Decrescente, mudar para crescente",
+    "ascendingShort": "Crescente",
+    "descendingShort": "Decrescente",
+    "clearFilter": "Limpar filtro",
+    "noMatches": "Nenhuma correspondência",
     "goToDownloads": "Ir para os downloads"
   },
   "pagination": {
     "showing": "Mostrando {from}-{to} de {count} {label}",
+    "empty": "Nenhum {label}",
     "labels": {
-      "files": "arquivos"
+      "downloads": "download",
+      "transfers": "transferência",
+      "files": "arquivos",
+      "results": "resultado",
+      "servers": "servidor",
+      "lines": "linha"
     }
   },
   "sort": {
+    "status": "Status",
     "fileName": "Nome do arquivo",
     "user": "Usuário",
+    "requests": "Solicitações",
     "shareRatio": "Taxa de compartilhamento",
     "queuedClients": "Clientes na fila",
     "users": "Usuários",
-    "files": "Arquivos"
+    "files": "Arquivos",
+    "failedConnects": "Conexões falhas"
   },
   "downloads": {
+    "title": "Downloads",
     "subtitle": "Gerencie sua fila de downloads",
     "loading": "Carregando os downloads...",
     "loadFailed": "Não foi possível carregar os downloads",
+    "staleTitle": "Mostrando a última fila que pôde ser lida",
     "emptyTitle": "Nenhum download encontrado",
     "emptyDescription": "Cole acima um link eD2k ou magnet para começar a baixar.",
     "noMatchesDescription": "Nenhum download corresponde a “{query}”.",
     "downloading": "baixando",
+    "searchingForSources": "procurando fontes",
     "removeTitle": "Remover o download",
     "removeQuestion": "Remover {name} da fila? O aMule apaga os dados baixados até agora.",
     "detailsTitle": "Detalhes do download",
-    "fileHash": "Hash do arquivo",
+    "showDetailsFor": "Ver detalhes de {name}",
+    "copyName": "Copiar nome",
     "fileNameCopied": "Nome do arquivo copiado",
+    "fileHash": "Hash do arquivo",
     "ed2kLink": "Link eD2k",
     "linkCopied": "Link eD2k copiado",
+    "copyHash": "Copiar hash",
     "copyLink": "Copiar o link ed2k",
     "noHashReported": "O aMule não informou um hash de arquivo para este download.",
     "fields": {
+      "status": "Status",
       "remaining": "Restante",
       "transferring": "Baixando de",
       "addedAt": "Iniciado",
       "completedAt": "Concluído",
+      "tookTime": "Levou",
       "runningFor": "Em andamento há"
     },
     "startNotRecorded": "Este download já estava na fila quando este aplicativo olhou pela primeira vez, então o horário de início não é conhecido.",
     "bulk": {
       "pauseDone": "{count} download pausado | {count} downloads pausados",
       "resumeDone": "{count} download retomado | {count} downloads retomados",
-      "removeDone": "{count} download removido | {count} downloads removidos"
+      "removeDone": "{count} download removido | {count} downloads removidos",
+      "someFailed": "{count} não puderam ser alterados"
     }
   },
   "health": {
     "complete": "Concluído",
     "downloading": "Baixando",
+    "waiting": "Aguardando",
+    "searching": "Procurando",
     "paused": "Pausado",
     "stopped": "Parado",
+    "hashing": "Calculando hash",
     "errorReason": "O aMule marcou este arquivo como incorreto.",
     "searchingReason": "Procurando fontes. O aMule pergunta aos servidores eD2k e ao Kad, o que normalmente leva segundos, mas pode levar alguns minutos com um arquivo raro. Se continuar assim: confira se o tamanho e o hash de 32 caracteres do link são exatamente os publicados (um hash errado cria um download que nunca poderá começar), conecte-se a mais servidores e ao Kad, e considere que talvez ninguém mais esteja compartilhando o arquivo.",
     "stalledReason": "Todas as fontes deste arquivo ficaram offline. O download recomeça sozinho assim que uma voltar.",
@@ -81,6 +115,7 @@
     "modalLabel": "Links ed2k ou magnet (um por linha)"
   },
   "uploads": {
+    "title": "Uploads",
     "subtitle": "O que este daemon está enviando agora, e para quem",
     "loading": "Carregando os uploads...",
     "loadFailed": "Não foi possível carregar os uploads",
@@ -92,6 +127,7 @@
     "clientsUploading": "Clientes baixando",
     "totalUploadSpeed": "Velocidade total de upload",
     "waitingInQueue": "Aguardando na fila",
+    "idle": "Ocioso",
     "requestedAs": "Solicitado como: {name}",
     "fields": {
       "user": "Usuário"
@@ -105,6 +141,7 @@
     "activeUploads": "Uploads ativos",
     "loading": "Carregando os arquivos compartilhados...",
     "loadFailed": "Não foi possível carregar os arquivos compartilhados",
+    "staleTitle": "Mostrando a última lista que pôde ser lida",
     "emptyTitle": "Nenhum arquivo compartilhado",
     "emptyDescription": "O aMule não encontra arquivos nas suas pastas compartilhadas.",
     "noMatchesDescription": "Nenhum arquivo compartilhado corresponde a “{query}”.",
@@ -114,6 +151,7 @@
     "perFileNote": "Soma dos contadores de cada arquivo",
     "requestsAllTime": "Solicitações no total",
     "detailsTitle": "Detalhes do arquivo compartilhado",
+    "queued": "{count} na fila",
     "row": {
       "requests": "Solicitações",
       "accepted": "Aceitas",
@@ -133,16 +171,34 @@
     "pageLink": "Link para este arquivo"
   },
   "search": {
+    "title": "Busca",
     "subtitle": "Procure arquivos nas redes eD2k e Kad",
+    "networks": {
+      "local": "Local (servidor conectado)"
+    },
+    "networkLabel": "Rede a buscar",
     "keywordsPlaceholder": "Digite as palavras-chave...",
+    "start": "Buscar",
+    "refreshResults": "Atualizar resultados",
+    "runAgain": "Buscar de novo",
     "tabsHelp": "Cada nova pesquisa abre a própria aba e mantém os resultados anteriores. O próprio aMule guarda apenas uma pesquisa por vez, então só a mais recente pode ser atualizada.",
     "closeTab": "Fechar a pesquisa de “{keyword}”",
     "searchingFor": "Pesquisando “{keyword}” em {network}...",
+    "failedTitle": "A busca falhou",
+    "tryAgain": "Tentar de novo",
+    "snapshotAt": "captura de {time}, busque de novo para fontes atuais",
+    "filterPlaceholder": "Filtrar resultados...",
     "noMatchesDescription": "Nenhum resultado corresponde a “{query}”.",
     "noResultsDescription": "Tente outras palavras-chave, ou pesquise em outra rede.",
+    "idleTitle": "Nenhuma busca ainda",
     "idleDescription": "O Kad funciona sem servidor; uma pesquisa global eD2k precisa de um servidor conectado.",
     "enterKeywords": "Digite as palavras-chave",
+    "started": "Busca iniciada",
+    "stopped": "Busca interrompida",
+    "couldNotStop": "Não foi possível parar a busca",
     "result": {
+      "title": "Resultado da busca",
+      "showDetailsFor": "Ver detalhes de {name}",
       "download": "Baixar",
       "addToDownloads": "Adicionar aos downloads",
       "showInDownloads": "Ver nos downloads",
@@ -151,7 +207,10 @@
       "noHash": "O aMule não informou um hash para este resultado.",
       "downloadAdded": "Download adicionado",
       "failedToStart": "Não foi possível iniciar o download",
-      "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online."
+      "noSourcesWarning": "Nenhuma fonte informou este arquivo. Adicioná-lo cria um download que não poderá começar até que alguém que o compartilhe fique online.",
+      "fields": {
+        "queueStatus": "Status na fila"
+      }
     },
     "noneInGroup": "Nada neste grupo. Todos os resultados desta pesquisa estão em outro.",
     "autoLink": "Busca automática"
@@ -169,6 +228,7 @@
     "loading": "Carregando os servidores...",
     "emptyDescription": "A lista de servidores do aMule está vazia. Adicione um servidor ou atualize a lista a partir de uma URL.",
     "noMatchesDescription": "Nenhum servidor corresponde a “{query}”.",
+    "removeTitle": "Remover servidor",
     "connected": "Conectado"
   },
   "logs": {
@@ -178,6 +238,7 @@
     "loadFailed": "Não foi possível carregar os logs",
     "emptyTitle": "Nenhum log disponível",
     "emptyDescription": "O daemon do aMule ainda não registrou nada.",
+    "noMatchesTitle": "Nenhuma linha correspondente",
     "noMatchesDescription": "Nenhuma linha do log corresponde a “{query}”."
   },
   "settings": {
@@ -186,7 +247,8 @@
     "bandwidth": {
       "title": "Limites de banda",
       "download": "Limite de download (KB/s)",
-      "upload": "Limite de upload (KB/s)"
+      "upload": "Limite de upload (KB/s)",
+      "unlimitedHelp": "Use 0 para ilimitado"
     },
     "appearance": {
       "title": "Aparência e desempenho",
@@ -206,6 +268,8 @@
       "insecureDescription": "Os navegadores só permitem push por https, ou por http em localhost. As notificações continuam funcionando enquanto houver uma aba aberta.",
       "deniedDescription": "Autorize-as nas configurações do site no navegador e ative novamente aqui.",
       "subscribed": "Este navegador está inscrito",
+      "disabled": "Este navegador não será mais notificado em segundo plano",
+      "testNothing": "Nada foi enviado",
       "downloadAdded": "Download adicionado",
       "downloadCompleted": "Download concluído"
     },
@@ -228,8 +292,10 @@
   "assistant": {
     "subtitle": "Um modelo de linguagem que pode operar o aMule para você — rodando neste navegador, ou via Ollama ou qualquer API compatível com a OpenAI",
     "placeholder": "Pergunte sobre seus downloads, ou diga o que fazer...",
+    "loadModel": "Carregar modelo",
     "loading": "Carregando o modelo ({percent}%)",
     "downloadNote": "O modelo é baixado uma vez e fica em cache no navegador. Nada do que você escrever sai deste dispositivo.",
+    "unsupportedTitle": "Este navegador não consegue rodar um modelo local",
     "unsupportedDescription": "É preciso WebGPU, e a página precisa ser servida por HTTPS (ou localhost): os navegadores desativam o WebGPU em páginas não seguras. Chrome, Edge e Opera já têm no desktop; Safari e Firefox ainda estão adicionando.",
     "thinking": "Pensando...",
     "emptyTitle": "Nada perguntado ainda",
@@ -265,6 +331,7 @@
       "remaining": "Restante",
       "eta": "Tempo para todos",
       "completed": "Já concluídos",
+      "requests": "Solicitações no total",
       "shareRatio": "Taxa média de compartilhamento",
       "queued": "Clientes na fila",
       "users": "Usuários distintos"
@@ -293,6 +360,9 @@
     "noResultsYetDescription": "A primeira passagem roda um ou dois minutos depois de criar a busca. Os resultados aparecem aqui conforme as passagens terminam.",
     "created": "Busca automática por “{keyword}” iniciada",
     "createFailed": "Não foi possível criar a busca automática",
+    "stopOne": "Parar esta busca",
+    "resumeOne": "Retomar esta busca",
+    "deleteOne": "Remover esta busca",
     "stoppedToast": "Busca automática parada",
     "resumedToast": "Busca automática retomada",
     "deletedToast": "Busca automática por “{keyword}” removida"
@@ -313,5 +383,11 @@
       "settings": "Este app web: aparência, notificações, diagnóstico",
       "mcpServer": "O endpoint MCP pelo qual agentes de IA podem controlar o aMule"
     }
+  },
+  "demo": {
+    "banner": "Demo: tudo o que você vê é simulado no seu navegador. Nada é baixado nem se conecta a nenhuma rede real.",
+    "reset": "Reiniciar a demo",
+    "mcpUnavailable": "O endpoint MCP e as ferramentas do assistente precisam do servidor do aMule Nuxt. Esta demo é uma página estática, então um agente de IA não consegue controlá-la. Rode o aplicativo você mesmo para usar o MCP.",
+    "pushUnavailable": "As notificações push precisam do servidor do aMule Nuxt. Esta demo é uma página estática; as notificações dentro da página continuam funcionando."
   }
 }

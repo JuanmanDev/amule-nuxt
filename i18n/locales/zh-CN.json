@@ -63,7 +63,7 @@
     "filter": "筛选…",
     "noMatches": "没有匹配项",
     "goToDownloads": "前往下载",
-    "back": "Back"
+    "back": "返回"
   },
   "pagination": {
     "perPage": "每页",
@@ -566,10 +566,10 @@
     "stoppedToast": "自动搜索已停止",
     "resumedToast": "自动搜索已恢复",
     "deletedToast": "已移除对“{keyword}”的自动搜索",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "停止此搜索",
+    "resumeOne": "恢复此搜索",
+    "deleteOne": "删除此搜索",
+    "networks": "{count} 个网络：{list}"
   },
   "related": {
     "title": "相关页面",

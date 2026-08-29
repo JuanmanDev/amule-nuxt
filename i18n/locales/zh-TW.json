@@ -63,7 +63,7 @@
     "filter": "篩選...",
     "noMatches": "沒有符合的項目",
     "goToDownloads": "前往下載頁",
-    "back": "Back"
+    "back": "返回"
   },
   "pagination": {
     "perPage": "每頁",
@@ -566,10 +566,10 @@
     "stoppedToast": "自動搜尋已停止",
     "resumedToast": "自動搜尋已恢復",
     "deletedToast": "已移除「{keyword}」的自動搜尋",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "停止此搜尋",
+    "resumeOne": "繼續此搜尋",
+    "deleteOne": "移除此搜尋",
+    "networks": "{count} 個網路：{list}"
   },
   "related": {
     "title": "相關頁面",

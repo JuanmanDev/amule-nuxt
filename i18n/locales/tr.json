@@ -63,7 +63,7 @@
     "filter": "Süz...",
     "noMatches": "Eşleşme yok",
     "goToDownloads": "İndirmelere git",
-    "back": "Back"
+    "back": "Geri"
   },
   "pagination": {
     "perPage": "Sayfa başına",
@@ -566,10 +566,10 @@
     "stoppedToast": "Otomatik arama durduruldu",
     "resumedToast": "Otomatik arama sürdürüldü",
     "deletedToast": "“{keyword}” için otomatik arama kaldırıldı",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Bu aramayı durdur",
+    "resumeOne": "Bu aramayı sürdür",
+    "deleteOne": "Bu aramayı kaldır",
+    "networks": "{count} ağ: {list}"
   },
   "related": {
     "title": "İlgili sayfalar",

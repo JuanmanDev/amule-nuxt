@@ -63,7 +63,7 @@
     "filter": "ترشيح...",
     "noMatches": "لا تطابقات",
     "goToDownloads": "الانتقال إلى التنزيلات",
-    "back": "Back"
+    "back": "رجوع"
   },
   "pagination": {
     "perPage": "لكل صفحة",
@@ -566,10 +566,10 @@
     "stoppedToast": "أُوقف البحث التلقائي",
     "resumedToast": "استُؤنف البحث التلقائي",
     "deletedToast": "أُزيل البحث التلقائي عن «{keyword}»",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "إيقاف هذا البحث",
+    "resumeOne": "استئناف هذا البحث",
+    "deleteOne": "إزالة هذا البحث",
+    "networks": "{count} شبكات: {list}"
   },
   "related": {
     "title": "صفحات ذات صلة",

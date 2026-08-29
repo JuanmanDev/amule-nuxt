@@ -63,7 +63,7 @@
     "filter": "Iragazi...",
     "noMatches": "Bat datorrenik ez",
     "goToDownloads": "Joan deskargetara",
-    "back": "Back"
+    "back": "Atzera"
   },
   "pagination": {
     "perPage": "Orriko",
@@ -566,10 +566,10 @@
     "stoppedToast": "Bilaketa automatikoa gelditu da",
     "resumedToast": "Bilaketa automatikoari berrekin zaio",
     "deletedToast": "«{keyword}» bilaketa automatikoa kendu da",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Gelditu bilaketa hau",
+    "resumeOne": "Berrekin bilaketa honi",
+    "deleteOne": "Kendu bilaketa hau",
+    "networks": "{count} sare: {list}"
   },
   "related": {
     "title": "Lotutako orriak",

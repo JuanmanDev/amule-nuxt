@@ -63,7 +63,7 @@
     "filter": "필터...",
     "noMatches": "일치하는 항목 없음",
     "goToDownloads": "다운로드로 이동",
-    "back": "Back"
+    "back": "뒤로"
   },
   "pagination": {
     "perPage": "쪽당",
@@ -566,10 +566,10 @@
     "stoppedToast": "자동 검색이 중지되었습니다",
     "resumedToast": "자동 검색이 재개되었습니다",
     "deletedToast": "‘{keyword}’ 자동 검색이 삭제되었습니다",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "이 검색 중지",
+    "resumeOne": "이 검색 재개",
+    "deleteOne": "이 검색 제거",
+    "networks": "네트워크 {count}개: {list}"
   },
   "related": {
     "title": "관련 페이지",

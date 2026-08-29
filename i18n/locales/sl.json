@@ -63,7 +63,7 @@
     "filter": "Filtriraj ...",
     "noMatches": "Ni zadetkov",
     "goToDownloads": "Pojdi na prenose",
-    "back": "Back"
+    "back": "Nazaj"
   },
   "pagination": {
     "perPage": "Na stran",
@@ -566,10 +566,10 @@
     "stoppedToast": "Samodejno iskanje je ustavljeno",
     "resumedToast": "Samodejno iskanje se nadaljuje",
     "deletedToast": "Samodejno iskanje za »{keyword}« je odstranjeno",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Ustavi to iskanje",
+    "resumeOne": "Nadaljuj to iskanje",
+    "deleteOne": "Odstrani to iskanje",
+    "networks": "{count} omrežja: {list}"
   },
   "related": {
     "title": "Sorodne strani",

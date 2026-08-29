@@ -63,7 +63,7 @@
     "filter": "Filtreeri...",
     "noMatches": "Vasteid pole",
     "goToDownloads": "Ava allalaadimised",
-    "back": "Back"
+    "back": "Tagasi"
   },
   "pagination": {
     "perPage": "Lehel",
@@ -566,10 +566,10 @@
     "stoppedToast": "Automaatotsing peatatud",
     "resumedToast": "Automaatotsing jätkatud",
     "deletedToast": "Automaatotsing „{keyword}” eemaldatud",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "stopOne": "Peata see otsing",
+    "resumeOne": "Jätka seda otsingut",
+    "deleteOne": "Eemalda see otsing",
+    "networks": "{count} võrku: {list}"
   },
   "related": {
     "title": "Seotud lehed",
