@@ -88,7 +88,7 @@ jobs:
       # One bake run builds both images and shares every layer they have in
       # common; see docker-bake.hcl.
       - name: Build and push both images
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v7
         env:
           APP_VERSION: ${{ steps.version.outputs.value }}
           REVISION: ${{ github.sha }}

@@ -138,7 +138,7 @@ jobs:
       # the Nuxt output and the shared layers are built once and both images use
       # them. See docker-bake.hcl.
       - name: Build and push both images
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v7
         env:
           APP_VERSION: ${{ needs.release.outputs.version }}
           REVISION: ${{ github.sha }}
