@@ -6,7 +6,7 @@
   link live, and where a result is turned into a download.
 -->
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('search.result.title')" :transition="!shared">
+  <UModal v-model:open="open" :ui="MODAL_TRANSITION_UI" :title="$t('search.result.title')" :transition="!shared">
     <template #body>
       <div v-if="result" class="space-y-6">
         <div class="space-y-2">

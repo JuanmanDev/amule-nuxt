@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('downloads.detailsTitle')" :transition="!shared">
+  <UModal v-model:open="open" :ui="MODAL_TRANSITION_UI" :title="$t('downloads.detailsTitle')" :transition="!shared">
     <template #body>
       <div v-if="download" class="space-y-6">
         <!-- Full file name: wraps instead of truncating, which is the point of this modal -->

@@ -384,19 +384,57 @@ html {
     animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* Opening a details modal fades the page behind it rather than sliding it */
+/*
+ * Opening a details modal. The page itself does not move: the root snapshot
+ * stays as it is, the overlay fades in over it, the panel pops in above that,
+ * and the row's title text travels last, on top of everything. Every row
+ * loses its own view-transition name for the duration - a named element is
+ * drawn as a layer of its own, above the overlay, which looked like rows
+ * shining through the dimmed page.
+ */
+:root[data-vt="modal"] .vt-row {
+    view-transition-name: none !important;
+}
+
 @keyframes vt-fade {
     from { opacity: 0; }
 }
 
+@keyframes vt-pop {
+    from { opacity: 0; transform: scale(0.96); }
+}
+
 :root[data-vt="modal"]::view-transition-old(root),
 :root[data-vt="modal"]::view-transition-new(root) {
-    animation: 0.25s ease both vt-fade;
+    animation: none;
 }
 
 :root[data-vt="modal"]::view-transition-old(root) {
-    animation-direction: reverse;
+    display: none;
 }
+
+::view-transition-new(dl-overlay) {
+    animation: 0.25s ease-out both vt-fade;
+}
+
+::view-transition-old(dl-overlay) {
+    animation: 0.2s ease-in both vt-fade reverse;
+}
+
+::view-transition-new(dl-modal) {
+    animation: 0.3s cubic-bezier(0.16, 0.84, 0.36, 1) both vt-pop;
+}
+
+::view-transition-old(dl-modal) {
+    animation: 0.18s ease-in both vt-pop reverse;
+}
+
+/* Stacking, bottom to top: page, overlay, panel, the travelling title. The
+   browser orders the layers by paint order, which put the title under the
+   panel it is heading into. */
+::view-transition-group(dl-overlay) { z-index: 1; }
+::view-transition-group(dl-modal) { z-index: 2; }
+::view-transition-group(dl-active) { z-index: 3; }
 
 /* A block whose content changes size on its own (a card that gains a row, a
  * details panel that expands) can opt into the same easing. */

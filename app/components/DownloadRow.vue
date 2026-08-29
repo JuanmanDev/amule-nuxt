@@ -5,8 +5,8 @@
     tabindex="0"
     data-testid="download-row"
     :data-hash="download.hash"
-    :style="{ viewTransitionName: transitionName ?? transitionNameFor('dl', download.hash) }"
-    :class="selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''"
+    :style="{ viewTransitionName: transitionNameFor('dl', download.hash) }"
+    :class="[ROW_TRANSITION_CLASS, selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : '']"
     :aria-label="$t('downloads.showDetailsFor', { name: download.name })"
     @click="onRowClick"
     @keydown.enter.prevent="onRowClick"
@@ -28,7 +28,7 @@
              name takes the space that is left so the badge lands next to the
              actions at the right edge on every width, not adrift mid-row after a
              short name on a wide screen. -->
-        <p class="font-semibold truncate min-w-0 flex-1" :title="download.name">{{ download.name }}</p>
+        <p class="font-semibold truncate min-w-0 flex-1" :title="download.name" :style="{ viewTransitionName: titleTransitionName(transitionName) }">{{ download.name }}</p>
         <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">
           <AnimatedValue :model-value="$t(info.labelKey)" />
         </UBadge>
@@ -159,11 +159,7 @@ const props = defineProps<{
   /** True while the list is in selection mode. */
   selectable?: boolean;
   selected?: boolean;
-  /**
-   * Overrides the `dl-<hash>` name every row carries: the parent hands the
-   * row that is turning into a modal the modal's name, and `none` while the
-   * modal is open so the row does not fade in behind it.
-   */
+  /** From useDetailsTransition: the shared name while this row is opening its modal. */
   transitionName?: string;
 }>();
 

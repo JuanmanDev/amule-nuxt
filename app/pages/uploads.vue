@@ -132,10 +132,13 @@
                   v-for="upload in visibleUploads"
                   :key="keyOfUpload(upload)"
                   class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors cursor-pointer"
-                  :style="{ viewTransitionName: details.rowName(keyOfUpload(upload), 'ul') }"
-                  :class="selection.active.value
-                    ? [selection.has(keyOfUpload(upload)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : 'hover:bg-elevated/60']
-                    : ['hover:bg-elevated/60']"
+                  :style="{ viewTransitionName: transitionNameFor('ul', keyOfUpload(upload)) }"
+                  :class="[
+                    ROW_TRANSITION_CLASS,
+                    ...(selection.active.value
+                      ? [selection.has(keyOfUpload(upload)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : 'hover:bg-elevated/60']
+                      : ['hover:bg-elevated/60'])
+                  ]"
                   @click="selection.active.value ? selection.toggle(keyOfUpload(upload)) : openDetails(upload)"
                 >
                   <div class="min-w-0 space-y-2">
@@ -148,7 +151,7 @@
                         @update:model-value="value => selection.toggle(keyOfUpload(upload), value === true)"
                         @click.stop
                       />
-                      <p class="font-semibold truncate" :title="upload.fileName">{{ upload.fileName }}</p>
+                      <p class="font-semibold truncate" :title="upload.fileName" :style="{ viewTransitionName: titleTransitionName(details.rowName(keyOfUpload(upload), 'ul')) }">{{ upload.fileName }}</p>
                       <UBadge
                         :color="upload.speed > 0 ? 'success' : 'neutral'"
                         variant="subtle"

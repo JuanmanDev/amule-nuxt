@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="title" :transition="!shared">
+  <UModal v-model:open="open" :ui="MODAL_TRANSITION_UI" :title="title" :transition="!shared">
     <template #body>
       <div class="space-y-6">
         <div class="space-y-2">

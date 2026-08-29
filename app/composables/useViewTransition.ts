@@ -52,6 +52,29 @@ export async function withViewTransition(kind: ViewTransitionKind, update: () =>
 export const ACTIVE_TRANSITION_NAME = 'dl-active';
 
 /**
+ * The class every list row carries. While a modal transition runs, main.css
+ * strips the view-transition name from every `vt-row`: a named row is
+ * snapshotted as a layer of its own and would otherwise be drawn above the
+ * modal's overlay for the length of the animation. What travels is the row's
+ * title element alone, named by `titleTransitionName`.
+ */
+export const ROW_TRANSITION_CLASS = 'vt-row';
+
+/**
+ * The name for a row's title element: the shared one while this row is the
+ * one opening (so the text morphs into the modal's title), none otherwise.
+ */
+export function titleTransitionName(rowName: string | undefined): string {
+    return rowName === ACTIVE_TRANSITION_NAME ? ACTIVE_TRANSITION_NAME : 'none';
+}
+
+/** Nuxt UI slot classes that give a details modal's overlay and panel layers of their own. */
+export const MODAL_TRANSITION_UI = {
+    overlay: '[view-transition-name:dl-overlay]',
+    content: 'max-w-3xl [view-transition-name:dl-modal]'
+};
+
+/**
  * A safe `view-transition-name` for any key: the API wants a CSS identifier,
  * and an upload's key is `hash@ip:port`.
  */
@@ -73,6 +96,11 @@ export function useDetailsTransition() {
     const modalHolds = ref(false);
     const shared = computed(() => sharedKey.value !== null);
 
+    /**
+     * What a row should pass to `titleTransitionName`: the shared name for the
+     * row that is opening, until the modal holds it. The row element itself
+     * keeps its own `prefix-key` name for page navigations.
+     */
     function rowName(key: string, prefix: string): string {
         if (key !== sharedKey.value) return transitionNameFor(prefix, key);
         return modalHolds.value ? 'none' : ACTIVE_TRANSITION_NAME;

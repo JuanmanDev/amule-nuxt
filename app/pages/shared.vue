@@ -132,8 +132,8 @@
             v-for="file in visibleFiles"
             :key="file.hash || file.fileName"
             class="p-3 border border-gray-200 dark:border-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
-            :style="{ viewTransitionName: details.rowName(keyOfFile(file), 'sh') }"
-            :class="selection.active.value && selection.has(keyOfFile(file)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''"
+            :style="{ viewTransitionName: transitionNameFor('sh', keyOfFile(file)) }"
+            :class="[ROW_TRANSITION_CLASS, selection.active.value && selection.has(keyOfFile(file)) ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : '']"
             role="button"
             tabindex="0"
             :aria-label="$t('downloads.showDetailsFor', { name: file.fileName })"
@@ -153,7 +153,7 @@
                   @update:model-value="value => selection.toggle(keyOfFile(file), value === true)"
                   @click.stop
                 />
-                <p class="font-medium truncate" :title="file.fileName">{{ file.fileName }}</p>
+                <p class="font-medium truncate" :title="file.fileName" :style="{ viewTransitionName: titleTransitionName(details.rowName(keyOfFile(file), 'sh')) }">{{ file.fileName }}</p>
                 <!-- Only when something is happening: the size is already in the
                      row below, and a badge repeating it was just noise -->
                 <UBadge v-if="file.onQueue > 0" variant="subtle" size="sm" class="shrink-0" color="info">

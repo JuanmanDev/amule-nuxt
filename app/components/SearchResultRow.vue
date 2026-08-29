@@ -11,7 +11,8 @@
     class="p-3 sm:p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm cursor-pointer hover:bg-elevated/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     role="button"
     tabindex="0"
-    :style="{ viewTransitionName: transitionName ?? transitionNameFor('sr', result.hash || `n${result.resultNumber}`) }"
+    :style="{ viewTransitionName: transitionNameFor('sr', result.hash || `n${result.resultNumber}`) }"
+    :class="ROW_TRANSITION_CLASS"
     :aria-label="$t('search.result.showDetailsFor', { name: result.fileName })"
     @click="emit('open', result)"
     @keydown.enter.prevent="emit('open', result)"
@@ -22,7 +23,7 @@
 
       <div class="flex-1 min-w-0 space-y-1.5 sm:space-y-2">
         <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
-          <h3 class="font-semibold truncate min-w-0 flex-1 text-sm sm:text-base leading-tight" :title="result.fileName">{{ result.fileName }}</h3>
+          <h3 class="font-semibold truncate min-w-0 flex-1 text-sm sm:text-base leading-tight" :title="result.fileName" :style="{ viewTransitionName: titleTransitionName(transitionName) }">{{ result.fileName }}</h3>
           <UBadge v-if="status.state !== 'unknown'" :color="status.color" variant="subtle" size="sm" class="shrink-0 self-start">
             {{ $t(`status.${status.state}`) }}
           </UBadge>
@@ -96,7 +97,7 @@ const props = defineProps<{
   status: FileStatus;
   /** True while this result's download request is in flight. */
   busy?: boolean;
-  /** The row's view-transition name, when the list is choreographing a modal. */
+  /** From useDetailsTransition: the shared name while this row is opening its modal. */
   transitionName?: string;
 }>();
 
