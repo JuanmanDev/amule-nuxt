@@ -173,6 +173,7 @@
         storage-key="search"
         :downloading-hash="downloadingHash || undefined"
         :list-id="activeId ?? undefined"
+        :row-name="details.rowName"
         @open="openDetails"
         @download="addToDownloads"
       >
@@ -211,8 +212,10 @@
     </SmoothSwap>
 
     <SearchResultModal
-      v-model="detailsOpen"
+      :model-value="detailsOpen"
+      :shared="details.shared.value"
       :result="selected"
+      @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
       :status="statusOf(selected?.hash)"
       :busy="downloadingHash === selected?.hash"
       :search-label="active ? `${active.keyword} (${active.type})` : undefined"
@@ -286,9 +289,19 @@ async function refreshResults() {
   refreshing.value = false;
 }
 
+// The clicked row turns into the modal's title (see useDetailsTransition)
+const details = useDetailsTransition();
+
 function openDetails(result: SearchResult) {
-  selected.value = result;
-  detailsOpen.value = true;
+  return details.open(resultKey(result), () => {
+    selected.value = result;
+    detailsOpen.value = true;
+  });
+}
+
+function closeDetails() {
+  if (!detailsOpen.value) return;
+  return details.close(() => { detailsOpen.value = false; });
 }
 
 /**

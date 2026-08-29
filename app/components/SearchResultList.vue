@@ -63,6 +63,7 @@
           :result="result"
           :status="statusOf(result.hash)"
           :busy="downloadingHash === result.hash"
+          :transition-name="rowName?.(resultKey(result), 'sr')"
           @open="emit('open', $event)"
           @download="emit('download', $event)"
         />
@@ -94,6 +95,8 @@ const props = defineProps<{
   storageKey: string;
   downloadingHash?: string | null;
   listId?: string;
+  /** From useDetailsTransition: names the row that is turning into a modal. */
+  rowName?: (key: string, prefix: string) => string;
 }>();
 
 const emit = defineEmits<{

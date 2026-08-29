@@ -28,6 +28,7 @@
         storage-key="search-auto"
         :downloading-hash="downloadingHash || undefined"
         :list-id="selected.id"
+        :row-name="details.rowName"
         @open="openDetails"
         @download="addToDownloads"
       >
@@ -50,8 +51,10 @@
     </template>
 
     <SearchResultModal
-      v-model="detailsOpen"
+      :model-value="detailsOpen"
+      :shared="details.shared.value"
       :result="selectedResult"
+      @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
       :status="statusOf(selectedResult?.hash)"
       :busy="downloadingHash === selectedResult?.hash"
       :search-label="selected ? `${selected.keyword} (${$t('searchAuto.title')})` : undefined"
@@ -114,9 +117,19 @@ const detailsOpen = ref(false);
 const selectedResult = ref<SearchResult | null>(null);
 const downloadingHash = ref<string | null>(null);
 
+// The clicked row turns into the modal's title (see useDetailsTransition)
+const details = useDetailsTransition();
+
 function openDetails(result: SearchResult) {
-  selectedResult.value = result;
-  detailsOpen.value = true;
+  return details.open(resultKey(result), () => {
+    selectedResult.value = result;
+    detailsOpen.value = true;
+  });
+}
+
+function closeDetails() {
+  if (!detailsOpen.value) return;
+  return details.close(() => { detailsOpen.value = false; });
 }
 
 async function addToDownloads(result: SearchResult) {

@@ -11,6 +11,7 @@
     class="p-3 sm:p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm cursor-pointer hover:bg-elevated/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     role="button"
     tabindex="0"
+    :style="{ viewTransitionName: transitionName ?? transitionNameFor('sr', result.hash || `n${result.resultNumber}`) }"
     :aria-label="$t('search.result.showDetailsFor', { name: result.fileName })"
     @click="emit('open', result)"
     @keydown.enter.prevent="emit('open', result)"
@@ -95,6 +96,8 @@ const props = defineProps<{
   status: FileStatus;
   /** True while this result's download request is in flight. */
   busy?: boolean;
+  /** The row's view-transition name, when the list is choreographing a modal. */
+  transitionName?: string;
 }>();
 
 const emit = defineEmits<{

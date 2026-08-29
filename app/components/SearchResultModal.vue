@@ -6,13 +6,14 @@
   link live, and where a result is turned into a download.
 -->
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('search.result.title')">
+  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('search.result.title')" :transition="!shared">
     <template #body>
       <div v-if="result" class="space-y-6">
         <div class="space-y-2">
           <div class="flex items-start gap-2">
             <UIcon :name="kindIcon" class="w-5 h-5 mt-0.5 shrink-0 text-gray-400" />
-            <p class="text-sm font-semibold break-all leading-snug flex-1">{{ result.fileName }}</p>
+            <!-- The row's title travels here (see useDetailsTransition) -->
+            <p class="text-sm font-semibold break-all leading-snug flex-1" :style="{ viewTransitionName: shared ? ACTIVE_TRANSITION_NAME : 'none' }">{{ result.fileName }}</p>
             <UBadge v-if="status.state !== 'unknown'" :color="status.color" variant="subtle" size="sm" class="shrink-0">
               {{ $t(`status.${status.state}`) }}
             </UBadge>
@@ -137,6 +138,12 @@ const props = defineProps<{
   busy?: boolean;
   /** Which search this came from, shown as context. */
   searchLabel?: string;
+  /**
+   * True while a view transition carries a row into this modal: the title
+   * takes the shared name and the modal's own enter animation is switched off,
+   * so the browser snapshots it in its final place.
+   */
+  shared?: boolean;
 }>();
 
 const emit = defineEmits<{

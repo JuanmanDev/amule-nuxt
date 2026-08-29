@@ -111,3 +111,6 @@ export function useDetailsTransition() {
 
     return { shared, rowName, open, close, reset };
 }
+
+/** What identifies a search result across renders: its hash, or its position when the daemon sent none. */
+export const resultKey = (result: { hash?: string; resultNumber: number }) => result.hash || `n${result.resultNumber}`;
