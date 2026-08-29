@@ -66,6 +66,8 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 
 Pages that overlap link to each other: a short **Related pages** section at the foot of each page points where you would likely go next — the two statistics views at each other, servers at connection, search at its autonomous sibling.
 
+Moving from the dashboard's queue summary to the download page carries each row along: the browser animates it from where it sat in the summary to its place in the list (View Transitions API — Chrome, Edge, Safari; Firefox gets the plain slide). Opening a download's details does the same in miniature: the row's title becomes the modal's.
+
 Every list page shares the same controls: a filter that grows to fill the row, a compact sort menu that collapses to an icon on small screens, and an ascending/descending toggle for every sort field. Lists animate their additions and removals, and figures that change while a page is open (speeds, counts, badges) crossfade with a brief highlight. On a phone the download rows drop the ETA column so the stats stay on one line.
 
 Long lists are paged: 100 rows at a time by default, with a per-page selector (25 to 500, or all) that is remembered per list on the device. Filtering and sorting always run over the whole list, never over the page you happen to be on, and turning a page does not animate — a hundred rows leaving while a hundred others arrive is not a change anyone made.
@@ -129,6 +131,8 @@ What the simulator does:
 Everything is remembered in `localStorage` — reload and the queue is where you left it — and the **Reset demo** button in the banner throws it away. File hashes are synthetic: pasting a demo link into a real aMule resolves to nothing.
 
 What it cannot do, and says so in every language: the **MCP endpoint** (an AI agent cannot drive the demo, and the assistant's tools have nothing to call), **Web Push** (the in-page notifications still work), and relaying the assistant to Ollama or an OpenAI-compatible API. The in-browser WebLLM model itself runs.
+
+The MCP page still lists every tool, under a red notice: it reads `app/utils/demo/mcpInfo.json`, a snapshot of what a real server answers on `/api/mcp-info`. When a tool is added, renamed or removed under `server/mcp/tools/`, `test/demo.test.ts` fails until the snapshot is refreshed: `npm run build && npm run demo:snapshot-mcp`.
 
 To build it yourself: `npm run generate:demo`, then serve `.output/public` from `/amule-nuxt/` — or set `NUXT_APP_BASE_URL=/` for the root of a host.
 

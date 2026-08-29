@@ -330,6 +330,74 @@ html {
     transform: translateX(var(--page-travel));
 }
 
+/*
+ * The same slide, as a view transition, for browsers that have the API (app.vue
+ * turns the Vue transition above off there). The shell - header, footer, mobile
+ * bar, banners - carries view-transition names of its own, so only the page
+ * content travels. Elements named `dl-<hash>` on two pages are moved by the
+ * browser from one place to the other instead of sliding with the rest.
+ */
+@keyframes vt-slide-out {
+    to { opacity: 0; transform: translateX(calc(var(--page-travel) * -1)); }
+}
+
+@keyframes vt-slide-in {
+    from { opacity: 0; transform: translateX(var(--page-travel)); }
+}
+
+@keyframes vt-slide-out-back {
+    to { opacity: 0; transform: translateX(var(--page-travel)); }
+}
+
+@keyframes vt-slide-in-back {
+    from { opacity: 0; transform: translateX(calc(var(--page-travel) * -1)); }
+}
+
+:root:not([data-vt])::view-transition-old(root) {
+    animation: 0.13s ease-in both vt-slide-out;
+}
+
+:root:not([data-vt])::view-transition-new(root) {
+    animation: 0.3s cubic-bezier(0.16, 0.84, 0.36, 1) both vt-slide-in;
+}
+
+:root[data-nav-dir="back"]:not([data-vt])::view-transition-old(root) {
+    animation-name: vt-slide-out-back;
+}
+
+:root[data-nav-dir="back"]:not([data-vt])::view-transition-new(root) {
+    animation-name: vt-slide-in-back;
+}
+
+/* The shell stays put: same snapshot on both sides, no movement to show */
+::view-transition-group(app-header),
+::view-transition-group(app-footer),
+::view-transition-group(app-mobile-nav),
+::view-transition-group(app-banner-demo),
+::view-transition-group(app-banner-daemon) {
+    animation-duration: 0s;
+}
+
+/* A row becoming another row, or a modal title: a little slower than the page */
+::view-transition-group(*) {
+    animation-duration: 0.35s;
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Opening a details modal fades the page behind it rather than sliding it */
+@keyframes vt-fade {
+    from { opacity: 0; }
+}
+
+:root[data-vt="modal"]::view-transition-old(root),
+:root[data-vt="modal"]::view-transition-new(root) {
+    animation: 0.25s ease both vt-fade;
+}
+
+:root[data-vt="modal"]::view-transition-old(root) {
+    animation-direction: reverse;
+}
+
 /* A block whose content changes size on its own (a card that gains a row, a
  * details panel that expands) can opt into the same easing. */
 .smooth-size {

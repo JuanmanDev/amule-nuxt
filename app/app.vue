@@ -10,6 +10,7 @@
     <!-- The public demo: nothing here is real, and the visitor should know -->
     <UBanner
       v-if="isDemo"
+      style="view-transition-name: app-banner-demo"
       color="info"
       icon="i-heroicons-beaker"
       :title="$t('demo.banner')"
@@ -20,13 +21,16 @@
     />
     <UBanner
       v-if="!connectionState.connected"
+      style="view-transition-name: app-banner-daemon"
       color="error"
       icon="i-heroicons-exclamation-triangle"
       :title="$t('app.daemonUnreachable', { reason: connectionState.error || $t('app.daemonUnreachableFallback') })"
       :actions="[{ label: $t('app.openSettings'), to: '/settings', color: 'neutral', variant: 'outline', size: 'xs' }]"
     />
     <!-- Desktop Navigation - Top Bar -->
-    <header class="hidden lg:block sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+    <!-- The shell gets view-transition names of its own so that the page slide
+         (a root view transition, see main.css) leaves it standing still -->
+    <header class="hidden lg:block sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800" style="view-transition-name: app-header">
       <UContainer>
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
@@ -63,12 +67,12 @@
          are. -->
     <UMain class="pb-32 lg:pb-0">
       <UContainer class="py-8 flex flex-col min-h-[calc(100vh-8rem)] overflow-x-clip">
-        <NuxtPage class="flex-1 flex flex-col" />
+        <NuxtPage class="flex-1 flex flex-col" :transition="pageTransition" />
       </UContainer>
     </UMain>
 
     <!-- Footer -->
-    <footer class="hidden lg:block border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+    <footer class="hidden lg:block border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950" style="view-transition-name: app-footer">
       <UContainer>
         <div class="flex items-center justify-between h-16">
           <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -99,7 +103,7 @@
 
 
     <!-- Mobile Navigation - Bottom Bar (Fixed) -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800" style="view-transition-name: app-mobile-nav">
       <div class="grid grid-cols-4 h-16">
         <NuxtLink
           v-for="link in mobileNavLinks"
@@ -212,6 +216,18 @@ const activeDownloadFiles = computed(
   () => queuedDownloads.value.filter(download => (download.speed ?? 0) > 0).length
 )
 const runtimeConfig = useRuntimeConfig()
+
+/*
+ * The slide between pages is a Vue transition for browsers without the View
+ * Transitions API, and a root view transition (main.css) for those with it -
+ * running both would slide twice. Decided after mount, because the server does
+ * not know the browser.
+ */
+const pageTransition = ref<false | { name: string; mode: 'out-in' }>({ name: 'page', mode: 'out-in' })
+onMounted(() => {
+  if (supportsViewTransition()) pageTransition.value = false
+})
+
 const isDemo = computed(() => Boolean(runtimeConfig.public.demo))
 
 /** Back to the opening scene: the simulator forgets what the visitor did. */

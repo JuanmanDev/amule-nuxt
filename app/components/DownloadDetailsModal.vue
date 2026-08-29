@@ -1,11 +1,12 @@
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('downloads.detailsTitle')">
+  <UModal v-model:open="open" :ui="{ content: 'max-w-3xl' }" :title="$t('downloads.detailsTitle')" :transition="!shared">
     <template #body>
       <div v-if="download" class="space-y-6">
         <!-- Full file name: wraps instead of truncating, which is the point of this modal -->
         <div class="space-y-2">
           <div class="flex items-start gap-2">
-            <p class="text-sm font-semibold break-all leading-snug">{{ download.name }}</p>
+            <!-- The row's title travels here (see useViewTransition) -->
+            <p class="text-sm font-semibold break-all leading-snug" :style="{ viewTransitionName: shared ? ACTIVE_TRANSITION_NAME : 'none' }">{{ download.name }}</p>
             <UBadge :color="info.color" variant="subtle" size="sm" class="shrink-0">{{ $t(info.labelKey) }}</UBadge>
           </div>
           <UButton
@@ -140,6 +141,12 @@ import { formatBytes, formatEta, formatPercent, formatSpeed, formatTimestamp } f
 const props = defineProps<{
   modelValue: boolean;
   download: Download | null;
+  /**
+   * True while a view transition carries the row into this modal: the title
+   * takes the shared name and the modal's own enter animation is switched off,
+   * so the browser snapshots it in its final place.
+   */
+  shared?: boolean;
 }>();
 
 const emit = defineEmits<{

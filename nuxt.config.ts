@@ -196,6 +196,13 @@ export default defineNuxtConfig({
 
   ssr: !demo,
 
+  experimental: {
+    // Shared-element navigation (dashboard row -> download page row). app.vue
+    // switches the Vue page transition off where the browser has this, and the
+    // slide is redone as a root view transition in assets/css/main.css.
+    viewTransition: true
+  },
+
   vite: {
     worker: {
       plugins: () => [webLlmCommentFix]

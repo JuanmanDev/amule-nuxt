@@ -17,6 +17,7 @@
     "dev": "nuxt dev --port 3003 --host 0.0.0.0",
     "generate": "nuxt generate",
     "generate:demo": "cross-env NUXT_DEMO=1 nuxt generate",
+    "demo:snapshot-mcp": "node scripts/snapshot-mcp-info.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "docker:build": "docker-compose build",

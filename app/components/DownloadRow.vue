@@ -5,6 +5,7 @@
     tabindex="0"
     data-testid="download-row"
     :data-hash="download.hash"
+    :style="{ viewTransitionName: transitionName ?? downloadTransitionName(download.hash) }"
     :class="selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''"
     :aria-label="$t('downloads.showDetailsFor', { name: download.name })"
     @click="onRowClick"
@@ -158,6 +159,12 @@ const props = defineProps<{
   /** True while the list is in selection mode. */
   selectable?: boolean;
   selected?: boolean;
+  /**
+   * Overrides the `dl-<hash>` name every row carries: the parent hands the
+   * row that is turning into a modal the modal's name, and `none` while the
+   * modal is open so the row does not fade in behind it.
+   */
+  transitionName?: string;
 }>();
 
 const emit = defineEmits<{
