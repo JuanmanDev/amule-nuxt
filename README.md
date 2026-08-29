@@ -9,6 +9,8 @@
 [![Container on GHCR](https://img.shields.io/badge/ghcr.io-juanmandev%2Famule--nuxt-2496ED?logo=docker&logoColor=white)](https://github.com/JuanmanDev/amule-nuxt/pkgs/container/amule-nuxt)
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-blue)](CHANGELOG.md)
 ![Node >= 24](https://img.shields.io/badge/node-%E2%89%A5%2024-339933?logo=node.js&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/demo-GitHub%20Pages-00dc82?logo=github)](https://juanmandev.github.io/amule-nuxt/)
 
 ![aMule Nuxt dashboard](images/home2.png)
 

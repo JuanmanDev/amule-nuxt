@@ -2,6 +2,12 @@
   "name": "amule-nuxt",
   "type": "module",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuanmanDev/amule-nuxt.git"
+  },
+  "homepage": "https://juanmandev.github.io/amule-nuxt/",
   "version": "1.11.0",
   "engines": {
     "node": ">=24"
