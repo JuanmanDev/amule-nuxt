@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.13.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.12.0...v1.13.0) (2026-08-29)
+
+### Features
+
+* **demo:** show the MCP server's capabilities behind a red notice ([25e4973](https://github.com/JuanmanDev/amule-nuxt/commit/25e49739f2c215270563c5850ce3722d375025b9))
+
 ## [1.12.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.11.1...v1.12.0) (2026-08-29)
 
 ### Features

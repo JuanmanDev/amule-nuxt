@@ -8,7 +8,7 @@
     "url": "git+https://github.com/JuanmanDev/amule-nuxt.git"
   },
   "homepage": "https://juanmandev.github.io/amule-nuxt/",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "engines": {
     "node": ">=24"
   },
