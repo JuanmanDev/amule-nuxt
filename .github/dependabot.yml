@@ -1,0 +1,27 @@
+# Keeps dependencies moving in small, reviewable steps. Majors are grouped so a
+# framework bump arrives as one pull request rather than five that break each
+# other; everything else is a weekly minor/patch batch.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      nuxt:
+        patterns: ['nuxt', '@nuxt/*', '@nuxtjs/*', 'vue', 'vue-router', 'vue-tsc']
+      minor-and-patch:
+        update-types: ['minor', 'patch']
+    ignore:
+      # Pinned on purpose: v10 silently produces empty release notes
+      - dependency-name: conventional-changelog-conventionalcommits
+    commit-message:
+      prefix: 'chore(deps)'
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'ci'

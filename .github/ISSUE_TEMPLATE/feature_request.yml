@@ -1,0 +1,16 @@
+name: Feature request
+description: Something aMule can do that this interface cannot yet, or something it should do better
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The situation first; the solution you have in mind second.
+    validations:
+      required: true
+  - type: textarea
+    id: amulegui
+    attributes:
+      label: How does amuleGUI / amuleweb / amulecmd do it today, if it does?
+      description: This app speaks the same EC protocol, so if aMule exposes it, this app can too.

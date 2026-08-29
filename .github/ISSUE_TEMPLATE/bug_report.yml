@@ -1,0 +1,38 @@
+name: Bug report
+description: Something does not work as the README says it should
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: aMule Nuxt version
+      description: Shown in the footer, or `docker image inspect`
+      placeholder: 1.10.0
+    validations:
+      required: true
+  - type: input
+    id: amule
+    attributes:
+      label: aMule version
+      placeholder: amuled 2.3.3 / 3.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How is it running?
+      options: [Docker (all-in-one), Docker (web only), Release zip, From source, The public demo]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      description: Steps to reproduce help most. Paste log lines (`/logs`, `LOG_LEVEL=debug`) if you have them.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: Firefox 142 on Android
