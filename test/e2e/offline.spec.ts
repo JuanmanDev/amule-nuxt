@@ -142,7 +142,10 @@ test.describe('presentation without a daemon', () => {
         await page.goto('/');
         await expect(page.locator('h1')).toBeVisible();
 
-        const card = page.locator('div.backdrop-blur-md').first();
+        // Cards themselves are frameless (see app.config.ts); the translucent,
+        // blurred surfaces are the elements inside them and the related-pages
+        // tiles, which every page has.
+        const card = page.locator('[class*="backdrop-blur-"]').first();
         await expect(card).toBeAttached();
 
         const style = await card.evaluate(element => {

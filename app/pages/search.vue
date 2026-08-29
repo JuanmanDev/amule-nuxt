@@ -172,7 +172,7 @@
         :results="active.results"
         storage-key="search"
         :downloading-hash="downloadingHash || undefined"
-        :list-id="activeId"
+        :list-id="activeId ?? undefined"
         @open="openDetails"
         @download="addToDownloads"
       >

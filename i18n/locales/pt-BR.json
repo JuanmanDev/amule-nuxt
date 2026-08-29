@@ -5,10 +5,7 @@
     "daemonUnreachable": "Não foi possível contatar o daemon do aMule: {reason}",
     "daemonUnreachableFallback": "verifique o host, a porta e a senha",
     "openSettings": "Abrir configurações",
-    "name": "aMule Nuxt",
-    "titleTemplate": "{page} - aMule Nuxt",
     "more": "More",
-    "menu": "Menu",
     "footer": "© {year} aMule Nuxt. All rights reserved.",
     "github": "GitHub repository",
     "language": "Language"
@@ -29,8 +26,7 @@
     "statsSummary": "Stats summary",
     "preferences": "Preferences",
     "mcpServer": "MCP server",
-    "assistant": "Assistant",
-    "apiTest": "API Test"
+    "assistant": "Assistant"
   },
   "common": {
     "save": "Salvar alterações",
@@ -63,8 +59,7 @@
     "descendingShort": "Descending",
     "clearFilter": "Clear filter",
     "filter": "Filter...",
-    "noMatches": "No matches",
-    "back": "Back"
+    "noMatches": "No matches"
   },
   "pagination": {
     "showing": "Mostrando {from}-{to} de {count} {label}",
@@ -100,7 +95,6 @@
     "queuePosition": "Queue position",
     "uploaded": "Uploaded",
     "requests": "Requests",
-    "ping": "Ping",
     "failedConnects": "Failed connects",
     "time": "Time"
   },
@@ -169,7 +163,6 @@
     "priorities": {
       "Auto": "Auto",
       "High": "High",
-      "Normal": "Normal",
       "Low": "Low",
       "autoSuffix": "(auto)"
     }
@@ -314,7 +307,6 @@
     "title": "Search",
     "networks": {
       "kad": "Kad network",
-      "global": "Global (eD2k)",
       "local": "Local (connected server)"
     },
     "networkLabel": "Network to search",
@@ -566,11 +558,7 @@
     "newLastPass": "{count} new on the last pass",
     "nextPass": "next pass in {minutes} min",
     "until": "runs until {time}",
-    "lastPassFailed": "The last pass failed: {error}",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
-    "networks": "{count} networks: {list}"
+    "lastPassFailed": "The last pass failed: {error}"
   },
   "related": {
     "descriptions": {

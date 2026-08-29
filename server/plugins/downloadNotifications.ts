@@ -33,6 +33,10 @@ function humanSize(bytes: number): string {
 }
 
 export default defineNitroPlugin((nitroApp) => {
+    // The prerenderer (nuxt generate) loads every plugin too: a socket server or
+    // a polling timer started here would keep that process alive forever.
+    if (import.meta.prerender) return;
+
     const stopEvents = onDownloadEvents(async events => {
         for (const event of events) {
             const size = humanSize(event.size);

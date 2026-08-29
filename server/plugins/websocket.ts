@@ -27,6 +27,10 @@ import { useLogger } from '../utils/logger';
 const log = useLogger('websocket');
 
 export default defineNitroPlugin((nitroApp) => {
+    // The prerenderer (nuxt generate) loads every plugin too: a socket server or
+    // a polling timer started here would keep that process alive forever.
+    if (import.meta.prerender) return;
+
     const WS_PORT = Number(process.env.WS_PORT ?? 3001);
     const announced = Number(useRuntimeConfig().public.wsPort ?? 3001);
 

@@ -1,11 +1,8 @@
 {
   "app": {
-    "name": "aMule Nuxt",
-    "titleTemplate": "{page} - aMule Nuxt",
     "addLink": "Add Link",
     "addEd2kLink": "Add ed2k Link",
     "more": "More",
-    "menu": "Menu",
     "footer": "© {year} aMule Nuxt. All rights reserved.",
     "github": "GitHub repository",
     "daemonUnreachable": "Cannot reach the aMule daemon: {reason}",
@@ -15,7 +12,6 @@
   },
   "nav": {
     "dashboard": "Dashboard",
-    "home": "Home",
     "downloads": "Downloads",
     "uploads": "Uploads",
     "search": "Search",
@@ -29,7 +25,6 @@
     "mcpServer": "MCP server",
     "settings": "Settings",
     "assistant": "Assistant",
-    "apiTest": "API Test",
     "searchAuto": "Auto search"
   },
   "common": {
@@ -53,7 +48,6 @@
     "unknown": "Unknown",
     "none": "none",
     "yes": "Yes",
-    "no": "No",
     "of": "of",
     "sortBy": "Sort by {field}",
     "ascending": "Ascending, switch to descending",
@@ -63,8 +57,7 @@
     "clearFilter": "Clear filter",
     "filter": "Filter...",
     "noMatches": "No matches",
-    "goToDownloads": "Go to downloads",
-    "back": "Back"
+    "goToDownloads": "Go to downloads"
   },
   "pagination": {
     "perPage": "Per page",
@@ -100,7 +93,6 @@
     "queuedClients": "Queued clients",
     "users": "Users",
     "files": "Files",
-    "ping": "Ping",
     "failedConnects": "Failed connects",
     "time": "Time"
   },
@@ -221,7 +213,6 @@
     "fields": {
       "user": "User",
       "address": "Address",
-      "client": "Client",
       "session": "Session",
       "allTime": "All time",
       "queueScore": "Queue / score"
@@ -345,8 +336,6 @@
     "autoLink": "Auto search"
   },
   "fileKinds": {
-    "video": "Video",
-    "audio": "Audio",
     "image": "Image",
     "archive": "Archive",
     "document": "Document",
@@ -564,13 +553,9 @@
     "noResultsYetDescription": "The first pass runs within a minute or two of creating the search. Results appear here as passes complete.",
     "created": "Auto search for “{keyword}” started",
     "createFailed": "Could not create the automatic search",
-    "stopOne": "Stop this search",
-    "resumeOne": "Resume this search",
-    "deleteOne": "Remove this search",
     "stoppedToast": "Automatic search stopped",
     "resumedToast": "Automatic search resumed",
-    "deletedToast": "Auto search for “{keyword}” removed",
-    "networks": "{count} networks: {list}"
+    "deletedToast": "Auto search for “{keyword}” removed"
   },
   "related": {
     "title": "Related pages",

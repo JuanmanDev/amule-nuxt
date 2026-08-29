@@ -121,7 +121,7 @@
                 @click.prevent.stop="resumeOne(search.id)"
               />
               <UButton
-                v-if="search.status === 'active' || search.status === 'waiting'"
+                v-if="search.status === 'active'"
                 icon="i-heroicons-stop"
                 variant="ghost"
                 color="neutral"
@@ -132,7 +132,7 @@
               <UButton
                 icon="i-heroicons-trash"
                 variant="ghost"
-                color="red"
+                color="error"
                 size="sm"
                 :title="$t('searchAuto.deleteOne')"
                 @click.prevent.stop="removeOne(search)"
@@ -168,9 +168,9 @@
 </template>
 
 <script setup lang="ts">
-import type { SearchResult, SearchType } from '../../server/utils/amule-types';
-import type { AutoSearch, AutoSearchDuration } from '../../server/utils/autoSearchStore';
-import type { AutoSearchSummary } from '../../server/api/amule/search/auto/index.get';
+import type { SearchResult, SearchType } from '../../../server/utils/amule-types';
+import type { AutoSearch, AutoSearchDuration } from '../../../server/utils/autoSearchStore';
+import type { AutoSearchSummary } from '../../../server/api/amule/search/auto/index.get';
 import type { SortOption } from '#shared/utils/sorting';
 import { fileKind } from '#shared/utils/fileKind';
 import { mergeCollections } from '#shared/utils/mergeCollections';
