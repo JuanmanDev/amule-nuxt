@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readdirSync } from 'node:fs';
+import mcpInfo from '../app/utils/demo/mcpInfo.json';
 import { DemoDaemon, buildResultPool } from '../app/utils/demo/simulator';
 import { handleDemoRequest } from '../app/utils/demo/router';
 import { CATALOG, ed2kLinkOf, hashOf } from '../app/utils/demo/catalog';
@@ -149,8 +151,23 @@ describe('demo router', () => {
         expect(call('POST', '/api/amule/downloads/add', {}).success).toBe(false);
     });
 
+    it('lists the MCP tools from a snapshot that matches the server', () => {
+        const response = call('GET', '/api/mcp-info');
+        expect(response.success).toBe(true);
+        expect(response.data.tools.map((tool: any) => tool.name).sort()).toEqual(mcpInfo.tools.map(tool => tool.name).sort());
+
+        // The snapshot is a copy of what the real server answers: every tool
+        // file must be in it and vice versa, or the demo shows a stale list.
+        // The toolkit names a tool after its file: amuleSearchResults.ts is
+        // amule-search-results.
+        const declared = readdirSync('server/mcp/tools')
+            .filter(file => file.endsWith('.ts'))
+            .map(file => file.replace(/\.ts$/, '').replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`))
+            .sort();
+        expect(declared).toEqual(mcpInfo.tools.map(tool => tool.name).sort());
+    });
+
     it('says honestly what a static page cannot do', () => {
-        expect(call('GET', '/api/mcp-info').success).toBe(false);
         expect(call('GET', '/api/push/vapid').success).toBe(false);
         expect(call('POST', '/api/assistant/chat', {}).success).toBe(false);
         expect(call('POST', '/mcp', {}).success).toBe(false);

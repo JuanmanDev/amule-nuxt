@@ -13,6 +13,7 @@
 import type { ApiResponse } from '#shared/types/api';
 import { splitLinks } from '#shared/utils/addLinks';
 import type { DemoDaemon } from './simulator';
+import mcpInfo from './mcpInfo.json';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -57,7 +58,13 @@ export function handleDemoRequest(daemon: DemoDaemon, request: DemoRequest): Api
             case 'amule': return amule(daemon, request, rest);
             case 'push': return { success: false, error: DEMO_UNAVAILABLE.push };
             case 'assistant': return { success: false, error: DEMO_UNAVAILABLE.assistantRelay };
-            case 'mcp-info': return { success: false, error: DEMO_UNAVAILABLE.mcp };
+            case 'mcp-info': {
+                // The endpoint itself does not exist here, but what it would offer
+                // does: the snapshot is what a real server answered, checked
+                // against server/mcp/tools by test/demo.test.ts so it cannot drift.
+                const base = typeof window === 'undefined' ? '/' : window.location.origin + (useRuntimeConfig().app.baseURL || '/');
+                return { success: true, data: { ...mcpInfo, version: 'demo', route: '/mcp', url: `${base.replace(/\/$/, '')}/mcp` } };
+            }
             case 'diagnostics':
                 return {
                     success: true,

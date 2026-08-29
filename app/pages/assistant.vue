@@ -22,9 +22,9 @@
          on the server this demo does not have -->
     <UAlert
       v-if="isDemo"
-      color="info"
+      color="warning"
       variant="subtle"
-      icon="i-heroicons-beaker"
+      icon="i-heroicons-exclamation-triangle"
       :title="$t('demo.mcpUnavailableTitle')"
       :description="$t('demo.mcpUnavailable')"
     />

@@ -1,0 +1,328 @@
+{
+  "name": "aMule Nuxt",
+  "description": "Control an aMule daemon: downloads, uploads, shared files, servers, search, Kad and preferences.",
+  "instructions": "Use amule-status first to check whether the daemon and the networks are connected. Downloads are identified by their 32 hex character file hash, which amule-downloads returns. amule-download-remove and amule-server-remove are destructive: confirm with the user before calling them. Start a search with amule-search, then poll amule-search-results - results keep arriving for a few seconds. For keywords worth watching over hours or days, create an automatic search with amule-auto-search-start; the server re-runs it every few minutes and amule-auto-searches reads what it has accumulated. amule-auto-search-control with action delete discards the accumulated results: confirm with the user before calling it.",
+  "protocolVersion": "2025-06-18",
+  "tools": [
+    {
+      "name": "amule-auto-search-control",
+      "title": "Amule Auto Search Control",
+      "description": "Stop, resume or delete an automatic search by id (see amule-auto-searches). Stopping keeps the accumulated results; deleting discards them, so confirm deletions with the user. Resuming restarts the clock: the search gets its full duration again from now.",
+      "parameters": [
+        {
+          "name": "id",
+          "required": true,
+          "description": "Id of the automatic search"
+        },
+        {
+          "name": "action",
+          "required": true,
+          "description": "What to do with it"
+        }
+      ]
+    },
+    {
+      "name": "amule-auto-searches",
+      "title": "Amule Auto Searches",
+      "description": "List the automatic searches the server keeps re-running, or read one by id including its accumulated results. Results are deduplicated by file hash across passes; each carries the eD2k link amule-download-add accepts.",
+      "parameters": [
+        {
+          "name": "id",
+          "required": false,
+          "description": "Read this search with its results; omit for the overview of all searches"
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "description": "Maximum results to return for one search, sorted by source count (default 25)"
+        }
+      ]
+    },
+    {
+      "name": "amule-auto-search-start",
+      "title": "Amule Auto Search Start",
+      "description": "Create an automatic search the server re-runs every few minutes for the chosen time span (or until stopped), cycling the chosen networks and accumulating results deduplicated by file hash. Useful for finding files on machines that are not online right now. Follow up with amule-auto-searches.",
+      "parameters": [
+        {
+          "name": "keyword",
+          "required": true,
+          "description": "Search keywords"
+        },
+        {
+          "name": "networks",
+          "required": false,
+          "description": "Networks cycled pass by pass (default Kad and Global)"
+        },
+        {
+          "name": "duration",
+          "required": false,
+          "description": "How long to keep re-running: an hour, a day, a week, a month, or forever until stopped (default 1d)"
+        }
+      ]
+    },
+    {
+      "name": "amule-download-add",
+      "title": "Amule Download Add",
+      "description": "Add one or more downloads to aMule from ed2k:// or magnet: links. Each link is reported as added, duplicate (already queued or already shared, so aMule only merged sources) or rejected with the reason.",
+      "parameters": [
+        {
+          "name": "links",
+          "required": true,
+          "description": "ed2k:// or magnet: links to add. An entry holding several links is split, so a pasted batch works as one entry too"
+        }
+      ]
+    },
+    {
+      "name": "amule-download-control",
+      "title": "Amule Download Control",
+      "description": "Pause, resume or change the priority of an aMule download, addressed by its file hash (see amule-downloads).",
+      "parameters": [
+        {
+          "name": "hash",
+          "required": true,
+          "description": "32 hex character file hash of the download"
+        },
+        {
+          "name": "action",
+          "required": true,
+          "description": "What to do with the download"
+        },
+        {
+          "name": "priority",
+          "required": false,
+          "description": "Required when action is 'priority'"
+        }
+      ]
+    },
+    {
+      "name": "amule-download-remove",
+      "title": "Amule Download Remove",
+      "description": "DESTRUCTIVE: remove a download from the aMule queue. aMule deletes the data downloaded so far. Confirm with the user before calling this.",
+      "parameters": [
+        {
+          "name": "hash",
+          "required": true,
+          "description": "32 hex character file hash of the download to remove"
+        },
+        {
+          "name": "confirm",
+          "required": true,
+          "description": "Must be true to acknowledge that partial data is deleted"
+        }
+      ]
+    },
+    {
+      "name": "amule-downloads",
+      "title": "Amule Downloads",
+      "description": "List the aMule download queue. Each entry includes the 32 hex character file hash needed by the other download tools, plus size, progress, speed, sources and status.",
+      "parameters": []
+    },
+    {
+      "name": "amule-logs",
+      "title": "Amule Logs",
+      "description": "Read the aMule daemon log. Useful to find out why an action failed, because aMule logs the detailed reason there while the External Connection only returns a short message.",
+      "parameters": [
+        {
+          "name": "lines",
+          "required": false,
+          "description": "How many of the most recent lines to return (default 50)"
+        },
+        {
+          "name": "filter",
+          "required": false,
+          "description": "Only return lines containing this text"
+        }
+      ]
+    },
+    {
+      "name": "amule-network",
+      "title": "Amule Network",
+      "description": "Connect or disconnect the aMule networks, or control Kad: start, stop, bootstrap from a known node, or reload nodes.dat from a URL.",
+      "parameters": [
+        {
+          "name": "action",
+          "required": true,
+          "description": "What to do"
+        },
+        {
+          "name": "network",
+          "required": false,
+          "description": "Limits connect / disconnect to one network"
+        },
+        {
+          "name": "ip",
+          "required": false,
+          "description": "Node IP for kad-bootstrap"
+        },
+        {
+          "name": "port",
+          "required": false,
+          "description": "Node port for kad-bootstrap"
+        },
+        {
+          "name": "url",
+          "required": false,
+          "description": "nodes.dat URL for kad-update-nodes"
+        }
+      ]
+    },
+    {
+      "name": "amule-preferences",
+      "title": "Amule Preferences",
+      "description": "Read or change aMule preferences: nickname, bandwidth limits (KB/s, 0 = unlimited) and connection limits. Call with no arguments to read the current values; any argument given is applied and the resulting preferences are returned.",
+      "parameters": [
+        {
+          "name": "nickname",
+          "required": false,
+          "description": "New client nickname"
+        },
+        {
+          "name": "maxUpload",
+          "required": false,
+          "description": "Upload limit in KB/s, 0 = unlimited"
+        },
+        {
+          "name": "maxDownload",
+          "required": false,
+          "description": "Download limit in KB/s, 0 = unlimited"
+        },
+        {
+          "name": "maxConnections",
+          "required": false,
+          "description": "Maximum number of connections"
+        },
+        {
+          "name": "maxSourcesPerFile",
+          "required": false,
+          "description": "Maximum sources per file"
+        }
+      ]
+    },
+    {
+      "name": "amule-search",
+      "title": "Amule Search",
+      "description": "Start a file search on the Kad or eD2k network, or on the connected server. Results keep arriving for a few seconds, so poll amule-search-results afterwards.",
+      "parameters": [
+        {
+          "name": "keyword",
+          "required": true,
+          "description": "Search keywords"
+        },
+        {
+          "name": "network",
+          "required": false,
+          "description": "Network to search (default Kad)"
+        }
+      ]
+    },
+    {
+      "name": "amule-search-download",
+      "title": "Amule Search Download",
+      "description": "Queue a file from the current aMule search results for download, addressed by its file hash (see amule-search-results).",
+      "parameters": [
+        {
+          "name": "hash",
+          "required": true,
+          "description": "32 hex character file hash of the search result"
+        }
+      ]
+    },
+    {
+      "name": "amule-search-results",
+      "title": "Amule Search Results",
+      "description": "Return the results collected so far for the running (or last) aMule search, sorted by source count. Each result carries the file hash needed by amule-search-download.",
+      "parameters": [
+        {
+          "name": "limit",
+          "required": false,
+          "description": "Maximum number of results (default 25)"
+        }
+      ]
+    },
+    {
+      "name": "amule-server-control",
+      "title": "Amule Server Control",
+      "description": "Manage the eD2k server list: connect to a server, add one, remove one (destructive, confirm first), or reload the list from a server.met URL. Servers are addressed as ip:port.",
+      "parameters": [
+        {
+          "name": "action",
+          "required": true,
+          "description": "What to do"
+        },
+        {
+          "name": "address",
+          "required": false,
+          "description": "Server address as ip:port (required for connect, add and remove)"
+        },
+        {
+          "name": "name",
+          "required": false,
+          "description": "Display name when adding a server"
+        },
+        {
+          "name": "url",
+          "required": false,
+          "description": "server.met URL for update-list (defaults to the configured one)"
+        },
+        {
+          "name": "confirm",
+          "required": false,
+          "description": "Must be true for remove"
+        }
+      ]
+    },
+    {
+      "name": "amule-servers",
+      "title": "Amule Servers",
+      "description": "List the eD2k servers aMule knows, with address, users, files, ping, priority and failed connection count.",
+      "parameters": [
+        {
+          "name": "limit",
+          "required": false,
+          "description": "Maximum number of servers to return (default 25)"
+        }
+      ]
+    },
+    {
+      "name": "amule-shared-files",
+      "title": "Amule Shared Files",
+      "description": "List the files aMule shares, with size, requests, accepted requests, bytes uploaded, share ratio, queued clients and the ed2k link.",
+      "parameters": [
+        {
+          "name": "filter",
+          "required": false,
+          "description": "Only return files whose name contains this text"
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "description": "Maximum number of files to return (default 50)"
+        }
+      ]
+    },
+    {
+      "name": "amule-statistics",
+      "title": "Amule Statistics",
+      "description": "Get aMule transfer statistics: totals, current rates, limits, queued clients, shared file count and eD2k/Kad network size. Pass tree=true for the full statistics tree aMule maintains.",
+      "parameters": [
+        {
+          "name": "tree",
+          "required": false,
+          "description": "Return the full statistics tree instead of the summary"
+        }
+      ]
+    },
+    {
+      "name": "amule-status",
+      "title": "Amule Status",
+      "description": "Get the aMule daemon status: External Connection state, ed2k and Kad connection state, connected server, client ID and current transfer speeds.",
+      "parameters": []
+    },
+    {
+      "name": "amule-uploads",
+      "title": "Amule Uploads",
+      "description": "List the clients aMule is currently uploading to, including the file, remote user, address, client software, speed, session and all-time bytes and queue position.",
+      "parameters": []
+    }
+  ]
+}
