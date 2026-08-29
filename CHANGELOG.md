@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.15.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.14.0...v1.15.0) (2026-08-29)
+
+### Features
+
+* row-to-modal transitions on the upload and shared file pages ([e073c6c](https://github.com/JuanmanDev/amule-nuxt/commit/e073c6c10f86c153bf32849e80d1f4a06c9dfea0))
+
 ## [1.14.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.13.0...v1.14.0) (2026-08-29)
 
 ### Features
