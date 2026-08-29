@@ -43,7 +43,7 @@ jobs:
           APP_VERSION: demo-${{ github.sha }}
         run: npx nuxt generate
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .output/public
 
