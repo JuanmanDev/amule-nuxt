@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.12.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.11.1...v1.12.0) (2026-08-29)
+
+### Features
+
+* **i18n:** complete Brazilian Portuguese and translate the auto-search strings ([d93c646](https://github.com/JuanmanDev/amule-nuxt/commit/d93c646489e2a72af78513b5321236ef2bc810ce))
+
 ## [1.11.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.11.0...v1.11.1) (2026-08-29)
 
 ### Bug fixes
