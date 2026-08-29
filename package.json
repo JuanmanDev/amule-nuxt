@@ -61,7 +61,7 @@
     "cross-env": "^10.1.0",
     "secure-exec": "^0.3.3",
     "semantic-release": "^25.0.9",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11",
     "wait-on": "^9.1.0",
