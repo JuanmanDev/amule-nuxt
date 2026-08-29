@@ -34,8 +34,7 @@ export const NAV_ITEMS: NavItem[] = [
   { key: 'settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
 ]
 
-/** Shown in the bar only while developing, but it still has a place in the order. */
-export const DEV_NAV_ITEM: NavItem = { key: 'apiTest', icon: 'i-heroicons-code-bracket', to: '/api-test' }
+
 
 /** Links shown directly in the desktop bar; everything else goes to "More". */
 export const PRIMARY_ROUTES = ['/', '/downloads', '/uploads', '/search', '/shared']
@@ -45,4 +44,4 @@ export const PRIMARY_ROUTES = ['/', '/downloads', '/uploads', '/search', '/share
  * something to a page transition. Routes that are not in the menu (/add,
  * /handle-link) are absent by design - see the plugin for what it does with them.
  */
-export const NAV_ORDER: string[] = [...NAV_ITEMS, DEV_NAV_ITEM].map(item => item.to)
+export const NAV_ORDER: string[] = NAV_ITEMS.map(item => item.to)
