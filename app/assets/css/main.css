@@ -404,6 +404,14 @@ html {
     from { opacity: 0; transform: scale(0.96); }
 }
 
+@keyframes vt-fade-out {
+    to { opacity: 0; }
+}
+
+@keyframes vt-pop-out {
+    to { opacity: 0; transform: scale(0.985); }
+}
+
 :root[data-vt="modal"]::view-transition-old(root),
 :root[data-vt="modal"]::view-transition-new(root) {
     animation: none;
@@ -418,15 +426,20 @@ html {
 }
 
 ::view-transition-old(dl-overlay) {
-    animation: 0.2s ease-in both vt-fade reverse;
+    animation: 0.16s ease-out both vt-fade-out;
 }
 
 ::view-transition-new(dl-modal) {
     animation: 0.3s cubic-bezier(0.16, 0.84, 0.36, 1) both vt-pop;
 }
 
+/*
+ * The panel has to be gone almost at once: its snapshot sits over the list
+ * while the title flies back, and anything slower reads as the modal
+ * refusing to leave.
+ */
 ::view-transition-old(dl-modal) {
-    animation: 0.18s ease-in both vt-pop reverse;
+    animation: 0.12s ease-out both vt-pop-out;
 }
 
 /* Stacking, bottom to top: page, overlay, panel, the travelling title. The
@@ -434,7 +447,7 @@ html {
    panel it is heading into. */
 ::view-transition-group(dl-overlay) { z-index: 1; }
 ::view-transition-group(dl-modal) { z-index: 2; }
-::view-transition-group(dl-active) { z-index: 3; }
+::view-transition-group(dl-active) { z-index: 3; animation-duration: 0.3s; }
 
 /* A block whose content changes size on its own (a card that gains a row, a
  * details panel that expands) can opt into the same easing. */
