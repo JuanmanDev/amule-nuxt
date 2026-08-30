@@ -156,7 +156,9 @@
       "seenSince": "U redu od",
       "completedAt": "Dovršeno",
       "tookTime": "Trajalo",
-      "runningFor": "Traje već"
+      "runningFor": "Traje već",
+      "observedHint": "Kada je ovo sučelje prvi put vidjelo preuzimanje. Sam aMule ne javlja kada je preuzimanje dodano.",
+      "runningForHint": "Mjereno otkako ga je ovo sučelje prvi put vidjelo; preuzimanje je starije."
     },
     "startNotRecorded": "Ovo je preuzimanje već bilo u redu kad je aplikacija prvi put pogledala, pa vrijeme početka nije poznato.",
     "priorities": {

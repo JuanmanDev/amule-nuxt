@@ -156,7 +156,9 @@
       "seenSince": "V vrsti od",
       "completedAt": "Končano",
       "tookTime": "Trajalo",
-      "runningFor": "Teče že"
+      "runningFor": "Teče že",
+      "observedHint": "Kdaj je ta vmesnik prvič videl prenos. Sam aMule ne sporoča, kdaj je bil prenos dodan.",
+      "runningForHint": "Merjeno odkar ga je ta vmesnik prvič videl; prenos je starejši."
     },
     "startNotRecorded": "Ta prenos je bil v vrsti že, ko je program prvič pogledal, zato čas začetka ni znan.",
     "priorities": {

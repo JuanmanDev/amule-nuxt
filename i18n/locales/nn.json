@@ -156,7 +156,9 @@
       "seenSince": "I kø sidan",
       "completedAt": "Ferdig",
       "tookTime": "Tok",
-      "runningFor": "Har gått i"
+      "runningFor": "Har gått i",
+      "observedHint": "Når dette grensesnittet først såg nedlastinga. aMule sjølv seier ikkje når ei nedlasting vart lagd til.",
+      "runningForHint": "Målt sidan dette grensesnittet først såg henne; nedlastinga er eldre."
     },
     "startNotRecorded": "Denne nedlastinga låg alt i køen då appen såg fyrste gong, så starttidspunktet er ukjent.",
     "priorities": {

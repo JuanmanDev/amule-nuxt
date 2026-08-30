@@ -156,7 +156,9 @@
       "seenSince": "進入佇列時間",
       "completedAt": "完成於",
       "tookTime": "耗時",
-      "runningFor": "已進行"
+      "runningFor": "已進行",
+      "observedHint": "此介面首次看到該下載的時間。aMule 本身不會回報下載是何時加入的。",
+      "runningForHint": "自此介面首次看到它起計算；實際下載更早。"
     },
     "startNotRecorded": "本程式第一次查看時，這個下載項目已經在佇列裡了，因此無從得知開始時間。",
     "priorities": {

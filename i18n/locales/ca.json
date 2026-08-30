@@ -156,7 +156,9 @@
       "seenSince": "A la cua des de",
       "completedAt": "Finalitzada",
       "tookTime": "Ha trigat",
-      "runningFor": "En marxa des de fa"
+      "runningFor": "En marxa des de fa",
+      "observedHint": "Quan aquesta interfície va veure la baixada per primer cop. L'aMule no informa de quan es va afegir una baixada.",
+      "runningForHint": "Comptat des que aquesta interfície la va veure per primer cop; la baixada és més antiga."
     },
     "startNotRecorded": "Aquesta baixada ja era a la cua quan l'aplicació hi va mirar per primer cop, així que no se'n coneix l'hora d'inici.",
     "priorities": {

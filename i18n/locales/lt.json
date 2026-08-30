@@ -156,7 +156,9 @@
       "seenSince": "Eilėje nuo",
       "completedAt": "Baigta",
       "tookTime": "Truko",
-      "runningFor": "Vyksta jau"
+      "runningFor": "Vyksta jau",
+      "observedHint": "Kada ši sąsaja pirmą kartą pamatė atsisiuntimą. Pats aMule nepraneša, kada atsisiuntimas buvo pridėtas.",
+      "runningForHint": "Skaičiuojama nuo tada, kai ši sąsaja jį pirmą kartą pamatė; atsisiuntimas senesnis."
     },
     "startNotRecorded": "Šis atsiuntimas jau buvo eilėje, kai programa pažiūrėjo pirmą kartą, tad pradžios laikas nežinomas.",
     "priorities": {

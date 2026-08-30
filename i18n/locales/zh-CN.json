@@ -156,7 +156,9 @@
       "seenSince": "进入队列时间",
       "completedAt": "完成时间",
       "tookTime": "耗时",
-      "runningFor": "已进行"
+      "runningFor": "已进行",
+      "observedHint": "此界面首次看到该下载的时间。aMule 本身不会报告下载是何时添加的。",
+      "runningForHint": "自此界面首次看到它起计算；实际下载更早。"
     },
     "startNotRecorded": "本应用第一次查看时，这个下载已经在队列中了，因此无法得知它的开始时间。",
     "priorities": {

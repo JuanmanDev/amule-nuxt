@@ -156,7 +156,9 @@
       "seenSince": "In de wachtrij sinds",
       "completedAt": "Voltooid",
       "tookTime": "Duurde",
-      "runningFor": "Loopt al"
+      "runningFor": "Loopt al",
+      "observedHint": "Wanneer deze interface de download voor het eerst zag. aMule zelf meldt niet wanneer een download is toegevoegd.",
+      "runningForHint": "Gemeten sinds deze interface hem voor het eerst zag; de download is ouder."
     },
     "startNotRecorded": "Deze download stond al in de wachtrij toen deze app voor het eerst keek, dus de starttijd is niet bekend.",
     "priorities": {

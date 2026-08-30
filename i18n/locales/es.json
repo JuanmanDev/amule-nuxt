@@ -156,7 +156,9 @@
       "seenSince": "En la cola desde",
       "completedAt": "Completada",
       "tookTime": "Ha tardado",
-      "runningFor": "En marcha desde hace"
+      "runningFor": "En marcha desde hace",
+      "observedHint": "Cuándo vio esta interfaz la descarga por primera vez. aMule no informa de cuándo se añadió una descarga.",
+      "runningForHint": "Contado desde que esta interfaz la vio por primera vez; la descarga es más antigua."
     },
     "startNotRecorded": "Esta descarga ya estaba en la cola la primera vez que esta aplicación miró, así que no se conoce su hora de inicio.",
     "priorities": {

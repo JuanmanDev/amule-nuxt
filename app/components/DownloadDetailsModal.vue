@@ -42,6 +42,7 @@
           <div v-for="fact in facts" :key="fact.label" class="min-w-0">
             <dt class="text-xs text-gray-500 dark:text-gray-400">{{ fact.label }}</dt>
             <dd class="font-medium break-words">{{ fact.value }}</dd>
+            <p v-if="fact.hint" class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{{ fact.hint }}</p>
           </div>
         </dl>
 
@@ -200,17 +201,21 @@ const facts = computed(() => {
     { label: t('downloads.fields.lastReceived'), value: formatTimestamp(download.lastReceived) },
     { label: t('downloads.fields.lastSeenComplete'), value: formatTimestamp(download.lastSeenComplete) },
     // Recorded by this app, not by aMule: see server/utils/downloadHistory.ts.
-    // A download that predates the app reports when it was first seen instead of
-    // claiming a start time nobody observed.
+    // aMule's protocol carries no "added" date at all, so a download that
+    // predates this app reports when it was first seen - and says so, because
+    // that moment is usually just when the server (re)started and reads as a
+    // wrong date otherwise.
     {
       label: download.startKnown ? t('downloads.fields.addedAt') : t('downloads.fields.seenSince'),
-      value: time.dateTime(download.startKnown ? download.addedAt : download.firstSeenAt)
+      value: time.dateTime(download.startKnown ? download.addedAt : download.firstSeenAt),
+      hint: download.startKnown ? undefined : t('downloads.fields.observedHint')
     },
     {
       label: download.completedAt ? t('downloads.fields.completedAt') : t('downloads.fields.runningFor'),
       value: download.completedAt
         ? time.dateTime(download.completedAt)
-        : (time.duration(download.addedAt ?? download.firstSeenAt, Date.now()) || '-')
+        : (time.duration(download.addedAt ?? download.firstSeenAt, Date.now()) || '-'),
+      hint: download.completedAt || download.startKnown ? undefined : t('downloads.fields.runningForHint')
     }
   ];
 });

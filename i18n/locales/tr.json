@@ -156,7 +156,9 @@
       "seenSince": "Kuyrukta bulunduğu tarih",
       "completedAt": "Tamamlandı",
       "tookTime": "Sürdü",
-      "runningFor": "Süredir çalışıyor"
+      "runningFor": "Süredir çalışıyor",
+      "observedHint": "Bu arayüzün indirmeyi ilk gördüğü an. aMule'nin kendisi bir indirmenin ne zaman eklendiğini bildirmez.",
+      "runningForHint": "Bu arayüzün onu ilk gördüğünden beri ölçülür; indirme daha eskidir."
     },
     "startNotRecorded": "Bu uygulama ilk baktığında bu indirme zaten kuyruktaydı, bu yüzden başlama zamanı bilinmiyor.",
     "priorities": {

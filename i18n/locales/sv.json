@@ -156,7 +156,9 @@
       "seenSince": "I kön sedan",
       "completedAt": "Klar",
       "tookTime": "Tog",
-      "runningFor": "Pågått i"
+      "runningFor": "Pågått i",
+      "observedHint": "När det här gränssnittet först såg nedladdningen. aMule själv rapporterar inte när en nedladdning lades till.",
+      "runningForHint": "Mätt sedan det här gränssnittet först såg den; nedladdningen är äldre."
     },
     "startNotRecorded": "Den här nedladdningen låg redan i kön när appen tittade första gången, så starttiden är inte känd.",
     "priorities": {

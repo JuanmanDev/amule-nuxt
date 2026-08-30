@@ -156,7 +156,9 @@
       "seenSince": "I kø siden",
       "completedAt": "Færdig",
       "tookTime": "Tog",
-      "runningFor": "Kørt i"
+      "runningFor": "Kørt i",
+      "observedHint": "Hvornår denne grænseflade først så downloaden. aMule selv oplyser ikke, hvornår en download blev tilføjet.",
+      "runningForHint": "Målt siden denne grænseflade først så den; downloaden er ældre."
     },
     "startNotRecorded": "Denne overførsel lå allerede i køen, da appen kiggede første gang, så starttidspunktet kendes ikke.",
     "priorities": {

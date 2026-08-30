@@ -85,7 +85,9 @@
       "addedAt": "Iniciado",
       "completedAt": "Concluído",
       "tookTime": "Levou",
-      "runningFor": "Em andamento há"
+      "runningFor": "Em andamento há",
+      "observedHint": "Quando esta interface viu o download pela primeira vez. O próprio aMule não informa quando um download foi adicionado.",
+      "runningForHint": "Contado desde que esta interface o viu pela primeira vez; o download é mais antigo."
     },
     "startNotRecorded": "Este download já estava na fila quando este aplicativo olhou pela primeira vez, então o horário de início não é conhecido.",
     "bulk": {

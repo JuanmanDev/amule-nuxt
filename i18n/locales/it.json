@@ -156,7 +156,9 @@
       "seenSince": "In coda da",
       "completedAt": "Completato",
       "tookTime": "Ha impiegato",
-      "runningFor": "In corso da"
+      "runningFor": "In corso da",
+      "observedHint": "Quando questa interfaccia ha visto il download per la prima volta. aMule stesso non riporta quando un download è stato aggiunto.",
+      "runningForHint": "Misurato da quando questa interfaccia l'ha visto per la prima volta; il download è più vecchio."
     },
     "startNotRecorded": "Questo download era già in coda la prima volta che l'applicazione ha guardato, quindi l'ora di inizio non è nota.",
     "priorities": {

@@ -156,7 +156,9 @@
       "seenSince": "Ve frontě od",
       "completedAt": "Dokončeno",
       "tookTime": "Trvalo",
-      "runningFor": "Běží už"
+      "runningFor": "Běží už",
+      "observedHint": "Kdy toto rozhraní stahování poprvé vidělo. Samotný aMule nehlásí, kdy bylo stahování přidáno.",
+      "runningForHint": "Měřeno od chvíle, kdy je toto rozhraní poprvé vidělo; stahování je starší."
     },
     "startNotRecorded": "Toto stahování bylo ve frontě už ve chvíli, kdy se aplikace podívala poprvé, takže čas zahájení není znám.",
     "priorities": {

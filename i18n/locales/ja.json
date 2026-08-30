@@ -156,7 +156,9 @@
       "seenSince": "待ち行列に入った時刻",
       "completedAt": "完了",
       "tookTime": "所要時間",
-      "runningFor": "経過時間"
+      "runningFor": "経過時間",
+      "observedHint": "このインターフェースがダウンロードを最初に確認した時刻です。aMule 自体はダウンロードの追加日時を報告しません。",
+      "runningForHint": "このインターフェースが最初に確認してからの経過時間です。実際のダウンロードはもっと古いものです。"
     },
     "startNotRecorded": "このアプリが最初に見たときすでに待ち行列にあったため、開始時刻はわかりません。",
     "priorities": {

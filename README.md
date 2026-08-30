@@ -116,7 +116,7 @@ The server watches the queue itself, so a download added from another machine, f
 - **In the page**: a toast with a link to the queue, plus an operating-system notification when the tab is not the one on screen. Needs nothing but an open tab.
 - **Web Push**: a service worker receives the same events with the app closed entirely. It needs notification permission and a secure origin (HTTPS, or `localhost`), and a *Send a test* button proves the whole chain in one click.
 
-Because aMule's protocol reports neither, this app also records **when each download started and when it finished** and shows both in the details view. A download that was already queued the first time the app looked says "in the queue since" rather than claiming a start time nobody observed.
+Because aMule's protocol reports neither, this app also records **when each download started and when it finished** and shows both in the details view. A download that was already queued the first time the app looked says "in the queue since" rather than claiming a start time nobody observed — that date is when *this app* first saw the file, and the details view says so. These records live in `AMULE_DATA_DIR` (`history.json`): run the container without that volume and every restart forgets them, which makes "in the queue since" collapse to the last deploy.
 
 ### The local assistant
 

@@ -156,7 +156,9 @@
       "seenSince": "In der Warteschlange seit",
       "completedAt": "Abgeschlossen",
       "tookTime": "Dauer",
-      "runningFor": "Läuft seit"
+      "runningFor": "Läuft seit",
+      "observedHint": "Wann diese Oberfläche den Download zum ersten Mal gesehen hat. aMule selbst meldet nicht, wann ein Download hinzugefügt wurde.",
+      "runningForHint": "Gemessen, seit diese Oberfläche ihn zum ersten Mal gesehen hat; der Download ist älter."
     },
     "startNotRecorded": "Dieser Download war bereits in der Warteschlange, als diese App zum ersten Mal nachgesehen hat, daher ist seine Startzeit unbekannt.",
     "priorities": {

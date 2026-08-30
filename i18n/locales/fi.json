@@ -156,7 +156,9 @@
       "seenSince": "Jonossa alkaen",
       "completedAt": "Valmistui",
       "tookTime": "Kesti",
-      "runningFor": "Käynnissä"
+      "runningFor": "Käynnissä",
+      "observedHint": "Milloin tämä käyttöliittymä näki latauksen ensimmäisen kerran. aMule itse ei kerro, milloin lataus lisättiin.",
+      "runningForHint": "Mitattu siitä, kun tämä käyttöliittymä näki sen ensimmäisen kerran; lataus on vanhempi."
     },
     "startNotRecorded": "Tämä lataus oli jo jonossa, kun sovellus katsoi ensimmäisen kerran, joten aloitusaikaa ei tiedetä.",
     "priorities": {

@@ -156,7 +156,9 @@
       "seenSince": "Dans la file depuis",
       "completedAt": "Terminé",
       "tookTime": "Durée",
-      "runningFor": "En cours depuis"
+      "runningFor": "En cours depuis",
+      "observedHint": "Quand cette interface a vu le téléchargement pour la première fois. aMule lui-même n'indique pas quand un téléchargement a été ajouté.",
+      "runningForHint": "Compté depuis que cette interface l'a vu pour la première fois ; le téléchargement est plus ancien."
     },
     "startNotRecorded": "Ce téléchargement était déjà dans la file la première fois que cette application a regardé : son heure de début est inconnue.",
     "priorities": {

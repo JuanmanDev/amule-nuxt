@@ -156,7 +156,9 @@
       "seenSince": "Ilaran noiztik",
       "completedAt": "Amaituta",
       "tookTime": "Iraupena",
-      "runningFor": "Martxan honela"
+      "runningFor": "Martxan honela",
+      "observedHint": "Interfaze honek deskarga lehen aldiz noiz ikusi zuen. aMulek berak ez du jakinarazten deskarga bat noiz gehitu zen.",
+      "runningForHint": "Interfaze honek lehen aldiz ikusi zuenetik neurtuta; deskarga zaharragoa da."
     },
     "startNotRecorded": "Deskarga hau jada ilaran zegoen aplikazioak lehen aldiz begiratu zuenean, beraz ez da hasiera-ordua ezagutzen.",
     "priorities": {

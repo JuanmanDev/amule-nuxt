@@ -156,7 +156,9 @@
       "seenSince": "In the queue since",
       "completedAt": "Completed",
       "tookTime": "Took",
-      "runningFor": "Running for"
+      "runningFor": "Running for",
+      "observedHint": "When this interface first saw the download. aMule itself does not report when a download was added.",
+      "runningForHint": "Measured since this interface first saw it; the download is older."
     },
     "startNotRecorded": "This download was already in the queue when this app first looked, so its start time is not known.",
     "priorities": {

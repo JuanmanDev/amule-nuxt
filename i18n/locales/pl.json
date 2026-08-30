@@ -156,7 +156,9 @@
       "seenSince": "W kolejce od",
       "completedAt": "Ukończono",
       "tookTime": "Trwało",
-      "runningFor": "Trwa od"
+      "runningFor": "Trwa od",
+      "observedHint": "Kiedy ten interfejs po raz pierwszy zobaczył pobieranie. Sam aMule nie zgłasza, kiedy pobieranie zostało dodane.",
+      "runningForHint": "Liczone odkąd ten interfejs zobaczył je po raz pierwszy; pobieranie jest starsze."
     },
     "startNotRecorded": "To pobieranie było już w kolejce, gdy aplikacja spojrzała na nią pierwszy raz, więc czas rozpoczęcia nie jest znany.",
     "priorities": {

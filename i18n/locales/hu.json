@@ -156,7 +156,9 @@
       "seenSince": "Sorban áll ekkortól",
       "completedAt": "Befejeződött",
       "tookTime": "Ennyi ideig tartott",
-      "runningFor": "Ennyi ideje fut"
+      "runningFor": "Ennyi ideje fut",
+      "observedHint": "Amikor ez a felület először látta a letöltést. Maga az aMule nem jelenti, mikor lett egy letöltés hozzáadva.",
+      "runningForHint": "Attól számítva, hogy ez a felület először látta; a letöltés régebbi."
     },
     "startNotRecorded": "Ez a letöltés már a sorban volt, amikor az alkalmazás először megnézte, ezért a kezdés ideje nem ismert.",
     "priorities": {

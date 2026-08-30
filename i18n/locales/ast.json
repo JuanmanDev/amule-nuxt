@@ -156,7 +156,9 @@
       "seenSince": "Na cola dende",
       "completedAt": "Finó",
       "tookTime": "Duró",
-      "runningFor": "En marcha dende hai"
+      "runningFor": "En marcha dende hai",
+      "observedHint": "Cuando esta interfaz vio la descarga per primer vegada. aMule nun informa de cuándo s'amestó una descarga.",
+      "runningForHint": "Cuntao dende qu'esta interfaz la vio per primer vegada; la descarga ye más antigua."
     },
     "startNotRecorded": "Esta descarga yá taba na cola cuando l'aplicación miró la primer vez, poro nun se conoz la hora d'aniciu.",
     "priorities": {

@@ -156,7 +156,9 @@
       "seenSince": "Na fila desde",
       "completedAt": "Concluída",
       "tookTime": "Demorou",
-      "runningFor": "A decorrer há"
+      "runningFor": "A decorrer há",
+      "observedHint": "Quando esta interface viu a transferência pela primeira vez. O próprio aMule não indica quando uma transferência foi adicionada.",
+      "runningForHint": "Contado desde que esta interface a viu pela primeira vez; a transferência é mais antiga."
     },
     "startNotRecorded": "Esta transferência já estava na fila quando esta aplicação olhou pela primeira vez, por isso a hora de início não é conhecida.",
     "priorities": {

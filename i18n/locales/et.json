@@ -156,7 +156,9 @@
       "seenSince": "Järjekorras alates",
       "completedAt": "Lõpetatud",
       "tookTime": "Kestis",
-      "runningFor": "Kestnud"
+      "runningFor": "Kestnud",
+      "observedHint": "Millal see liides allalaadimist esimest korda nägi. aMule ise ei teata, millal allalaadimine lisati.",
+      "runningForHint": "Mõõdetud sellest, kui see liides seda esimest korda nägi; allalaadimine on vanem."
     },
     "startNotRecorded": "See allalaadimine oli järjekorras juba siis, kui rakendus esimest korda vaatas, seega algusaeg pole teada.",
     "priorities": {

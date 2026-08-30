@@ -156,7 +156,9 @@
       "seenSince": "Në radhë që prej",
       "completedAt": "Përfundoi",
       "tookTime": "Zgjati",
-      "runningFor": "Në punë prej"
+      "runningFor": "Në punë prej",
+      "observedHint": "Kur kjo ndërfaqe e pa shkarkimin për herë të parë. Vetë aMule nuk raporton kur u shtua një shkarkim.",
+      "runningForHint": "Matur që kur kjo ndërfaqe e pa për herë të parë; shkarkimi është më i vjetër."
     },
     "startNotRecorded": "Ky shkarkim gjendej tashmë në radhë kur aplikacioni pa herën e parë, ndaj koha e fillimit s’dihet.",
     "priorities": {

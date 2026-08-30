@@ -156,7 +156,9 @@
       "seenSince": "În coadă din",
       "completedAt": "Finalizat",
       "tookTime": "A durat",
-      "runningFor": "Rulează de"
+      "runningFor": "Rulează de",
+      "observedHint": "Când această interfață a văzut descărcarea pentru prima dată. aMule însuși nu raportează când a fost adăugată o descărcare.",
+      "runningForHint": "Măsurat de când această interfață a văzut-o prima dată; descărcarea este mai veche."
     },
     "startNotRecorded": "Această descărcare era deja în coadă când aplicația s-a uitat prima dată, așa că ora de început nu este cunoscută.",
     "priorities": {

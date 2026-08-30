@@ -156,7 +156,9 @@
       "seenSince": "대기열 등록",
       "completedAt": "완료",
       "tookTime": "소요 시간",
-      "runningFor": "진행 시간"
+      "runningFor": "진행 시간",
+      "observedHint": "이 인터페이스가 다운로드를 처음 확인한 시점입니다. aMule 자체는 다운로드가 추가된 시점을 보고하지 않습니다.",
+      "runningForHint": "이 인터페이스가 처음 확인한 이후로 측정한 값이며, 실제 다운로드는 더 오래되었습니다."
     },
     "startNotRecorded": "이 앱이 처음 확인했을 때 이미 대기열에 있던 다운로드라 시작 시각을 알 수 없습니다.",
     "priorities": {
