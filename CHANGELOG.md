@@ -2,6 +2,16 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.17.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.16.1...v1.17.0) (2026-08-30)
+
+### Features
+
+* say what "in the queue since" actually measures ([576fdaf](https://github.com/JuanmanDev/amule-nuxt/commit/576fdaf3f172c91d7ab6c21319e989cb970237e5))
+
+### Bug fixes
+
+* let the details modal leave at once when it closes ([0c2f663](https://github.com/JuanmanDev/amule-nuxt/commit/0c2f66336f48e0a67e0dbce81e74e041027e8811))
+
 ## [1.16.1](https://github.com/JuanmanDev/amule-nuxt/compare/v1.16.0...v1.16.1) (2026-08-29)
 
 ### Bug fixes
