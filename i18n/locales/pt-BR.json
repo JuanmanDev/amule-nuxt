@@ -288,7 +288,9 @@
       "port": "Porta da conexão externa",
       "appVersion": "Versão do aplicativo",
       "logLevel": "Nível de log",
-      "configDescription": "As configurações de conexão são definidas por variáveis de ambiente. Veja o .env.example para mais detalhes."
+      "configDescription": "As configurações de conexão são definidas por variáveis de ambiente. Veja o .env.example para mais detalhes.",
+      "history": "Histórico de downloads",
+      "historyNotWritable": "O histórico de downloads não pode ser salvo: as datas serão perdidas a cada reinício. Coloque AMULE_DATA_DIR em um volume."
     }
   },
   "assistant": {

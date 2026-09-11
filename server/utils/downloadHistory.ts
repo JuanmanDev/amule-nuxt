@@ -62,6 +62,8 @@ let history: History | null = null;
 let loading: Promise<History> | null = null;
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
 let dirty = false;
+/** The last failure to write the file, kept for the diagnostics endpoint. */
+let lastWriteError: string | null = null;
 
 function historyPath(): string {
     const base = process.env.AMULE_DATA_DIR || resolve(process.cwd(), '.amule-data');
@@ -94,7 +96,9 @@ async function flush(): Promise<void> {
     try {
         await mkdir(dirname(path), { recursive: true });
         await writeFile(path, JSON.stringify(history), 'utf8');
-    } catch (e) {
+        lastWriteError = null;
+    } catch (e: any) {
+        lastWriteError = e?.message || String(e);
         log.warn('Could not write the download history', e);
     }
 }
@@ -187,6 +191,29 @@ export async function recordCompleted(hash: string, name: string, size: number, 
 }
 
 /** What is known about one hash, or undefined. */
+/**
+ * What the settings page shows about this store, because "in the queue since"
+ * is only as good as this file's persistence: without a volume behind it every
+ * restart forgets the dates, and this is where that becomes visible.
+ */
+export async function historyDiagnostics(): Promise<{
+    path: string;
+    entries: number;
+    /** Epoch ms of the oldest first sighting, null while the store is empty. */
+    oldestFirstSeenAt: number | null;
+    /** The last error writing the file, null when the last write worked. */
+    writeError: string | null;
+}> {
+    const current = await ready();
+    const sightings = Object.values(current).map(entry => entry.firstSeenAt).filter(Boolean);
+    return {
+        path: historyPath(),
+        entries: Object.keys(current).length,
+        oldestFirstSeenAt: sightings.length ? Math.min(...sightings) : null,
+        writeError: lastWriteError
+    };
+}
+
 export async function historyFor(hash: string): Promise<DownloadHistoryEntry | undefined> {
     return (await ready())[hash.toLowerCase()];
 }

@@ -451,7 +451,11 @@
       "serverMode": "Sunucu kipi",
       "logLevel": "Günlük düzeyi",
       "configTitle": "Yapılandırma",
-      "configDescription": "Bağlantı ayarları ortam değişkenleriyle yapılandırılır. Ayrıntılar için .env.example dosyasına bakın."
+      "configDescription": "Bağlantı ayarları ortam değişkenleriyle yapılandırılır. Ayrıntılar için .env.example dosyasına bakın.",
+      "history": "İndirme geçmişi",
+      "historyEntries": "Kayıtlar",
+      "historyOldest": "En eski kayıt",
+      "historyNotWritable": "İndirme geçmişi kaydedilemiyor: tarihler her yeniden başlatmada sıfırlanır. AMULE_DATA_DIR dizinini bir birime koyun."
     }
   },
   "assistant": {

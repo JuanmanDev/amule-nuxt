@@ -451,7 +451,11 @@
       "serverMode": "Palvelintila",
       "logLevel": "Lokitaso",
       "configTitle": "Määritykset",
-      "configDescription": "Yhteysasetukset määritetään ympäristömuuttujilla. Katso yksityiskohdat tiedostosta .env.example."
+      "configDescription": "Yhteysasetukset määritetään ympäristömuuttujilla. Katso yksityiskohdat tiedostosta .env.example.",
+      "history": "Lataushistoria",
+      "historyEntries": "Merkinnät",
+      "historyOldest": "Vanhin merkintä",
+      "historyNotWritable": "Lataushistoriaa ei voi tallentaa: päivämäärät nollautuvat jokaisessa uudelleenkäynnistyksessä. Sijoita AMULE_DATA_DIR taltiolle."
     }
   },
   "assistant": {

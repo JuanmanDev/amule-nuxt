@@ -451,7 +451,11 @@
       "serverMode": "Serverio veiksena",
       "logLevel": "Žurnalo lygis",
       "configTitle": "Konfigūracija",
-      "configDescription": "Ryšio nustatymai nurodomi aplinkos kintamaisiais. Išsamiau žr. .env.example."
+      "configDescription": "Ryšio nustatymai nurodomi aplinkos kintamaisiais. Išsamiau žr. .env.example.",
+      "history": "Atsisiuntimų istorija",
+      "historyEntries": "Įrašai",
+      "historyOldest": "Seniausias įrašas",
+      "historyNotWritable": "Atsisiuntimų istorijos nepavyksta išsaugoti: datos bus atstatytos po kiekvieno paleidimo iš naujo. Padėkite AMULE_DATA_DIR į tomą."
     }
   },
   "assistant": {

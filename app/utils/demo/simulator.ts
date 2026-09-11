@@ -660,6 +660,20 @@ export class DemoDaemon {
         return [...this.state.logs];
     }
 
+    /** The demo's equivalent of the server's history store report. */
+    historyDiagnostics(): { path: string; entries: number; oldestFirstSeenAt: number | null; writeError: string | null } {
+        const sightings = [
+            ...this.state.downloads.map(d => d.firstSeenAt ?? d.addedAt),
+            ...this.state.shared.map(f => f.addedAt)
+        ].filter((at): at is number => typeof at === 'number');
+        return {
+            path: `localStorage (${DEMO_STORAGE_KEY})`,
+            entries: this.state.downloads.length + this.state.shared.length,
+            oldestFirstSeenAt: sightings.length ? Math.min(...sightings) : null,
+            writeError: this.storage ? null : 'localStorage is unavailable in this browser'
+        };
+    }
+
     getServerInfo(): string[] {
         const s = this.state;
         const server = s.servers.find(server => server.connected);

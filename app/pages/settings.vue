@@ -357,7 +357,30 @@
             <span class="text-xs text-gray-500 dark:text-gray-400">({{ diagnostics.logLevelSource }})</span>
           </div>
         </div>
+
+        <!-- Where "in the queue since" comes from. If this file is not on a
+             volume, every restart forgets the dates - worth surfacing here. -->
+        <div v-if="diagnostics.history" class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg md:col-span-2">
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ $t('settings.connection.history') }}</div>
+          <div class="text-sm font-mono mt-1 break-all">{{ diagnostics.history.path }}</div>
+          <div class="text-sm mt-1 text-gray-600 dark:text-gray-400">
+            {{ $t('settings.connection.historyEntries') }}: <span class="font-medium text-default">{{ diagnostics.history.entries }}</span>
+            <template v-if="diagnostics.history.oldestFirstSeenAt">
+              &middot; {{ $t('settings.connection.historyOldest') }}: <span class="font-medium text-default">{{ time.dateTime(diagnostics.history.oldestFirstSeenAt) }}</span>
+            </template>
+          </div>
+        </div>
       </div>
+
+      <UAlert
+        v-if="diagnostics.history?.writeError"
+        icon="i-heroicons-exclamation-triangle"
+        color="error"
+        variant="subtle"
+        :title="$t('settings.connection.historyNotWritable')"
+        :description="diagnostics.history.writeError"
+        class="mt-4"
+      />
       </SmoothSwap>
 
       <UAlert
@@ -379,6 +402,7 @@ const api = useAmuleApi();
 const toast = useToast();
 const runtimeConfig = useRuntimeConfig();
 const linkHandler = useLinkHandler();
+const time = useLocalTime();
 const notifications = useNotifications();
 const { t } = useI18n();
 

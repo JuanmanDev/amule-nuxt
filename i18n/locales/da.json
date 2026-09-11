@@ -451,7 +451,11 @@
       "serverMode": "Servertilstand",
       "logLevel": "Logniveau",
       "configTitle": "Konfiguration",
-      "configDescription": "Forbindelsesindstillinger sættes med miljøvariabler. Se .env.example for detaljer."
+      "configDescription": "Forbindelsesindstillinger sættes med miljøvariabler. Se .env.example for detaljer.",
+      "history": "Downloadhistorik",
+      "historyEntries": "Poster",
+      "historyOldest": "Ældste post",
+      "historyNotWritable": "Downloadhistorikken kan ikke gemmes: datoerne nulstilles ved hver genstart. Læg AMULE_DATA_DIR på et volume."
     }
   },
   "assistant": {

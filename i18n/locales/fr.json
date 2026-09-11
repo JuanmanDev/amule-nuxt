@@ -451,7 +451,11 @@
       "serverMode": "Mode du serveur",
       "logLevel": "Niveau de journalisation",
       "configTitle": "Configuration",
-      "configDescription": "Les paramètres de connexion se configurent par variables d'environnement. Voir .env.example pour le détail."
+      "configDescription": "Les paramètres de connexion se configurent par variables d'environnement. Voir .env.example pour le détail.",
+      "history": "Historique des téléchargements",
+      "historyEntries": "Entrées",
+      "historyOldest": "Entrée la plus ancienne",
+      "historyNotWritable": "L'historique des téléchargements ne peut pas être enregistré : les dates seront perdues à chaque redémarrage. Placez AMULE_DATA_DIR sur un volume."
     }
   },
   "assistant": {

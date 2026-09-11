@@ -451,7 +451,11 @@
       "serverMode": "Zerbitzari-modua",
       "logLevel": "Egunkari-maila",
       "configTitle": "Konfigurazioa",
-      "configDescription": "Konexioaren ezarpenak ingurune-aldagaien bidez zehazten dira. Ikusi .env.example xehetasunetarako."
+      "configDescription": "Konexioaren ezarpenak ingurune-aldagaien bidez zehazten dira. Ikusi .env.example xehetasunetarako.",
+      "history": "Deskarga-historia",
+      "historyEntries": "Sarrerak",
+      "historyOldest": "Sarrerarik zaharrena",
+      "historyNotWritable": "Deskarga-historia ezin da gorde: datak berrezarriko dira berrabiarazte bakoitzean. Jarri AMULE_DATA_DIR bolumen batean."
     }
   },
   "assistant": {

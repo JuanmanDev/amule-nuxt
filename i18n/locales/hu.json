@@ -451,7 +451,11 @@
       "serverMode": "Kiszolgálómód",
       "logLevel": "Naplózási szint",
       "configTitle": "Beállítás",
-      "configDescription": "A kapcsolat beállításai környezeti változókkal történnek. A részletek a .env.example fájlban."
+      "configDescription": "A kapcsolat beállításai környezeti változókkal történnek. A részletek a .env.example fájlban.",
+      "history": "Letöltési előzmények",
+      "historyEntries": "Bejegyzések",
+      "historyOldest": "Legrégebbi bejegyzés",
+      "historyNotWritable": "A letöltési előzmények nem menthetők: a dátumok minden újraindításkor elvesznek. Tedd az AMULE_DATA_DIR-t kötetre."
     }
   },
   "assistant": {

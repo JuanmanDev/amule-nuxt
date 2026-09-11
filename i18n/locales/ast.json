@@ -451,7 +451,11 @@
       "serverMode": "Mou de sirvidor",
       "logLevel": "Nivel de rexistru",
       "configTitle": "Configuración",
-      "configDescription": "Los axustes de la conexón fáense con variables d'entornu. Mira .env.example pa más detalles."
+      "configDescription": "Los axustes de la conexón fáense con variables d'entornu. Mira .env.example pa más detalles.",
+      "history": "Historial de descargues",
+      "historyEntries": "Entraes",
+      "historyOldest": "Entrada más antigua",
+      "historyNotWritable": "El historial de descargues nun se pue guardar: les feches van perdese en cada reaniciu. Monta AMULE_DATA_DIR nun volume."
     }
   },
   "assistant": {

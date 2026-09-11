@@ -451,7 +451,11 @@
       "serverMode": "Strežniški način",
       "logLevel": "Raven beleženja",
       "configTitle": "Nastavitev",
-      "configDescription": "Nastavitve povezave se določijo z okoljskimi spremenljivkami. Podrobnosti so v .env.example."
+      "configDescription": "Nastavitve povezave se določijo z okoljskimi spremenljivkami. Podrobnosti so v .env.example.",
+      "history": "Zgodovina prenosov",
+      "historyEntries": "Vnosi",
+      "historyOldest": "Najstarejši vnos",
+      "historyNotWritable": "Zgodovine prenosov ni mogoče shraniti: datumi se bodo ponastavili ob vsakem ponovnem zagonu. Postavite AMULE_DATA_DIR na nosilec."
     }
   },
   "assistant": {

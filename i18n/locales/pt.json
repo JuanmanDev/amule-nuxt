@@ -451,7 +451,11 @@
       "serverMode": "Modo do servidor",
       "logLevel": "Nível de registo",
       "configTitle": "Configuração",
-      "configDescription": "As definições de ligação são configuradas por variáveis de ambiente. Consulte o .env.example para mais detalhes."
+      "configDescription": "As definições de ligação são configuradas por variáveis de ambiente. Consulte o .env.example para mais detalhes.",
+      "history": "Histórico de transferências",
+      "historyEntries": "Entradas",
+      "historyOldest": "Entrada mais antiga",
+      "historyNotWritable": "O histórico de transferências não pode ser guardado: as datas perdem-se em cada reinício. Coloque AMULE_DATA_DIR num volume."
     }
   },
   "assistant": {

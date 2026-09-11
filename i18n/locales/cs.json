@@ -451,7 +451,11 @@
       "serverMode": "Režim serveru",
       "logLevel": "Úroveň záznamu",
       "configTitle": "Konfigurace",
-      "configDescription": "Nastavení připojení se konfiguruje proměnnými prostředí. Podrobnosti najdete v .env.example."
+      "configDescription": "Nastavení připojení se konfiguruje proměnnými prostředí. Podrobnosti najdete v .env.example.",
+      "history": "Historie stahování",
+      "historyEntries": "Záznamy",
+      "historyOldest": "Nejstarší záznam",
+      "historyNotWritable": "Historii stahování nelze uložit: data se při každém restartu vynulují. Umístěte AMULE_DATA_DIR na svazek."
     }
   },
   "assistant": {

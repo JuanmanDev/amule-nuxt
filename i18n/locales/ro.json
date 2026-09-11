@@ -451,7 +451,11 @@
       "serverMode": "Mod server",
       "logLevel": "Nivel de jurnalizare",
       "configTitle": "Configurare",
-      "configDescription": "Setările de conexiune se fac prin variabile de mediu. Vedeți .env.example pentru detalii."
+      "configDescription": "Setările de conexiune se fac prin variabile de mediu. Vedeți .env.example pentru detalii.",
+      "history": "Istoricul descărcărilor",
+      "historyEntries": "Intrări",
+      "historyOldest": "Cea mai veche intrare",
+      "historyNotWritable": "Istoricul descărcărilor nu poate fi salvat: datele se vor reseta la fiecare repornire. Puneți AMULE_DATA_DIR pe un volum."
     }
   },
   "assistant": {

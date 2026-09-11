@@ -75,7 +75,8 @@ export function handleDemoRequest(daemon: DemoDaemon, request: DemoRequest): Api
                         logLevelSource: 'environment',
                         nodeVersion: 'none (static demo)',
                         uptime: Math.floor(performance.now() / 1000),
-                        amule: { host: 'simulated', port: '—' }
+                        amule: { host: 'simulated', port: '—' },
+                        history: daemon.historyDiagnostics()
                     }
                 };
             default:

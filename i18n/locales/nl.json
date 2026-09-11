@@ -451,7 +451,11 @@
       "serverMode": "Servermodus",
       "logLevel": "Logniveau",
       "configTitle": "Configuratie",
-      "configDescription": "Verbindingsinstellingen worden via omgevingsvariabelen ingesteld. Zie .env.example voor details."
+      "configDescription": "Verbindingsinstellingen worden via omgevingsvariabelen ingesteld. Zie .env.example voor details.",
+      "history": "Downloadgeschiedenis",
+      "historyEntries": "Items",
+      "historyOldest": "Oudste item",
+      "historyNotWritable": "De downloadgeschiedenis kan niet worden opgeslagen: datums gaan bij elke herstart verloren. Zet AMULE_DATA_DIR op een volume."
     }
   },
   "assistant": {

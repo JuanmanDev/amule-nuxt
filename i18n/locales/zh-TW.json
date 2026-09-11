@@ -451,7 +451,11 @@
       "serverMode": "伺服器模式",
       "logLevel": "紀錄層級",
       "configTitle": "設定",
-      "configDescription": "連線設定以環境變數指定。詳情請參閱 .env.example。"
+      "configDescription": "連線設定以環境變數指定。詳情請參閱 .env.example。",
+      "history": "下載歷史",
+      "historyEntries": "條目數",
+      "historyOldest": "最舊條目",
+      "historyNotWritable": "無法儲存下載歷史：每次重新啟動後日期都會重設。請將 AMULE_DATA_DIR 放在磁碟區上。"
     }
   },
   "assistant": {

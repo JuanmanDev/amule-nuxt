@@ -451,7 +451,11 @@
       "serverMode": "Tenarmodus",
       "logLevel": "Loggnivå",
       "configTitle": "Oppsett",
-      "configDescription": "Tilkoplingsinnstillingar blir sette med miljøvariablar. Sjå .env.example for detaljar."
+      "configDescription": "Tilkoplingsinnstillingar blir sette med miljøvariablar. Sjå .env.example for detaljar.",
+      "history": "Nedlastingshistorikk",
+      "historyEntries": "Oppføringar",
+      "historyOldest": "Eldste oppføring",
+      "historyNotWritable": "Nedlastingshistorikken kan ikkje lagrast: datoane vert nullstilte ved kvar omstart. Legg AMULE_DATA_DIR på eit volum."
     }
   },
   "assistant": {

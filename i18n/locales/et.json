@@ -451,7 +451,11 @@
       "serverMode": "Serverirežiim",
       "logLevel": "Logimistase",
       "configTitle": "Seadistus",
-      "configDescription": "Ühenduse sätted määratakse keskkonnamuutujatega. Üksikasjad on failis .env.example."
+      "configDescription": "Ühenduse sätted määratakse keskkonnamuutujatega. Üksikasjad on failis .env.example.",
+      "history": "Allalaadimiste ajalugu",
+      "historyEntries": "Kirjed",
+      "historyOldest": "Vanim kirje",
+      "historyNotWritable": "Allalaadimiste ajalugu ei saa salvestada: kuupäevad lähtestatakse igal taaskäivitusel. Pane AMULE_DATA_DIR kettale (volume)."
     }
   },
   "assistant": {

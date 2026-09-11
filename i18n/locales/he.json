@@ -451,7 +451,11 @@
       "serverMode": "מצב שרת",
       "logLevel": "רמת יומן",
       "configTitle": "תצורה",
-      "configDescription": "הגדרות החיבור נקבעות במשתני סביבה. לפרטים ראו את .env.example."
+      "configDescription": "הגדרות החיבור נקבעות במשתני סביבה. לפרטים ראו את .env.example.",
+      "history": "היסטוריית הורדות",
+      "historyEntries": "רשומות",
+      "historyOldest": "הרשומה הוותיקה ביותר",
+      "historyNotWritable": "לא ניתן לשמור את היסטוריית ההורדות: התאריכים יתאפסו בכל הפעלה מחדש. הציבו את AMULE_DATA_DIR על אחסון קבוע."
     }
   },
   "assistant": {

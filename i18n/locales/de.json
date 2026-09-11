@@ -451,7 +451,11 @@
       "serverMode": "Servermodus",
       "logLevel": "Protokollstufe",
       "configTitle": "Konfiguration",
-      "configDescription": "Die Verbindungseinstellungen werden über Umgebungsvariablen konfiguriert. Details stehen in .env.example."
+      "configDescription": "Die Verbindungseinstellungen werden über Umgebungsvariablen konfiguriert. Details stehen in .env.example.",
+      "history": "Download-Verlauf",
+      "historyEntries": "Einträge",
+      "historyOldest": "Ältester Eintrag",
+      "historyNotWritable": "Der Download-Verlauf kann nicht gespeichert werden: die Daten gehen bei jedem Neustart verloren. Lege AMULE_DATA_DIR auf ein Volume."
     }
   },
   "assistant": {

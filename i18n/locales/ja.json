@@ -451,7 +451,11 @@
       "serverMode": "サーバーモード",
       "logLevel": "ログレベル",
       "configTitle": "設定",
-      "configDescription": "接続設定は環境変数で行います。詳しくは .env.example を参照してください。"
+      "configDescription": "接続設定は環境変数で行います。詳しくは .env.example を参照してください。",
+      "history": "ダウンロード履歴",
+      "historyEntries": "エントリ数",
+      "historyOldest": "最古のエントリ",
+      "historyNotWritable": "ダウンロード履歴を保存できません。再起動のたびに日付がリセットされます。AMULE_DATA_DIR をボリュームに置いてください。"
     }
   },
   "assistant": {

@@ -451,7 +451,11 @@
       "serverMode": "وضع الخادوم",
       "logLevel": "مستوى السجل",
       "configTitle": "الضبط",
-      "configDescription": "تُضبط إعدادات الاتصال بمتغيّرات البيئة. انظر .env.example للتفاصيل."
+      "configDescription": "تُضبط إعدادات الاتصال بمتغيّرات البيئة. انظر .env.example للتفاصيل.",
+      "history": "سجل التنزيلات",
+      "historyEntries": "الإدخالات",
+      "historyOldest": "أقدم إدخال",
+      "historyNotWritable": "تعذّر حفظ سجل التنزيلات: ستُعاد التواريخ عند كل إعادة تشغيل. ضع AMULE_DATA_DIR على وحدة تخزين دائمة."
     }
   },
   "assistant": {

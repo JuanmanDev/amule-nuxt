@@ -451,7 +451,11 @@
       "serverMode": "Tryb serwera",
       "logLevel": "Poziom dziennika",
       "configTitle": "Konfiguracja",
-      "configDescription": "Ustawienia połączenia konfiguruje się zmiennymi środowiskowymi. Szczegóły w .env.example."
+      "configDescription": "Ustawienia połączenia konfiguruje się zmiennymi środowiskowymi. Szczegóły w .env.example.",
+      "history": "Historia pobierania",
+      "historyEntries": "Wpisy",
+      "historyOldest": "Najstarszy wpis",
+      "historyNotWritable": "Nie można zapisać historii pobierania: daty będą się zerować przy każdym restarcie. Umieść AMULE_DATA_DIR na woluminie."
     }
   },
   "assistant": {

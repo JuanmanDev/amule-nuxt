@@ -451,7 +451,11 @@
       "serverMode": "Modo de servidor",
       "logLevel": "Nivel de rexistro",
       "configTitle": "Configuración",
-      "configDescription": "Os parámetros da conexión defínense con variables de contorno. Vexa .env.example para máis detalles."
+      "configDescription": "Os parámetros da conexión defínense con variables de contorno. Vexa .env.example para máis detalles.",
+      "history": "Historial de descargas",
+      "historyEntries": "Entradas",
+      "historyOldest": "Entrada máis antiga",
+      "historyNotWritable": "O historial de descargas non se pode gardar: as datas perderanse en cada reinicio. Monta AMULE_DATA_DIR nun volume."
     }
   },
   "assistant": {

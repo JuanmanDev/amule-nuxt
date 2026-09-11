@@ -451,7 +451,11 @@
       "serverMode": "Server mode",
       "logLevel": "Log level",
       "configTitle": "Configuration",
-      "configDescription": "Connection settings are configured via environment variables. See .env.example for details."
+      "configDescription": "Connection settings are configured via environment variables. See .env.example for details.",
+      "history": "Download history",
+      "historyEntries": "Entries",
+      "historyOldest": "Oldest entry",
+      "historyNotWritable": "The download history cannot be saved: dates will reset on every restart. Put AMULE_DATA_DIR on a volume."
     }
   },
   "assistant": {

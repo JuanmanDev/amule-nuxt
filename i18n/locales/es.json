@@ -451,7 +451,11 @@
       "serverMode": "Modo del servidor",
       "logLevel": "Nivel de registro",
       "configTitle": "Configuración",
-      "configDescription": "Los ajustes de conexión se configuran mediante variables de entorno. Consulta .env.example para más detalles."
+      "configDescription": "Los ajustes de conexión se configuran mediante variables de entorno. Consulta .env.example para más detalles.",
+      "history": "Historial de descargas",
+      "historyEntries": "Entradas",
+      "historyOldest": "Entrada más antigua",
+      "historyNotWritable": "El historial de descargas no se puede guardar: las fechas se perderán en cada reinicio. Monta AMULE_DATA_DIR en un volumen."
     }
   },
   "assistant": {

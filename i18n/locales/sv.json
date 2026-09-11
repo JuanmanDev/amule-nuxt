@@ -451,7 +451,11 @@
       "serverMode": "Serverläge",
       "logLevel": "Loggnivå",
       "configTitle": "Konfiguration",
-      "configDescription": "Anslutningsinställningarna görs med miljövariabler. Se .env.example för detaljer."
+      "configDescription": "Anslutningsinställningarna görs med miljövariabler. Se .env.example för detaljer.",
+      "history": "Nedladdningshistorik",
+      "historyEntries": "Poster",
+      "historyOldest": "Äldsta posten",
+      "historyNotWritable": "Nedladdningshistoriken kan inte sparas: datumen nollställs vid varje omstart. Lägg AMULE_DATA_DIR på en volym."
     }
   },
   "assistant": {

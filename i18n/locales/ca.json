@@ -451,7 +451,11 @@
       "serverMode": "Mode de servidor",
       "logLevel": "Nivell de registre",
       "configTitle": "Configuració",
-      "configDescription": "Els paràmetres de connexió s'estableixen amb variables d'entorn. Vegeu .env.example per als detalls."
+      "configDescription": "Els paràmetres de connexió s'estableixen amb variables d'entorn. Vegeu .env.example per als detalls.",
+      "history": "Historial de baixades",
+      "historyEntries": "Entrades",
+      "historyOldest": "Entrada més antiga",
+      "historyNotWritable": "L'historial de baixades no es pot desar: les dates es perdran a cada reinici. Munta AMULE_DATA_DIR en un volum."
     }
   },
   "assistant": {

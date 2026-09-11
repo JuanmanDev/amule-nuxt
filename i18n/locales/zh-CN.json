@@ -451,7 +451,11 @@
       "serverMode": "服务器模式",
       "logLevel": "日志级别",
       "configTitle": "配置",
-      "configDescription": "连接设置通过环境变量配置。详见 .env.example。"
+      "configDescription": "连接设置通过环境变量配置。详见 .env.example。",
+      "history": "下载历史",
+      "historyEntries": "条目数",
+      "historyOldest": "最早条目",
+      "historyNotWritable": "无法保存下载历史：每次重启后日期都会重置。请将 AMULE_DATA_DIR 放在卷上。"
     }
   },
   "assistant": {

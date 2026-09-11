@@ -6,6 +6,7 @@
 
 import type { ApiResponse } from '../../shared/types/api';
 import { currentLogLevel } from '../utils/logger';
+import { historyDiagnostics } from '../utils/downloadHistory';
 
 export interface Diagnostics {
     /** Release this build came from, as stamped by semantic-release. */
@@ -19,6 +20,13 @@ export interface Diagnostics {
     amule: {
         host: string;
         port: string | number;
+    };
+    /** The download-history store: where the "in the queue since" dates live. */
+    history: {
+        path: string;
+        entries: number;
+        oldestFirstSeenAt: number | null;
+        writeError: string | null;
     };
 }
 
@@ -42,7 +50,8 @@ export default defineEventHandler(async (): Promise<ApiResponse<Diagnostics>> =>
                 // otherwise be reported connecting to the wrong port.
                 host: String(process.env.AMULE_EC_HOST || config.public.amuleEcHost || ''),
                 port: process.env.AMULE_EC_PORT || config.public.amuleEcPort || ''
-            }
+            },
+            history: await historyDiagnostics()
         }
     };
 });

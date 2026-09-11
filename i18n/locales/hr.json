@@ -451,7 +451,11 @@
       "serverMode": "Način rada poslužitelja",
       "logLevel": "Razina zapisivanja",
       "configTitle": "Konfiguracija",
-      "configDescription": "Postavke veze zadaju se varijablama okoline. Pojedinosti su u .env.example."
+      "configDescription": "Postavke veze zadaju se varijablama okoline. Pojedinosti su u .env.example.",
+      "history": "Povijest preuzimanja",
+      "historyEntries": "Zapisi",
+      "historyOldest": "Najstariji zapis",
+      "historyNotWritable": "Povijest preuzimanja ne može se spremiti: datumi će se poništiti pri svakom ponovnom pokretanju. Stavite AMULE_DATA_DIR na volumen."
     }
   },
   "assistant": {

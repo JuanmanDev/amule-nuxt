@@ -451,7 +451,11 @@
       "serverMode": "Modalità del server",
       "logLevel": "Livello di registro",
       "configTitle": "Configurazione",
-      "configDescription": "Le impostazioni di connessione si configurano con variabili d'ambiente. Vedi .env.example per i dettagli."
+      "configDescription": "Le impostazioni di connessione si configurano con variabili d'ambiente. Vedi .env.example per i dettagli.",
+      "history": "Cronologia dei download",
+      "historyEntries": "Voci",
+      "historyOldest": "Voce più vecchia",
+      "historyNotWritable": "La cronologia dei download non può essere salvata: le date si azzereranno a ogni riavvio. Metti AMULE_DATA_DIR su un volume."
     }
   },
   "assistant": {

@@ -451,7 +451,11 @@
       "serverMode": "Mënyrë shërbyesi",
       "logLevel": "Shkallë regjistrimi",
       "configTitle": "Formësim",
-      "configDescription": "Rregullimet e lidhjes bëhen me ndryshore mjedisi. Për hollësi, shihni .env.example."
+      "configDescription": "Rregullimet e lidhjes bëhen me ndryshore mjedisi. Për hollësi, shihni .env.example.",
+      "history": "Historiku i shkarkimeve",
+      "historyEntries": "Zëra",
+      "historyOldest": "Zëri më i vjetër",
+      "historyNotWritable": "Historiku i shkarkimeve nuk mund të ruhet: datat do të rivendosen në çdo rinisje. Vendoseni AMULE_DATA_DIR në një volum."
     }
   },
   "assistant": {
