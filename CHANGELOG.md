@@ -2,6 +2,16 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.18.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.17.0...v1.18.0) (2026-09-11)
+
+### Features
+
+* show download history persistence in connection diagnostics ([ec8b436](https://github.com/JuanmanDev/amule-nuxt/commit/ec8b436be85fb1727b46471d242f4446f2e7966e))
+
+### Bug fixes
+
+* strip backdrop-filter on view transition groups to prevent blur pop ([8459b83](https://github.com/JuanmanDev/amule-nuxt/commit/8459b83e309f4c4329d5947c52576aa8ba3fec56))
+
 ## [1.17.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.16.1...v1.17.0) (2026-08-30)
 
 ### Features
