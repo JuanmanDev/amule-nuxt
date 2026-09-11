@@ -327,6 +327,14 @@ test.describe('frosted panels', () => {
         const filter = await card.evaluate(element => getComputedStyle(element).backdropFilter);
         expect(filter).toBe('none');
     });
+
+    test('view transition groups strip backdrop-filter so the modal blur does not pop on frame 0', async ({ page }) => {
+        await gotoReady(page, '/downloads');
+        const filter = await page.evaluate(() =>
+            getComputedStyle(document.documentElement, '::view-transition-group(dl-modal)').backdropFilter
+        );
+        expect(filter).toBe('none');
+    });
 });
 
 test.describe('reduced motion', () => {

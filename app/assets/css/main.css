@@ -378,10 +378,15 @@ html {
     animation-duration: 0s;
 }
 
-/* A row becoming another row, or a modal title: a little slower than the page */
+/* A row becoming another row, or a modal title: a little slower than the page.
+ * View transition groups must never have backdrop-filter: Chromium copies
+ * backdrop-filter from the live DOM element to its ::view-transition-group, which
+ * stays at opacity: 1 throughout the transition, causing a sudden 100% blur
+ * pop from frame 0 rather than fading in with ::view-transition-new. */
 ::view-transition-group(*) {
     animation-duration: 0.35s;
     animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    backdrop-filter: none;
 }
 
 /*
@@ -445,8 +450,8 @@ html {
 /* Stacking, bottom to top: page, overlay, panel, the travelling title. The
    browser orders the layers by paint order, which put the title under the
    panel it is heading into. */
-::view-transition-group(dl-overlay) { z-index: 1; }
-::view-transition-group(dl-modal) { z-index: 2; }
+::view-transition-group(dl-overlay) { z-index: 1; backdrop-filter: none; }
+::view-transition-group(dl-modal) { z-index: 2; backdrop-filter: none; }
 ::view-transition-group(dl-active) { z-index: 3; animation-duration: 0.3s; }
 
 /* A block whose content changes size on its own (a card that gains a row, a
