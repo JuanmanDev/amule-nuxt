@@ -40,12 +40,12 @@
     "release:dry": "semantic-release --dry-run --no-ci"
   },
   "dependencies": {
-    "@mlc-ai/web-llm": "^0.2.84",
-    "@nuxt/ui": "^4.11.0",
+    "@mlc-ai/web-llm": "^0.2.85",
+    "@nuxt/ui": "^4.11.1",
     "@nuxtjs/i18n": "^10.6.0",
     "nuxt": "^4.5.2",
     "vue": "^3.5.42",
-    "vue-router": "^5.3.0",
+    "vue-router": "^5.3.1",
     "web-push": "^3.6.7",
     "ws": "^8.21.3"
   },
@@ -53,14 +53,14 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@iconify-json/heroicons": "^1.2.3",
-    "@iconify-json/lucide": "^1.2.127",
-    "@iconify-json/simple-icons": "^1.2.94",
+    "@iconify-json/lucide": "^1.2.131",
+    "@iconify-json/simple-icons": "^1.2.95",
     "@nuxtjs/mcp-toolkit": "^0.19.0",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^11.0.1",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.5.1",
     "@types/web-push": "^3.6.4",
     "@types/ws": "^8.18.1",
     "archiver": "^8.0.0",
@@ -72,6 +72,6 @@
     "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11",
     "wait-on": "^9.1.0",
-    "zod": "^4.5.2"
+    "zod": "^4.6.2"
   }
 }
