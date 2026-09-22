@@ -2,6 +2,12 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.19.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.18.0...v1.19.0) (2026-09-22)
+
+### Features
+
+* group manually paused downloads above the queue with a priority hint ([1706f1d](https://github.com/JuanmanDev/amule-nuxt/commit/1706f1dba25b9b88c80bcf33b03e690c3e9ddcd4))
+
 ## [1.18.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.17.0...v1.18.0) (2026-09-11)
 
 ### Features
