@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { classifyDownload, isLikelyDeadLink } from '../shared/utils/downloadHealth';
+import { classifyDownload, isHeldDownload, isLikelyDeadLink } from '../shared/utils/downloadHealth';
 
 const base = {
     status: 'Waiting',
@@ -86,5 +86,19 @@ describe('isLikelyDeadLink', () => {
 
     it('is false for paused downloads', () => {
         expect(isLikelyDeadLink({ ...base, status: 'Paused' })).toBe(false);
+    });
+});
+
+describe('isHeldDownload', () => {
+    it('is true for paused and stopped downloads', () => {
+        expect(isHeldDownload({ ...base, status: 'Paused' })).toBe(true);
+        expect(isHeldDownload({ ...base, stopped: true })).toBe(true);
+    });
+
+    it('is false for everything the queue is still working on', () => {
+        expect(isHeldDownload(base)).toBe(false);
+        expect(isHeldDownload({ ...base, sources: 3 })).toBe(false);
+        expect(isHeldDownload({ ...base, status: 'Complete' })).toBe(false);
+        expect(isHeldDownload({ ...base, status: 'Error' })).toBe(false);
     });
 });

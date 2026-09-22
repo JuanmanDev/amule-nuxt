@@ -173,6 +173,15 @@
       "resumeDone": "Obnoveno {count} stahování | Obnoveno {count} stahování",
       "removeDone": "Odebráno {count} stahování | Odebráno {count} stahování",
       "someFailed": "Nepodařilo se změnit: {count}"
+    },
+    "pausedSection": {
+      "title": "Pozastaveno",
+      "subtitle": "Pozastaveno vámi, nikoliv frontou. Nestahují se a nevyhledávají zdroje.",
+      "resumeAll": "Obnovit vše"
+    },
+    "priorityHint": {
+      "title": "{count} stahování ve frontě | {count} stahování ve frontě",
+      "description": "Všechny sdílí jedno připojení, takže ho aMule rozděluje rovnoměrně. Nastavte ty, které chcete brzy, na prioritu Vysoká a zbytek na Nízká, a soubory, na kterých vám záleží, se stáhnou jako první."
     }
   },
   "health": {

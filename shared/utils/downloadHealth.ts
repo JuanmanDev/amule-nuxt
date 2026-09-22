@@ -142,3 +142,16 @@ export function classifyDownload(download: DownloadHealthInput): DownloadHealthI
 export function isLikelyDeadLink(download: DownloadHealthInput): boolean {
     return classifyDownload(download).health === 'searching' && (download.sizeDone ?? 0) === 0;
 }
+
+/**
+ * True for entries the user held: paused, or stopped after being paused.
+ *
+ * Everything else is the queue working at its own pace; these are the only ones
+ * deliberately not downloading, which is why the page lists them apart from the
+ * rest instead of leaving them interleaved with rows that are waiting for a
+ * free upload slot.
+ */
+export function isHeldDownload(download: DownloadHealthInput): boolean {
+    const health = classifyDownload(download).health;
+    return health === 'paused' || health === 'stopped';
+}

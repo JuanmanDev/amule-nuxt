@@ -173,6 +173,15 @@
       "resumeDone": "{count} transferência retomada | {count} transferências retomadas",
       "removeDone": "{count} transferência removida | {count} transferências removidas",
       "someFailed": "Não foi possível alterar {count}"
+    },
+    "pausedSection": {
+      "title": "Em pausa",
+      "subtitle": "Pausadas por si, não pela fila. Não estão a descarregar nem a procurar fontes.",
+      "resumeAll": "Retomar todas"
+    },
+    "priorityHint": {
+      "title": "{count} transferência na fila | {count} transferências na fila",
+      "description": "Todas partilham a mesma ligação, por isso o aMule a divide de forma igual. Defina as que quer ver concluídas em breve como prioridade Alta e as restantes como Baixa, e os ficheiros que mais lhe importam terminam primeiro."
     }
   },
   "health": {

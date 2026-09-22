@@ -173,6 +173,15 @@
       "resumeDone": "Deskarga {count} berrekin da | {count} deskarga berrekin dira",
       "removeDone": "Deskarga {count} kendu da | {count} deskarga kendu dira",
       "someFailed": "{count} ezin izan dira aldatu"
+    },
+    "pausedSection": {
+      "title": "Pausatuta",
+      "subtitle": "Zuk pausatuak, ez ilarak. Ez dira ari deskargatzen ezta iturriak bilatzen.",
+      "resumeAll": "Berrekin guztiak"
+    },
+    "priorityHint": {
+      "title": "{count} deskarga ilaran | {count} deskarga ilaran",
+      "description": "Guztiek konexio bera partekatzen dute, beraz aMule-k berdin banatzen du. Ezarri Altua lehentasuna laster nahi dituzunei eta Baxua gainerakoei, eta axola zaizkizun fitxategiak lehenago amaituko dira."
     }
   },
   "health": {

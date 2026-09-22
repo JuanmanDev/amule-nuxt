@@ -173,6 +173,15 @@
       "resumeDone": "다운로드 {count}개를 다시 시작했습니다",
       "removeDone": "다운로드 {count}개를 제거했습니다",
       "someFailed": "{count}개는 변경하지 못했습니다"
+    },
+    "pausedSection": {
+      "title": "일시 중지됨",
+      "subtitle": "대기열이 아닌 사용자가 일시 중지했습니다. 다운로드도, 소스 검색도 하지 않습니다.",
+      "resumeAll": "모두 다시 시작"
+    },
+    "priorityHint": {
+      "title": "대기열에 다운로드 {count}개가 있습니다",
+      "description": "모두 하나의 연결을 공유하므로 aMule이 이를 균등하게 분배합니다. 빨리 받고 싶은 항목은 우선순위를 '높음'으로, 나머지는 '낮음'으로 설정하면 당신이 관심 있는 파일이 먼저 완료됩니다."
     }
   },
   "health": {

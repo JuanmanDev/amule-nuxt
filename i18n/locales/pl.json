@@ -173,6 +173,15 @@
       "resumeDone": "Wznowiono {count} pobieranie | Wznowiono {count} pobierania | Wznowiono {count} pobierań",
       "removeDone": "Usunięto {count} pobieranie | Usunięto {count} pobierania | Usunięto {count} pobierań",
       "someFailed": "Nie udało się zmienić: {count}"
+    },
+    "pausedSection": {
+      "title": "Wstrzymane",
+      "subtitle": "Wstrzymane przez Ciebie, nie przez kolejkę. Nie pobierają się i nie szukają źródeł.",
+      "resumeAll": "Wznów wszystkie"
+    },
+    "priorityHint": {
+      "title": "{count} pobieranie w kolejce | {count} pobierania w kolejce | {count} pobrań w kolejce",
+      "description": "Wszystkie współdzielą jedno połączenie, dlatego aMule dzieli je równo między nie. Ustaw te, które chcesz mieć szybko, na priorytet Wysoki, a resztę na Niski – pliki, na których Ci zależy, skończą się pierwsze."
     }
   },
   "health": {

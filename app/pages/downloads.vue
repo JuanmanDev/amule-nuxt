@@ -152,23 +152,86 @@
         <!-- An added download pushes the queue open, a removed one closes the gap
              behind it, and a re-sort glides the rows to their new place. Turning
              a page replaces every row at once, which `reset-key` keeps silent. -->
-        <AnimatedList v-else key="rows" gap="1rem" :reset-key="pageKey">
-          <DownloadRow
-            v-for="download in visibleDownloads"
-            :key="download.hash"
-            :download="download"
-            :busy="busyHash === download.hash"
-            :selectable="selection.active.value"
-            :selected="selection.has(download.hash)"
-            :transition-name="details.rowName(download.hash, 'dl')"
-            @open="openDetails"
-            @remove="askRemove"
-            @pause="pause"
-            @resume="resume"
-            @priority="setPriority"
-            @select="(download, on) => selection.toggle(download.hash, on)"
-          />
-        </AnimatedList>
+        <div v-else key="rows" class="space-y-4">
+          <AnimatedList gap="1rem" :reset-key="pageKey">
+            <DownloadRow
+              v-for="download in activeDownloads"
+              :key="download.hash"
+              :download="download"
+              :busy="busyHash === download.hash"
+              :selectable="selection.active.value"
+              :selected="selection.has(download.hash)"
+              :transition-name="details.rowName(download.hash, 'dl')"
+              @open="openDetails"
+              @remove="askRemove"
+              @pause="pause"
+              @resume="resume"
+              @priority="setPriority"
+              @select="(download, on) => selection.toggle(download.hash, on)"
+            />
+          </AnimatedList>
+
+          <!-- Held by the user rather than by the queue, which makes them a
+               different thing from every row above still waiting for a free
+               upload slot: listed apart, so a queue that is standing still does
+               not read as one that is stuck. The card names them; the rows
+               follow, kept apart by the same gap the list above uses.
+
+               The `pt-4` is not decoration: `AnimatedList` ends on a -1rem
+               margin that cancels the last row's trailing gap (main.css), and
+               it swallows this section's top margin with it, so the gap the
+               wrapper's `space-y-4` intends has to be carried as padding. -->
+          <section
+            v-if="heldDownloads.length > 0"
+            class="space-y-4 pt-4"
+            data-testid="paused-section"
+          >
+            <header class="flex flex-col gap-3 p-4 rounded-lg border border-amber-200/80 dark:border-amber-800/40 bg-amber-50/70 dark:bg-amber-950/20">
+              <div class="flex items-center gap-2">
+                <UIcon name="i-heroicons-pause" class="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                <h2 class="font-semibold text-amber-800 dark:text-amber-200">{{ $t('downloads.pausedSection.title') }}</h2>
+                <UBadge color="warning" variant="subtle" size="sm">
+                  <AnimatedValue :model-value="heldDownloads.length" />
+                </UBadge>
+                <!-- Resumes every held download the filter matches, not only the
+                     ones on this page: which page is open must not change what
+                     "all" does. -->
+                <UButton
+                  size="xs"
+                  color="warning"
+                  variant="ghost"
+                  icon="i-heroicons-play"
+                  class="ms-auto"
+                  :loading="resumingHeld"
+                  @click="resumeHeld"
+                >
+                  {{ $t('downloads.pausedSection.resumeAll') }}
+                </UButton>
+              </div>
+              <p class="text-xs text-amber-700/90 dark:text-amber-300/70">
+                {{ $t('downloads.pausedSection.subtitle') }}
+              </p>
+            </header>
+
+            <AnimatedList gap="1rem" :reset-key="pageKey">
+              <DownloadRow
+                v-for="download in heldDownloads"
+                :key="download.hash"
+                :download="download"
+                :busy="busyHash === download.hash"
+                :selectable="selection.active.value"
+                :selected="selection.has(download.hash)"
+                :transition-name="details.rowName(download.hash, 'dl')"
+                @open="openDetails"
+                @remove="askRemove"
+                @pause="pause"
+                @resume="resume"
+                @priority="setPriority"
+                @select="(download, on) => selection.toggle(download.hash, on)"
+              />
+            </AnimatedList>
+          </section>
+        </div>
       </SmoothSwap>
 
       <ListPagination
@@ -180,6 +243,21 @@
         :first-on-page="firstOnPage"
         :last-on-page="lastOnPage"
         label="downloads"
+      />
+
+      <!-- Enough queued downloads that aMule is splitting one connection between
+           them all. Dismissed for the session rather than forever, because the
+           queue grows and shrinks and a tip that never returns becomes
+           furniture. -->
+      <UAlert
+        v-if="showPriorityHint"
+        color="info"
+        variant="subtle"
+        icon="i-heroicons-bolt"
+        :title="$t('downloads.priorityHint.title', { count: items.length }, items.length)"
+        :description="$t('downloads.priorityHint.description')"
+        close
+        @update:open="value => { if (!value) priorityHintOpen = false }"
       />
 
       <!-- "All" means every download matching the filter, not every one on this
@@ -299,7 +377,7 @@
 
 <script setup lang="ts">
 import type { Download } from '../../server/utils/amule-types';
-import { classifyDownload } from '#shared/utils/downloadHealth';
+import { classifyDownload, isHeldDownload } from '#shared/utils/downloadHealth';
 import { formatBytes, formatEta, formatPercent, formatSpeed } from '#shared/utils/format';
 import type { SortOption } from '#shared/utils/sorting';
 
@@ -382,6 +460,27 @@ const {
 });
 
 /**
+ * The page is split by what the user is doing, not by what the queue is doing.
+ *
+ * Everything still being worked on stays in one list; downloads paused or
+ * stopped are moved into a separate section underneath it. Sorting and paging
+ * run over the whole queue as before, so this is a re-read of the same page,
+ * not a second one.
+ */
+const activeDownloads = computed(() => visibleDownloads.value.filter(download => !isHeldDownload(download)));
+const heldDownloads = computed(() => visibleDownloads.value.filter(isHeldDownload));
+
+/**
+ * Enough downloads queued that the hint about priorities is worth the space it
+ * takes. Below this a single connection is not the thing holding the queue back.
+ */
+const PRIORITY_HINT_THRESHOLD = 25;
+
+/** The tip is dismissed for the session, not stored against the next one. */
+const priorityHintOpen = ref(true);
+const showPriorityHint = computed(() => priorityHintOpen.value && items.value.length >= PRIORITY_HINT_THRESHOLD);
+
+/**
  * Selecting several downloads to act on at once.
  *
  * Fed the filtered and sorted list rather than the current page: selecting "all"
@@ -442,6 +541,20 @@ async function runBulk(action: 'pause' | 'resume') {
     else await resumeMany(picked);
   } finally {
     bulkBusy.value = false;
+  }
+}
+
+/**
+ * Resumes everything the filter holds, on every page, not just the ones drawn:
+ * the section is a view of the queue, not a second list with its own contents.
+ */
+const resumingHeld = ref(false);
+async function resumeHeld() {
+  resumingHeld.value = true;
+  try {
+    await resumeMany(matching.value.filter(isHeldDownload));
+  } finally {
+    resumingHeld.value = false;
   }
 }
 

@@ -1,12 +1,18 @@
 <template>
   <div
-    class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-default/40 backdrop-blur-sm transition-colors cursor-pointer hover:bg-elevated/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+    class="p-4 border rounded-lg transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     role="button"
     tabindex="0"
     data-testid="download-row"
     :data-hash="download.hash"
     :style="{ viewTransitionName: transitionNameFor('dl', download.hash) }"
-    :class="[ROW_TRANSITION_CLASS, selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : '']"
+    :class="[
+      ROW_TRANSITION_CLASS,
+      held
+        ? 'border-amber-200/80 dark:border-amber-800/50 bg-amber-50/80 dark:bg-amber-950/40 hover:bg-amber-100/80 dark:hover:bg-amber-900/50'
+        : 'border-gray-200 dark:border-gray-800 bg-default/40 backdrop-blur-sm hover:bg-elevated/60',
+      selectable && selected ? 'ring-2 ring-primary-500 ring-offset-1 ring-offset-default' : ''
+    ]"
     :aria-label="$t('downloads.showDetailsFor', { name: download.name })"
     @click="onRowClick"
     @keydown.enter.prevent="onRowClick"
@@ -80,7 +86,7 @@
         </UButton>
       </div>
 
-      <UProgress :model-value="download.percentComplete" :min="0" :max="100" size="md">
+      <UProgress :model-value="download.percentComplete" :min="0" :max="100" size="md" :color="held ? 'neutral' : undefined">
         <template #indicator>
           <div class="text-xs text-right">
             <AnimatedValue :model-value="formatPercent(download.percentComplete)" :flash="false" />
@@ -150,7 +156,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui';
 import type { Download } from '../../server/utils/amule-types';
-import { classifyDownload, isLikelyDeadLink } from '#shared/utils/downloadHealth';
+import { classifyDownload, isHeldDownload, isLikelyDeadLink } from '#shared/utils/downloadHealth';
 import { formatBytes, formatEta, formatPercent, formatSpeed } from '#shared/utils/format';
 
 const props = defineProps<{
@@ -193,6 +199,9 @@ const { t } = useI18n();
 const time = useLocalTime();
 
 const info = computed(() => classifyDownload(props.download));
+
+/** Paused or stopped by the user: the queue is deliberately not working on it. */
+const held = computed(() => isHeldDownload(props.download));
 
 /** The explanation, translated; absent for a download with nothing to explain. */
 const reason = computed(() => {

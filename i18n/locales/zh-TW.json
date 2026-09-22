@@ -173,6 +173,15 @@
       "resumeDone": "已繼續 {count} 個下載項目",
       "removeDone": "已移除 {count} 個下載項目",
       "someFailed": "有 {count} 個無法變更"
+    },
+    "pausedSection": {
+      "title": "已暫停",
+      "subtitle": "由您手動暫停，而非佇列暫停。它們既不在下載，也不在尋找來源。",
+      "resumeAll": "全部繼續"
+    },
+    "priorityHint": {
+      "title": "佇列中有 {count} 個下載",
+      "description": "它們共享同一個連線，因此 aMule 會將其平均分配。把您想盡快完成的設為高優先順序，其餘設為低優先順序，您關心的檔案就會先完成。"
     }
   },
   "health": {

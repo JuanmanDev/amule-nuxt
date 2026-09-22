@@ -173,6 +173,15 @@
       "resumeDone": "{count} téléchargement repris | {count} téléchargements repris",
       "removeDone": "{count} téléchargement supprimé | {count} téléchargements supprimés",
       "someFailed": "{count} n'ont pas pu être modifiés"
+    },
+    "pausedSection": {
+      "title": "En pause",
+      "subtitle": "Suspendus par vous, pas par la file d'attente. Ils ne sont ni en cours de téléchargement, ni en recherche de sources.",
+      "resumeAll": "Tout reprendre"
+    },
+    "priorityHint": {
+      "title": "{count} téléchargement dans la file d'attente | {count} téléchargements dans la file d'attente",
+      "description": "Ils partagent tous une même connexion, donc aMule la répartit équitablement. Définissez comme priorité Haute ceux que vous voulez bientôt et comme Basse les autres, et les fichiers qui vous importent se termineront en premier."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "U vazhdua {count} shkarkim | U vazhduan {count} shkarkime",
       "removeDone": "U hoq {count} shkarkim | U hoqën {count} shkarkime",
       "someFailed": "{count} s’u ndryshuan dot"
+    },
+    "pausedSection": {
+      "title": "I ndalur",
+      "subtitle": "Të ndalura nga ju, jo nga radha. As nuk po shkarkohen, as nuk po kërkojnë burime.",
+      "resumeAll": "Vazhdoji të gjitha"
+    },
+    "priorityHint": {
+      "title": "{count} shkarkim në radhë | {count} shkarkime në radhë",
+      "description": "Të gjitha ndajnë të njëjtën lidhje, ndaj aMule e ndan atë në mënyrë të barabartë. Caktoni si përparësi E lartë ato që i doni shpejt dhe E ulët të tjerat, dhe skedarët që ju interesojnë do të mbarojnë të parët."
     }
   },
   "health": {

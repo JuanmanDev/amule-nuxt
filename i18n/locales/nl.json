@@ -173,6 +173,15 @@
       "resumeDone": "{count} download hervat | {count} downloads hervat",
       "removeDone": "{count} download verwijderd | {count} downloads verwijderd",
       "someFailed": "{count} konden niet gewijzigd worden"
+    },
+    "pausedSection": {
+      "title": "Gepauzeerd",
+      "subtitle": "Gepauzeerd door jou, niet door de wachtrij. Ze worden niet gedownload en zoeken niet naar bronnen.",
+      "resumeAll": "Alles hervatten"
+    },
+    "priorityHint": {
+      "title": "{count} download in de wachtrij | {count} downloads in de wachtrij",
+      "description": "Ze delen allemaal één verbinding, dus aMule verdeelt deze gelijkmatig. Zet de bestanden die je snel wilt op prioriteit Hoog en de rest op Laag, dan zijn de bestanden die je belangrijk vindt het eerst klaar."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "Ripreso {count} download | Ripresi {count} download",
       "removeDone": "Rimosso {count} download | Rimossi {count} download",
       "someFailed": "{count} non è stato possibile modificarli"
+    },
+    "pausedSection": {
+      "title": "Sospeso",
+      "subtitle": "Sospesi da te, non dalla coda. Non sono in download né alla ricerca di fonti.",
+      "resumeAll": "Riprendi tutti"
+    },
+    "priorityHint": {
+      "title": "{count} download in coda | {count} download in coda",
+      "description": "Condividono tutti una sola connessione, quindi aMule la ripartisce equamente. Imposta come priorità Alta quelli che vuoi avere presto e Bassa gli altri: i file che ti interessano finiranno per primi."
     }
   },
   "health": {

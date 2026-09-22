@@ -173,6 +173,15 @@
       "resumeDone": "Jatkettiin {count} latausta | Jatkettiin {count} latausta",
       "removeDone": "Poistettiin {count} lataus | Poistettiin {count} latausta",
       "someFailed": "{count} ei voitu muuttaa"
+    },
+    "pausedSection": {
+      "title": "Keskeytetty",
+      "subtitle": "Sinun pysäyttämäsi, eivät jonon. Eivät lataudu eivätkä etsi lähteitä.",
+      "resumeAll": "Jatka kaikki"
+    },
+    "priorityHint": {
+      "title": "{count} lataus jonossa | {count} latausta jonossa",
+      "description": "Kaikki jakavat saman yhteyden, joten aMule jakaa sen tasan. Aseta pian haluamasi lataukset Korkea-prioriteettiin ja loput Matala-prioriteettiin, niin sinulle tärkeät tiedostot valmistuvat ensin."
     }
   },
   "health": {

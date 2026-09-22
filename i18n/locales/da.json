@@ -173,6 +173,15 @@
       "resumeDone": "{count} overførsel genoptaget | {count} overførsler genoptaget",
       "removeDone": "{count} overførsel fjernet | {count} overførsler fjernet",
       "someFailed": "{count} kunne ikke ændres"
+    },
+    "pausedSection": {
+      "title": "På pause",
+      "subtitle": "Sat på pause af dig, ikke af køen. Hverken downloades eller ledes der efter kilder til dem.",
+      "resumeAll": "Genoptag alle"
+    },
+    "priorityHint": {
+      "title": "{count} overførsel i køen | {count} overførsler i køen",
+      "description": "De deler alle én forbindelse, så aMule fordeler den ligeligt. Sæt dem, du snart vil have, til prioritet Høj og resten til Lav, så er de filer, du holder af, først færdige."
     }
   },
   "health": {

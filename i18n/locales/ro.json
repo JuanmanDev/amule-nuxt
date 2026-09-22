@@ -173,6 +173,15 @@
       "resumeDone": "{count} descărcare reluată | {count} descărcări reluate",
       "removeDone": "{count} descărcare eliminată | {count} descărcări eliminate",
       "someFailed": "{count} nu au putut fi modificate"
+    },
+    "pausedSection": {
+      "title": "Suspendat",
+      "subtitle": "Suspendate de dvs., nu de coadă. Nu se descarcă și nu caută surse.",
+      "resumeAll": "Reluiază toate"
+    },
+    "priorityHint": {
+      "title": "{count} descărcare în coadă | {count} descărcări în coadă",
+      "description": "Toate folosesc aceeași conexiune, așa că aMule o împarte în mod egal. Setați ca prioritate Ridicată pe cele pe care le doriți curând și ca Scăzută pe restul, iar fișierele care vă interesează se vor încheia primele."
     }
   },
   "health": {

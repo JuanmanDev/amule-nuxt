@@ -173,6 +173,15 @@
       "resumeDone": "{count} Download fortgesetzt | {count} Downloads fortgesetzt",
       "removeDone": "{count} Download entfernt | {count} Downloads entfernt",
       "someFailed": "{count} konnten nicht geändert werden"
+    },
+    "pausedSection": {
+      "title": "Pausiert",
+      "subtitle": "Von Ihnen pausiert, nicht von der Warteschlange. Sie laden weder herunter noch suchen sie nach Quellen.",
+      "resumeAll": "Alle fortsetzen"
+    },
+    "priorityHint": {
+      "title": "{count} Download in der Warteschlange | {count} Downloads in der Warteschlange",
+      "description": "Sie teilen sich alle eine Verbindung, daher verteilt aMule sie gleichmäßig. Stellen Sie die Dateien, die bald fertig sein sollen, auf Priorität Hoch und die restlichen auf Niedrig, dann sind die Dateien, die Ihnen wichtig sind, zuerst fertig."
     }
   },
   "health": {

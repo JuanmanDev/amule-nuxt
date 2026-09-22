@@ -173,6 +173,15 @@
       "resumeDone": "{count} nedladdning återupptagen | {count} nedladdningar återupptagna",
       "removeDone": "{count} nedladdning borttagen | {count} nedladdningar borttagna",
       "someFailed": "{count} kunde inte ändras"
+    },
+    "pausedSection": {
+      "title": "Pausad",
+      "subtitle": "Pausade av dig, inte av kön. De varken laddar ner eller letar efter källor.",
+      "resumeAll": "Återuppta alla"
+    },
+    "priorityHint": {
+      "title": "{count} nedladdning i kön | {count} nedladdningar i kön",
+      "description": "De delar alla en anslutning, så aMule fördelar den jämnt. Sätt dem du snart vill ha på prioritet Hög och resten på Låg, så blir filerna du bryr dig om klara först."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "Siguió {count} descarga | Siguieron {count} descargues",
       "removeDone": "Quitóse {count} descarga | Quitáronse {count} descargues",
       "someFailed": "{count} nun se pudieron camudar"
+    },
+    "pausedSection": {
+      "title": "Posada",
+      "subtitle": "Posaes por ti, non por la cola. Nun se descarguen nin gueten fontes.",
+      "resumeAll": "Siguir toes"
+    },
+    "priorityHint": {
+      "title": "{count} descarga na cola | {count} descargues na cola",
+      "description": "Toes comparten una conexón, así que aMule la estaya per igual. Pon en prioridá Alta les que quies tener ceo y les demás en Baxa, y los ficheros que t'importen finarán primeiro."
     }
   },
   "health": {

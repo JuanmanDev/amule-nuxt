@@ -173,6 +173,15 @@
       "resumeDone": "S'ha reprès {count} baixada | S'han reprès {count} baixades",
       "removeDone": "S'ha suprimit {count} baixada | S'han suprimit {count} baixades",
       "someFailed": "No s'han pogut canviar {count}"
+    },
+    "pausedSection": {
+      "title": "En pausa",
+      "subtitle": "Posades en pausa per vostè, no per la cua. No s'estan baixant ni cercant fonts.",
+      "resumeAll": "Reprèn totes"
+    },
+    "priorityHint": {
+      "title": "{count} baixada a la cua | {count} baixades a la cua",
+      "description": "Totes comparteixen una única connexió, per la qual cosa aMule la reparteix a parts iguals. Indiqueu com a prioritat Alta les que voleu tenir aviat i com a Baixa la resta, i els fitxers que us importen acabaran primer."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "{count} letöltés folytatva | {count} letöltés folytatva",
       "removeDone": "{count} letöltés eltávolítva | {count} letöltés eltávolítva",
       "someFailed": "{count} elemet nem sikerült módosítani"
+    },
+    "pausedSection": {
+      "title": "Szüneteltetve",
+      "subtitle": "Általad szüneteltetve, nem a várólista által. Sem nem töltenek le, sem nem keresnek forrásokat.",
+      "resumeAll": "Összes folytatása"
+    },
+    "priorityHint": {
+      "title": "{count} letöltés a várólistában | {count} letöltés a várólistában",
+      "description": "Mindegyik egyetlen kapcsolatot oszt meg, ezért az aMule egyenlően osztja el. Állítsd Magas prioritásra azokat, amiket hamarosan szeretnél, a többit pedig Alacsonyra, és a számodra fontos fájlok hamarabb készülnek el."
     }
   },
   "health": {

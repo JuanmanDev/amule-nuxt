@@ -173,6 +173,15 @@
       "resumeDone": "Resumed {count} download | Resumed {count} downloads",
       "removeDone": "Removed {count} download | Removed {count} downloads",
       "someFailed": "{count} could not be changed"
+    },
+    "pausedSection": {
+      "title": "Paused",
+      "subtitle": "Held by you, not by the queue. They are neither downloading nor looking for sources.",
+      "resumeAll": "Resume all"
+    },
+    "priorityHint": {
+      "title": "{count} download in the queue | {count} downloads in the queue",
+      "description": "They all share one connection, so aMule splits it evenly between them. Set the ones you want soon to High priority and the rest to Low, and the files you care about finish first."
     }
   },
   "health": {

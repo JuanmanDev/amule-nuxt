@@ -173,6 +173,15 @@
       "resumeDone": "{count} indirme sürdürüldü | {count} indirme sürdürüldü",
       "removeDone": "{count} indirme kaldırıldı | {count} indirme kaldırıldı",
       "someFailed": "{count} tanesi değiştirilemedi"
+    },
+    "pausedSection": {
+      "title": "Duraklatıldı",
+      "subtitle": "Siz duraklattınız, sıra değil. Ne indiriliyor ne de kaynak aranıyor.",
+      "resumeAll": "Tümünü sürdür"
+    },
+    "priorityHint": {
+      "title": "{count} indirme kuyrukta | {count} indirme kuyrukta",
+      "description": "Hepsi tek bir bağlantıyı paylaştığı için aMule onu eşit olarak böler. Kısa sürede istediklerinizi Yüksek, gerisini Düşük önceliğe ayarlayın; böylece önem verdiğiniz dosyalar daha önce biter."
     }
   },
   "health": {

@@ -95,6 +95,15 @@
       "resumeDone": "{count} download retomado | {count} downloads retomados",
       "removeDone": "{count} download removido | {count} downloads removidos",
       "someFailed": "{count} não puderam ser alterados"
+    },
+    "pausedSection": {
+      "title": "Pausado",
+      "subtitle": "Pausados por você, não pela fila. Não estão baixando nem procurando fontes.",
+      "resumeAll": "Retomar todos"
+    },
+    "priorityHint": {
+      "title": "{count} download na fila | {count} downloads na fila",
+      "description": "Todos compartilham a mesma conexão, por isso o aMule a divide de forma igual. Defina os que você quer ver concluídos em breve como prioridade Alta e os restantes como Baixa, e os arquivos que mais lhe importam terminam primeiro."
     }
   },
   "health": {

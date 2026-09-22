@@ -173,6 +173,15 @@
       "resumeDone": "Tęsiamas {count} atsiuntimas | Tęsiami {count} atsiuntimai | Tęsiama {count} atsiuntimų",
       "removeDone": "Pašalintas {count} atsiuntimas | Pašalinti {count} atsiuntimai | Pašalinta {count} atsiuntimų",
       "someFailed": "{count} nepavyko pakeisti"
+    },
+    "pausedSection": {
+      "title": "Pristabdyta",
+      "subtitle": "Pristabdyta jūsų, o ne eilės. Jos neatsisiunčia ir neieško šaltinių.",
+      "resumeAll": "Tęsti visus"
+    },
+    "priorityHint": {
+      "title": "{count} atsiuntimas eilėje | {count} atsiuntimai eilėje | {count} atsiuntimų eilėje",
+      "description": "Visi naudojasi vienu ryšiu, todėl aMule paskirsto jį tolygiai. Tiems, kuriuos greitai norite gauti, nustatykite prioritetą Aukšta, o likusiems – Žema, ir jums svarbūs failai bus parsiųsti pirmiausia."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "Jätkati {count} allalaadimist | Jätkati {count} allalaadimist",
       "removeDone": "Eemaldati {count} allalaadimine | Eemaldati {count} allalaadimist",
       "someFailed": "{count} ei õnnestunud muuta"
+    },
+    "pausedSection": {
+      "title": "Peatatud",
+      "subtitle": "Sinu poolt peatatud, mitte järjekorra poolt. Need ei lae alla ega otsi allikaid.",
+      "resumeAll": "Jätka kõik"
+    },
+    "priorityHint": {
+      "title": "{count} allalaadimine järjekorras | {count} allalaadimist järjekorras",
+      "description": "Kõik jagavad ühte ühendust, seega jagab aMule selle võrdselt. Määra need, mida kiiresti vajad, prioriteedile Kõrge ja ülejäänud Madalale, ja sinu jaoks olulised failid saavad esimestena valmis."
     }
   },
   "health": {

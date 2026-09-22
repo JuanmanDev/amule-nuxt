@@ -173,6 +173,15 @@
       "resumeDone": "Nadaljevan je {count} prenos | Nadaljevana sta {count} prenosa | Nadaljevani so {count} prenosi | Nadaljevanih je {count} prenosov",
       "removeDone": "Odstranjen je {count} prenos | Odstranjena sta {count} prenosa | Odstranjeni so {count} prenosi | Odstranjenih je {count} prenosov",
       "someFailed": "{count} jih ni bilo mogoče spremeniti"
+    },
+    "pausedSection": {
+      "title": "V premoru",
+      "subtitle": "Zaustavili ste jih vi, ne vrsta. Niti se ne prenašajo niti ne iščejo virov.",
+      "resumeAll": "Nadaljuj vse"
+    },
+    "priorityHint": {
+      "title": "{count} prenos v vrsti | {count} prenosa v vrsti | {count} prenosi v vrsti | {count} prenosov v vrsti",
+      "description": "Vsi si delijo eno povezavo, zato jih aMule razporedi enakomerno. Določite tiste, ki jih želite kmalu, kot prioriteto Visoka, preostale pa Nizka – datoteke, na katerih vam je veliko, se bodo končale prve."
     }
   },
   "health": {

@@ -173,6 +173,15 @@
       "resumeDone": "Continuouse {count} descarga | Continuáronse {count} descargas",
       "removeDone": "Retirouse {count} descarga | Retiráronse {count} descargas",
       "someFailed": "Non se puideron cambiar {count}"
+    },
+    "pausedSection": {
+      "title": "Pausada",
+      "subtitle": "Pausadas por vostede, non pola cola. Non se están descargando nin buscando fontes.",
+      "resumeAll": "Continuar todas"
+    },
+    "priorityHint": {
+      "title": "{count} descarga na cola | {count} descargas na cola",
+      "description": "Todas comparten unha soa conexión, polo que aMule a reparte a partes iguais. Poña en prioridade Alta as que queira ter pronto e as demais en Baixa, e os ficheiros que lle importan terminarán antes."
     }
   },
   "health": {

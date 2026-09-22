@@ -173,6 +173,15 @@
       "resumeDone": "Nastavljeno {count} preuzimanje | Nastavljena {count} preuzimanja | Nastavljeno {count} preuzimanja",
       "removeDone": "Uklonjeno {count} preuzimanje | Uklonjena {count} preuzimanja | Uklonjeno {count} preuzimanja",
       "someFailed": "{count} nije bilo moguće promijeniti"
+    },
+    "pausedSection": {
+      "title": "Pauzirano",
+      "subtitle": "Pauzirano od strane vas, a ne reda čekanja. Ne preuzimaju se niti se traže izvori.",
+      "resumeAll": "Nastavi sve"
+    },
+    "priorityHint": {
+      "title": "Nema preuzimanja u redu čekanja | {count} preuzimanje u redu čekanja | {count} preuzimanja u redu čekanja",
+      "description": "Svi dijele jednu vezu, pa ih aMule ravnomjerno raspoređuje. Postavite prioritet Visok za one koje želite uskoro, a Nizak za ostale, pa će datoteke koje su vam važne završiti prve."
     }
   },
   "health": {

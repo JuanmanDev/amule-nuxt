@@ -173,6 +173,15 @@
       "resumeDone": "{count} descarga reanudada | {count} descargas reanudadas",
       "removeDone": "{count} descarga eliminada | {count} descargas eliminadas",
       "someFailed": "No se pudieron cambiar {count}"
+    },
+    "pausedSection": {
+      "title": "Pausada",
+      "subtitle": "Pausadas por ti, no por la cola. No se están descargando ni buscando fuentes.",
+      "resumeAll": "Reanudar todas"
+    },
+    "priorityHint": {
+      "title": "{count} descarga en la cola | {count} descargas en la cola",
+      "description": "Todas comparten una sola conexión, por lo que aMule la reparte a partes iguales. Pon en prioridad Alta las que quieras tener pronto y las demás en Baja, y los archivos que te importan terminarán antes."
     }
   },
   "health": {

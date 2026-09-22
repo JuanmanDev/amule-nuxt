@@ -173,6 +173,15 @@
       "resumeDone": "Heldt fram {count} nedlasting | Heldt fram {count} nedlastingar",
       "removeDone": "Fjerna {count} nedlasting | Fjerna {count} nedlastingar",
       "someFailed": "{count} kunne ikkje endrast"
+    },
+    "pausedSection": {
+      "title": "Pausa",
+      "subtitle": "Pausa av deg, ikkje av køen. Korkje lastar dei ned eller leitar etter kjelder.",
+      "resumeAll": "Hald fram alle"
+    },
+    "priorityHint": {
+      "title": "{count} nedlasting i køen | {count} nedlastingar i køen",
+      "description": "Dei deler alle éi sambinding, så aMule deler ho likt mellom dei. Set dei du snart vil ha til prioritet Høg og resten til Låg, så vert filene du bryr deg om ferdige først."
     }
   },
   "health": {
