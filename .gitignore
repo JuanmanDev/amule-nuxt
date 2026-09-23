@@ -29,6 +29,7 @@ logs
 test-results/
 playwright-report/
 .playwright/
+.playwright-mcp/
 
 # Created by `nuxt dev --host 0.0.0.0` on Windows
 0.0.0.0/
