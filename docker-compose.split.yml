@@ -25,6 +25,10 @@ services:
       - SERVICES=amule
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
       - AMULE_EC_PORT=4712
+      # amuleapi (aMule 3.1's REST API) runs beside the daemon when it has a
+      # password; the web container then asks it first and keeps EC as fallback.
+      - AMULE_API_PASSWORD=${AMULE_API_PASSWORD:-amule-api}
+      - AMULE_API_PORT=4713
     ports:
       - "${ED2K_TCP_PORT:-4662}:4662"       # aMule eD2k TCP
       - "${ED2K_UDP_PORT:-4665}:4665/udp"   # aMule eD2k UDP
@@ -68,6 +72,9 @@ services:
       - AMULE_EC_HOST=amuled
       - AMULE_EC_PORT=4712
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:-amule}
+      - AMULE_API_HOST=amuled
+      - AMULE_API_PORT=4713
+      - AMULE_API_PASSWORD=${AMULE_API_PASSWORD:-amule-api}
       - NUXT_PORT=3000
       - WS_PORT=${WS_PORT:-3001}
       - AMULE_DATA_DIR=/data/amule-nuxt

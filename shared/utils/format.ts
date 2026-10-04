@@ -63,8 +63,16 @@ export function formatPercent(percent: number | undefined | null): string {
 export function formatEta(remainingBytes: number, kbPerSecond: number): string | null {
     if (!(remainingBytes > 0) || !(kbPerSecond > 0)) return null;
 
-    const seconds = remainingBytes / (kbPerSecond * 1024);
-    if (!Number.isFinite(seconds)) return null;
+    return formatSeconds(remainingBytes / (kbPerSecond * 1024));
+}
+
+/**
+ * A duration in seconds, in the same compact form as the ETA ("2h 5m").
+ * Null for anything that is not a finite, non-negative number.
+ */
+export function formatSeconds(seconds: number | null | undefined): string | null {
+    if (typeof seconds !== 'number' || !Number.isFinite(seconds) || seconds < 0) return null;
+    if (seconds === 0) return '0s';
 
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);

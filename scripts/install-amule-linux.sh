@@ -2,14 +2,14 @@
 # Install the aMule daemon on Linux.
 #
 # Distributions still package aMule 2.3.3 (2021), so this installs the upstream
-# 3.0.1 release AppImage instead. It is unpacked rather than run directly, which
+# 3.1.0 release AppImage instead. It is unpacked rather than run directly, which
 # avoids the FUSE requirement; the unpacked launcher picks a binary out of the
 # bundle by the name it was invoked as (read from ARGV0), so each entry point
 # gets a small wrapper on PATH.
 
 set -euo pipefail
 
-AMULE_VERSION="${AMULE_VERSION:-3.0.1}"
+AMULE_VERSION="${AMULE_VERSION:-3.1.0}"
 PREFIX="${PREFIX:-$HOME/.local}"
 BUNDLE_DIR="$PREFIX/lib/amule-$AMULE_VERSION"
 BIN_DIR="$PREFIX/bin"
@@ -46,7 +46,7 @@ mkdir -p "$(dirname "$BUNDLE_DIR")" "$BIN_DIR"
 mv "$TMP_DIR/squashfs-root" "$BUNDLE_DIR"
 
 echo "Installing wrappers into $BIN_DIR..."
-for binary in amuled amulecmd amulegui amuleweb ed2k; do
+for binary in amuled amuleapi amulecmd amulegui amuleweb ed2k; do
     [ -x "$BUNDLE_DIR/usr/bin/$binary" ] || continue
     printf '#!/bin/sh\nexec env ARGV0=%s "%s/AppRun" "$@"\n' "$binary" "$BUNDLE_DIR" \
         > "$BIN_DIR/$binary"

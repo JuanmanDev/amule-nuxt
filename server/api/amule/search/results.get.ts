@@ -4,9 +4,9 @@
  */
 
 import type { ApiResponse } from '../../../../shared/types/api';
-import type { SearchResult } from '../../../utils/amule-types';
+import type { SearchResultsPage } from '../../../utils/amule-backend';
 
-export default defineEventHandler(async (): Promise<ApiResponse<{ results: SearchResult[]; progress: number }>> => {
+export default defineEventHandler(async (): Promise<ApiResponse<SearchResultsPage>> => {
     try {
         const client = getAmuleClient();
         const data = await client.getSearchResults();

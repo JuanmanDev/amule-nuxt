@@ -1,0 +1,59 @@
+{
+  "downloads": [
+    {
+      "hash": "fedcba9876543210fedcba9876543210",
+      "name": "rig-test-two.mkv",
+      "ed2k_link": "ed2k://|file|rig-test-two.mkv|12000000|FEDCBA9876543210FEDCBA9876543210|/",
+      "size_bytes": 12000000,
+      "completed_bytes": 0,
+      "transferred_bytes": 0,
+      "speed_bytes_per_second": 0,
+      "status": "downloading",
+      "priority": "high",
+      "priority_auto": true,
+      "category_index": 0,
+      "sources": {
+        "total": 0,
+        "unavailable": 0,
+        "transferring": 0,
+        "a4af": 0
+      },
+      "progress": {
+        "percent": 0
+      },
+      "kad_comment_lookup_running": false,
+      "hashed_part_count": 0,
+      "total_part_count": 2,
+      "source_ecids": []
+    },
+    {
+      "hash": "0123456789abcdef0123456789abcdef",
+      "name": "rig-test-one.iso",
+      "ed2k_link": "ed2k://|file|rig-test-one.iso|734003200|0123456789ABCDEF0123456789ABCDEF|/",
+      "size_bytes": 734003200,
+      "completed_bytes": 0,
+      "transferred_bytes": 0,
+      "speed_bytes_per_second": 0,
+      "status": "downloading",
+      "priority": "high",
+      "priority_auto": true,
+      "category_index": 0,
+      "sources": {
+        "total": 0,
+        "unavailable": 0,
+        "transferring": 0,
+        "a4af": 0
+      },
+      "progress": {
+        "percent": 0
+      },
+      "kad_comment_lookup_running": false,
+      "hashed_part_count": 0,
+      "total_part_count": 76,
+      "source_ecids": []
+    }
+  ],
+  "total": 2,
+  "offset": 0,
+  "limit": 1000000000
+}

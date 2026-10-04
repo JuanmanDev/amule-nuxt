@@ -21,6 +21,7 @@ import type {
     AmulePreferences,
     BandwidthLimits,
     Download,
+    DownloadPart,
     DownloadPriority,
     SearchResult,
     SearchType,
@@ -193,6 +194,36 @@ function resultOf(entry: { name: string; size: number }, sources: number, result
 
 const ED2K_FILE_LINK = /^ed2k:\/\/\|file\|([^|]+)\|(\d+)\|([0-9a-fA-F]{32})\|/;
 const MAGNET_ED2K = /xt=urn:ed2k:([0-9a-fA-F]{32})/i;
+
+/** aMule's part size, the same 9.28 MiB every client on the network uses. */
+const PART_SIZE = 9.28 * MB;
+
+/**
+ * Turns bytes-done into a part map, the way amuleapi would.
+ *
+ * The chunks leading the file are complete, the trailing ones are the gap, and
+ * a starved download (sources gone) marks the gap `unavailable` instead of
+ * `pending`, which is exactly the state the part bar exists to make visible:
+ * it separates "slow" from "nothing to download from".
+ */
+function synthesizeParts(download: Download, starved: boolean): DownloadPart[] {
+    if (download.status === 'Complete') {
+        return Array.from({ length: Math.max(1, Math.ceil(download.size / PART_SIZE)) }, () => ({
+            state: 'complete' as const,
+            sources: download.sources
+        }));
+    }
+
+    const total = Math.max(1, Math.ceil(download.size / PART_SIZE));
+    const complete = Math.min(total, Math.floor((download.sizeDone / download.size) * total));
+
+    return Array.from({ length: total }, (_, index) => ({
+        state: index < complete ? 'complete' : starved ? 'unavailable' : 'pending',
+        // Chunks already on disk have every source; the gap has the swarm,
+        // except when the swarm is empty.
+        sources: index < complete ? download.sources : starved ? 0 : Math.max(1, download.sources)
+    }));
+}
 
 function parseLink(link: string): { name: string; size: number; hash: string } | null {
     const file = link.trim().match(ED2K_FILE_LINK);
@@ -526,7 +557,11 @@ export class DemoDaemon {
             uploadSpeed: Math.round(upload * 100) / 100,
             downloadSpeed: Math.round(download * 100) / 100,
             queuedClients: s.queuedClients,
-            totalSourceCount: s.downloads.reduce((sum, d) => sum + d.sources, 0)
+            totalSourceCount: s.downloads.reduce((sum, d) => sum + d.sources, 0),
+            // The simulator plays an aMule 3.1 with amuleapi: it serves the part
+            // map, so it says it is that link.
+            transport: 'amuleapi',
+            highId: s.ed2k === 'connected' ? s.clientId >= 16_777_216 : undefined
         };
     }
 
@@ -693,6 +728,24 @@ export class DemoDaemon {
 
     getDownloads(): Download[] {
         return this.state.downloads.map(({ weight, starved, ...download }) => ({ ...download }));
+    }
+
+    /**
+     * One download with its part map.
+     *
+     * The real endpoint layers amuleapi on top of EC; here both roles are one
+     * object, so the map is synthesized from what the simulation already knows:
+     * bytes done decide how many chunks are complete, and a download that has
+     * been starved of sources gets the chunks nobody has.
+     */
+    getDownload(hash: string): Download | undefined {
+        const found = this.state.downloads.find(d => d.hash.toLowerCase() === hash.toLowerCase());
+        if (!found) return undefined;
+
+        const { weight, starved, ...download } = found;
+        download.parts = synthesizeParts(download, starved === true);
+        download.totalParts = download.parts.length;
+        return download;
     }
 
     addLinks(links: string[]): AddLinksResult {

@@ -156,6 +156,9 @@
                 <p class="font-medium truncate" :title="file.fileName" :style="{ viewTransitionName: titleTransitionName(details.rowName(keyOfFile(file), 'sh')) }">{{ file.fileName }}</p>
                 <!-- Only when something is happening: the size is already in the
                      row below, and a badge repeating it was just noise -->
+                <UBadge v-if="file.uploadingClients" variant="subtle" size="sm" class="shrink-0" color="success" icon="i-heroicons-arrow-up">
+                  {{ $t('shared.uploadingTo', { count: file.uploadingClients }, file.uploadingClients) }}<template v-if="file.uploadSpeed"> · {{ formatSpeed(file.uploadSpeed) }}</template>
+                </UBadge>
                 <UBadge v-if="file.onQueue > 0" variant="subtle" size="sm" class="shrink-0" color="info">
                   {{ $t('shared.queued', { count: file.onQueue }) }}
                 </UBadge>
@@ -237,18 +240,18 @@
 
     <!-- Details -->
     <FileDetailsModal
-      v-if="selected"
+      v-if="selectedView"
       :model-value="detailsOpen"
       :shared="details.shared.value"
       :title="$t('shared.detailsTitle')"
       @update:model-value="value => value ? (detailsOpen = true) : closeDetails()"
-      :file-name="selected.fileName"
-      :subtitle="selected.fullPath"
+      :file-name="selectedView.fileName"
+      :subtitle="selectedView.fullPath || selectedView.directory"
       :facts="facts"
-      :hash="selected.hash"
-      :ed2k-link="selected.ed2kLink"
-      :comment="selected.comment"
-      :page-path="selected.hash ? `/shared?file=${selected.hash}` : undefined"
+      :hash="selectedView.hash"
+      :ed2k-link="selectedView.ed2kLink"
+      :comment="selectedView.comment"
+      :page-path="selectedView.hash ? `/shared?file=${selectedView.hash}` : undefined"
     />
 
     <RelatedPages :pages="['uploads', 'downloads', 'statistics']" />
@@ -257,8 +260,9 @@
 
 <script setup lang="ts">
 import type { SharedFile } from '../../server/utils/amule-types';
-import { formatBytes } from '#shared/utils/format';
+import { formatBytes, formatSpeed } from '#shared/utils/format';
 import type { SortOption } from '#shared/utils/sorting';
+import { mergeSharedDetail } from '../utils/downloadDetail';
 
 const { copy } = useClipboard();
 
@@ -406,9 +410,33 @@ function copySelectedLinks() {
   copy(selectionLinks.value.join('\n'), t('selection.linksCopied', { count }, count));
 }
 
+/**
+ * The open file's detail reading. Over amuleapi (aMule 3.1) it adds what the
+ * list leaves out - directory, upload queue, media; over EC it repeats the list
+ * entry. Asked for once per opening, not on every poll.
+ */
+const selectedDetail = ref<SharedFile | null>(null);
+const { getSharedFile } = useAmuleApi();
+
+watch([detailsOpen, () => selected.value?.hash], ([opened, hash]) => {
+  selectedDetail.value = null;
+  if (!opened || !hash) return;
+
+  const controller = new AbortController();
+  getSharedFile(hash, { signal: controller.signal })
+    .then(response => {
+      if (!controller.signal.aborted && response.success && response.data) selectedDetail.value = response.data;
+    })
+    .catch(() => undefined);
+  onWatcherCleanup(() => controller.abort());
+});
+
+/** The live list entry with the detail merged in. */
+const selectedView = computed(() => mergeSharedDetail(selected.value, selectedDetail.value));
+
 // The same facts the uploads page shows for a file being sent: one source
 const { factsOf } = useSharedFileFacts();
-const facts = computed(() => (selected.value ? factsOf(selected.value) : []));
+const facts = computed(() => (selectedView.value ? factsOf(selectedView.value) : []));
 
 async function refresh() {
   refreshing.value = true;

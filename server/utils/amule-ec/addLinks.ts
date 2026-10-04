@@ -11,13 +11,16 @@ import type { AddLinkResult, AddLinksResult } from '../../../shared/types/api';
 import type { AmuleECClient } from './AmuleECClient';
 import { extractEd2kHash } from './links';
 
+/** The three calls this needs - which the EC client and the backend both have. */
+type LinkClient = Pick<AmuleECClient, 'getDownloads' | 'getSharedFiles' | 'addLink'>;
+
 interface KnownFile {
     name: string;
     where: 'queue' | 'shared';
 }
 
 /** Indexes everything aMule already knows, keyed by file hash. */
-async function loadKnownFiles(client: AmuleECClient): Promise<Map<string, KnownFile>> {
+async function loadKnownFiles(client: LinkClient): Promise<Map<string, KnownFile>> {
     const [queued, shared] = await Promise.all([
         client.getDownloads().catch(() => []),
         client.getSharedFiles().catch(() => [])
@@ -36,7 +39,7 @@ async function loadKnownFiles(client: AmuleECClient): Promise<Map<string, KnownF
 }
 
 export async function addLinksWithStatus(
-    client: AmuleECClient,
+    client: LinkClient,
     rawLinks: string[]
 ): Promise<AddLinksResult> {
     const links = rawLinks.map(link => link.trim()).filter(link => link.length > 0);

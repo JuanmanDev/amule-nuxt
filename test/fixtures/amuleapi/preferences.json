@@ -1,0 +1,151 @@
+{
+  "general": {
+    "version_check_enabled": false,
+    "daemon_host_name": "",
+    "nickname": "rig-310",
+    "user_hash": "fabc1c101e0e9fa1f88e275a536e6f01"
+  },
+  "connection": {
+    "autoconnect": false,
+    "bind_address": "",
+    "bind_interface": "",
+    "extended_udp_port_enabled": true,
+    "max_connection_count": 500,
+    "max_download_kibibytes_per_second": 2048,
+    "max_sources_per_file_count": 300,
+    "max_upload_kibibytes_per_second": 512,
+    "ed2k_enabled": false,
+    "kad_enabled": false,
+    "proxy_auth_enabled": false,
+    "proxy_enabled": false,
+    "proxy_host": "",
+    "proxy_port": 1080,
+    "proxy_type": "socks5",
+    "proxy_user": "",
+    "reconnect_on_connection_loss": false,
+    "tcp_port": 4682,
+    "udp_port": 4692,
+    "upload_slot_min_kibibytes_per_second": 10,
+    "upnp_supported": true,
+    "upnp_enabled": false,
+    "upnp_control_point_port": 50010
+  },
+  "directories": {
+    "rescan_on_startup": true,
+    "exclude_patterns": ".DS_Store|._*|.Spotlight-V100|.Trashes|.fseventsd|.DocumentRevisions-V100|.TemporaryItems|.apdisk|Thumbs.db|ehthumbs.db|desktop.ini|.directory",
+    "exclude_patterns_use_regex": false,
+    "follow_symlinks": true,
+    "incoming_path": "/root/amule310/dl/incoming",
+    "share_hidden": false,
+    "shared_paths": [
+      "/root/amule310/shared"
+    ],
+    "temp_path": "/root/amule310/dl/temp"
+  },
+  "files": {
+    "add_new_downloads_paused": false,
+    "trust_unverified_aich_hashes": false,
+    "create_sparse_files": true,
+    "endgame_mode_enabled": true,
+    "ffprobe_path": "",
+    "ich_enabled": true,
+    "media_metadata_enabled": true,
+    "min_free_space_mebibytes": 1,
+    "mmap_enabled": false,
+    "mmap_supported": true,
+    "new_downloads_auto_priority_enabled": true,
+    "new_shared_files_auto_priority_enabled": true,
+    "preallocate_full_file_size": false,
+    "prioritize_first_last_chunks": false,
+    "save_sources_for_rare_files": false,
+    "on_finished_start_next_alphabetically": false,
+    "on_finished_start_next_paused": false,
+    "on_finished_start_next_in_same_category": false,
+    "stop_on_low_disk_space": true
+  },
+  "servers": {
+    "update_list_at_startup": false,
+    "autoconnect_static_servers_only": false,
+    "dead_server_retry_count": 3,
+    "manual_servers_high_priority": false,
+    "remove_dead_servers": true,
+    "safe_server_connect_enabled": false,
+    "smart_lowid_check_enabled": true,
+    "update_list_from_client": false,
+    "update_list_from_server": false,
+    "update_url": "",
+    "server_priority_system_enabled": true
+  },
+  "security": {
+    "ipfilter_auto_update_enabled": true,
+    "ipfilter_min_access_level": 127,
+    "ipfilter_clients_enabled": true,
+    "ipfilter_include_lan_ips": true,
+    "ipfilter_servers_enabled": true,
+    "ipfilter_update_url": "",
+    "protocol_obfuscation_enabled": true,
+    "obfuscation_requested": true,
+    "obfuscation_required": false,
+    "reject_spoofed_source_ips": true,
+    "shared_files_visibility": "nobody",
+    "secure_identification_enabled": true,
+    "system_ipfilter_enabled": false
+  },
+  "message_filter": {
+    "accept_from_friends_only": false,
+    "accept_from_known_clients_only": true,
+    "filter_by_keyword": false,
+    "comment_keywords": "",
+    "enabled": true,
+    "filter_all_messages": false,
+    "filter_comments": false,
+    "keywords": "",
+    "log_filtered_messages": true
+  },
+  "remote_controls": {
+    "webserver": {
+      "enabled": false,
+      "guest_enabled": false,
+      "port": 4711,
+      "refresh_seconds": 120,
+      "template_name": "",
+      "gzip_enabled": true
+    },
+    "amuleapi": {
+      "bind_address": "127.0.0.1",
+      "enabled": false,
+      "port": 4713
+    }
+  },
+  "online_signature": {
+    "directory": "/root/amule310/conf/",
+    "enabled": false,
+    "update_frequency_seconds": 5
+  },
+  "advanced": {
+    "file_buffer_bytes": 240000,
+    "kad_max_concurrent_source_search_count": 30,
+    "kad_source_reask_minutes": 30,
+    "max_new_connections_per_5_seconds": 50,
+    "max_upload_queue_client_count": 5000,
+    "server_keepalive_timeout_minutes": 0,
+    "source_reask_minutes": 15,
+    "verbose_logging": false
+  },
+  "kad": {
+    "update_url": ""
+  },
+  "geoip": {
+    "auto_update_enabled": false,
+    "custom_update_url": "",
+    "db_loaded": false,
+    "db_path": "/root/amule310/conf/geoip.mmdb",
+    "download_in_progress": false,
+    "enabled": false,
+    "last_update_status": "Failed to download geoip.mmdb from https://download.db-ip.com/free/dbip-country-lite-2026-09.mmdb.gz",
+    "loaded_source": "",
+    "maxmind_license": "",
+    "source": "dbip",
+    "supported": true
+  }
+}

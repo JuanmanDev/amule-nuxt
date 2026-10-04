@@ -1,0 +1,45 @@
+{
+  "hash": "5b594405444067f5eb0c8b3d0d3af141",
+  "name": "rig-shared-sample.bin",
+  "ed2k_link": "ed2k://|file|rig-shared-sample.bin|20971520|5B594405444067F5EB0C8B3D0D3AF141|/",
+  "size_bytes": 20971520,
+  "priority": "high",
+  "priority_auto": true,
+  "sources": {
+    "complete": 0,
+    "complete_min": 0,
+    "complete_max": 0
+  },
+  "uploaded_bytes_session": 0,
+  "uploaded_bytes_total": 0,
+  "request_count_session": 0,
+  "request_count_total": 0,
+  "accepted_request_count_session": 0,
+  "accepted_request_count_total": 0,
+  "upload_speed_bytes_per_second": 0,
+  "uploading_client_count": 0,
+  "last_upload_at": null,
+  "shared_since_at": 1791077794,
+  "hashed_part_count": 0,
+  "file_type": "disc_image",
+  "upload_ratio": 0,
+  "directory": "/root/amule310/shared",
+  "incomplete": false,
+  "aich_hash": "ZH6CHRR4FZR2YBFPA5IBHHY23AQHAXGU",
+  "total_part_count": 3,
+  "parts": [
+    {
+      "sources": 0
+    },
+    {
+      "sources": 0
+    },
+    {
+      "sources": 0
+    }
+  ],
+  "upload_queue_count": 0,
+  "my_comment": "",
+  "my_rating": 0,
+  "media": null
+}

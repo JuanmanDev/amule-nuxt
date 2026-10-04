@@ -114,6 +114,41 @@ describe('demo daemon', () => {
         expect(daemon.getPreferences().connection.maxDownload).toBe(900);
         expect(daemon.getStatistics().downloadLimit).toBe(900);
     });
+
+    it('draws a part map that matches how far the download has come', () => {
+        const daemon = fresh();
+        const active = daemon.getDownloads().find(d => d.status !== 'Complete')!;
+        const detail = daemon.getDownload(active.hash)!;
+
+        expect(detail.parts).toBeDefined();
+        expect(detail.totalParts).toBe(detail.parts!.length);
+
+        const expected = Math.floor((active.sizeDone / detail.size) * detail.parts!.length);
+        expect(detail.parts!.filter(p => p.state === 'complete').length).toBe(expected);
+        expect(detail.parts!.some(p => p.state === 'pending')).toBe(true);
+    });
+
+    it('answers the whole file as complete when it is finished', () => {
+        const daemon = fresh();
+        const complete = daemon.getDownloads().find(d => d.status === 'Complete');
+        if (!complete) return;
+        const detail = daemon.getDownload(complete.hash)!;
+
+        expect(detail.parts!.length).toBe(Math.ceil(detail.size / (9.28 * 1024 * 1024)));
+        expect(detail.parts!.every(p => p.state === 'complete')).toBe(true);
+    });
+
+    it('does not leak the fields the queue view never sees', () => {
+        const daemon = fresh();
+        const any = daemon.getDownloads()[0]!;
+
+        expect((any as any).weight).toBeUndefined();
+        expect((any as any).starved).toBeUndefined();
+    });
+
+    it('answers no such download for a hash it does not know', () => {
+        expect(fresh().getDownload('00000000000000000000000000000000')).toBeUndefined();
+    });
 });
 
 describe('search result pool', () => {
@@ -149,6 +184,23 @@ describe('demo router', () => {
         expect(call('POST', `/api/amule/downloads/${hash}/priority`, { priority: 'High' }).success).toBe(true);
         expect(call('POST', `/api/amule/downloads/${hash}/resume`).success).toBe(true);
         expect(call('POST', '/api/amule/downloads/add', {}).success).toBe(false);
+    });
+
+    it('serves one download with its part map', () => {
+        const download = daemon.getDownloads().find(d => d.status !== 'Complete')!;
+        const response = call('GET', `/api/amule/downloads/${download.hash}`);
+
+        expect(response.success).toBe(true);
+        expect(response.data.hash).toBe(download.hash);
+        expect(Array.isArray(response.data.parts)).toBe(true);
+        expect(response.data.parts.length).toBe(response.data.totalParts);
+        expect((response.data as any).weight).toBeUndefined();
+    });
+
+    it('refuses a hash the queue does not hold', () => {
+        const response = call('GET', '/api/amule/downloads/00000000000000000000000000000000');
+        expect(response.success).toBe(false);
+        expect(response.data).toBeUndefined();
     });
 
     it('lists the MCP tools from a snapshot that matches the server', () => {

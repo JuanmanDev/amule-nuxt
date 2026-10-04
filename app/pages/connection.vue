@@ -4,6 +4,11 @@
       <div>
         <h1 class="text-3xl font-bold mb-1">Connection</h1>
         <p class="text-gray-600 dark:text-gray-400">eD2k and Kad state, server info and Kad bootstrap</p>
+        <!-- Which link answered: amuleapi (aMule 3.1 REST) or the External Connection -->
+        <p v-if="status?.transport" class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+          <UIcon :name="status.transport === 'amuleapi' ? 'i-heroicons-cloud' : 'i-heroicons-link'" />
+          {{ status.transport === 'amuleapi' ? 'Linked through amuleapi (aMule 3.1 REST API)' : 'Linked through the External Connection' }}
+        </p>
       </div>
       <UButton
         :loading="refreshing"
@@ -40,7 +45,13 @@
           </div>
           <div class="flex justify-between gap-4">
             <dt class="text-gray-500 dark:text-gray-400">Client ID</dt>
-            <dd class="font-medium font-mono text-xs">{{ status?.id || '-' }}</dd>
+            <dd class="font-medium font-mono text-xs">
+              {{ status?.id || '-' }}
+              <!-- Only amuleapi says which kind of ID the server handed out -->
+              <UBadge v-if="status?.ed2kConnected && status.highId !== undefined" :color="status.highId ? 'success' : 'warning'" variant="subtle" size="xs" class="ml-1">
+                {{ status.highId ? 'HighID' : 'LowID' }}
+              </UBadge>
+            </dd>
           </div>
         </dl>
 

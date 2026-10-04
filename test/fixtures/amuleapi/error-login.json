@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "invalid_credentials",
+    "message": "password does not match any configured role"
+  }
+}

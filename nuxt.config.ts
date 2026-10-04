@@ -175,6 +175,14 @@ export default defineNuxtConfig({
     amuleEcPassword: process.env.AMULE_EC_PASSWORD || '',
     amuleEcHost: process.env.AMULE_EC_HOST || 'localhost',
     amuleEcPort: process.env.AMULE_EC_PORT || '4712',
+    // amuleapi, the REST daemon aMule 3.1 ships. Used first when a password is
+    // set, with EC as the fallback; empty leaves the app on EC alone. The host
+    // defaults to the EC host (see server/utils/getAmuleClient.ts).
+    amuleApiPassword: process.env.AMULE_API_PASSWORD || '',
+    amuleApiHost: process.env.AMULE_API_HOST || '',
+    amuleApiPort: process.env.AMULE_API_PORT || '4713',
+    // auto (amuleapi, else EC) | amuleapi | ec
+    amuleBackend: process.env.AMULE_BACKEND || 'auto',
 
     public: {
       // Client-side environment variables (never secrets)

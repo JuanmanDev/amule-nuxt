@@ -37,6 +37,12 @@ export interface SearchSession {
  */
 const POLL_INTERVAL_MS = 2000;
 const MAX_POLLS = 20;
+/**
+ * amuleapi (aMule 3.1) says when a search is over, so a quiet stretch in the
+ * middle of a Kad search no longer reads as the end; the cap only guards
+ * against a search that never reports finishing.
+ */
+const MAX_POLLS_WHILE_RUNNING = 45;
 
 /** Older tabs are dropped past this; the browser should not hold a session's worth of every search ever run. */
 const MAX_SESSIONS = 12;
@@ -160,19 +166,20 @@ export const useSearches = () => {
     /**
      * Reads the results of the daemon's current search into its session.
      * Answers with how many there are, so the poll below can tell when the network
-     * has stopped adding to them.
+     * has stopped adding to them - and, over amuleapi, whether the daemon says
+     * the search is over (`finished` is undefined over EC).
      */
-    async function readResults(id: string): Promise<number> {
+    async function readResults(id: string): Promise<{ count: number; finished?: boolean }> {
         try {
             const response = await api.getSearchResults();
 
             if (!response.success) {
                 patch(id, { status: 'failed', error: response.error || 'Could not read the results' });
-                return -1;
+                return { count: -1 };
             }
 
             const session = sessions.value.find(entry => entry.id === id);
-            if (!session) return -1;
+            if (!session) return { count: -1 };
 
             const fresh = response.data?.results ?? [];
             patch(id, {
@@ -184,10 +191,10 @@ export const useSearches = () => {
                 error: undefined
             });
 
-            return fresh.length;
+            return { count: fresh.length, finished: response.data?.finished };
         } catch (e: any) {
             patch(id, { status: 'failed', error: e?.message || 'Could not read the results' });
-            return -1;
+            return { count: -1 };
         }
     }
 
@@ -196,10 +203,14 @@ export const useSearches = () => {
             // The user started another search, or closed this tab, while we waited
             if (currentId.value !== id) return;
 
-            const count = await readResults(id);
-            const settled = count > 0 && count === previousCount;
+            const { count, finished } = await readResults(id);
+            // The daemon's word when it gives one; otherwise the count settling
+            const settled = finished === undefined
+                ? count > 0 && count === previousCount
+                : finished;
+            const limit = finished === false ? MAX_POLLS_WHILE_RUNNING : MAX_POLLS;
 
-            if (count < 0 || settled || attempt + 1 >= MAX_POLLS) {
+            if (count < 0 || settled || attempt + 1 >= limit) {
                 stopPolling();
                 if (sessions.value.find(session => session.id === id)?.status === 'running') {
                     patch(id, { status: 'done' });

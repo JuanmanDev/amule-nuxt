@@ -161,6 +161,66 @@
       "runningForHint": "Measured since this interface first saw it; the download is older."
     },
     "startNotRecorded": "This download was already in the queue when this app first looked, so its start time is not known.",
+    "partBar": {
+      "ariaLabel": "Part progress: {complete} of {total} parts complete, {pending} pending, {unavailable} with no source",
+      "legend": {
+        "complete": "Complete",
+        "pending": "Pending",
+        "unavailable": "No source"
+      },
+      "tooltips": {
+        "complete": "{count} parts on disk",
+        "pending": "{count} parts waiting on a source",
+        "unavailable": "{count} parts no source has"
+      },
+      "bucketed": "{segments} groups over {parts} parts",
+      "unavailableHint": "Part-by-part progress needs the amuleapi daemon in aMule 3.1; the EC link only reports a part count."
+    },
+    "tabs": {
+      "overview": "Overview",
+      "parts": "Parts",
+      "swarm": "Swarm & Activity"
+    },
+    "parts": {
+      "title": "Parts breakdown",
+      "partNumber": "Part #{number}",
+      "totalParts": "{count} part | {count} parts",
+      "chunkSize": "Standard chunk size: 9.28 MiB (9,728,000 bytes)",
+      "filterAll": "All",
+      "filterComplete": "Complete",
+      "filterAvailable": "Available",
+      "filterUnavailable": "Missing",
+      "searchPlaceholder": "Filter part number or offset...",
+      "statusComplete": "Complete",
+      "statusAvailable": "Available",
+      "statusUnavailable": "Missing",
+      "sourcesCount": "{count} source | {count} sources",
+      "estimatedBadge": "Estimated from EC counts",
+      "liveBadge": "Live part map (amuleapi)",
+      "swarmAvailability": "Swarm availability",
+      "healthySwarm": "Full file available across the swarm",
+      "incompleteSwarm": "{count} missing chunk in swarm | {count} missing chunks in swarm",
+      "noSources": "No sources found",
+      "byteRange": "Byte range",
+      "size": "Size",
+      "status": "Status",
+      "sources": "Sources",
+      "progress": "Progress",
+      "noPartsMatch": "No parts match this filter",
+      "partSize": "Part size"
+    },
+    "swarmDetails": {
+      "title": "Swarm & Availability",
+      "healthy": "Swarm healthy (100% available)",
+      "rare": "Rare file ({count} parts missing in swarm)",
+      "sourcesBreakdown": "Sources breakdown",
+      "transferring": "Transferring right now",
+      "a4af": "Asked for another file (A4AF)",
+      "queued": "No part we need",
+      "totalSources": "Total peer sources",
+      "partsAvailable": "Available chunks in swarm",
+      "timingTitle": "Timing & Activity"
+    },
     "priorities": {
       "Auto": "Auto",
       "High": "High",
@@ -182,6 +242,19 @@
     "priorityHint": {
       "title": "{count} download in the queue | {count} downloads in the queue",
       "description": "They all share one connection, so aMule splits it evenly between them. Set the ones you want soon to High priority and the rest to Low, and the files you care about finish first."
+    },
+    "detail": {
+      "sizeOf": "{done} of {total}",
+      "fileTitle": "File on disk",
+      "directory": "Directory",
+      "partFile": "Part file",
+      "activeTime": "Time spent downloading",
+      "lostToCorruption": "Lost to corruption",
+      "gainedByCompression": "Saved by compression",
+      "ichRecovered": "Packets rescued by I.C.H.",
+      "uploadQueue": "Clients waiting to download it from you",
+      "aichHash": "AICH hash",
+      "aichPending": "Not built yet"
     }
   },
   "health": {
@@ -279,10 +352,17 @@
       "completeSources": "Complete sources",
       "uploadPriority": "Upload priority",
       "completedAt": "Downloaded on",
-      "addedAt": "Added to the queue"
+      "addedAt": "Added to the queue",
+      "uploadingNow": "Uploading to right now",
+      "lastUpload": "Last upload",
+      "sharedSince": "Shared since",
+      "rarestPart": "Rarest part"
     },
     "notRecorded": "Not recorded",
-    "pageLink": "Link to this file"
+    "pageLink": "Link to this file",
+    "uploadingTo": "Uploading to {count} | Uploading to {count}",
+    "never": "Never",
+    "rarestPartValue": "{count} client has it | {count} clients have it"
   },
   "search": {
     "title": "Search",
@@ -341,9 +421,13 @@
         "sources": "Sources",
         "foundBy": "Found by",
         "queueStatus": "Queue status",
-        "queueSources": "Queue sources"
+        "queueSources": "Queue sources",
+        "completeSources": "Complete sources"
       },
-      "show": "Show"
+      "show": "Show",
+      "completeSources": "{count} complete | {count} complete",
+      "completeSourcesHint": "Sources that hold the whole file (reported by amuleapi)",
+      "rating": "Rating"
     },
     "filters": {
       "all": "All",
@@ -460,11 +544,29 @@
       "serverMode": "Server mode",
       "logLevel": "Log level",
       "configTitle": "Configuration",
-      "configDescription": "Connection settings are configured via environment variables. See .env.example for details.",
+      "configDescription": "Connection settings are configured via environment variables: AMULE_EC_* for the External Connection, AMULE_API_* for amuleapi (aMule 3.1) and AMULE_BACKEND to choose. See .env.example for details.",
       "history": "Download history",
       "historyEntries": "Entries",
       "historyOldest": "Oldest entry",
       "historyNotWritable": "The download history cannot be saved: dates will reset on every restart. Put AMULE_DATA_DIR on a volume."
+    },
+    "link": {
+      "title": "Link to aMule",
+      "mode": "Mode",
+      "viaApi": "Using amuleapi",
+      "viaEc": "Using the External Connection",
+      "none": "No link answering yet",
+      "ec": "External Connection",
+      "anyVersion": "every aMule",
+      "updateAvailable": "aMule {version} is available",
+      "apiHint": "Running aMule 3.1? Set AMULE_API_PASSWORD to use its REST API first: live part maps, media details and the daemon's own ETA. The External Connection stays as the fallback.",
+      "disabled": "Off",
+      "notConfigured": "Not configured",
+      "coolingDown": "Paused after a failure",
+      "unreachable": "Not answering",
+      "daemonDown": "amuled not connected",
+      "answering": "Answering",
+      "standby": "Standing by"
     }
   },
   "assistant": {
@@ -619,5 +721,13 @@
     "mcpUnavailable": "The MCP endpoint and the assistant's tools need the aMule Nuxt server. This demo is a static page, so an AI agent cannot drive it. Run the app yourself to use MCP.",
     "pushUnavailableTitle": "Web Push is not available in the demo",
     "pushUnavailable": "Push notifications need the aMule Nuxt server. This demo is a static page; notifications inside the page still work."
+  },
+  "media": {
+    "title": "Title",
+    "artist": "Artist",
+    "album": "Album",
+    "duration": "Length",
+    "codec": "Codec",
+    "bitrate": "Bitrate"
   }
 }

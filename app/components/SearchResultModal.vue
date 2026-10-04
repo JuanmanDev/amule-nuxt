@@ -130,6 +130,7 @@ import type { SearchResult } from '../../server/utils/amule-types';
 import type { FileStatus } from '../composables/useFileStatus';
 import { formatBytes, formatPercent, formatSpeed } from '#shared/utils/format';
 import { fileKind, fileKindIcon } from '#shared/utils/fileKind';
+import { mediaFactList } from '../utils/media';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -172,6 +173,16 @@ const facts = computed(() => {
     { label: t('search.result.fields.extension'), value: result.extension ? result.extension.toUpperCase() : t('common.none') },
     { label: t('search.result.fields.sources'), value: result.sources.toLocaleString() }
   ];
+
+  // amuleapi (aMule 3.1) only. The media line is what the answering server
+  // advertised, not a probe of the file.
+  if (result.completeSources !== undefined) {
+    entries.push({ label: t('search.result.fields.completeSources'), value: result.completeSources.toLocaleString() });
+  }
+  if (result.rating) {
+    entries.push({ label: t('search.result.rating'), value: `${result.rating} / 5` });
+  }
+  entries.push(...mediaFactList(result.media, t));
 
   if (props.searchLabel) {
     entries.push({ label: t('search.result.fields.foundBy'), value: props.searchLabel });

@@ -115,6 +115,61 @@ function applyLabelValues(label: string, values: string[]): string {
     return index === 0 ? `${label}: ${values.join(', ')}` : formatted;
 }
 
+/**
+ * One node of amuleapi's `GET /stats/tree`. The label is the untranslated
+ * English template and the values are typed and raw, which is the same pair EC
+ * carries - so it is formatted by the same rules and reads identically.
+ */
+interface ApiStatsValueLike {
+    type: string;
+    value: number | string;
+    extra?: ApiStatsValueLike | null;
+}
+
+interface ApiStatsNodeLike {
+    label: string;
+    values?: ApiStatsValueLike[];
+    children?: ApiStatsNodeLike[];
+}
+
+function formatApiStatValue(value: ApiStatsValueLike): string {
+    const extra = value.extra
+        ? ` (${formatApiStatValue(value.extra)}${value.extra.type === 'double' ? '%' : ''})`
+        : '';
+    const numeric = Number(value.value ?? 0);
+
+    switch (value.type) {
+        case 'bytes':
+            return formatBytes(numeric) + extra;
+        case 'speed':
+            return `${formatBytes(numeric)}/s` + extra;
+        case 'time':
+            return formatDuration(numeric) + extra;
+        case 'double':
+            return numeric.toFixed(2) + extra;
+        case 'string':
+            return `${value.value ?? ''}${extra}`;
+        default:
+            return `${numeric}${extra}`;
+    }
+}
+
+function buildApiNode(node: ApiStatsNodeLike): StatsTreeNode {
+    return {
+        label: applyLabelValues(node.label ?? '', (node.values ?? []).map(formatApiStatValue)),
+        children: (node.children ?? []).map(buildApiNode)
+    };
+}
+
+/**
+ * Converts amuleapi's statistics tree into the same display tree EC produces.
+ * amuleapi answers with the top-level sections only; EC wraps them in a root.
+ */
+export function buildStatsTreeFromApi(nodes: ApiStatsNodeLike[] | null | undefined): StatsTreeNode | null {
+    if (!nodes?.length) return null;
+    return { label: 'Statistics', children: nodes.map(buildApiNode) };
+}
+
 /** Converts a raw EC statistics node into a display tree. */
 export function buildStatsTree(node: RawTag | null | undefined): StatsTreeNode | null {
     if (!node) return null;

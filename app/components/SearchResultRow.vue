@@ -41,10 +41,26 @@
             {{ sourcesLabel }}
           </span>
 
+          <!-- amuleapi (aMule 3.1) only: how many of those hold the whole file -->
+          <span
+            v-if="result.completeSources"
+            class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400"
+            :title="$t('search.result.completeSourcesHint')"
+          >
+            <UIcon name="i-heroicons-check-badge" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            {{ $t('search.result.completeSources', { count: result.completeSources.toLocaleString() }, result.completeSources) }}
+          </span>
+
+          <span v-if="result.rating" class="flex items-center gap-0.5 text-amber-500" :title="$t('search.result.rating')">
+            <UIcon name="i-heroicons-star-solid" class="w-3.5 h-3.5" />
+            {{ result.rating }}
+          </span>
+
           <UBadge v-if="result.extension" color="neutral" variant="subtle" size="xs" class="hidden sm:inline-flex">
             {{ result.extension.toUpperCase() }}
           </UBadge>
           <span class="hidden sm:inline">{{ kindLabel }}</span>
+          <span v-if="mediaSummary" class="hidden sm:inline text-gray-500 dark:text-gray-500">{{ mediaSummary }}</span>
         </div>
 
         <!-- Only for a file that is actually on its way here -->
@@ -88,7 +104,7 @@
 <script setup lang="ts">
 import type { SearchResult } from '../../server/utils/amule-types';
 import type { FileStatus } from '../composables/useFileStatus';
-import { formatBytes, formatPercent, formatSpeed } from '#shared/utils/format';
+import { formatBytes, formatPercent, formatSeconds, formatSpeed } from '#shared/utils/format';
 import { fileKind, fileKindIcon } from '#shared/utils/fileKind';
 
 const props = defineProps<{
@@ -120,6 +136,16 @@ const sourcesLabel = computed(() => t(
 
 const kindIcon = computed(() => fileKindIcon(props.result.fileName));
 const kindLabel = computed(() => t(`fileKinds.${fileKind(props.result.fileName)}`));
+
+/**
+ * Length and codec the answering server advertised (amuleapi only). A hint:
+ * search metadata is not probed, so it stays one quiet line.
+ */
+const mediaSummary = computed(() => {
+  const media = props.result.media;
+  if (!media) return '';
+  return [formatSeconds(media.durationSeconds ?? null), media.codec].filter(Boolean).join(' · ');
+});
 
 /** No source at all is the one thing worth a colour before downloading. */
 const sourceTone = computed(() =>

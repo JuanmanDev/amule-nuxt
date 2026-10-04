@@ -35,7 +35,7 @@ if [ ! -f "$AMULE_CONF" ]; then
     # aMule rewrites AppVersion on its own, but seeding it with the installed
     # daemon's version keeps a fresh config honest.
     AMULE_VERSION=$(amuled --version 2>&1 | sed -n 's/^aMuleD \([0-9.]*\).*/\1/p' | head -1)
-    [ -n "$AMULE_VERSION" ] || AMULE_VERSION="3.0.1"
+    [ -n "$AMULE_VERSION" ] || AMULE_VERSION="3.1.0"
 
     cat > "$AMULE_CONF" <<EOF
 [eMule]

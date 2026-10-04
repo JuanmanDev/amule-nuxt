@@ -1,0 +1,13 @@
+{
+  "service": "amuleapi",
+  "api_version": "v1",
+  "amuleapi_version": "3.1.0",
+  "daemon_version": "3.1.0",
+  "update": {
+    "check_enabled": false,
+    "checked": false,
+    "latest_version": null,
+    "available": null,
+    "last_checked_at": null
+  }
+}

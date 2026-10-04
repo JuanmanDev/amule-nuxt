@@ -2,7 +2,7 @@
 # Install the aMule daemon on WSL2 (Ubuntu/Debian).
 #
 # Same approach as install-amule-linux.sh: the distribution package is aMule
-# 2.3.3, so the upstream 3.0.1 AppImage is unpacked into ~/.local instead. WSL2
+# 2.3.3, so the upstream 3.1.0 AppImage is unpacked into ~/.local instead. WSL2
 # ships no FUSE by default, which is exactly why the bundle is unpacked rather
 # than executed in place.
 

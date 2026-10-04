@@ -1,0 +1,348 @@
+{
+  "hash": "0123456789abcdef0123456789abcdef",
+  "name": "rig-test-one.iso",
+  "ed2k_link": "ed2k://|file|rig-test-one.iso|734003200|0123456789ABCDEF0123456789ABCDEF|/",
+  "size_bytes": 734003200,
+  "completed_bytes": 0,
+  "transferred_bytes": 0,
+  "speed_bytes_per_second": 0,
+  "status": "paused",
+  "priority": "high",
+  "priority_auto": true,
+  "category_index": 0,
+  "sources": {
+    "total": 0,
+    "unavailable": 0,
+    "transferring": 0,
+    "a4af": 0
+  },
+  "progress": {
+    "percent": 0,
+    "parts": [
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      },
+      {
+        "state": "unavailable",
+        "sources": 0
+      }
+    ]
+  },
+  "kad_comment_lookup_running": false,
+  "hashed_part_count": 0,
+  "total_part_count": 76,
+  "source_ecids": [],
+  "last_seen_complete_at": null,
+  "last_received_at": null,
+  "active_seconds": 0,
+  "available_part_count": 0,
+  "remaining_seconds": null,
+  "lost_to_corruption_bytes": 0,
+  "gained_by_compression_bytes": 0,
+  "ich_recovered_packet_count": 0,
+  "aich_hash": null,
+  "part_file_name": "001.part",
+  "directory": "/root/amule310/dl/temp",
+  "upload_queue_count": 0,
+  "my_comment": "",
+  "my_rating": 0,
+  "a4af_auto": false,
+  "media": null
+}

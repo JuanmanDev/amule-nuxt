@@ -46,6 +46,7 @@ It speaks aMule's native **External Connection (EC) protocol** directly — a Ty
 - **Speaks 38 languages** — the 37 aMule itself ships, plus English, chosen per device and rendered server-side
 - **Tells you when downloads start and finish** — in the page, as an OS notification, and over Web Push with no tab open at all
 - **Paged lists** — 100 rows at a time by default with a per-page selector, so a queue of thousands stays as fast as a queue of ten
+- **aMule 3.1 REST API first, EC as the fallback** — where aMule 3.1's `amuleapi` is configured the app asks it first and gets what EC cannot send: the live part map, media metadata, the daemon's own ETA, complete sources on search hits, disk space. Anything it cannot answer is asked again over EC, so every aMule from 2.3 to 3.1 keeps working
 - **Real EC protocol client** — opcodes and tags mirrored from aMule's own headers, UTF-8 safe, verified against a live daemon
 - **Honest UI states** — every page starts in a loading state, explains *why* something is not progressing, and never claims success the daemon did not confirm
 - **Handles `ed2k:` and `magnet:` links** from the operating system, with a confirmation step
@@ -150,7 +151,7 @@ To build it yourself: `npm run generate:demo`, then serve `.output/public` from 
 
 ## Connecting to aMule
 
-The app never touches aMule's files; it only needs the External Connection interface, which every `amuled` and `amule` build supports.
+The app never touches aMule's files. It needs the External Connection interface, which every `amuled` and `amule` build supports, and on aMule 3.1 it can also use `amuleapi`, the REST daemon that ships with it ([C](#c-amule-31-amuleapi-first-ec-as-the-fallback)).
 
 ### A. You already run an aMule daemon
 
@@ -198,9 +199,9 @@ Already have a daemon, or want the two apart? See
 **On the host:**
 
 ```bash
-# Linux / WSL2 — installs the upstream aMule 3.0.1 release into ~/.local
+# Linux / WSL2 — installs the upstream aMule 3.1.0 release into ~/.local
 npm run install:amule:linux    # or install:amule:wsl2
-# macOS — the 3.0.1 .dmg from https://github.com/amule-org/amule/releases
+# macOS — the 3.1.0 .dmg from https://github.com/amule-org/amule/releases
 # ships amuled alongside the GUI; Homebrew's formula is still 2.3.3
 
 npm run configure:amule    # writes amule.conf with EC enabled and hashes the password
@@ -211,7 +212,50 @@ npm run dev                # start this app
 Distribution packages (`apt install amule-daemon`, `pacman -S amule`, `brew install amule`)
 are still on aMule 2.3.3 from 2021. This app speaks EC to both — the protocol version is
 unchanged at `0x0204` — but 3.x is worth having for the throughput rewrite, so the
-installer scripts and the Docker image pull the upstream 3.0.1 release instead.
+installer scripts and the Docker image pull the upstream 3.1.0 release instead - which also brings amuleapi ([C](#c-amule-31-amuleapi-first-ec-as-the-fallback)).
+
+### C. aMule 3.1: amuleapi first, EC as the fallback
+
+aMule 3.1 ships `amuleapi`, a REST + Server-Sent-Events daemon that runs beside `amuled` (port 4713 by default). Give this app its admin password and it is asked first for everything; EC is asked only when amuleapi cannot answer.
+
+1. Enable it on the daemon's host - in the GUI under *Preferences → Remote Controls*, or headless:
+
+   ```ini
+   # ~/.aMule/amule.conf (stop amuled first: it rewrites the file on exit)
+   [AmuleApi]
+   Enabled=1
+   BindAddress=0.0.0.0     # 127.0.0.1 when this app runs on the same host
+   HttpPort=4713
+   ```
+
+   ```bash
+   amuleapi --set-admin-pass=your_api_password   # required before binding beyond loopback
+   ```
+
+2. Point this app at it, keeping the EC settings as the fallback:
+
+   ```bash
+   AMULE_API_PASSWORD=your_api_password
+   # AMULE_API_HOST=192.168.1.50   # defaults to AMULE_EC_HOST
+   # AMULE_API_PORT=4713
+   ```
+
+3. `/settings` shows which link is answering, the amuleapi and amuled versions, and why a link is not.
+
+What changes with amuleapi:
+
+| | EC (every aMule) | amuleapi (aMule 3.1) |
+|---|---|---|
+| Part bar in the download details | estimated from counts | the real per-part map, with sources per part |
+| ETA | bytes left ÷ current speed | the daemon's own estimate |
+| Media (length, codec, bitrate, artist…) | – | downloads, shared files and search hits |
+| Complete sources on a search hit | – | yes, plus rating |
+| Search end | guessed from the result count settling | reported by the daemon |
+| Free disk space, HighID/LowID, uptime | – | yes |
+| Lists | re-sent every poll | revalidated with ETags: an unchanged queue costs a `304` |
+| Daemon text | in the daemon's language | English, locale-free |
+
+When amuleapi stops answering (not running, wrong password, rate limited, or its own link to `amuled` is down) the app falls back to EC on the next call and leaves amuleapi alone for a short cooldown, so a dead daemon never costs a timeout per request. A *rejection* is different: when amuleapi relays the daemon refusing a command, that answer is shown and the command is not repeated over EC. Set `AMULE_BACKEND=amuleapi` for a daemon whose EC port is loopback-only (aMule 3.1's default) and EC is not reachable at all, or `AMULE_BACKEND=ec` to ignore amuleapi entirely.
 
 ### Configuration reference
 
@@ -220,6 +264,12 @@ installer scripts and the Docker image pull the upstream 3.0.1 release instead.
 | `AMULE_EC_HOST` | `localhost` | Host running the daemon |
 | `AMULE_EC_PORT` | `4712` | External Connection port |
 | `AMULE_EC_PASSWORD` | – | Plain password **or** its MD5 hash |
+| `AMULE_API_PASSWORD` | – | amuleapi (aMule 3.1) admin password. Empty leaves amuleapi off |
+| `AMULE_API_HOST` | `AMULE_EC_HOST` | Host running amuleapi |
+| `AMULE_API_PORT` | `4713` | amuleapi HTTP port |
+| `AMULE_BACKEND` | `auto` | `auto`: amuleapi when configured and answering, EC otherwise · `amuleapi`: amuleapi only · `ec`: EC only |
+| `AMULE_API_ENABLED` | `true` | Docker image only: `false` keeps the bundled daemon's amuleapi from starting. With `SERVICES=all` it needs no password - a random one is made on every start and handed to the app; with `SERVICES=amule` it starts only when `AMULE_API_PASSWORD` is set |
+| `AMULE_API_BIND` | `127.0.0.1` (`all`) / `0.0.0.0` (`amule`) | Docker image only: where the bundled amuleapi listens. Publish `4713`, bind `0.0.0.0` and set `AMULE_API_PASSWORD` to also log in to aMule 3.1's own Web UI |
 | `NUXT_PORT` / `PORT` | `3000` | Port this app listens on |
 | `WS_PORT` | `3001` | Second port, for the live updates: their own WebSocket server. The browser is told this number, so it must be reachable at that same value from outside |
 | `SERVICES` | `all` | Docker only: `all` (daemon + app), `web` (app only), `amule` (daemon only) |
@@ -241,7 +291,7 @@ Every release publishes **two** images to GitHub Container Registry, built from 
 
 | Tags | Contains | For |
 |------|----------|-----|
-| `X.Y.Z`, `X.Y`, `X`, `latest` | aMule 3.0.1 **and** this app (~380 MB) | a fresh daemon, or the daemon container of a split deployment |
+| `X.Y.Z`, `X.Y`, `X`, `latest` | aMule 3.1.0 **and** this app (~380 MB) | a fresh daemon, or the daemon container of a split deployment |
 | `X.Y.Z-web`, `X.Y-web`, `X-web`, `web` | this app only (~245 MB) | a daemon you already run somewhere |
 
 Pin as tightly as you want to be surprised:
@@ -406,7 +456,7 @@ files read it from `.env` instead. Every published host port is overridable from
 `.env` (`WEB_PORT`, `EC_PORT`, `ED2K_TCP_PORT`, …), and both `image:` fields take a
 registry tag if you would rather pull than build.
 
-The full image bundles **aMule 3.0.1** — the upstream release AppImage, unpacked at build
+The full image bundles **aMule 3.1.0** — the upstream release AppImage, unpacked at build
 time, since Debian still packages 2.3.3. `AMULE_VERSION` plus the two `AMULE_SHA256_*`
 build args in the `Dockerfile` pin it; bumping the version means refreshing both
 checksums, because each architecture ships its own AppImage.
@@ -565,6 +615,10 @@ server/
 shared/utils/    format, sorting, downloadHealth, addLinks, statsFigures (both sides)
 test/            unit tests, plus test/e2e Playwright specs
 ```
+
+### Notes on the amuleapi integration
+
+`server/utils/amule-backend.ts` is the one client the routes, the live monitor and the MCP tools use. It keeps the EC client's method names and return shapes and routes each call: amuleapi first (`server/utils/amule-api`), EC on an outage. The REST shapes are translated once, in `amule-api/mappers.ts`, and the tests run those mappers against responses captured from a live aMule 3.1.0 amuleapi (`test/fixtures/amuleapi`). Over EC the app behaves exactly as before.
 
 ### Notes on the EC protocol implementation
 

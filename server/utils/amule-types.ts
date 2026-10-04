@@ -19,6 +19,25 @@ export interface CommandResult {
 
 // ========== Connection & Status ==========
 
+/**
+ * Which link answered: amuleapi (the REST daemon aMule 3.1 ships) or the
+ * External Connection every aMule speaks. See `server/utils/amule-backend.ts`.
+ */
+export type AmuleTransport = 'amuleapi' | 'ec';
+
+/**
+ * Audio/video metadata amuled probed with ffprobe (aMule 3.1+, amuleapi only).
+ * Every field is optional: a file can carry a codec and nothing else.
+ */
+export interface MediaInfo {
+    durationSeconds?: number;
+    bitrateKbps?: number;
+    codec?: string;
+    artist?: string;
+    album?: string;
+    title?: string;
+}
+
 export interface StatusResult {
     /** True when the External Connection to the daemon is up. */
     connected: boolean;
@@ -36,6 +55,14 @@ export interface StatusResult {
     downloadSpeed: number;
     queuedClients: number;
     totalSourceCount: number;
+    /** The link that produced this reading. */
+    transport?: AmuleTransport;
+    /** True for a HighID; only amuleapi reports it. */
+    highId?: boolean;
+    /** Free bytes where part files live, null when the daemon has no figure (amuleapi only). */
+    tempFreeBytes?: number | null;
+    /** Free bytes in the default Incoming directory (amuleapi only). */
+    incomingFreeBytes?: number | null;
 }
 
 // ========== Download Management ==========
@@ -49,6 +76,21 @@ export type DownloadStatus =
     | 'Hashing'
     | 'Error'
     | 'Waiting';
+
+/**
+ * State of one ~9.28 MiB chunk of a downloading file.
+ *
+ * `pending` is a gap that at least one source offers, `unavailable` a gap
+ * nobody in the swarm has. Only amuleapi reports this: the EC link carries a
+ * part count and never a per-part map.
+ */
+export type DownloadPartState = 'complete' | 'pending' | 'unavailable';
+
+export interface DownloadPart {
+    state: DownloadPartState;
+    /** Clients in the swarm currently offering this chunk. */
+    sources: number;
+}
 
 export interface Download {
     hash: string;
@@ -75,6 +117,39 @@ export interface Download {
     lastReceived: number;
     /** Unix seconds when the file was last seen complete on a source. */
     lastSeenComplete: number;
+
+    /**
+     * One entry per ~9.28 MiB chunk, straight from amuleapi
+     * (`GET /api/v1/downloads/{hash}` -> `progress.parts`). Undefined when only
+     * the EC link is answering: EC sends a part *count* (availableParts), never
+     * a per-part map, so its absence is the fallback, not a bug.
+     */
+    parts?: DownloadPart[];
+    /** How many chunks `parts` covers; `ceil(size / 9.28 MiB)` per amuleapi. */
+    totalParts?: number;
+
+    /*
+     * Detail-only fields amuleapi adds on GET /downloads/{hash}. EC has no
+     * equivalent, so each is undefined on the EC path.
+     */
+
+    /** The daemon's own ETA in seconds; null when stalled or paused. */
+    remainingSeconds?: number | null;
+    /** Seconds spent actively downloading. */
+    activeSeconds?: number;
+    /** Directory the file lives in: Temp while downloading. */
+    directory?: string;
+    /** The `.part` control file name, e.g. `001.part`. */
+    partFileName?: string;
+    aichHash?: string | null;
+    lostToCorruptionBytes?: number;
+    gainedByCompressionBytes?: number;
+    /** Packets rescued by Intelligent Corruption Handling. */
+    ichRecoveredPackets?: number;
+    /** Clients waiting on this file's upload queue (it is shared while downloading). */
+    uploadQueueCount?: number;
+    categoryIndex?: number;
+    media?: MediaInfo | null;
 
     /*
      * Timestamps this app records itself, in epoch ms. aMule reports neither: a
@@ -124,6 +199,8 @@ export interface Upload {
     fileHash: string;
     /** The daemon's numeric id (ECID) of the file being sent, 0 when unknown. */
     fileEcId: number;
+    /** ISO 3166-1 alpha-2, lower case, resolved by the daemon's GeoIP (amuleapi only). */
+    countryCode?: string | null;
 }
 
 export interface SharedFile {
@@ -154,6 +231,27 @@ export interface SharedFile {
     completedAt?: number;
     /** Epoch ms it was added to the queue, when this app saw it happen. */
     addedAt?: number;
+
+    /*
+     * amuleapi-only. The list carries the live upload figures; the detail view
+     * (GET /api/amule/shared/{hash}) adds the rest.
+     */
+
+    /** Combined upload rate for this file, KB/s. */
+    uploadSpeed?: number;
+    /** Clients this file is being uploaded to right now. */
+    uploadingClients?: number;
+    /** Unix seconds of the last byte sent, null when it never uploaded. */
+    lastUploadAt?: number | null;
+    /** Unix seconds it was completed or first shared. */
+    sharedSince?: number | null;
+    media?: MediaInfo | null;
+    /** Directory on the daemon's disk (detail only). */
+    directory?: string;
+    /** Per part, how many requesting clients hold it (detail only). */
+    partSources?: number[] | null;
+    /** The user's own rating, 0-5 (detail only). */
+    rating?: number;
 }
 
 export interface AmulePreferences {
@@ -162,8 +260,9 @@ export interface AmulePreferences {
     connection: {
         maxUpload: number;
         maxDownload: number;
-        uploadCapacity: number;
-        downloadCapacity: number;
+        /** Line capacity that scales the graphs. EC only: amuleapi does not expose it. */
+        uploadCapacity?: number;
+        downloadCapacity?: number;
         maxConnections: number;
         maxSourcesPerFile: number;
         tcpPort: number;
@@ -216,6 +315,20 @@ export interface SearchResult {
      * copying, sharing, and adding the file by link rather than by search index.
      */
     ed2kLink: string;
+
+    /*
+     * amuleapi-only: EC's search results carry none of these (see the note on
+     * `sources` above about SOURCE_COUNT_XFER).
+     */
+
+    /** Sources that hold the whole file. */
+    completeSources?: number;
+    /** True when the file is already queued, downloaded or shared here. */
+    alreadyDownloaded?: boolean;
+    /** Aggregated quality rating, 0 when unrated. */
+    rating?: number;
+    /** Metadata the answering server advertised - a hint, not a probe. */
+    media?: MediaInfo | null;
 }
 
 export interface ProgressResult {
@@ -237,6 +350,10 @@ export interface Server {
     priority: 'High' | 'Normal' | 'Low';
     failed: number;
     static: boolean;
+    /** amuleapi-only extras. */
+    countryCode?: string | null;
+    version?: string | null;
+    maxUsers?: number;
 }
 
 // ========== Logs & Statistics ==========

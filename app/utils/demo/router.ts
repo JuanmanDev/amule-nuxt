@@ -76,6 +76,14 @@ export function handleDemoRequest(daemon: DemoDaemon, request: DemoRequest): Api
                         nodeVersion: 'none (static demo)',
                         uptime: Math.floor(performance.now() / 1000),
                         amule: { host: 'simulated', port: '—' },
+                        // A simulated aMule 3.1: amuleapi answers, EC stands by
+                        backend: {
+                            mode: 'auto',
+                            active: 'amuleapi',
+                            amuleapi: { configured: true, address: 'simulated:4713', available: true, unavailableReason: '', role: 'admin', lastOkAt: Date.now(), lastErrorAt: 0, lastError: '' },
+                            ec: { configured: true, address: 'simulated:4712', lastOkAt: 0, lastErrorAt: 0, lastError: '' },
+                            amuleapiProbe: { reachable: true, ecConnected: true, amuleapiVersion: '3.1.0', daemonVersion: '3.1.0', updateAvailable: false, latestVersion: null, error: null }
+                        },
                         history: daemon.historyDiagnostics()
                     }
                 };
@@ -100,7 +108,11 @@ function amule(daemon: DemoDaemon, { method, body, query }: DemoRequest, parts: 
         case 'logs': return ok(daemon.getLogs());
         case 'serverinfo': return ok(daemon.getServerInfo());
         case 'uploads': return ok(daemon.getUploads());
-        case 'shared': return ok({ sharedFiles: daemon.getSharedFiles() });
+        case 'shared': {
+            if (!second) return ok({ sharedFiles: daemon.getSharedFiles() });
+            const file = daemon.getSharedFiles().find(entry => entry.hash.toLowerCase() === second.toLowerCase());
+            return file ? ok(file) : { success: false, error: 'No shared file with that hash' };
+        }
         case 'preferences':
             return method === 'GET' ? ok(daemon.getPreferences()) : daemon.setPreferences(body ?? {});
         case 'bandwidth':
@@ -128,6 +140,15 @@ function amule(daemon: DemoDaemon, { method, body, query }: DemoRequest, parts: 
                         : undefined,
                     data
                 };
+            }
+            if (!third) {
+                // The one download, with the simulated part map. The real
+                // handler layers amuleapi on top of EC; here the simulator
+                // already knows both, so the map is always present.
+                const download = daemon.getDownload(second);
+                return download
+                    ? ok(download)
+                    : { success: false, error: 'No download with that hash' };
             }
             switch (third) {
                 case 'pause': return daemon.pause(second);

@@ -1,0 +1,13 @@
+{
+  "results": [],
+  "total": 0,
+  "offset": 0,
+  "limit": 100,
+  "search_id": 2147483649,
+  "query": "ubuntu",
+  "progress": {
+    "state": "running",
+    "type": "kad",
+    "percent": 11
+  }
+}

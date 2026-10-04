@@ -1,0 +1,47 @@
+{
+  "servers": [
+    {
+      "ecid": 5,
+      "name": "rig test server",
+      "description": "",
+      "software_version": null,
+      "address": "176.123.5.89:4725",
+      "ip": "176.123.5.89",
+      "country_code": null,
+      "port": 4725,
+      "user_count": 0,
+      "max_user_count": 0,
+      "file_count": 0,
+      "soft_file_limit": 0,
+      "hard_file_limit": 0,
+      "priority": "normal",
+      "ping_ms": 0,
+      "failed_count": 0,
+      "permanent": false,
+      "tcp_flags": {
+        "bitmask": 0,
+        "compression": false,
+        "new_tags": false,
+        "unicode": false,
+        "related_search": false,
+        "type_tag_integer": false,
+        "large_files": false,
+        "tcp_obfuscation": false
+      },
+      "udp_flags": {
+        "bitmask": 0,
+        "get_sources": false,
+        "get_files": false,
+        "new_tags": false,
+        "unicode": false,
+        "get_sources_v2": false,
+        "large_files": false,
+        "udp_obfuscation": false,
+        "tcp_obfuscation": false
+      }
+    }
+  ],
+  "total": 1,
+  "offset": 0,
+  "limit": 1000000000
+}

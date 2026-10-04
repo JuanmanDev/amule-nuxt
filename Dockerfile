@@ -46,7 +46,8 @@ RUN set -eu; \
 # aMule daemon stage.
 #
 # Debian only packages aMule 2.3.3 (2021), so the daemon comes from the upstream
-# 3.0.1 release AppImage instead (the project now lives at github.com/amule-org).
+# 3.1.0 release AppImage instead (the project now lives at github.com/amule-org).
+# 3.1 is the first release with amuleapi, the REST daemon the web app asks first.
 # The bundle is unpacked at build time: running an AppImage needs FUSE, which a
 # container does not have. Its launcher picks a binary out of the bundle by the
 # name it was invoked as, read from ARGV0 -- hence the wrappers further down.
@@ -58,9 +59,9 @@ RUN set -eu; \
 # Bumping AMULE_VERSION means refreshing BOTH checksums: the release publishes
 # one AppImage per architecture and buildx builds those separately.
 FROM --platform=${BUILDPLATFORM:-linux/amd64} debian:bookworm-slim AS amule
-ARG AMULE_VERSION=3.0.1
-ARG AMULE_SHA256_AMD64=fc74df9f66a924a067fa0f0c946561a70e261e4a74bd476cc97a2f6b758b59cf
-ARG AMULE_SHA256_ARM64=bc08d102131f77bee5f1c9183959a01773cadb1cef4d9bd18285b8b15dbe0fcb
+ARG AMULE_VERSION=3.1.0
+ARG AMULE_SHA256_AMD64=549c0c83fe2555350620e9d641027a3fd85c6de41ad023473aa30bfec5abefd1
+ARG AMULE_SHA256_ARM64=1a7608d8774c4784a866c9660b9700246bdca4a6759c5c9c2e860dd8f4c81228
 # Inherited from the global ARG above: this stage runs on the build platform, so
 # only the global value tells us which architecture the image is *for*. The
 # classic builder sets neither, hence the fallback to the build architecture.
@@ -94,11 +95,12 @@ RUN set -eux; \
     unsquashfs -q -o "${offset}" -d /opt/amule "/tmp/${file}" > /dev/null; \
     rm "/tmp/${file}"; \
     # The GUI binaries are dead weight in a headless image (~35 MB); amuled,
-    # amulecmd and amuleweb stay.
+    # amuleapi, amulecmd and amuleweb stay.
     rm -f /opt/amule/usr/bin/amule /opt/amule/usr/bin/amulegui \
           /opt/amule/usr/bin/wxcas /opt/amule/usr/bin/cas \
           /opt/amule/usr/bin/alc /opt/amule/usr/bin/alcc; \
-    test -f /opt/amule/usr/bin/amuled
+    test -f /opt/amule/usr/bin/amuled; \
+    test -f /opt/amule/usr/bin/amuleapi
 
 # Web-only stage: this app on its own, talking EC to a daemon somewhere else.
 #
@@ -181,7 +183,7 @@ COPY --from=amule /opt/amule /opt/amule
 # One wrapper per entry point: the bundle's launcher dispatches on ARGV0, and
 # `dirname $0` has to stay inside /opt/amule for its own GTK hook to resolve.
 RUN set -eux; \
-    for binary in amuled amulecmd amuleweb ed2k; do \
+    for binary in amuled amuleapi amulecmd amuleweb ed2k; do \
         printf '#!/bin/sh\nexec env ARGV0=%s /opt/amule/AppRun "$@"\n' "${binary}" \
             > "/usr/local/bin/${binary}"; \
         chmod +x "/usr/local/bin/${binary}"; \
@@ -196,6 +198,7 @@ ENV SERVICES=all \
     AMULE_EC_PASSWORD=amule \
     AMULE_EC_HOST=localhost \
     AMULE_EC_PORT=4712 \
+    AMULE_API_PORT=4713 \
     NUXT_PORT=3000 \
     WS_PORT=3001 \
     NODE_ENV=production \
@@ -205,10 +208,12 @@ ENV SERVICES=all \
 # 3000: Nuxt web interface
 # 3001: live updates over WebSocket (see the web stage above)
 # 4712: aMule External Connection
+# 4713: amuleapi, aMule 3.1's REST API and its Web UI. Loopback-only in the
+#       all-in-one layout unless AMULE_API_BIND says otherwise (docker-entrypoint.sh)
 # 4662: aMule eD2k
 # 4665/udp: aMule UD2k
 # 4672/udp: aMule Kad
-EXPOSE 3000 3001 4712 4662 4665/udp 4672/udp
+EXPOSE 3000 3001 4712 4713 4662 4665/udp 4672/udp
 
 # The daemon takes longer to come up than the web server alone
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \

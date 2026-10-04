@@ -1,0 +1,10 @@
+{
+  "lines": [
+    "!2026-10-04 03:36:34: HTTP download failed for https://download.db-ip.com/free/dbip-country-lite-2026-10.mmdb.gz: error setting certificate file: /etc/ssl/cert.pem\n",
+    " 2026-10-04 03:36:34: DB-IP download failed for the current month - retrying with the previous month's URL.\n",
+    " 2026-10-04 03:36:34: Download new geoip.mmdb from https://download.db-ip.com/free/dbip-country-lite-2026-09.mmdb.gz\n",
+    "!2026-10-04 03:36:34: HTTP download failed for https://download.db-ip.com/free/dbip-country-lite-2026-09.mmdb.gz: error setting certificate file: /etc/ssl/cert.pem\n"
+  ],
+  "total_lines": 53,
+  "returned_lines": 20
+}

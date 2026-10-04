@@ -61,7 +61,7 @@ if [ "${run_amule}" = true ]; then
 
         cat > "${AMULE_CONF}" <<EOF
 [eMule]
-AppVersion=3.0.1
+AppVersion=3.1.0
 Nick=aMule-Nuxt
 QueueSizePref=50
 MaxUpload=0
@@ -127,6 +127,64 @@ EOF
     chmod -R 777 /downloads
 fi
 
+# amuleapi: the REST daemon aMule 3.1 ships. The web app asks it first and falls
+# back to EC (see server/utils/amule-backend.ts), so it is started next to amuled
+# whenever there is a password for it:
+#
+#   all    no password needed: nobody outside the container talks to it, so a
+#          fresh random one is made on every start and handed to the web app
+#   amule  only with AMULE_API_PASSWORD set - other containers reach it, and it
+#          should not be open with a password nobody knows
+#
+# AMULE_API_ENABLED=false skips it, leaving the app on EC alone.
+AMULE_API_PORT="${AMULE_API_PORT:-4713}"
+run_amuleapi=false
+if [ "${run_amule}" = true ] && [ "${AMULE_API_ENABLED:-true}" != "false" ] \
+    && command -v amuleapi > /dev/null 2>&1; then
+    if [ -z "${AMULE_API_PASSWORD}" ] && [ "${run_web}" = true ]; then
+        AMULE_API_PASSWORD="$(head -c 24 /dev/urandom | base64 | tr -dc 'A-Za-z0-9')"
+    fi
+    if [ -n "${AMULE_API_PASSWORD}" ]; then
+        run_amuleapi=true
+    fi
+fi
+
+if [ "${run_amuleapi}" = true ]; then
+    # Loopback in the all-in-one layout, where only the web app beside it needs it;
+    # every interface for a daemon container, where the web app is elsewhere.
+    if [ "${SERVICES}" = "amule" ]; then
+        API_BIND="${AMULE_API_BIND:-0.0.0.0}"
+    else
+        API_BIND="${AMULE_API_BIND:-127.0.0.1}"
+    fi
+
+    # Rewritten on every start so a changed port or password takes effect. The EC
+    # password is the plain one: amuleapi logs in to amuled like any EC client.
+    cat > "${AMULE_HOME}/amuleapi.conf" <<EOF
+[Server]
+BindAddress=${API_BIND}
+Port=${AMULE_API_PORT}
+
+[EC]
+Host=127.0.0.1
+Port=${AMULE_EC_PORT}
+Password=${AMULE_EC_PASSWORD}
+EOF
+    chmod 600 "${AMULE_HOME}/amuleapi.conf"
+
+    # Stored salted and stretched in amuleapi-passwords; the command exits at once.
+    # A failure here costs amuleapi, not the container: the app still has EC.
+    if amuleapi --config-dir="${AMULE_HOME}" --set-admin-pass="${AMULE_API_PASSWORD}" > /dev/null; then
+        # The web app in this container reads these
+        export AMULE_API_PASSWORD
+        export AMULE_API_HOST="${AMULE_API_HOST:-localhost}"
+        export AMULE_API_PORT
+    else
+        echo "Warning: could not set the amuleapi password; the web app will use EC only." >&2
+        run_amuleapi=false
+    fi
+fi
+
 # Every started process, so the supervision loop below can watch all of them
 PIDS=()
 NAMES=()
@@ -147,6 +205,13 @@ if [ "${run_amule}" = true ]; then
     else
         echo "Warning: aMule daemon may not be fully ready yet"
     fi
+fi
+
+if [ "${run_amuleapi}" = true ]; then
+    # Not supervised as fatal: if it stops, the web app carries on over EC.
+    echo "Starting amuleapi (REST API) on ${API_BIND}:${AMULE_API_PORT}..."
+    amuleapi --config-dir="${AMULE_HOME}" --host=127.0.0.1 --port="${AMULE_EC_PORT}" \
+        --bind="${API_BIND}" --http-port="${AMULE_API_PORT}" --no-log-file &
 fi
 
 if [ "${run_web}" = true ]; then
@@ -178,6 +243,9 @@ fi
 echo "All services started!"
 if [ "${run_amule}" = true ]; then
     echo "  - aMule daemon: localhost:${AMULE_EC_PORT}"
+fi
+if [ "${run_amuleapi}" = true ]; then
+    echo "  - amuleapi (REST API + Web UI): ${API_BIND}:${AMULE_API_PORT}"
 fi
 if [ "${run_web}" = true ]; then
     echo "  - Nuxt web UI: http://localhost:${NUXT_PORT}"

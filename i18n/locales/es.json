@@ -182,6 +182,79 @@
     "priorityHint": {
       "title": "{count} descarga en la cola | {count} descargas en la cola",
       "description": "Todas comparten una sola conexión, por lo que aMule la reparte a partes iguales. Pon en prioridad Alta las que quieras tener pronto y las demás en Baja, y los archivos que te importan terminarán antes."
+    },
+    "partBar": {
+      "ariaLabel": "Progreso por partes: {complete} de {total} partes completas, {pending} pendientes, {unavailable} sin fuente",
+      "legend": {
+        "complete": "Completa",
+        "pending": "Pendiente",
+        "unavailable": "Sin fuente"
+      },
+      "tooltips": {
+        "complete": "{count} partes en disco",
+        "pending": "{count} partes esperando una fuente",
+        "unavailable": "{count} partes que ninguna fuente tiene"
+      },
+      "bucketed": "{segments} grupos para {parts} partes",
+      "unavailableHint": "El progreso parte a parte necesita el demonio amuleapi de aMule 3.1; el enlace EC solo informa de un recuento de partes."
+    },
+    "tabs": {
+      "overview": "Resumen",
+      "parts": "Partes",
+      "swarm": "Fuentes y actividad"
+    },
+    "parts": {
+      "title": "Desglose por partes",
+      "partNumber": "Parte n.º {number}",
+      "totalParts": "{count} parte | {count} partes",
+      "chunkSize": "Tamaño de parte estándar: 9,28 MiB (9.728.000 bytes)",
+      "filterAll": "Todas",
+      "filterComplete": "Completas",
+      "filterAvailable": "Disponibles",
+      "filterUnavailable": "Sin fuente",
+      "searchPlaceholder": "Filtrar por número de parte o posición...",
+      "statusComplete": "Completa",
+      "statusAvailable": "Disponible",
+      "statusUnavailable": "Sin fuente",
+      "sourcesCount": "{count} fuente | {count} fuentes",
+      "estimatedBadge": "Estimado a partir de los recuentos de EC",
+      "liveBadge": "Mapa de partes en vivo (amuleapi)",
+      "swarmAvailability": "Disponibilidad en la red",
+      "healthySwarm": "El archivo completo está disponible en la red",
+      "incompleteSwarm": "Falta {count} parte en la red | Faltan {count} partes en la red",
+      "noSources": "No se encontraron fuentes",
+      "byteRange": "Rango de bytes",
+      "size": "Tamaño",
+      "status": "Estado",
+      "sources": "Fuentes",
+      "progress": "Progreso",
+      "noPartsMatch": "Ninguna parte coincide con este filtro",
+      "partSize": "Tamaño de parte"
+    },
+    "swarmDetails": {
+      "title": "Fuentes y disponibilidad",
+      "healthy": "Red sana (100 % disponible)",
+      "rare": "Archivo raro (faltan {count} partes en la red)",
+      "sourcesBreakdown": "Desglose de fuentes",
+      "transferring": "Transfiriendo ahora",
+      "a4af": "Pedidas para otro archivo (A4AF)",
+      "queued": "Sin ninguna parte que necesitemos",
+      "totalSources": "Fuentes totales",
+      "partsAvailable": "Partes disponibles en la red",
+      "timingTitle": "Tiempos y actividad"
+    },
+    "detail": {
+      "sizeOf": "{done} de {total}",
+      "fileTitle": "Archivo en disco",
+      "directory": "Carpeta",
+      "partFile": "Archivo .part",
+      "activeTime": "Tiempo descargando",
+      "lostToCorruption": "Perdido por corrupción",
+      "gainedByCompression": "Ahorrado por compresión",
+      "ichRecovered": "Paquetes rescatados por I.C.H.",
+      "uploadQueue": "Clientes esperando para descargarlo de ti",
+      "aichHash": "Hash AICH",
+      "aichPending": "Aún no generado"
     }
   },
   "health": {
@@ -279,10 +352,17 @@
       "completeSources": "Fuentes completas",
       "uploadPriority": "Prioridad de subida",
       "completedAt": "Descargado el",
-      "addedAt": "Añadido a la cola"
+      "addedAt": "Añadido a la cola",
+      "uploadingNow": "Subiendo ahora a",
+      "lastUpload": "Última subida",
+      "sharedSince": "Compartido desde",
+      "rarestPart": "Parte más rara"
     },
     "notRecorded": "Sin registrar",
-    "pageLink": "Enlace a este archivo"
+    "pageLink": "Enlace a este archivo",
+    "uploadingTo": "Subiendo a {count} | Subiendo a {count}",
+    "never": "Nunca",
+    "rarestPartValue": "La tiene {count} cliente | La tienen {count} clientes"
   },
   "search": {
     "title": "Buscar",
@@ -341,9 +421,13 @@
         "sources": "Fuentes",
         "foundBy": "Encontrado por",
         "queueStatus": "Estado en la cola",
-        "queueSources": "Fuentes en la cola"
+        "queueSources": "Fuentes en la cola",
+        "completeSources": "Fuentes completas"
       },
-      "show": "Ver"
+      "show": "Ver",
+      "completeSources": "{count} completa | {count} completas",
+      "completeSourcesHint": "Fuentes que tienen el archivo completo (según amuleapi)",
+      "rating": "Valoración"
     },
     "filters": {
       "all": "Todos",
@@ -460,11 +544,29 @@
       "serverMode": "Modo del servidor",
       "logLevel": "Nivel de registro",
       "configTitle": "Configuración",
-      "configDescription": "Los ajustes de conexión se configuran mediante variables de entorno. Consulta .env.example para más detalles.",
+      "configDescription": "Los ajustes de conexión se configuran mediante variables de entorno: AMULE_EC_* para la conexión externa, AMULE_API_* para amuleapi (aMule 3.1) y AMULE_BACKEND para elegir. Consulta .env.example para más detalles.",
       "history": "Historial de descargas",
       "historyEntries": "Entradas",
       "historyOldest": "Entrada más antigua",
       "historyNotWritable": "El historial de descargas no se puede guardar: las fechas se perderán en cada reinicio. Monta AMULE_DATA_DIR en un volumen."
+    },
+    "link": {
+      "title": "Enlace con aMule",
+      "mode": "Modo",
+      "viaApi": "Usando amuleapi",
+      "viaEc": "Usando la conexión externa",
+      "none": "Ningún enlace responde todavía",
+      "ec": "Conexión externa",
+      "anyVersion": "cualquier aMule",
+      "updateAvailable": "aMule {version} está disponible",
+      "apiHint": "¿Usas aMule 3.1? Define AMULE_API_PASSWORD para usar primero su API REST: mapa de partes en vivo, datos multimedia y la estimación de tiempo del propio demonio. La conexión externa queda como respaldo.",
+      "disabled": "Desactivado",
+      "notConfigured": "Sin configurar",
+      "coolingDown": "En pausa tras un fallo",
+      "unreachable": "No responde",
+      "daemonDown": "amuled no conectado",
+      "answering": "Responde",
+      "standby": "En espera"
     }
   },
   "assistant": {
@@ -619,5 +721,13 @@
     "mcpUnavailable": "El endpoint MCP y las herramientas del asistente necesitan el servidor de aMule Nuxt. Esta demo es una página estática, así que un agente de IA no puede manejarla. Ejecuta la aplicación tú mismo para usar MCP.",
     "pushUnavailableTitle": "Web Push no funciona en la demo",
     "pushUnavailable": "Las notificaciones push necesitan el servidor de aMule Nuxt. Esta demo es una página estática; las notificaciones dentro de la página sí funcionan."
+  },
+  "media": {
+    "title": "Título",
+    "artist": "Artista",
+    "album": "Álbum",
+    "duration": "Duración",
+    "codec": "Códec",
+    "bitrate": "Tasa de bits"
   }
 }

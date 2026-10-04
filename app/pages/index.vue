@@ -17,6 +17,17 @@
     </div>
 
 
+    <!-- Only amuleapi (aMule 3.1) reports free space. aMule pauses downloads
+         when the temp volume runs out, so say so before it happens. -->
+    <UAlert
+      v-if="lowDisk"
+      color="warning"
+      variant="subtle"
+      icon="i-heroicons-circle-stack"
+      title="Not enough free disk space for the queue"
+      :description="`${formatBytes(lowDisk.free)} free where the part files live, ${formatBytes(lowDisk.needed)} still to download. aMule stops downloading when the disk fills up.`"
+    />
+
     <!-- Current downloads summary -->
     <UCard>
       <template #header>
@@ -253,7 +264,7 @@
 import { computed } from 'vue';
 import { useAmuleSocket } from '~/composables/useAmuleSocket';
 import { classifyDownload } from '#shared/utils/downloadHealth';
-import { formatSpeed } from '#shared/utils/format';
+import { formatBytes, formatSpeed } from '#shared/utils/format';
 
 const api = useAmuleApi();
 const toast = useToast();
@@ -298,6 +309,16 @@ const summaryDownloads = computed(() =>
 );
 
 const downloadHealth = (download: any) => classifyDownload(download);
+
+/** Free space against what the queue still has to write; null when fine or unknown. */
+const lowDisk = computed(() => {
+  const free = effectiveStatus.value?.tempFreeBytes;
+  if (typeof free !== 'number') return null;
+  const needed = downloadItems.value
+    .filter(download => download.status !== 'Complete')
+    .reduce((sum, download) => sum + Math.max(0, (download.size || 0) - (download.sizeDone || 0)), 0);
+  return needed > free ? { free, needed } : null;
+});
 
 const connecting = ref(false);
 const disconnecting = ref(false);

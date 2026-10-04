@@ -67,6 +67,18 @@ export const useAmuleApi = () => {
             return await $fetch<ApiResponse<Download[]>>(apiUrl('/downloads'), { signal: options.signal });
         },
 
+        /**
+         * One download, including the part map.
+         *
+         * The queue list carries everything EC can say about a file, but only
+         * amuleapi reports which parts of it are on disk, so the details view
+         * asks for this on top - and only for the one open download, instead of
+         * making the whole queue wait on a second daemon on every poll.
+         */
+        async getDownload(hash: string, options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<Download>>(apiUrl(`/downloads/${hash}`), { signal: options.signal });
+        },
+
         async addDownload(links: string | string[]) {
             return await $fetch<ApiResponse<AddLinksResult>>(apiUrl('/downloads/add'), {
                 method: 'POST',
@@ -109,7 +121,8 @@ export const useAmuleApi = () => {
         },
 
         async getSearchResults() {
-            return await $fetch<ApiResponse<{ results: SearchResult[]; progress: number }>>(apiUrl('/search/results'));
+            // `finished` comes from amuleapi only; over EC the page infers it
+            return await $fetch<ApiResponse<{ results: SearchResult[]; progress: number; finished?: boolean }>>(apiUrl('/search/results'));
         },
 
         async stopSearch() {
@@ -185,6 +198,15 @@ export const useAmuleApi = () => {
 
         async getSharedFiles(options: ReadOptions = {}) {
             return await $fetch<ApiResponse<{ sharedFiles: SharedFile[] }>>(apiUrl('/shared'), { signal: options.signal });
+        },
+
+        /**
+         * One shared file. Over amuleapi (aMule 3.1) this adds what the list
+         * leaves out - the directory, the upload queue, media metadata - and is
+         * only asked for the file whose details are open.
+         */
+        async getSharedFile(hash: string, options: ReadOptions = {}) {
+            return await $fetch<ApiResponse<SharedFile>>(apiUrl(`/shared/${hash}`), { signal: options.signal });
         },
 
         async getServers() {

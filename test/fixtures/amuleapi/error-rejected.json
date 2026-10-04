@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "amuled_rejected",
+    "message": "Kad search can't be done if Kad is not running"
+  }
+}

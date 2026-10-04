@@ -34,6 +34,12 @@ services:
       - AMULE_EC_HOST=${AMULE_EC_HOST:-host.docker.internal}
       - AMULE_EC_PORT=${AMULE_EC_PORT:-4712}
       - AMULE_EC_PASSWORD=${AMULE_EC_PASSWORD:?set AMULE_EC_PASSWORD in .env}
+      # aMule 3.1's REST daemon, asked first when a password is set; EC above
+      # stays as the fallback. Empty leaves the app on EC alone.
+      - AMULE_API_HOST=${AMULE_API_HOST:-}
+      - AMULE_API_PORT=${AMULE_API_PORT:-4713}
+      - AMULE_API_PASSWORD=${AMULE_API_PASSWORD:-}
+      - AMULE_BACKEND=${AMULE_BACKEND:-auto}
       - NUXT_PORT=3000
       - WS_PORT=${WS_PORT:-3001}
       - AMULE_DATA_DIR=/data/amule-nuxt

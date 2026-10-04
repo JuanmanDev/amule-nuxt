@@ -8,7 +8,8 @@
  */
 
 import type { SharedFile } from '../../server/utils/amule-types';
-import { formatBytes } from '#shared/utils/format';
+import { formatBytes, formatSpeed } from '#shared/utils/format';
+import { mediaFactList } from '../utils/media';
 
 export const useSharedFileFacts = () => {
     const { t } = useI18n();
@@ -36,8 +37,35 @@ export const useSharedFileFacts = () => {
              */
             { label: t('shared.fields.addedAt'), value: file.addedAt ? time.dateTime(file.addedAt) : t('shared.notRecorded') },
             { label: t('shared.fields.completedAt'), value: file.completedAt ? time.dateTime(file.completedAt) : t('shared.notRecorded') },
-            { label: t('shared.fields.uploadPriority'), value: `${t('downloads.priorities.' + file.priority)}${file.autoPriority ? ' ' + t('downloads.priorities.autoSuffix') : ''}` }
+            { label: t('shared.fields.uploadPriority'), value: `${t('downloads.priorities.' + file.priority)}${file.autoPriority ? ' ' + t('downloads.priorities.autoSuffix') : ''}` },
+            // amuleapi (aMule 3.1) only: each appears when the daemon reported it
+            ...extrasOf(file)
         ];
+    }
+
+    function extrasOf(file: SharedFile): Array<{ label: string; value: string }> {
+        const extras: Array<{ label: string; value: string }> = [];
+
+        if (file.uploadingClients !== undefined) {
+            extras.push({
+                label: t('shared.fields.uploadingNow'),
+                value: file.uploadingClients > 0
+                    ? `${file.uploadingClients.toLocaleString()} · ${formatSpeed(file.uploadSpeed)}`
+                    : '0'
+            });
+        }
+        if (file.lastUploadAt !== undefined) {
+            extras.push({ label: t('shared.fields.lastUpload'), value: file.lastUploadAt ? time.dateTime(file.lastUploadAt * 1000) : t('shared.never') });
+        }
+        if (file.sharedSince) {
+            extras.push({ label: t('shared.fields.sharedSince'), value: time.dateTime(file.sharedSince * 1000) });
+        }
+        if (file.partSources?.length) {
+            const rarest = Math.min(...file.partSources);
+            extras.push({ label: t('shared.fields.rarestPart'), value: t('shared.rarestPartValue', { count: rarest }, rarest) });
+        }
+
+        return [...extras, ...mediaFactList(file.media, t)];
     }
 
     return { factsOf };

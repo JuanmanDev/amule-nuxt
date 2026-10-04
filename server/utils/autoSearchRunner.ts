@@ -64,7 +64,10 @@ async function runPass(search: AutoSearch): Promise<void> {
         const read = await client.getSearchResults();
         fresh = read.results;
 
-        if (fresh.length > 0 && fresh.length === previousCount) break;
+        // amuleapi says when the search is over; over EC the count settling is
+        // the only signal there is.
+        if (read.finished === true) break;
+        if (read.finished === undefined && fresh.length > 0 && fresh.length === previousCount) break;
         previousCount = fresh.length;
     }
 

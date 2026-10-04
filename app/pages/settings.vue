@@ -340,6 +340,8 @@
 
       <!-- Guarded on the wrapper too: diagnostics are read in the browser, so
            during SSR this would be a transition with nothing in it -->
+      <AmuleLinkCard v-if="diagnostics?.backend" :backend="diagnostics.backend" class="mt-4" />
+
       <SmoothSwap v-if="diagnostics">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="p-4 bg-elevated/50 backdrop-blur-sm rounded-lg">

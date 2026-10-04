@@ -1,0 +1,812 @@
+{
+  "nodes": [
+    {
+      "key": "uptime",
+      "label_value": null,
+      "label": "Uptime: %s",
+      "values": [
+        {
+          "type": "time",
+          "value": 117,
+          "token": null,
+          "extra": null
+        }
+      ],
+      "children": []
+    },
+    {
+      "key": "transfer",
+      "label_value": null,
+      "label": "Transfer",
+      "values": [],
+      "children": [
+        {
+          "key": "ul_dl_ratio",
+          "label_value": null,
+          "label": "Session UL:DL Ratio (Total): %s",
+          "values": [
+            {
+              "type": "string",
+              "value": "Not available",
+              "token": "not_available",
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "uploads",
+          "label_value": null,
+          "label": "Uploads",
+          "values": [],
+          "children": [
+            {
+              "key": "upload_data",
+              "label_value": null,
+              "label": "Uploaded Data (Session (Total)): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "bytes",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_total_overhead",
+              "label_value": null,
+              "label": "Total Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_filereq_overhead",
+              "label_value": null,
+              "label": "File Request Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_srcexch_overhead",
+              "label_value": null,
+              "label": "Source Exchange Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_server_overhead",
+              "label_value": null,
+              "label": "Server Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_kad_overhead",
+              "label_value": null,
+              "label": "Kad Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_crypt_overhead",
+              "label_value": null,
+              "label": "Crypt overhead (UDP): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "active_uploads",
+              "label_value": null,
+              "label": "Active Uploads: %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "waiting_uploads",
+              "label_value": null,
+              "label": "Waiting Uploads: %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_sessions_success",
+              "label_value": null,
+              "label": "Total successful upload sessions: %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "upload_sessions_failed",
+              "label_value": null,
+              "label": "Total failed upload sessions: %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "key": "downloads",
+          "label_value": null,
+          "label": "Downloads",
+          "values": [],
+          "children": [
+            {
+              "key": "download_data",
+              "label_value": null,
+              "label": "Downloaded Data (Session (Total)): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "bytes",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_total_overhead",
+              "label_value": null,
+              "label": "Total Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_filereq_overhead",
+              "label_value": null,
+              "label": "File Request Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_srcexch_overhead",
+              "label_value": null,
+              "label": "Source Exchange Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_server_overhead",
+              "label_value": null,
+              "label": "Server Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_kad_overhead",
+              "label_value": null,
+              "label": "Kad Overhead (Packets): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": {
+                    "type": "integer",
+                    "value": 0,
+                    "token": null,
+                    "extra": null
+                  }
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "download_crypt_overhead",
+              "label_value": null,
+              "label": "Crypt overhead (UDP): %s",
+              "values": [
+                {
+                  "type": "bytes",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "found_sources",
+              "label_value": null,
+              "label": "Found Sources: %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            },
+            {
+              "key": "active_downloads",
+              "label_value": null,
+              "label": "Active Downloads (chunks): %s",
+              "values": [
+                {
+                  "type": "integer",
+                  "value": 0,
+                  "token": null,
+                  "extra": null
+                }
+              ],
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "connection",
+      "label_value": null,
+      "label": "Connection",
+      "values": [],
+      "children": [
+        {
+          "key": "avg_download_rate",
+          "label_value": null,
+          "label": "Average download rate (Session): %s",
+          "values": [
+            {
+              "type": "speed",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "avg_upload_rate",
+          "label_value": null,
+          "label": "Average upload rate (Session): %s",
+          "values": [
+            {
+              "type": "speed",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "max_download_rate",
+          "label_value": null,
+          "label": "Max download rate (Session): %s",
+          "values": [
+            {
+              "type": "speed",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "max_upload_rate",
+          "label_value": null,
+          "label": "Max upload rate (Session): %s",
+          "values": [
+            {
+              "type": "speed",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "reconnects",
+          "label_value": null,
+          "label": "Reconnects: %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "connected_since",
+          "label_value": null,
+          "label": "Connected To Server Since: %s",
+          "values": [
+            {
+              "type": "time",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "active_connections",
+          "label_value": null,
+          "label": "Active Connections (estimate): %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "max_conn_limit_reached",
+          "label_value": null,
+          "label": "Max Connection Limit Reached: %s",
+          "values": [
+            {
+              "type": "string",
+              "value": "Never",
+              "token": "never",
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "avg_connections",
+          "label_value": null,
+          "label": "Average Connections (estimate): %g",
+          "values": [
+            {
+              "type": "double",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "peak_connections",
+          "label_value": null,
+          "label": "Peak Connections (estimate): %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "key": "clients",
+      "label_value": null,
+      "label": "Clients",
+      "values": [],
+      "children": [
+        {
+          "key": "clients_total",
+          "label_value": null,
+          "label": "Total: %i Known: %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            },
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "clients_unknown",
+          "label_value": null,
+          "label": "Unknown: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "clients_filtered",
+          "label_value": null,
+          "label": "Filtered: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "clients_banned",
+          "label_value": null,
+          "label": "Banned: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "key": "servers",
+      "label_value": null,
+      "label": "Servers",
+      "values": [],
+      "children": [
+        {
+          "key": "servers_working",
+          "label_value": null,
+          "label": "Working Servers: %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_failed",
+          "label_value": null,
+          "label": "Failed Servers: %i",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_total",
+          "label_value": null,
+          "label": "Total: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_deleted",
+          "label_value": null,
+          "label": "Deleted Servers: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 1,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_filtered",
+          "label_value": null,
+          "label": "Filtered Servers: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_users_working",
+          "label_value": null,
+          "label": "Users on Working Servers: %llu",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_files_working",
+          "label_value": null,
+          "label": "Files on Working Servers: %llu",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_total_users",
+          "label_value": null,
+          "label": "Total Users: %llu",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_total_files",
+          "label_value": null,
+          "label": "Total Files: %llu",
+          "values": [
+            {
+              "type": "integer",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "servers_occupation",
+          "label_value": null,
+          "label": "Server Occupation: %.2f%%",
+          "values": [
+            {
+              "type": "double",
+              "value": 0,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "key": "shared_files",
+      "label_value": null,
+      "label": "Shared Files",
+      "values": [],
+      "children": [
+        {
+          "key": "shared_count",
+          "label_value": null,
+          "label": "Number of Shared Files: %s",
+          "values": [
+            {
+              "type": "integer",
+              "value": 1,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "shared_size",
+          "label_value": null,
+          "label": "Total size of Shared Files: %s",
+          "values": [
+            {
+              "type": "bytes",
+              "value": 20971520,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        },
+        {
+          "key": "shared_avg_size",
+          "label_value": null,
+          "label": "Average file size: %s",
+          "values": [
+            {
+              "type": "bytes",
+              "value": 20971520,
+              "token": null,
+              "extra": null
+            }
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}
