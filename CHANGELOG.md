@@ -2,6 +2,13 @@
 
 Every entry here is generated from the commit messages by semantic-release; do not edit by hand.
 
+## [1.20.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.19.0...v1.20.0) (2026-10-04)
+
+### Features
+
+* integrate aMule 3.1 amuleapi REST backend with part maps and media metadata ([f0fe52f](https://github.com/JuanmanDev/amule-nuxt/commit/f0fe52faa893086f51fd68d3c437b9e902d9ca54))
+* support selecting visible items in table selection bar ([72b7b7e](https://github.com/JuanmanDev/amule-nuxt/commit/72b7b7e81dcf83e46ae4a4fcdef1f9161530f335))
+
 ## [1.19.0](https://github.com/JuanmanDev/amule-nuxt/compare/v1.18.0...v1.19.0) (2026-09-22)
 
 ### Features
