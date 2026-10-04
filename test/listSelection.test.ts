@@ -124,4 +124,45 @@ describe('useListSelection', () => {
         selection.toggleAll();
         expect(selection.count.value).toBe(0);
     });
+
+    it('supports selecting visible items separately from all matching items', () => {
+        const items = ref([row('a'), row('b'), row('c'), row('d')]);
+        // Simulate a page of 2 visible items out of 4 matching items
+        const visibleItems = ref([row('a'), row('b')]);
+        const selection = useListSelection<Row>({
+            items,
+            visibleItems,
+            keyOf: item => item.hash
+        });
+
+        expect(selection.visibleCount.value).toBe(2);
+        expect(selection.allVisible.value).toBe(false);
+        expect(selection.someVisible.value).toBe(false);
+
+        // Select visible items
+        selection.selectVisible();
+        expect(selection.keys.value).toEqual(['a', 'b']);
+        expect(selection.count.value).toBe(2);
+        expect(selection.allVisible.value).toBe(true);
+        expect(selection.all.value).toBe(false); // Only visible are selected, not all matching
+
+        // Select all matching
+        selection.selectAllMatching();
+        expect(selection.count.value).toBe(4);
+        expect(selection.all.value).toBe(true);
+        expect(selection.allVisible.value).toBe(true);
+
+        // Toggle visible off while preserving other selections or clearing visible
+        selection.toggleVisible();
+        expect(selection.keys.value).toEqual(['c', 'd']);
+        expect(selection.allVisible.value).toBe(false);
+        expect(selection.all.value).toBe(false);
+
+        // Partial visible selection reports someVisible
+        selection.clear();
+        selection.toggle('a');
+        expect(selection.someVisible.value).toBe(true);
+        expect(selection.allVisible.value).toBe(false);
+    });
 });
+

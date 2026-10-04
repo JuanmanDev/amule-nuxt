@@ -266,9 +266,15 @@
         :active="selection.active.value"
         :count="selection.count.value"
         :total="matched"
+        :visible-count="visibleDownloads.length"
         :all="selection.all.value"
         :some="selection.some.value"
+        :all-visible="selection.allVisible.value"
+        :some-visible="selection.someVisible.value"
         @toggle-all="on => selection.toggleAll(on)"
+        @toggle-visible="on => selection.toggleVisible(on)"
+        @select-all-matching="selection.selectAllMatching"
+        @clear="selection.clear"
         @stop="selection.stop"
       >
         <UButton
@@ -489,6 +495,7 @@ const showPriorityHint = computed(() => priorityHintOpen.value && items.value.le
  */
 const selection = useListSelection<Download>({
   items: matching,
+  visibleItems: visibleDownloads,
   keyOf: download => download.hash
 });
 

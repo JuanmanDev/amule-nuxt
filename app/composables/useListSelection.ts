@@ -31,14 +31,28 @@ export interface ListSelection<T> {
     /** The rows those keys still refer to, in list order. */
     items: ComputedRef<T[]>;
     count: ComputedRef<number>;
-    /** True when every selectable row is ticked. */
+    /** True when every selectable row (all matching rows) is ticked. */
     all: ComputedRef<boolean>;
-    /** True when some but not all are ticked, for the header checkbox. */
+    /** True when some but not all matching rows are ticked. */
     some: ComputedRef<boolean>;
+    /** True when every row currently visible on screen is ticked. */
+    allVisible: ComputedRef<boolean>;
+    /** True when some but not all visible rows are ticked. */
+    someVisible: ComputedRef<boolean>;
+    /** How many rows are currently visible on screen. */
+    visibleCount: ComputedRef<number>;
+    /** How many visible rows are currently ticked. */
+    selectedVisibleCount: ComputedRef<number>;
     has: (key: string) => boolean;
     toggle: (key: string, selected?: boolean) => void;
     /** Ticks everything that matches the current filter, or clears it. */
     toggleAll: (selected?: boolean) => void;
+    /** Ticks all rows visible on the current page, or unticks them. */
+    toggleVisible: (selected?: boolean) => void;
+    /** Explicitly ticks all rows that match the current filter across all pages. */
+    selectAllMatching: () => void;
+    /** Explicitly ticks all rows currently visible on the page. */
+    selectVisible: () => void;
     clear: () => void;
     /** Enters selection mode. */
     start: () => void;
@@ -52,6 +66,11 @@ export interface ListSelectionOptions<T> {
      * current page.
      */
     items: MaybeRefOrGetter<readonly T[]>;
+    /**
+     * The rows visible on the current page or view. If omitted, defaults to
+     * `items`.
+     */
+    visibleItems?: MaybeRefOrGetter<readonly T[]>;
     /** Stable identity of a row; the same key the list renders with. */
     keyOf: (item: T) => string;
 }
@@ -61,11 +80,24 @@ export function useListSelection<T>(options: ListSelectionOptions<T>): ListSelec
     const keys = ref<string[]>([]);
 
     const all = computed(() => toValue(options.items));
+    const visible = computed(() => toValue(options.visibleItems ?? options.items));
 
     /** Fast membership tests for the per-row checkboxes. */
     const selectedKeys = computed(() => new Set(keys.value));
 
     const items = computed(() => all.value.filter(item => selectedKeys.value.has(options.keyOf(item))));
+
+    const selectedVisibleCount = computed(() =>
+        visible.value.filter(item => selectedKeys.value.has(options.keyOf(item))).length
+    );
+
+    const allVisible = computed(() =>
+        visible.value.length > 0 && selectedVisibleCount.value === visible.value.length
+    );
+
+    const someVisible = computed(() =>
+        selectedVisibleCount.value > 0 && selectedVisibleCount.value < visible.value.length
+    );
 
     // A selection that outlives its rows would act on things that are gone
     watch(all, list => {
@@ -90,6 +122,28 @@ export function useListSelection<T>(options: ListSelectionOptions<T>): ListSelec
         keys.value = shouldSelect ? all.value.map(options.keyOf) : [];
     }
 
+    function selectAllMatching() {
+        keys.value = all.value.map(options.keyOf);
+    }
+
+    function selectVisible() {
+        const visibleKeySet = new Set(visible.value.map(options.keyOf));
+        const combined = new Set([...keys.value, ...visibleKeySet]);
+        keys.value = Array.from(combined);
+    }
+
+    function toggleVisible(selected?: boolean) {
+        const shouldSelect = selected ?? !allVisible.value;
+        const visibleKeySet = new Set(visible.value.map(options.keyOf));
+
+        if (shouldSelect) {
+            const combined = new Set([...keys.value, ...visibleKeySet]);
+            keys.value = Array.from(combined);
+        } else {
+            keys.value = keys.value.filter(key => !visibleKeySet.has(key));
+        }
+    }
+
     function clear() {
         keys.value = [];
     }
@@ -101,9 +155,16 @@ export function useListSelection<T>(options: ListSelectionOptions<T>): ListSelec
         count: computed(() => items.value.length),
         all: computed(() => all.value.length > 0 && items.value.length === all.value.length),
         some: computed(() => items.value.length > 0 && items.value.length < all.value.length),
+        allVisible,
+        someVisible,
+        visibleCount: computed(() => visible.value.length),
+        selectedVisibleCount,
         has: (key: string) => selectedKeys.value.has(key),
         toggle,
         toggleAll,
+        toggleVisible,
+        selectAllMatching,
+        selectVisible,
         clear,
         start: () => { active.value = true; },
         stop: () => {

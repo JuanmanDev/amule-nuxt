@@ -227,9 +227,15 @@
               :active="selection.active.value"
               :count="selection.count.value"
               :total="matched"
+              :visible-count="visibleUploads.length"
               :all="selection.all.value"
               :some="selection.some.value"
+              :all-visible="selection.allVisible.value"
+              :some-visible="selection.someVisible.value"
               @toggle-all="on => selection.toggleAll(on)"
+              @toggle-visible="on => selection.toggleVisible(on)"
+              @select-all-matching="selection.selectAllMatching"
+              @clear="selection.clear"
               @stop="selection.stop"
             >
               <UButton
@@ -369,6 +375,7 @@ const keyOfUpload = (upload: Upload) => `${upload.fileHash || upload.fileEcId}@$
 
 const selection = useListSelection<Upload>({
   items: matching,
+  visibleItems: visibleUploads,
   keyOf: keyOfUpload
 });
 

@@ -510,6 +510,12 @@
   "selection": {
     "select": "Seleccionar",
     "selectAll": "Seleccionar todo lo que coincide con el filtro",
+    "selectVisible": "Seleccionar visibles ({count})",
+    "selectAllMatching": "Seleccionar todos con filtro ({count})",
+    "selectAllMatchingPrompt": "Seleccionar los {total} con filtro aplicado",
+    "allMatchingSelected": "Todos los {total} con filtro seleccionados",
+    "selectOptions": "Opciones de selección",
+    "clear": "Borrar selección",
     "selectRow": "Seleccionar {name}",
     "count": "{count} de {total} seleccionados",
     "done": "Listo",
