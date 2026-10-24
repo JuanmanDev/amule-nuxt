@@ -4,6 +4,8 @@
 version: 2
 updates:
   - package-ecosystem: npm
+    cooldown:
+      default-days: 2
     directory: /
     schedule:
       interval: weekly
@@ -23,6 +25,8 @@ updates:
     commit-message:
       prefix: 'chore(deps)'
   - package-ecosystem: github-actions
+    cooldown:
+      default-days: 2
     directory: /
     schedule:
       interval: monthly
